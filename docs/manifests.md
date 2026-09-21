@@ -69,6 +69,9 @@ spec:
       - provider: google
         query: "mcp.tags:build"
     servers:
+      - name: ax-security-proxy
+        command: "ax-mcp-proxy"
+        args: []
       - name: git-tools
         endpoint: "http://git-mcp.default.svc.cluster.local:8080"
   skills:

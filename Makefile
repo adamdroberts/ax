@@ -31,22 +31,24 @@ all: build
 build: build-binaries
 
 build-binaries:
-	@echo "==> Building local binaries (ax, ax-controller, ax-server)..."
+	@echo "==> Building local binaries (ax, ax-controller, ax-server, ax-mcp-proxy)..."
 	@mkdir -p bin
 	go build -trimpath -ldflags="-s -w" -o bin/ax ./cmd/ax
 	go build -trimpath -ldflags="-s -w" -o bin/ax-controller ./cmd/ax-controller
 	go build -trimpath -ldflags="-s -w" -o bin/ax-server ./cmd/ax-server
+	go build -trimpath -ldflags="-s -w" -o bin/ax-mcp-proxy ./cmd/ax-mcp-proxy
 
 # Install the ax CLI into $(go env GOPATH)/bin
 install:
 	@echo "==> Installing ax CLI to $$(go env GOPATH)/bin..."
 	go install -trimpath -ldflags="-s -w" ./cmd/ax
 
-# Cross-compile ax-task-runner for Linux amd64 and build container image with Python, Antigravity, and git/curl
+# Cross-compile ax-task-runner and ax-mcp-proxy for Linux amd64 and build container image with Python, Antigravity, and git/curl
 build-task-runner:
-	@echo "==> Cross-compiling ax-task-runner for linux/amd64..."
+	@echo "==> Cross-compiling ax-task-runner and ax-mcp-proxy for linux/amd64..."
 	@mkdir -p bin/linux_amd64
 	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o bin/linux_amd64/ax-task-runner ./cmd/ax-task-runner
+	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o bin/linux_amd64/ax-mcp-proxy ./cmd/ax-mcp-proxy
 	@echo "==> Building container image $(TASK_RUNNER_REPO):latest using $(CONTAINER_CLI)..."
 	$(CONTAINER_CLI) build --platform linux/amd64 -t $(TASK_RUNNER_REPO):latest -f Dockerfile.task-runner .
 

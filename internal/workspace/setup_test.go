@@ -19,6 +19,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -284,3 +285,59 @@ func TestMarkerName(t *testing.T) {
 		}
 	}
 }
+
+func TestSetupWorkspace_MCPConfig(t *testing.T) {
+	tempDir, err := os.MkdirTemp("", "ax-ws-mcp-*")
+	if err != nil {
+		t.Fatalf("failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	stateDir := filepath.Join(tempDir, "ax-state")
+	origAXDir := workspace.AXDir
+	workspace.AXDir = stateDir
+	defer func() { workspace.AXDir = origAXDir }()
+
+	ws := &v1alpha1.Workspace{
+		Metadata: &v1alpha1.ObjectMeta{Name: "mcp-test"},
+		Spec: &v1alpha1.WorkspaceSpec{
+			Mcp: &v1alpha1.MCPConfig{
+				Servers: []*v1alpha1.MCPServer{
+					{
+						Name:    "custom-tool",
+						Command: "custom-tool-binary",
+						Args:    []string{"--flag"},
+					},
+				},
+			},
+		},
+	}
+
+	res, err := workspace.SetupWorkspace(context.Background(), ws, tempDir, "")
+	if err != nil {
+		t.Fatalf("SetupWorkspace failed: %v", err)
+	}
+	if !res.MCPConfigured {
+		t.Errorf("expected MCPConfigured to be true")
+	}
+
+	// Verify AXDir/mcp.json exists and contains ax-security-proxy and custom-tool
+	mcpFile := filepath.Join(stateDir, "mcp.json")
+	data, err := os.ReadFile(mcpFile)
+	if err != nil {
+		t.Fatalf("expected mcp.json in AXDir: %v", err)
+	}
+	if !strings.Contains(string(data), "ax-security-proxy") {
+		t.Errorf("expected mcp.json to contain ax-security-proxy, got: %s", string(data))
+	}
+	if !strings.Contains(string(data), "custom-tool") {
+		t.Errorf("expected mcp.json to contain custom-tool, got: %s", string(data))
+	}
+
+	// Verify workspace/.mcp.json was written
+	wsMCPFile := filepath.Join(tempDir, ".mcp.json")
+	if _, err := os.Stat(wsMCPFile); err != nil {
+		t.Errorf("expected workspace .mcp.json to exist: %v", err)
+	}
+}
+

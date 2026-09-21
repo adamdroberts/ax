@@ -16,6 +16,7 @@ package workspace
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log/slog"
@@ -68,6 +69,7 @@ type SetupResult struct {
 	WorkspacePath string
 	ClonedRepos   []string
 	SkillsMounted string
+	MCPConfigured bool
 	IsMaidenRun   bool
 	// BootstrapRan reports whether the Antigravity agent ran to completion for the goal.
 	BootstrapRan bool
@@ -111,6 +113,7 @@ func SetupWorkspace(ctx context.Context, ws *v1alpha1.Workspace, targetPath stri
 	if ws != nil && ws.Spec != nil {
 		res.ClonedRepos, gitOK = cloneRepos(ctx, ws.Spec.Git, targetPath)
 		res.SkillsMounted = setupSkills(ws.Spec.Skills)
+		res.MCPConfigured = setupMCP(ws.Spec.Mcp, targetPath)
 	}
 
 	if goal != "" {
@@ -267,6 +270,60 @@ func setupSkills(skills *v1alpha1.SkillsConfig) string {
 		slog.Warn("creating skills dir", "path", skills.Path, "error", err)
 	}
 	return skills.Path
+}
+
+// setupMCP configures the MCP server definitions for the workspace.
+// It ensures ax-security-proxy is registered as a safe outbound proxy tool,
+// and writes mcp.json under AXDir (and .mcp.json in the workspace if mcp is declared).
+func setupMCP(mcp *v1alpha1.MCPConfig, targetPath string) bool {
+	servers := make(map[string]any)
+
+	// Register ax-security-proxy as the default outbound security proxy
+	servers["ax-security-proxy"] = map[string]any{
+		"command": "ax-mcp-proxy",
+		"args":    []string{},
+	}
+
+	if mcp != nil {
+		for _, srv := range mcp.Servers {
+			if srv == nil || srv.Name == "" {
+				continue
+			}
+			if srv.Command != "" {
+				servers[srv.Name] = map[string]any{
+					"command": srv.Command,
+					"args":    srv.Args,
+				}
+			} else if srv.Endpoint != "" {
+				servers[srv.Name] = map[string]any{
+					"url": srv.Endpoint,
+				}
+			}
+		}
+	}
+
+	config := map[string]any{
+		"mcpServers": servers,
+	}
+
+	data, err := json.MarshalIndent(config, "", "  ")
+	if err != nil {
+		slog.Warn("failed to marshal mcp config", "error", err)
+		return false
+	}
+
+	// Write to AXDir/mcp.json
+	writeStateFile("mcp.json", data)
+
+	// Write to workspace/.mcp.json when MCP is declared
+	if mcp != nil {
+		wsMCPPath := filepath.Join(targetPath, ".mcp.json")
+		if err := os.WriteFile(wsMCPPath, data, filePerm); err != nil {
+			slog.Warn("failed to write workspace .mcp.json", "path", wsMCPPath, "error", err)
+		}
+	}
+
+	return true
 }
 
 // runBootstrap hands the goal to the Antigravity agent so it can prepare the workspace.
