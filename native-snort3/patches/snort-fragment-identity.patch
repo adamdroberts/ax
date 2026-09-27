@@ -1,0 +1,22 @@
+--- a/src/flow/flow_key.cc
++++ b/src/flow/flow_key.cc
+@@ -338,13 +338,17 @@
+     if (srcIP->is_ip4() && dstIP->is_ip4())
+     {
+         version = 4;
+-        reversed = init4(ip_proto, srcIP, srcPort, dstIP, dstPort, false);
++        // Fragment IDs are not ICMP types. Preserve every ID bit and both
++        // wire addresses; ordinary ICMP session normalization is separate.
++        reversed = init4(IpProtocol::PROTO_NOT_SET, srcIP, srcPort, dstIP, dstPort, false);
+         ip_protocol = (uint8_t)ip_proto;
+     }
+     else
+     {
+         version = 6;
+-        reversed = init6(ip_proto, srcIP, srcPort, dstIP, dstPort, false);
++        // Fragment IDs are not ICMP types. Preserve every ID bit and both
++        // wire addresses; ordinary ICMP session normalization is separate.
++        reversed = init6(IpProtocol::PROTO_NOT_SET, srcIP, srcPort, dstIP, dstPort, false);
+         ip_protocol = 0;
+     }
+ 

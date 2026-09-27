@@ -172,7 +172,9 @@ var excluded = []netip.Prefix{
 
 var ipv6Global = netip.MustParsePrefix("2000::/3")
 
-func publicAddress(ip netip.Addr) bool {
+// IsPublicAddress excludes non-global and special-purpose destinations using
+// the same policy for HTTP dialing and the sandbox DNS proxy's default answers.
+func IsPublicAddress(ip netip.Addr) bool {
 	if !ip.IsValid() || ip.Zone() != "" || ip.Is4In6() || !ip.IsGlobalUnicast() {
 		return false
 	}
@@ -186,3 +188,5 @@ func publicAddress(ip netip.Addr) bool {
 	}
 	return true
 }
+
+func publicAddress(ip netip.Addr) bool { return IsPublicAddress(ip) }

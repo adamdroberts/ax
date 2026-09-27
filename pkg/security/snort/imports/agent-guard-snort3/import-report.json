@@ -11,18 +11,19 @@
     "imported": 664,
     "native_only": 70
   },
-  "active_unique_rules": 909,
-  "default_rules": 886,
-  "strict_additional_rules": 23,
+  "active_unique_rules": 922,
+  "default_rules": 894,
+  "strict_additional_rules": 28,
   "strict_action_promotions": 562,
-  "regression_cases": 2580,
+  "regression_cases": 2618,
   "baseline_aliases": {
     "1200101": 1100101,
     "1200102": 1100103,
     "1200103": 1100117,
     "1200104": 1100107,
     "1200105": 1100104,
-    "1200132": 1100718
+    "1200132": 1100718,
+    "1200133": 9104053
   },
   "rules": [
     {

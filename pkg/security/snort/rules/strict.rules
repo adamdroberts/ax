@@ -43,6 +43,13 @@ drop tcp any any -> any any (msg:"STRICT Azure role assignment mutation"; pcre:"
 drop tcp any any -> any any (msg:"STRICT Sensitive plaintext assignment"; pcre:"/\b(password|passwd|api_key|api-key|access_token|client_secret)[\x22\x27]?\s*[=:]\s*[\x22\x27]?[A-Za-z0-9_+/=-]{12,}/i"; http_client_body; classtype:"policy-violation"; sid:1200129; rev:1;)
 drop tcp any any -> any any (msg:"STRICT JSON Web Token in body"; pcre:"/\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}/"; http_client_body; classtype:"policy-violation"; sid:1200130; rev:1;)
 drop tcp any any -> any any (msg:"STRICT Private network destination URI"; pcre:"/https?://(10\.[0-9.]+|192\.168\.[0-9.]+|172\.(1[6-9]|2[0-9]|3[01])\.[0-9.]+)([:/?#]|$)/i"; http_uri; classtype:"policy-violation"; sid:1200131; rev:1;)
-drop tcp any any -> any any (msg:"STRICT DNS-over-HTTPS request route"; pcre:"//dns-query([?#]|$)/i"; http_uri; classtype:"policy-violation"; sid:1200133; rev:1;)
 drop tcp any any -> any any (msg:"STRICT Bulk secret export command"; pcre:"/\b(env|printenv|set)\s*\|\s*(curl|wget|nc|ncat)\b/i"; http_client_body; classtype:"policy-violation"; sid:1200134; rev:1;)
 drop tcp any any -> any any (msg:"STRICT Credential filename in upload command"; pcre:"/\b(curl|wget|scp|rsync)\b.{0,160}(\.aws/credentials|\.ssh/id_(rsa|ed25519)|\.env\b|\.kube/config)/i"; http_client_body; classtype:"policy-violation"; sid:1200135; rev:1;)
+
+# DNS escape controls: exact routing remains the boundary. See docs/dns-proxy.md.
+drop tcp any any -> any any (msg:"AX DNS tunneling tool invocation"; pcre:"/\b((dnscat2?|dns2tcp[dc]?|dnstt-client|dnstt-server|dnscapy|dnsexfiltrator|dnsteal|ozymandns)(\.py|\.rb|\.exe)?(\s+|$)|iodine[d]?\s+-[a-z])/i"; http_client_body; classtype:"policy-violation"; sid:1200201; rev:1;)
+drop tcp any any -> any any (msg:"AX Direct DNS lookup command"; pcre:"/\b(dig|nslookup|host|drill|kdig)\s+(@|-[a-z]|[a-z0-9_-]+\.)/i"; http_client_body; classtype:"policy-violation"; sid:1200202; rev:1;)
+drop tcp any any -> any any (msg:"AX PowerShell or dotnet DNS resolution API"; pcre:"/\b(Resolve-DnsName|Resolve-Dns|System\.Net\.Dns\.GetHost[a-z]+)\b/i"; http_client_body; classtype:"policy-violation"; sid:1200203; rev:1;)
+drop tcp any any -> any any (msg:"AX Programmatic raw DNS query API"; pcre:"/\b(dns\.resolver\.(resolve|query)|dns\.message\.make_query|DnsClient\.LookupClient|dns\.Query|resolver\.resolve)\s*\(/i"; http_client_body; classtype:"policy-violation"; sid:1200204; rev:1;)
+drop tcp any any -> any any (msg:"AX Encrypted DNS resolver stamp"; pcre:"/\bsdns:\/\/[A-Za-z0-9_-]{8,}/"; http_client_body; classtype:"policy-violation"; sid:1200205; rev:1;)
+drop tcp any any -> any any (msg:"AX HTTP destination uses a DNS transport port"; pcre:"/:(53|853|5353|5355|784|8853)$/"; http_header:field host; classtype:"policy-violation"; sid:1200206; rev:1;)

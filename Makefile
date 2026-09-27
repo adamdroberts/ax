@@ -31,12 +31,13 @@ all: build
 build: build-binaries
 
 build-binaries:
-	@echo "==> Building local binaries (ax, ax-controller, ax-server, ax-mcp-proxy)..."
+	@echo "==> Building local binaries (ax, ax-controller, ax-server, ax-mcp-proxy, ax-dns-proxy)..."
 	@mkdir -p bin
 	go build -trimpath -ldflags="-s -w" -o bin/ax ./cmd/ax
 	go build -trimpath -ldflags="-s -w" -o bin/ax-controller ./cmd/ax-controller
 	go build -trimpath -ldflags="-s -w" -o bin/ax-server ./cmd/ax-server
 	go build -trimpath -ldflags="-s -w" -o bin/ax-mcp-proxy ./cmd/ax-mcp-proxy
+	go build -trimpath -ldflags="-s -w" -o bin/ax-dns-proxy ./cmd/ax-dns-proxy
 
 # Install the ax CLI into $(go env GOPATH)/bin
 install:

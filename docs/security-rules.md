@@ -1,15 +1,17 @@
 # Agent HTTP intrusion prevention rules
 
 AX's MCP proxy inspects outbound `http_request` tool calls before sending them.
-The built-in catalog contains 886 default signatures (148 blocking, 738 advisory),
+The built-in catalog contains 894 default signatures (156 blocking, 738 advisory),
 shared by the Go and Python implementations. Strict mode promotes 562 advisory
-signatures and adds 23 rules, for 909 unique signatures (733 blocking, 176 advisory). It detects
+signatures and adds 28 rules, for 922 unique signatures (746 blocking, 176 advisory). It detects
 known payload patterns and policy violations; it cannot establish that an action
 is authorized, understand every instruction, or guarantee prevention of all
 hostile agent behavior.
 
 The proxy also enforces [strict protocol and egress controls](protocol-security.md).
 Both profiles deny network access until an administrator configures allowed origins.
+The [DNS proxy and DNS escape controls](dns-proxy.md) add exact-name resolution
+without client-triggered upstream queries, with sandbox network isolation.
 
 ## Run a profile
 
@@ -52,7 +54,7 @@ to change an already-blocking rule fail atomically.
   adaptations and 70 separate native-only Snort rules.
 - [Organization examples](../examples/snort-rules.rules): custom rules in the
   `2000000` SID range. These are examples, not a destination allowlist.
-- [Regression corpus](../pkg/security/snort/testdata/rule_cases.json): 2,580 fixtures, including positive
+- [Regression corpus](../pkg/security/snort/testdata/rule_cases.json): 2,618 fixtures, including positive
   and benign near-miss cases for every signature, shared by both implementations.
 
 `drop`, `reject`, and `block` all prevent dispatch. `alert` logs its SID and action but

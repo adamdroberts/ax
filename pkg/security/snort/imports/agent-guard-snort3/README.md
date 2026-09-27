@@ -21,9 +21,10 @@ Six exact duplicates in the original AX default/strict catalogs were consolidate
 without losing their blocking behavior. Policy promotion now changes the action of
 one retained SID rather than registering a second signature.
 
-The merged default profile has **886 rules: 148 blocking and 738 advisory**. Strict
-mode promotes 562 of those alerts and adds 23 signatures, producing **909 unique
-active rules: 733 blocking and 176 advisory**. Counts describe signatures, not
+The current merged default profile has **894 rules: 156 blocking and 738 advisory**. Strict
+mode promotes 562 of those alerts and adds 28 signatures, producing **922 unique
+active rules: 746 blocking and 176 advisory**. This includes the later DNS rules
+and retirement of redundant SID 1200133 in favor of 9104053. Counts describe signatures, not
 independent attacks or a measured prevention rate.
 
 ## Files and provenance

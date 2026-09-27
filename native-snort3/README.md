@@ -11,7 +11,7 @@ The official source is pinned to
 tag `3.12.2.0`. No user-archive programs or deployment instructions are executed.
 
 The latest locally verified cumulative engine is the
-[fragment overlap repair](patches/fragment-overlap.md), including all preceding engine
+[fragment identity repair](patches/fragment-identity.md), including all preceding engine
 repairs. Loading the rules alone does not apply those source changes. The
 document links the final build, native replays and memory-safety records;
 these local artifacts have not been installed or deployed.

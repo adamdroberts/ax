@@ -1,0 +1,101 @@
+# TEMPLATE ONLY: replace client CIDRs, trusted resolver IP and approved names.
+# Applies to ordinary pods in ax-system, not Substrate actors.
+# Other NetworkPolicies are additive; remove conflicting broad egress grants.
+# Agents need dnsPolicy: None and dnsConfig.nameservers: [DNS_SERVICE_IP], with
+# an empty search list and ndots:1. Configure both families when using IPv6.
+# No hostNetwork, privileged mode or network admin capabilities for agents.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ax-dns-proxy
+  namespace: ax-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app.kubernetes.io/name: ax-dns-proxy}
+  template:
+    metadata:
+      labels: {app.kubernetes.io/name: ax-dns-proxy}
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: dns
+          image: ko://github.com/google/ax/cmd/ax-dns-proxy
+          args:
+            - --listen=0.0.0.0:5353
+            - --upstream=192.0.2.53:53
+            - --client-net=10.20.0.0/16
+            - --allow-name=api.company.example
+          ports:
+            - {name: dns-udp, containerPort: 5353, protocol: UDP}
+            - {name: dns-tcp, containerPort: 5353, protocol: TCP}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+            seccompProfile: {type: RuntimeDefault}
+          resources:
+            requests: {cpu: 100m, memory: 32Mi}
+            limits: {cpu: "1", memory: 128Mi}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ax-dns-proxy
+  namespace: ax-system
+spec:
+  selector: {app.kubernetes.io/name: ax-dns-proxy}
+  ports:
+    - {name: dns-udp, port: 53, targetPort: 5353, protocol: UDP}
+    - {name: dns-tcp, port: 53, targetPort: 5353, protocol: TCP}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ax-sandbox-only-brokers
+  namespace: ax-system
+spec:
+  podSelector:
+    matchLabels: {app.kubernetes.io/name: ax-sandbox}
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - podSelector:
+            matchLabels: {app.kubernetes.io/name: ax-dns-proxy}
+      # Destination pod port after Service translation; verify with the CNI.
+      ports:
+        - {protocol: UDP, port: 5353}
+        - {protocol: TCP, port: 5353}
+    - to:
+        - podSelector:
+            matchLabels: {app.kubernetes.io/name: ax-http-broker}
+      ports:
+        - {protocol: TCP, port: 443}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ax-dns-proxy-isolation
+  namespace: ax-system
+spec:
+  podSelector:
+    matchLabels: {app.kubernetes.io/name: ax-dns-proxy}
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels: {app.kubernetes.io/name: ax-sandbox}
+        - podSelector:
+            matchLabels: {app.kubernetes.io/name: ax-http-broker}
+      ports:
+        - {protocol: UDP, port: 5353}
+        - {protocol: TCP, port: 5353}
+  egress:
+    - to:
+        # Documentation address: replace with the same trusted upstream as above.
+        - ipBlock: {cidr: 192.0.2.53/32}
+      ports:
+        - {protocol: UDP, port: 53}
+        - {protocol: TCP, port: 53}

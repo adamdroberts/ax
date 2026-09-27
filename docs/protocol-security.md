@@ -1,5 +1,9 @@
 # Protocol and egress security contract
 
+The [restricted DNS proxy](dns-proxy.md) adds exact-name resolution without
+client-triggered upstream requests, plus DNS-over-HTTP escape signatures. Its
+network boundary and deployment requirements are separate from protocol parsing.
+
 The Go and Python MCP proxies apply a restrictive HTTP/1.1 broker policy before
 the Snort-style signature catalog. These controls address whole classes of
 bypasses without needing an exploit signature. They do not guarantee protection
@@ -71,6 +75,8 @@ An allowed origin does not override the public-address requirement.
 | IPv6 fragment-header substitution and size/ECN disagreement | Engine repair preserves the offset-zero IPv6 prefix, retains CE congestion markings, rejects CE/Not-ECT conflicts, validates final sizes before copying and uses wide signed fragment arithmetic; original-fragment verdicts and reconstructed bytes are tested |
 | IPv4 fragment-header substitution and size/ECN disagreement | Subsequent engine repair restores the offset-zero base header alongside saved options, combines ECN, and checks the total datagram size before insertion and reconstruction, including high-offset fragments received before offset zero |
 | IPv6 overlap acceptance under permissive settings and rejected-buffer exhaustion | Subsequent engine repair rejects IPv6 overlaps independently of the configured threshold and immediately frees abandoned buffers; IPv4 uses the same cleanup under the supplied strict threshold, while tracked retries remain rejected |
+| Conflicting final-fragment lengths and incomplete reconstruction | Subsequent engine repair requires consistent final-length declarations in both IP versions and continuous byte coverage before reconstruction; conflicts free saved buffers and reject subsequent tracked fragments |
+| ICMP normalization splitting or merging fragment identities | Subsequent engine repair preserves full fragment IDs and both wire addresses, preventing continuation Next Header changes from evading reassembly and keeping independent datagrams isolated |
 | Advisory events suppressing prevention | Load only selected native builtin rules; event processing covers all action groups with matched bounded queue/log capacity; packet replay verifies a blocking rule still acts after multiple decoder advisories |
 | Missing or silently broadened task gateway policy | Explicit deny-all by default, full binding fanout on gateway changes, rejection of unsupported port restrictions, and emergency containment attempts on admission failure; concurrent obsolete policy updates still require backend fencing |
 | Stale updates erasing a pending deletion | Preserve persisted Terminating status, reject ordinary saves to terminating records, and atomically merge Redis status/delete changes into the current task with bounded retries |
@@ -280,6 +286,18 @@ overlap settings and restores valid traffic in 24 buffer-cleanup controls.
 The supplied strict threshold already blocked the tested overlaps; its
 improvement is immediate release of rejected fragment buffers. No rule or SID
 is added.
+The subsequent [fragment final-length repair](../native-snort3/patches/fragment-extent.md)
+passes 840 paired cases and all 17 preceding suites. It corrects forwarding
+in 612 cases involving inconsistent length declarations, preserves 168 valid
+controls and adds an exact coverage check before reconstruction. Rejecting
+contradictory contexts is strict local policy grounded in the RFC fragment
+field definitions, not a claim about every endpoint's behavior.
+The subsequent [fragment identity repair](../native-snort3/patches/fragment-identity.md)
+passes 694 paired cases. It closes 60 reproduced bypasses of a temporary content
+blocking rule, restores checksum rejection in 80 cases and restores valid
+forwarding in 28 isolation cases. Ordinary wire fragment identities are kept
+separate from the ICMP session normalization that previously changed their
+addresses or ID bits. This does not establish logical Mobile IPv6 grouping.
 The additional 48-case Home
 Address wire-prefix audit also passes after the repair, without establishing
 endpoint-valid Mobile IPv6 contexts. Processing before

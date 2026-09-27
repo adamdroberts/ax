@@ -29,6 +29,9 @@ ARCHIVE_SHA256 = "b1555e5100070173700dbdd06032a3e22c43de09d2ca3bb1492d37f385c882
 SOURCE_SHA256 = "fad4889422b121d0c57680ce90b0ca1a790918ca781f9a69d04031bcaf7707ba"
 BASE_ALIASES = {1200101: 1100101, 1200102: 1100103, 1200103: 1100117,
                 1200104: 1100107, 1200105: 1100104, 1200132: 1100718}
+# The imported URI substring rule also covers the old strict /dns-query route
+# predicate and is promoted to drop in strict mode. Keep one active signature.
+STRICT_SUBSUMPTIONS = {1200133: 9104053}
 BLOCKING = {"block", "drop", "reject"}
 POLICY_ADAPTATIONS = {
     9114035: "Authorization credentials are expected on legitimate upstream API calls; retain telemetry in both profiles instead of treating authentication as exfiltration.",
@@ -215,6 +218,12 @@ def main():
     strict_text = (RULE_DIR / "strict.rules").read_text()
     default = parse_lines(default_text)
     strict = parse_lines(strict_text)
+    for old, retained in STRICT_SUBSUMPTIONS.items():
+        if old in strict:
+            old_rule, old_line = strict.pop(old)
+            if old_rule.contents or len(old_rule.pcres) != 1 or old_rule.pcres[0].regex.pattern != '/dns-query([?#]|$)':
+                raise ValueError(f"review strict subsumption {old}->{retained} after predicate change")
+            strict_text = strict_text.replace(old_line + "\n", "")
     overrides = {str(sid): "drop" for sid in BASE_ALIASES.values()}
     # Remove exact existing strict duplicates; retain policy by changing the action
     # of one retained signature when the strict profile is selected.
@@ -323,7 +332,7 @@ def main():
         if fixture.get("source") == "agent-guard-snort3":
             continue
         c = copy.deepcopy(fixture)
-        c["sid"] = BASE_ALIASES.get(c["sid"], c["sid"])
+        c["sid"] = (BASE_ALIASES | STRICT_SUBSUMPTIONS).get(c["sid"], c["sid"])
         c["profile"] = profiles[c["sid"]]
         cases.append(c)
     for r in source:
@@ -354,7 +363,7 @@ def main():
               "counts": dict(sorted(counts.items())), "active_unique_rules": len(active),
               "default_rules": len(default) + len(pending), "strict_additional_rules": len(strict),
               "strict_action_promotions": len(overrides), "regression_cases": len(cases),
-              "baseline_aliases": {str(k): v for k, v in BASE_ALIASES.items()},
+              "baseline_aliases": {str(k): v for k, v in (BASE_ALIASES | STRICT_SUBSUMPTIONS).items()},
               "rules": [decisions[sid] for sid in sorted(decisions)]}
     outputs = {RULE_DIR / "default.rules": default_output, RULE_DIR / "strict.rules": strict_text,
                RULE_DIR / "strict-actions.json": json_text(dict(sorted(overrides.items(), key=lambda kv: int(kv[0])))),

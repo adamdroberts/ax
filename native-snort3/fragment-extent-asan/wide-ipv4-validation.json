@@ -1,0 +1,3875 @@
+{
+  "status": "verified_expected_behavior",
+  "scope": "File-only inline DAQ of maximum-size IPv4 datagrams with original fragments exceeding 32767 bytes; no live endpoint or deployment.",
+  "snort_binary_sha256": "caa6cb3feeff71c7e2cad434cf9f312f4ded6e39f67478cb5e99d2a7eaa66ee4",
+  "configuration": {
+    "snort_version": "3.12.2.0",
+    "source_commit": "14aeb09f5a0856812dbe08ead3c21f99e8860aa0",
+    "scope": "Native configuration loading and effective rule states only; no traffic or live inline enforcement.",
+    "profiles": [
+      {
+        "profile": "protocol",
+        "loaded": 208,
+        "enabled": 208,
+        "actions": {
+          "drop": 164,
+          "block": 0,
+          "alert": 44
+        }
+      },
+      {
+        "profile": "perimeter",
+        "loaded": 215,
+        "enabled": 215,
+        "actions": {
+          "drop": 164,
+          "block": 5,
+          "alert": 46
+        }
+      },
+      {
+        "profile": "http",
+        "loaded": 271,
+        "enabled": 271,
+        "actions": {
+          "drop": 164,
+          "block": 19,
+          "alert": 88
+        }
+      },
+      {
+        "profile": "both",
+        "loaded": 278,
+        "enabled": 278,
+        "actions": {
+          "drop": 164,
+          "block": 24,
+          "alert": 90
+        }
+      }
+    ],
+    "rejected_invalid_configurations": 18,
+    "plugin_sha256": {
+      "ax_nd_options.so": "3dde09c3191beefd8ca35121762daa282631705cd7938d306f53732c1b83f6fb"
+    },
+    "sha256": {
+      "native-snort3/protocol-ips.lua": "000cace55518af574800693f3b671e3a07d491ff5e0ad3e9c87c19abc450712c",
+      "native-snort3/agent-guard-overlay.lua": "f6b900d70900f3e9d3a042d247590a501f622c5c7fa11fd791b75ea20e8fd91d",
+      "native-snort3/protocol.states": "444f3a106d5f018ebe429d262d5f8fc79436c8fd460aa6d48ed0f4795e6cc81f",
+      "native-snort3/protocol-builtins.rules": "58b92054c4d5d7f0cf68043a1fe7ab8a8ae125791491ecd6ce309e3354f7bc27",
+      "native-snort3/builtin-inventory.json": "a48a61274609c4dfb69824bd2e0b5f7bbb0da226a27c7faa08e95c6866a118a8",
+      "native-snort3/protocol-validation.rules": "ffd1f9e078a45f234c489408bb93edce6646d4f99f260d4e5877dcc5383330b3",
+      "native-snort3/generate_inventory.py": "4d461ea9cfbbb799592a644a651c71c872b1d430962f9cc4445e4e04eb246c0f",
+      "native-snort3/validate_profiles.py": "5a208668309dce2cc0503b8acf93ec7f36ba1a4fdd301233ec2f2e32f9e7a48f",
+      "native-snort3/plugins/README.md": "44f0b78823e63a06d725cd395a989ff8c46b3dddc26238833f9ce8bb3a163f21",
+      "native-snort3/plugins/build.py": "3ba291e364ef6cfc6b227cfcf45da3e037bdbe494a4d4be0958a216058f36e0b",
+      "native-snort3/plugins/ax_nd_options.cc": "5ac99c5b4568c15ee05d5a9bf76254f566c41e28c7a612f6f6fa521da56a9255",
+      "native-snort3/plugins/nd_validation.h": "4f88245b813db35205d73dbff849269e43f9bc4ace81e6fb3eccdf878eabc185",
+      "native-snort3/plugins/nd_validation_test.cc": "72358ad3aac6fd0a848ddc883ec8430012573cee71185758021b942e77008ad2",
+      "native-snort3/plugins/ip_validation.h": "cb67871c83dfcb059b4c126933366a06f60472060956bbdf6b3e4bebf9792010",
+      "native-snort3/plugins/ip_validation_test.cc": "f5e057023dfc380f08825cbcc1beb3d638a947bf503e271343715ebe630eb080",
+      "native-snort3/plugins/ip4_options.h": "643255e2b38d0b67c6db2297c6b03076b0d32853ec038f20b9508ab83b18e30d",
+      "native-snort3/plugins/ip4_options_test.cc": "29927fe74d788bb6d99fd811cd0dc88b87de30c54d44e45fcf07db9219e8120a",
+      "native-snort3/plugins/ip6_options.h": "e16e61d1471da2dca574fdd423bc27f8929b14d89acd7b806320708dbdce8357",
+      "native-snort3/plugins/ip6_options_test.cc": "7dbae601d883aa31a0a1fcd9c7dc5be8f267c7f1a5b890497958b6ac824117ef",
+      "native-snort3/plugins/esp_validation.h": "cf8ade954fcec4f1f09917798d1aa4fd748790f210adb265fe845e32d3f135fe",
+      "native-snort3/plugins/esp_validation_test.cc": "2094e98219defcb518985f3f3aa978ff08ca1c3f6e449afa0105ed071b3dc1c5",
+      "native-snort3/plugins/routing_validation.h": "825341ae93dbe5bb8cd8071cc245d5b3642d072a86291241084f03b3b2a36694",
+      "native-snort3/plugins/routing_validation_test.cc": "ed3924084f745164e72c5b5457ff5d307d1a852fe8eda9371f5199f007b58c07",
+      "native-snort3/plugins/home_address.h": "8540117639d519f6c5b51ccc8f893a506deb61bdb9ec181c968dcd7d35e0aa62",
+      "native-snort3/plugins/home_address_test.cc": "9a93efacfc92e91062b28c4bcd2c9c91c1ac71b0e3030e6bf99e07684b54e236",
+      "pkg/security/snort/imports/agent-guard-snort3/native-only.rules": "2451962b90016f8b520521a93837ddcdcce9064e704ebdc5e67c359e90fd9d9a"
+    }
+  },
+  "fixture_source_sha256": {
+    "native-snort3/tests/wide_ipv4_fragment_replay.py": "86d6e28a9ad7240b9160f61297653880173099002375879b46295ebbd65bc44e",
+    "native-snort3/tests/fragment_checksum_replay.py": "de40d37eb58a5316d48ead17cc7d62906a4eb0861af7ecfd5dc8aa7bec14bc3e",
+    "native-snort3/tests/checksum_replay.py": "3194dc0fe4d21ba3a6e3d30b012d0b57e7027c44857d6c48b203447ab8e576d2",
+    "native-snort3/tests/generate_pcaps.py": "7a542d7f61633a4849c9147476f2dae810496247686d87c767f43a9e5470c5d1",
+    "native-snort3/tests/next_header_policy.py": "82abd595a1639c4c33eae1b5adef4ca052842d443b6344de2586ced67a318017",
+    "native-snort3/tests/replay.py": "58d2cdd52c85c22cde82fc5ff2d6961b83d69588ce6c628345cce0b6dbefe76b"
+  },
+  "summary": {
+    "cases": 72,
+    "passed": 72,
+    "failures": []
+  },
+  "cases": [
+    {
+      "name": "v4-p6-split24-01-valid",
+      "valid": true,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "correct",
+      "arrival_offsets": [
+        0,
+        24
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "abaf18f0d21470c142f686da0ffc18e91f427f4681520fe53ba79ca8bce3f5f3",
+      "output_pcap_sha256": "abaf18f0d21470c142f686da0ffc18e91f427f4681520fe53ba79ca8bce3f5f3",
+      "input_packet_sha256": [
+        "f8e0a4dda7d8ce8f88b5c6f802e7ee41de64c55198d54820c94cde7d57dba454",
+        "f127d2d1d7213bd1658b76bbf4d93bf70e1fb18e1c8688d15db9fde101be7c81"
+      ],
+      "output_packet_sha256": [
+        "f8e0a4dda7d8ce8f88b5c6f802e7ee41de64c55198d54820c94cde7d57dba454",
+        "f127d2d1d7213bd1658b76bbf4d93bf70e1fb18e1c8688d15db9fde101be7c81"
+      ],
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.001000",
+          "pkt_num": 2,
+          "proto": "TCP",
+          "src_ap": "192.0.2.10:50000",
+          "dst_ap": "198.51.100.20:80",
+          "rule": "129:2:1",
+          "action": "allow",
+          "msg": "(stream_tcp) data on SYN packet"
+        }
+      ]
+    },
+    {
+      "name": "v4-p6-split24-10-valid",
+      "valid": true,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "correct",
+      "arrival_offsets": [
+        24,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "2867b527cb1ad15b8e1ef885e34aa63ad99fdcdfb3a5a64f2d2a453b79699a38",
+      "output_pcap_sha256": "2867b527cb1ad15b8e1ef885e34aa63ad99fdcdfb3a5a64f2d2a453b79699a38",
+      "input_packet_sha256": [
+        "f127d2d1d7213bd1658b76bbf4d93bf70e1fb18e1c8688d15db9fde101be7c81",
+        "f8e0a4dda7d8ce8f88b5c6f802e7ee41de64c55198d54820c94cde7d57dba454"
+      ],
+      "output_packet_sha256": [
+        "f127d2d1d7213bd1658b76bbf4d93bf70e1fb18e1c8688d15db9fde101be7c81",
+        "f8e0a4dda7d8ce8f88b5c6f802e7ee41de64c55198d54820c94cde7d57dba454"
+      ],
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.001000",
+          "pkt_num": 2,
+          "proto": "TCP",
+          "src_ap": "192.0.2.10:50000",
+          "dst_ap": "198.51.100.20:80",
+          "rule": "129:2:1",
+          "action": "allow",
+          "msg": "(stream_tcp) data on SYN packet"
+        }
+      ]
+    },
+    {
+      "name": "v4-p6-split32768-01-valid",
+      "valid": true,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "correct",
+      "arrival_offsets": [
+        0,
+        32768
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "2adc00bec836cb733a471b654793999767ed7d51cf1f5d1470d6811b5bb4535b",
+      "output_pcap_sha256": "2adc00bec836cb733a471b654793999767ed7d51cf1f5d1470d6811b5bb4535b",
+      "input_packet_sha256": [
+        "14a176dc61888285a51dc05af9d368a079bee436ee3e99739a18fa465b92696b",
+        "48f1a432cbd4d3a03df36d3b590850f22ddf594e91f2fc25096687453df46591"
+      ],
+      "output_packet_sha256": [
+        "14a176dc61888285a51dc05af9d368a079bee436ee3e99739a18fa465b92696b",
+        "48f1a432cbd4d3a03df36d3b590850f22ddf594e91f2fc25096687453df46591"
+      ],
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.001000",
+          "pkt_num": 2,
+          "proto": "TCP",
+          "src_ap": "192.0.2.10:50000",
+          "dst_ap": "198.51.100.20:80",
+          "rule": "129:2:1",
+          "action": "allow",
+          "msg": "(stream_tcp) data on SYN packet"
+        }
+      ]
+    },
+    {
+      "name": "v4-p6-split32768-10-valid",
+      "valid": true,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "correct",
+      "arrival_offsets": [
+        32768,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "60ee62a1f2eb378e4bcfc74d6a6a9bcc133ef5d88305ceb822edfe2f1f911bec",
+      "output_pcap_sha256": "60ee62a1f2eb378e4bcfc74d6a6a9bcc133ef5d88305ceb822edfe2f1f911bec",
+      "input_packet_sha256": [
+        "48f1a432cbd4d3a03df36d3b590850f22ddf594e91f2fc25096687453df46591",
+        "14a176dc61888285a51dc05af9d368a079bee436ee3e99739a18fa465b92696b"
+      ],
+      "output_packet_sha256": [
+        "48f1a432cbd4d3a03df36d3b590850f22ddf594e91f2fc25096687453df46591",
+        "14a176dc61888285a51dc05af9d368a079bee436ee3e99739a18fa465b92696b"
+      ],
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.001000",
+          "pkt_num": 2,
+          "proto": "TCP",
+          "src_ap": "192.0.2.10:50000",
+          "dst_ap": "198.51.100.20:80",
+          "rule": "129:2:1",
+          "action": "allow",
+          "msg": "(stream_tcp) data on SYN packet"
+        }
+      ]
+    },
+    {
+      "name": "v4-p6-split50000-01-valid",
+      "valid": true,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "correct",
+      "arrival_offsets": [
+        0,
+        50000
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "36bd60e247243a09f9bcca481c66cf3ea0481774a76f02c4e8e82c7cbc359125",
+      "output_pcap_sha256": "36bd60e247243a09f9bcca481c66cf3ea0481774a76f02c4e8e82c7cbc359125",
+      "input_packet_sha256": [
+        "d0139629ec118a29f67588afb756c9b743bae5c1583a3f85375e51c14071921b",
+        "5a7d7726177a7613209c40322c200b6e72479dce514f2238fd23aceb3e361149"
+      ],
+      "output_packet_sha256": [
+        "d0139629ec118a29f67588afb756c9b743bae5c1583a3f85375e51c14071921b",
+        "5a7d7726177a7613209c40322c200b6e72479dce514f2238fd23aceb3e361149"
+      ],
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.001000",
+          "pkt_num": 2,
+          "proto": "TCP",
+          "src_ap": "192.0.2.10:50000",
+          "dst_ap": "198.51.100.20:80",
+          "rule": "129:2:1",
+          "action": "allow",
+          "msg": "(stream_tcp) data on SYN packet"
+        }
+      ]
+    },
+    {
+      "name": "v4-p6-split50000-10-valid",
+      "valid": true,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "correct",
+      "arrival_offsets": [
+        50000,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "ea6e2a260c7860ffdcab31ba34d55bcdae1701238701f58e6cd4583d6388a0c1",
+      "output_pcap_sha256": "ea6e2a260c7860ffdcab31ba34d55bcdae1701238701f58e6cd4583d6388a0c1",
+      "input_packet_sha256": [
+        "5a7d7726177a7613209c40322c200b6e72479dce514f2238fd23aceb3e361149",
+        "d0139629ec118a29f67588afb756c9b743bae5c1583a3f85375e51c14071921b"
+      ],
+      "output_packet_sha256": [
+        "5a7d7726177a7613209c40322c200b6e72479dce514f2238fd23aceb3e361149",
+        "d0139629ec118a29f67588afb756c9b743bae5c1583a3f85375e51c14071921b"
+      ],
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.001000",
+          "pkt_num": 2,
+          "proto": "TCP",
+          "src_ap": "192.0.2.10:50000",
+          "dst_ap": "198.51.100.20:80",
+          "rule": "129:2:1",
+          "action": "allow",
+          "msg": "(stream_tcp) data on SYN packet"
+        }
+      ]
+    },
+    {
+      "name": "v4-p6-split65464-01-valid",
+      "valid": true,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "correct",
+      "arrival_offsets": [
+        0,
+        65464
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "fc4cdd853d2301f1f7fc75c516169606c4bfab120bd18ce1323a21c54c876c6b",
+      "output_pcap_sha256": "fc4cdd853d2301f1f7fc75c516169606c4bfab120bd18ce1323a21c54c876c6b",
+      "input_packet_sha256": [
+        "a87ed9802b1e9536de14785b95fff6f37519a95df11d317a33a5c5e154305f75",
+        "1018f31f3b08b61a5f312190f83fcdfc6915fce0d18a59a6ce7c0f616f02ba0b"
+      ],
+      "output_packet_sha256": [
+        "a87ed9802b1e9536de14785b95fff6f37519a95df11d317a33a5c5e154305f75",
+        "1018f31f3b08b61a5f312190f83fcdfc6915fce0d18a59a6ce7c0f616f02ba0b"
+      ],
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.001000",
+          "pkt_num": 2,
+          "proto": "TCP",
+          "src_ap": "192.0.2.10:50000",
+          "dst_ap": "198.51.100.20:80",
+          "rule": "129:2:1",
+          "action": "allow",
+          "msg": "(stream_tcp) data on SYN packet"
+        }
+      ]
+    },
+    {
+      "name": "v4-p6-split65464-10-valid",
+      "valid": true,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "correct",
+      "arrival_offsets": [
+        65464,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "1be032e46636f720986e7bdf36e4b410f684e624abc9f728bb3b9e45147496cc",
+      "output_pcap_sha256": "1be032e46636f720986e7bdf36e4b410f684e624abc9f728bb3b9e45147496cc",
+      "input_packet_sha256": [
+        "1018f31f3b08b61a5f312190f83fcdfc6915fce0d18a59a6ce7c0f616f02ba0b",
+        "a87ed9802b1e9536de14785b95fff6f37519a95df11d317a33a5c5e154305f75"
+      ],
+      "output_packet_sha256": [
+        "1018f31f3b08b61a5f312190f83fcdfc6915fce0d18a59a6ce7c0f616f02ba0b",
+        "a87ed9802b1e9536de14785b95fff6f37519a95df11d317a33a5c5e154305f75"
+      ],
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.001000",
+          "pkt_num": 2,
+          "proto": "TCP",
+          "src_ap": "192.0.2.10:50000",
+          "dst_ap": "198.51.100.20:80",
+          "rule": "129:2:1",
+          "action": "allow",
+          "msg": "(stream_tcp) data on SYN packet"
+        }
+      ]
+    },
+    {
+      "name": "v4-p6-split24-01-invalid",
+      "valid": false,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        24
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "d8a98a30445a857020c746a93e893dee32918b479e3be3df5620e4ad61c00eb0",
+      "output_pcap_sha256": "e98086d5974be806f0fe3ab9cb3540e147fe7a935523f17ca9e2dd507af176b7",
+      "input_packet_sha256": [
+        "2ac682a655d820bc44dc6fce2ffcbb4826523fdf1c50a61417d5d51f44b03f87",
+        "f127d2d1d7213bd1658b76bbf4d93bf70e1fb18e1c8688d15db9fde101be7c81"
+      ],
+      "output_packet_sha256": [
+        "2ac682a655d820bc44dc6fce2ffcbb4826523fdf1c50a61417d5d51f44b03f87"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p6-split24-01-invalid-retry",
+      "valid": false,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        24
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 262240
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "50d15458043992fb9061eccd0b61c4d202ee4f0375963030afd79440acb98cb6",
+      "output_pcap_sha256": "e98086d5974be806f0fe3ab9cb3540e147fe7a935523f17ca9e2dd507af176b7",
+      "input_packet_sha256": [
+        "2ac682a655d820bc44dc6fce2ffcbb4826523fdf1c50a61417d5d51f44b03f87",
+        "f127d2d1d7213bd1658b76bbf4d93bf70e1fb18e1c8688d15db9fde101be7c81",
+        "f127d2d1d7213bd1658b76bbf4d93bf70e1fb18e1c8688d15db9fde101be7c81",
+        "2ac682a655d820bc44dc6fce2ffcbb4826523fdf1c50a61417d5d51f44b03f87",
+        "f127d2d1d7213bd1658b76bbf4d93bf70e1fb18e1c8688d15db9fde101be7c81"
+      ],
+      "output_packet_sha256": [
+        "2ac682a655d820bc44dc6fce2ffcbb4826523fdf1c50a61417d5d51f44b03f87"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p6-split24-10-invalid",
+      "valid": false,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        24,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "0f7837f2de5ba0688c715e81ba053bf1599d837dd799e3c32df2b40ec47ed1c3",
+      "output_pcap_sha256": "3362529a6a829d4ae5526bb927da05a4adcca675ac04f8fbd025cee126e99dec",
+      "input_packet_sha256": [
+        "f127d2d1d7213bd1658b76bbf4d93bf70e1fb18e1c8688d15db9fde101be7c81",
+        "2ac682a655d820bc44dc6fce2ffcbb4826523fdf1c50a61417d5d51f44b03f87"
+      ],
+      "output_packet_sha256": [
+        "f127d2d1d7213bd1658b76bbf4d93bf70e1fb18e1c8688d15db9fde101be7c81"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p6-split24-10-invalid-retry",
+      "valid": false,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        24,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 196773
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "d689f3f074c7be44dd0cfbc71a4157fe19357d3fe46a06a028c7365446fe96ce",
+      "output_pcap_sha256": "3362529a6a829d4ae5526bb927da05a4adcca675ac04f8fbd025cee126e99dec",
+      "input_packet_sha256": [
+        "f127d2d1d7213bd1658b76bbf4d93bf70e1fb18e1c8688d15db9fde101be7c81",
+        "2ac682a655d820bc44dc6fce2ffcbb4826523fdf1c50a61417d5d51f44b03f87",
+        "2ac682a655d820bc44dc6fce2ffcbb4826523fdf1c50a61417d5d51f44b03f87",
+        "f127d2d1d7213bd1658b76bbf4d93bf70e1fb18e1c8688d15db9fde101be7c81",
+        "2ac682a655d820bc44dc6fce2ffcbb4826523fdf1c50a61417d5d51f44b03f87"
+      ],
+      "output_packet_sha256": [
+        "f127d2d1d7213bd1658b76bbf4d93bf70e1fb18e1c8688d15db9fde101be7c81"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p6-split32768-01-invalid",
+      "valid": false,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        32768
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "896bbfcf7d6671129a35fcf6f32f5006266cbe685b08e7e6287f74776f739570",
+      "output_pcap_sha256": "d9f84f7e8c7c6e324911bb3c5ce7ecad96f84fc7c7455c80c8ce507804138b14",
+      "input_packet_sha256": [
+        "3f93debe51541dc5c426f404261e7ed228012c94d12321f6cf7ed2dd6ff56798",
+        "48f1a432cbd4d3a03df36d3b590850f22ddf594e91f2fc25096687453df46591"
+      ],
+      "output_packet_sha256": [
+        "3f93debe51541dc5c426f404261e7ed228012c94d12321f6cf7ed2dd6ff56798"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p6-split32768-01-invalid-retry",
+      "valid": false,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        32768
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 229496
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "4b04885dd577d7fcba667770caded641fd2668edae410000b2bff28e4a7dc839",
+      "output_pcap_sha256": "d9f84f7e8c7c6e324911bb3c5ce7ecad96f84fc7c7455c80c8ce507804138b14",
+      "input_packet_sha256": [
+        "3f93debe51541dc5c426f404261e7ed228012c94d12321f6cf7ed2dd6ff56798",
+        "48f1a432cbd4d3a03df36d3b590850f22ddf594e91f2fc25096687453df46591",
+        "48f1a432cbd4d3a03df36d3b590850f22ddf594e91f2fc25096687453df46591",
+        "3f93debe51541dc5c426f404261e7ed228012c94d12321f6cf7ed2dd6ff56798",
+        "48f1a432cbd4d3a03df36d3b590850f22ddf594e91f2fc25096687453df46591"
+      ],
+      "output_packet_sha256": [
+        "3f93debe51541dc5c426f404261e7ed228012c94d12321f6cf7ed2dd6ff56798"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p6-split32768-10-invalid",
+      "valid": false,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        32768,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "bc1e83e6e629765834ee7760fd25fa8cf9ee65b7b20c899f516a5bdd23f42a99",
+      "output_pcap_sha256": "a4fc184d9e5840e27877cb7564c7b46694306f7a0808d8e537e5de4e69fced19",
+      "input_packet_sha256": [
+        "48f1a432cbd4d3a03df36d3b590850f22ddf594e91f2fc25096687453df46591",
+        "3f93debe51541dc5c426f404261e7ed228012c94d12321f6cf7ed2dd6ff56798"
+      ],
+      "output_packet_sha256": [
+        "48f1a432cbd4d3a03df36d3b590850f22ddf594e91f2fc25096687453df46591"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p6-split32768-10-invalid-retry",
+      "valid": false,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        32768,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 229517
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "5904b2522d3055199c6029ac2daecd72df02cba974defd840dd099ea390e0afb",
+      "output_pcap_sha256": "a4fc184d9e5840e27877cb7564c7b46694306f7a0808d8e537e5de4e69fced19",
+      "input_packet_sha256": [
+        "48f1a432cbd4d3a03df36d3b590850f22ddf594e91f2fc25096687453df46591",
+        "3f93debe51541dc5c426f404261e7ed228012c94d12321f6cf7ed2dd6ff56798",
+        "3f93debe51541dc5c426f404261e7ed228012c94d12321f6cf7ed2dd6ff56798",
+        "48f1a432cbd4d3a03df36d3b590850f22ddf594e91f2fc25096687453df46591",
+        "3f93debe51541dc5c426f404261e7ed228012c94d12321f6cf7ed2dd6ff56798"
+      ],
+      "output_packet_sha256": [
+        "48f1a432cbd4d3a03df36d3b590850f22ddf594e91f2fc25096687453df46591"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p6-split50000-01-invalid",
+      "valid": false,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        50000
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "f429a0517e55262d680b7eb999e1ac164857aa71088a88355805b90b956a14c5",
+      "output_pcap_sha256": "636bc29f6b02c3d6682199ea5cdef88399234618b6e11d4a57e7f25f5bf5976c",
+      "input_packet_sha256": [
+        "37417d0f674facd10dde5e2c13fed0ce4d3e33e93b0b675fec840fcab1ce2eaf",
+        "5a7d7726177a7613209c40322c200b6e72479dce514f2238fd23aceb3e361149"
+      ],
+      "output_packet_sha256": [
+        "37417d0f674facd10dde5e2c13fed0ce4d3e33e93b0b675fec840fcab1ce2eaf"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p6-split50000-01-invalid-retry",
+      "valid": false,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        50000
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 212264
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "0bae6e0ad629a59f956f23b6e79809da3b884dbbb08543a2086b2486f5e90020",
+      "output_pcap_sha256": "636bc29f6b02c3d6682199ea5cdef88399234618b6e11d4a57e7f25f5bf5976c",
+      "input_packet_sha256": [
+        "37417d0f674facd10dde5e2c13fed0ce4d3e33e93b0b675fec840fcab1ce2eaf",
+        "5a7d7726177a7613209c40322c200b6e72479dce514f2238fd23aceb3e361149",
+        "5a7d7726177a7613209c40322c200b6e72479dce514f2238fd23aceb3e361149",
+        "37417d0f674facd10dde5e2c13fed0ce4d3e33e93b0b675fec840fcab1ce2eaf",
+        "5a7d7726177a7613209c40322c200b6e72479dce514f2238fd23aceb3e361149"
+      ],
+      "output_packet_sha256": [
+        "37417d0f674facd10dde5e2c13fed0ce4d3e33e93b0b675fec840fcab1ce2eaf"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p6-split50000-10-invalid",
+      "valid": false,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        50000,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "c71196c0146ba62969b5042f73cdb2f99c43770e2946e94f6274a4b93616b90f",
+      "output_pcap_sha256": "f2a1648e06dd84aa387e02dbf678320b61c6a55a5a1660c6e3e3416cd1707f91",
+      "input_packet_sha256": [
+        "5a7d7726177a7613209c40322c200b6e72479dce514f2238fd23aceb3e361149",
+        "37417d0f674facd10dde5e2c13fed0ce4d3e33e93b0b675fec840fcab1ce2eaf"
+      ],
+      "output_packet_sha256": [
+        "5a7d7726177a7613209c40322c200b6e72479dce514f2238fd23aceb3e361149"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p6-split50000-10-invalid-retry",
+      "valid": false,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        50000,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 246749
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "549aa609f34a4dc960f500dd358c0006c483b384b806733a2f53d2fa8d516e9b",
+      "output_pcap_sha256": "f2a1648e06dd84aa387e02dbf678320b61c6a55a5a1660c6e3e3416cd1707f91",
+      "input_packet_sha256": [
+        "5a7d7726177a7613209c40322c200b6e72479dce514f2238fd23aceb3e361149",
+        "37417d0f674facd10dde5e2c13fed0ce4d3e33e93b0b675fec840fcab1ce2eaf",
+        "37417d0f674facd10dde5e2c13fed0ce4d3e33e93b0b675fec840fcab1ce2eaf",
+        "5a7d7726177a7613209c40322c200b6e72479dce514f2238fd23aceb3e361149",
+        "37417d0f674facd10dde5e2c13fed0ce4d3e33e93b0b675fec840fcab1ce2eaf"
+      ],
+      "output_packet_sha256": [
+        "5a7d7726177a7613209c40322c200b6e72479dce514f2238fd23aceb3e361149"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p6-split65464-01-invalid",
+      "valid": false,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        65464
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "9831972a5af1f87aa41f053ba25d454351134ce46709fd5c7af16a803cd30b99",
+      "output_pcap_sha256": "ceb46f8c33cda63448ed41078a98def51cb2c87c57433e4f74d460a68fe8c6dc",
+      "input_packet_sha256": [
+        "48e491813144d8cc771119df0549bd4186ffac19b074d8e22887ee9322b278a8",
+        "1018f31f3b08b61a5f312190f83fcdfc6915fce0d18a59a6ce7c0f616f02ba0b"
+      ],
+      "output_packet_sha256": [
+        "48e491813144d8cc771119df0549bd4186ffac19b074d8e22887ee9322b278a8"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p6-split65464-01-invalid-retry",
+      "valid": false,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        65464
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 196800
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "79eaa0000bffac5372a846f44bba723a391f9833006351690fadb8f26c259b1c",
+      "output_pcap_sha256": "ceb46f8c33cda63448ed41078a98def51cb2c87c57433e4f74d460a68fe8c6dc",
+      "input_packet_sha256": [
+        "48e491813144d8cc771119df0549bd4186ffac19b074d8e22887ee9322b278a8",
+        "1018f31f3b08b61a5f312190f83fcdfc6915fce0d18a59a6ce7c0f616f02ba0b",
+        "1018f31f3b08b61a5f312190f83fcdfc6915fce0d18a59a6ce7c0f616f02ba0b",
+        "48e491813144d8cc771119df0549bd4186ffac19b074d8e22887ee9322b278a8",
+        "1018f31f3b08b61a5f312190f83fcdfc6915fce0d18a59a6ce7c0f616f02ba0b"
+      ],
+      "output_packet_sha256": [
+        "48e491813144d8cc771119df0549bd4186ffac19b074d8e22887ee9322b278a8"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p6-split65464-10-invalid",
+      "valid": false,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        65464,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "36cd8abd7626dc9c50bfecaf3b30c793950efda80b8c4552a04b0c816fbaca50",
+      "output_pcap_sha256": "6b8df469a20b47ab9115ea4f65c7ce441fc20729aeff1570c32520c9f9ae2ff1",
+      "input_packet_sha256": [
+        "1018f31f3b08b61a5f312190f83fcdfc6915fce0d18a59a6ce7c0f616f02ba0b",
+        "48e491813144d8cc771119df0549bd4186ffac19b074d8e22887ee9322b278a8"
+      ],
+      "output_packet_sha256": [
+        "1018f31f3b08b61a5f312190f83fcdfc6915fce0d18a59a6ce7c0f616f02ba0b"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p6-split65464-10-invalid-retry",
+      "valid": false,
+      "counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 6,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        65464,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 262213
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "0306c69c8f7366d9660cae57261f709bf90f6aafe76bbb24a4ac6cb7acd60762",
+      "output_pcap_sha256": "6b8df469a20b47ab9115ea4f65c7ce441fc20729aeff1570c32520c9f9ae2ff1",
+      "input_packet_sha256": [
+        "1018f31f3b08b61a5f312190f83fcdfc6915fce0d18a59a6ce7c0f616f02ba0b",
+        "48e491813144d8cc771119df0549bd4186ffac19b074d8e22887ee9322b278a8",
+        "48e491813144d8cc771119df0549bd4186ffac19b074d8e22887ee9322b278a8",
+        "1018f31f3b08b61a5f312190f83fcdfc6915fce0d18a59a6ce7c0f616f02ba0b",
+        "48e491813144d8cc771119df0549bd4186ffac19b074d8e22887ee9322b278a8"
+      ],
+      "output_packet_sha256": [
+        "1018f31f3b08b61a5f312190f83fcdfc6915fce0d18a59a6ce7c0f616f02ba0b"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p17-split24-01-valid",
+      "valid": true,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "correct",
+      "arrival_offsets": [
+        0,
+        24
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "43e9848b56d71b2a59013d6c3de1183f2887a06b4a5b4523674917ad8b8de908",
+      "output_pcap_sha256": "43e9848b56d71b2a59013d6c3de1183f2887a06b4a5b4523674917ad8b8de908",
+      "input_packet_sha256": [
+        "1dac16fa4f113dc3b70cf933ce72a0120d1bd7e3916497270dce429cd29a82ff",
+        "ed66c6ec171dfcb7258f33ee9b172a66e71ee32b9dbc2d4e5c953f1fd094c6f6"
+      ],
+      "output_packet_sha256": [
+        "1dac16fa4f113dc3b70cf933ce72a0120d1bd7e3916497270dce429cd29a82ff",
+        "ed66c6ec171dfcb7258f33ee9b172a66e71ee32b9dbc2d4e5c953f1fd094c6f6"
+      ],
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.001000",
+          "pkt_num": 2,
+          "proto": "UDP",
+          "src_ap": "192.0.2.10:50000",
+          "dst_ap": "198.51.100.20:9999",
+          "rule": "116:445:1",
+          "action": "allow",
+          "msg": "(udp) large UDP packet (> 4000 bytes)"
+        }
+      ]
+    },
+    {
+      "name": "v4-p17-split24-10-valid",
+      "valid": true,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "correct",
+      "arrival_offsets": [
+        24,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "00768738286aefb28c55a4651bfd3a3b6ad406b00a8d006ab3a8b6836e3d434b",
+      "output_pcap_sha256": "00768738286aefb28c55a4651bfd3a3b6ad406b00a8d006ab3a8b6836e3d434b",
+      "input_packet_sha256": [
+        "ed66c6ec171dfcb7258f33ee9b172a66e71ee32b9dbc2d4e5c953f1fd094c6f6",
+        "1dac16fa4f113dc3b70cf933ce72a0120d1bd7e3916497270dce429cd29a82ff"
+      ],
+      "output_packet_sha256": [
+        "ed66c6ec171dfcb7258f33ee9b172a66e71ee32b9dbc2d4e5c953f1fd094c6f6",
+        "1dac16fa4f113dc3b70cf933ce72a0120d1bd7e3916497270dce429cd29a82ff"
+      ],
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.001000",
+          "pkt_num": 2,
+          "proto": "UDP",
+          "src_ap": "192.0.2.10:50000",
+          "dst_ap": "198.51.100.20:9999",
+          "rule": "116:445:1",
+          "action": "allow",
+          "msg": "(udp) large UDP packet (> 4000 bytes)"
+        }
+      ]
+    },
+    {
+      "name": "v4-p17-split32768-01-valid",
+      "valid": true,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "correct",
+      "arrival_offsets": [
+        0,
+        32768
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "9ed60fcdf2a2ab0227fadbe010df9091b16b4f9b2bf273039499587d4532a4e5",
+      "output_pcap_sha256": "9ed60fcdf2a2ab0227fadbe010df9091b16b4f9b2bf273039499587d4532a4e5",
+      "input_packet_sha256": [
+        "9fa94dce09c626aa8d07c3f6e12c84385e44447598c9f97ad313b68979988825",
+        "3093b731b0cb0b29fd5bd2f30d2927a0898e86b7800702da838570c12ec85758"
+      ],
+      "output_packet_sha256": [
+        "9fa94dce09c626aa8d07c3f6e12c84385e44447598c9f97ad313b68979988825",
+        "3093b731b0cb0b29fd5bd2f30d2927a0898e86b7800702da838570c12ec85758"
+      ],
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.001000",
+          "pkt_num": 2,
+          "proto": "UDP",
+          "src_ap": "192.0.2.10:50000",
+          "dst_ap": "198.51.100.20:9999",
+          "rule": "116:445:1",
+          "action": "allow",
+          "msg": "(udp) large UDP packet (> 4000 bytes)"
+        }
+      ]
+    },
+    {
+      "name": "v4-p17-split32768-10-valid",
+      "valid": true,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "correct",
+      "arrival_offsets": [
+        32768,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "1162c5876127735820e50670b946885ae8fe37ae65963142f7ae4f12782a3905",
+      "output_pcap_sha256": "1162c5876127735820e50670b946885ae8fe37ae65963142f7ae4f12782a3905",
+      "input_packet_sha256": [
+        "3093b731b0cb0b29fd5bd2f30d2927a0898e86b7800702da838570c12ec85758",
+        "9fa94dce09c626aa8d07c3f6e12c84385e44447598c9f97ad313b68979988825"
+      ],
+      "output_packet_sha256": [
+        "3093b731b0cb0b29fd5bd2f30d2927a0898e86b7800702da838570c12ec85758",
+        "9fa94dce09c626aa8d07c3f6e12c84385e44447598c9f97ad313b68979988825"
+      ],
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.001000",
+          "pkt_num": 2,
+          "proto": "UDP",
+          "src_ap": "192.0.2.10:50000",
+          "dst_ap": "198.51.100.20:9999",
+          "rule": "116:445:1",
+          "action": "allow",
+          "msg": "(udp) large UDP packet (> 4000 bytes)"
+        }
+      ]
+    },
+    {
+      "name": "v4-p17-split50000-01-valid",
+      "valid": true,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "correct",
+      "arrival_offsets": [
+        0,
+        50000
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "eae6dab6eaa7af18ae17a09bce86def6a0cd137a769ed7dd95771286bbc21d51",
+      "output_pcap_sha256": "eae6dab6eaa7af18ae17a09bce86def6a0cd137a769ed7dd95771286bbc21d51",
+      "input_packet_sha256": [
+        "0a9e8875c9196ed3e234c637e4a47285f6ac5e2084946a27ba39523ceda43809",
+        "9d91f401fb748cdedb5dee75d213eb3fc05b8a1e8813853acf23025341857162"
+      ],
+      "output_packet_sha256": [
+        "0a9e8875c9196ed3e234c637e4a47285f6ac5e2084946a27ba39523ceda43809",
+        "9d91f401fb748cdedb5dee75d213eb3fc05b8a1e8813853acf23025341857162"
+      ],
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.001000",
+          "pkt_num": 2,
+          "proto": "UDP",
+          "src_ap": "192.0.2.10:50000",
+          "dst_ap": "198.51.100.20:9999",
+          "rule": "116:445:1",
+          "action": "allow",
+          "msg": "(udp) large UDP packet (> 4000 bytes)"
+        }
+      ]
+    },
+    {
+      "name": "v4-p17-split50000-10-valid",
+      "valid": true,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "correct",
+      "arrival_offsets": [
+        50000,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "c41cf6ef73f4483d2c89bd21ed75dfeeae4ce224654bafdf29e5a9dd329dba4f",
+      "output_pcap_sha256": "c41cf6ef73f4483d2c89bd21ed75dfeeae4ce224654bafdf29e5a9dd329dba4f",
+      "input_packet_sha256": [
+        "9d91f401fb748cdedb5dee75d213eb3fc05b8a1e8813853acf23025341857162",
+        "0a9e8875c9196ed3e234c637e4a47285f6ac5e2084946a27ba39523ceda43809"
+      ],
+      "output_packet_sha256": [
+        "9d91f401fb748cdedb5dee75d213eb3fc05b8a1e8813853acf23025341857162",
+        "0a9e8875c9196ed3e234c637e4a47285f6ac5e2084946a27ba39523ceda43809"
+      ],
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.001000",
+          "pkt_num": 2,
+          "proto": "UDP",
+          "src_ap": "192.0.2.10:50000",
+          "dst_ap": "198.51.100.20:9999",
+          "rule": "116:445:1",
+          "action": "allow",
+          "msg": "(udp) large UDP packet (> 4000 bytes)"
+        }
+      ]
+    },
+    {
+      "name": "v4-p17-split65464-01-valid",
+      "valid": true,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "correct",
+      "arrival_offsets": [
+        0,
+        65464
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "c5f027838918d8461681401469bd26114cda5e32bf3cd0ae47c9c3aa2c84c628",
+      "output_pcap_sha256": "c5f027838918d8461681401469bd26114cda5e32bf3cd0ae47c9c3aa2c84c628",
+      "input_packet_sha256": [
+        "317723b9cabb43d4ca8d7bc9ea2c39bafc8b32587f4660e9b6784ba0f112685c",
+        "a3cebe82c0e589079e94f36ec8c3a87ea5cf371778ba16cf97a1148bf60a8eaa"
+      ],
+      "output_packet_sha256": [
+        "317723b9cabb43d4ca8d7bc9ea2c39bafc8b32587f4660e9b6784ba0f112685c",
+        "a3cebe82c0e589079e94f36ec8c3a87ea5cf371778ba16cf97a1148bf60a8eaa"
+      ],
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.001000",
+          "pkt_num": 2,
+          "proto": "UDP",
+          "src_ap": "192.0.2.10:50000",
+          "dst_ap": "198.51.100.20:9999",
+          "rule": "116:445:1",
+          "action": "allow",
+          "msg": "(udp) large UDP packet (> 4000 bytes)"
+        }
+      ]
+    },
+    {
+      "name": "v4-p17-split65464-10-valid",
+      "valid": true,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "correct",
+      "arrival_offsets": [
+        65464,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "d168b6e5f4ea301f19537c473163390286692bcabe87f981fe67faa7d7785ce5",
+      "output_pcap_sha256": "d168b6e5f4ea301f19537c473163390286692bcabe87f981fe67faa7d7785ce5",
+      "input_packet_sha256": [
+        "a3cebe82c0e589079e94f36ec8c3a87ea5cf371778ba16cf97a1148bf60a8eaa",
+        "317723b9cabb43d4ca8d7bc9ea2c39bafc8b32587f4660e9b6784ba0f112685c"
+      ],
+      "output_packet_sha256": [
+        "a3cebe82c0e589079e94f36ec8c3a87ea5cf371778ba16cf97a1148bf60a8eaa",
+        "317723b9cabb43d4ca8d7bc9ea2c39bafc8b32587f4660e9b6784ba0f112685c"
+      ],
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.001000",
+          "pkt_num": 2,
+          "proto": "UDP",
+          "src_ap": "192.0.2.10:50000",
+          "dst_ap": "198.51.100.20:9999",
+          "rule": "116:445:1",
+          "action": "allow",
+          "msg": "(udp) large UDP packet (> 4000 bytes)"
+        }
+      ]
+    },
+    {
+      "name": "v4-p17-split24-01-invalid",
+      "valid": false,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        24
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "b9754ce27d128ead54be198e9ee704b43ea2323a3515ab5ef4b9e72f59a1cdab",
+      "output_pcap_sha256": "2872610a9e275505cd1cdb28d3915ab3c5322c62849b48bb4242780fa140e7d6",
+      "input_packet_sha256": [
+        "54176a833929100b6a839e75d59dd177ea2ac4cd96eb4d01382f4aff274f0ddb",
+        "ed66c6ec171dfcb7258f33ee9b172a66e71ee32b9dbc2d4e5c953f1fd094c6f6"
+      ],
+      "output_packet_sha256": [
+        "54176a833929100b6a839e75d59dd177ea2ac4cd96eb4d01382f4aff274f0ddb"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p17-split24-01-invalid-retry",
+      "valid": false,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        24
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 262240
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "11e1e74a03f5ad81834d991f1ac79386b9a75907a8c315838a82fbd8ea485125",
+      "output_pcap_sha256": "2872610a9e275505cd1cdb28d3915ab3c5322c62849b48bb4242780fa140e7d6",
+      "input_packet_sha256": [
+        "54176a833929100b6a839e75d59dd177ea2ac4cd96eb4d01382f4aff274f0ddb",
+        "ed66c6ec171dfcb7258f33ee9b172a66e71ee32b9dbc2d4e5c953f1fd094c6f6",
+        "ed66c6ec171dfcb7258f33ee9b172a66e71ee32b9dbc2d4e5c953f1fd094c6f6",
+        "54176a833929100b6a839e75d59dd177ea2ac4cd96eb4d01382f4aff274f0ddb",
+        "ed66c6ec171dfcb7258f33ee9b172a66e71ee32b9dbc2d4e5c953f1fd094c6f6"
+      ],
+      "output_packet_sha256": [
+        "54176a833929100b6a839e75d59dd177ea2ac4cd96eb4d01382f4aff274f0ddb"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p17-split24-10-invalid",
+      "valid": false,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        24,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "d20cc8cba2b2fd7c18666bd905e6cfaf47388238d2cf629316ce4a50fef795f8",
+      "output_pcap_sha256": "63fdb569fe37f3c17cb14332366280d44db5c205cda4ba6afe565fb9a870ae59",
+      "input_packet_sha256": [
+        "ed66c6ec171dfcb7258f33ee9b172a66e71ee32b9dbc2d4e5c953f1fd094c6f6",
+        "54176a833929100b6a839e75d59dd177ea2ac4cd96eb4d01382f4aff274f0ddb"
+      ],
+      "output_packet_sha256": [
+        "ed66c6ec171dfcb7258f33ee9b172a66e71ee32b9dbc2d4e5c953f1fd094c6f6"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p17-split24-10-invalid-retry",
+      "valid": false,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        24,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 196773
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "191144988825e2fba09db1623dd27c53e4915c9646d61a83bb78e6a3bdf73f1e",
+      "output_pcap_sha256": "63fdb569fe37f3c17cb14332366280d44db5c205cda4ba6afe565fb9a870ae59",
+      "input_packet_sha256": [
+        "ed66c6ec171dfcb7258f33ee9b172a66e71ee32b9dbc2d4e5c953f1fd094c6f6",
+        "54176a833929100b6a839e75d59dd177ea2ac4cd96eb4d01382f4aff274f0ddb",
+        "54176a833929100b6a839e75d59dd177ea2ac4cd96eb4d01382f4aff274f0ddb",
+        "ed66c6ec171dfcb7258f33ee9b172a66e71ee32b9dbc2d4e5c953f1fd094c6f6",
+        "54176a833929100b6a839e75d59dd177ea2ac4cd96eb4d01382f4aff274f0ddb"
+      ],
+      "output_packet_sha256": [
+        "ed66c6ec171dfcb7258f33ee9b172a66e71ee32b9dbc2d4e5c953f1fd094c6f6"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p17-split32768-01-invalid",
+      "valid": false,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        32768
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "f2a5ccc9842b8e869c32f54d62a386560c97e567e6bab15e2f794c42c9392b9e",
+      "output_pcap_sha256": "8bb364b6bd293fd1fb40197e7bd18073c83e5445d457d256ab60409c6fac44c2",
+      "input_packet_sha256": [
+        "221e434d8458d6d13c3317c618a4db937b3799c59b5f36c8cf27a31f1320c20e",
+        "3093b731b0cb0b29fd5bd2f30d2927a0898e86b7800702da838570c12ec85758"
+      ],
+      "output_packet_sha256": [
+        "221e434d8458d6d13c3317c618a4db937b3799c59b5f36c8cf27a31f1320c20e"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p17-split32768-01-invalid-retry",
+      "valid": false,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        32768
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 229496
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "e5343817ff4ea77762cf6245b6386feb5253da9bc2585443a2e5bb7d91b1b6dd",
+      "output_pcap_sha256": "8bb364b6bd293fd1fb40197e7bd18073c83e5445d457d256ab60409c6fac44c2",
+      "input_packet_sha256": [
+        "221e434d8458d6d13c3317c618a4db937b3799c59b5f36c8cf27a31f1320c20e",
+        "3093b731b0cb0b29fd5bd2f30d2927a0898e86b7800702da838570c12ec85758",
+        "3093b731b0cb0b29fd5bd2f30d2927a0898e86b7800702da838570c12ec85758",
+        "221e434d8458d6d13c3317c618a4db937b3799c59b5f36c8cf27a31f1320c20e",
+        "3093b731b0cb0b29fd5bd2f30d2927a0898e86b7800702da838570c12ec85758"
+      ],
+      "output_packet_sha256": [
+        "221e434d8458d6d13c3317c618a4db937b3799c59b5f36c8cf27a31f1320c20e"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p17-split32768-10-invalid",
+      "valid": false,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        32768,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "60039c7d34a00552164f2aebaa39324d79385caf2ce0e026fdcdbf70cd1e9d2b",
+      "output_pcap_sha256": "0a6578c6944f1627a6117ebdcee8620e3383eae6bcd8e86eb8d992f5254892b5",
+      "input_packet_sha256": [
+        "3093b731b0cb0b29fd5bd2f30d2927a0898e86b7800702da838570c12ec85758",
+        "221e434d8458d6d13c3317c618a4db937b3799c59b5f36c8cf27a31f1320c20e"
+      ],
+      "output_packet_sha256": [
+        "3093b731b0cb0b29fd5bd2f30d2927a0898e86b7800702da838570c12ec85758"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p17-split32768-10-invalid-retry",
+      "valid": false,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        32768,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 229517
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "1f3e124e09beb47410e48bc3776b36e9b76e706362d23788e2fcbd0914e3459c",
+      "output_pcap_sha256": "0a6578c6944f1627a6117ebdcee8620e3383eae6bcd8e86eb8d992f5254892b5",
+      "input_packet_sha256": [
+        "3093b731b0cb0b29fd5bd2f30d2927a0898e86b7800702da838570c12ec85758",
+        "221e434d8458d6d13c3317c618a4db937b3799c59b5f36c8cf27a31f1320c20e",
+        "221e434d8458d6d13c3317c618a4db937b3799c59b5f36c8cf27a31f1320c20e",
+        "3093b731b0cb0b29fd5bd2f30d2927a0898e86b7800702da838570c12ec85758",
+        "221e434d8458d6d13c3317c618a4db937b3799c59b5f36c8cf27a31f1320c20e"
+      ],
+      "output_packet_sha256": [
+        "3093b731b0cb0b29fd5bd2f30d2927a0898e86b7800702da838570c12ec85758"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p17-split50000-01-invalid",
+      "valid": false,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        50000
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "cba201e29083465f3233501faaf38dacf2cfa03e92e7a4785ec179a8f547222c",
+      "output_pcap_sha256": "2a874ac76f88a09954d4286558b16f160e3f8372fc9fa9d0c25105488ff1c22b",
+      "input_packet_sha256": [
+        "d2227148dd8d55b30769abad030bfaa3a4ed5387e86cb2d67b545fe19b93bf5e",
+        "9d91f401fb748cdedb5dee75d213eb3fc05b8a1e8813853acf23025341857162"
+      ],
+      "output_packet_sha256": [
+        "d2227148dd8d55b30769abad030bfaa3a4ed5387e86cb2d67b545fe19b93bf5e"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p17-split50000-01-invalid-retry",
+      "valid": false,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        50000
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 212264
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "15f6db6077a8faa1f9f534392b0e06d76bed1d561350d4ff44bfeb7895cfbc7d",
+      "output_pcap_sha256": "2a874ac76f88a09954d4286558b16f160e3f8372fc9fa9d0c25105488ff1c22b",
+      "input_packet_sha256": [
+        "d2227148dd8d55b30769abad030bfaa3a4ed5387e86cb2d67b545fe19b93bf5e",
+        "9d91f401fb748cdedb5dee75d213eb3fc05b8a1e8813853acf23025341857162",
+        "9d91f401fb748cdedb5dee75d213eb3fc05b8a1e8813853acf23025341857162",
+        "d2227148dd8d55b30769abad030bfaa3a4ed5387e86cb2d67b545fe19b93bf5e",
+        "9d91f401fb748cdedb5dee75d213eb3fc05b8a1e8813853acf23025341857162"
+      ],
+      "output_packet_sha256": [
+        "d2227148dd8d55b30769abad030bfaa3a4ed5387e86cb2d67b545fe19b93bf5e"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p17-split50000-10-invalid",
+      "valid": false,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        50000,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "812bbc7bc47a5aa70270a7331b41bdd40d63b615dbe2072ae6f144f7dd5a69b8",
+      "output_pcap_sha256": "520a0048076b50cb9263ada3213e3146bc5d462a143634a60b4ad725e8feab0f",
+      "input_packet_sha256": [
+        "9d91f401fb748cdedb5dee75d213eb3fc05b8a1e8813853acf23025341857162",
+        "d2227148dd8d55b30769abad030bfaa3a4ed5387e86cb2d67b545fe19b93bf5e"
+      ],
+      "output_packet_sha256": [
+        "9d91f401fb748cdedb5dee75d213eb3fc05b8a1e8813853acf23025341857162"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p17-split50000-10-invalid-retry",
+      "valid": false,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        50000,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 246749
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "bce3d5299e878520b9cbeea2ca0b61b734a0dc79751d4d925235c0a244bd9b26",
+      "output_pcap_sha256": "520a0048076b50cb9263ada3213e3146bc5d462a143634a60b4ad725e8feab0f",
+      "input_packet_sha256": [
+        "9d91f401fb748cdedb5dee75d213eb3fc05b8a1e8813853acf23025341857162",
+        "d2227148dd8d55b30769abad030bfaa3a4ed5387e86cb2d67b545fe19b93bf5e",
+        "d2227148dd8d55b30769abad030bfaa3a4ed5387e86cb2d67b545fe19b93bf5e",
+        "9d91f401fb748cdedb5dee75d213eb3fc05b8a1e8813853acf23025341857162",
+        "d2227148dd8d55b30769abad030bfaa3a4ed5387e86cb2d67b545fe19b93bf5e"
+      ],
+      "output_packet_sha256": [
+        "9d91f401fb748cdedb5dee75d213eb3fc05b8a1e8813853acf23025341857162"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p17-split65464-01-invalid",
+      "valid": false,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        65464
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "30473ecc0830fd1cc0438270e41309ca0759f900973bd7a96d70b72c4b047b60",
+      "output_pcap_sha256": "dd660564a07f827cb50df8229e0be10bcaf4398284b34bcef0f863c4cf81624f",
+      "input_packet_sha256": [
+        "f11229281e5bd0c9a09bb6fc92371bb2b3715230a4c21ff719719e2a1ba91a26",
+        "a3cebe82c0e589079e94f36ec8c3a87ea5cf371778ba16cf97a1148bf60a8eaa"
+      ],
+      "output_packet_sha256": [
+        "f11229281e5bd0c9a09bb6fc92371bb2b3715230a4c21ff719719e2a1ba91a26"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p17-split65464-01-invalid-retry",
+      "valid": false,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        65464
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 196800
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "d0eaef549398a08c5b1d83b7a584ab2ffe0842b4f9947c5416eaeb4dcc8d1c8c",
+      "output_pcap_sha256": "dd660564a07f827cb50df8229e0be10bcaf4398284b34bcef0f863c4cf81624f",
+      "input_packet_sha256": [
+        "f11229281e5bd0c9a09bb6fc92371bb2b3715230a4c21ff719719e2a1ba91a26",
+        "a3cebe82c0e589079e94f36ec8c3a87ea5cf371778ba16cf97a1148bf60a8eaa",
+        "a3cebe82c0e589079e94f36ec8c3a87ea5cf371778ba16cf97a1148bf60a8eaa",
+        "f11229281e5bd0c9a09bb6fc92371bb2b3715230a4c21ff719719e2a1ba91a26",
+        "a3cebe82c0e589079e94f36ec8c3a87ea5cf371778ba16cf97a1148bf60a8eaa"
+      ],
+      "output_packet_sha256": [
+        "f11229281e5bd0c9a09bb6fc92371bb2b3715230a4c21ff719719e2a1ba91a26"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p17-split65464-10-invalid",
+      "valid": false,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        65464,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "13ede6acf9efb579078255544d7658c5b82b38da62c2a4c3dfb468e3fd632c5f",
+      "output_pcap_sha256": "64a92547bf73a5444104d3d5a695fb45abc22785f15385dd456f74364d93a9e9",
+      "input_packet_sha256": [
+        "a3cebe82c0e589079e94f36ec8c3a87ea5cf371778ba16cf97a1148bf60a8eaa",
+        "f11229281e5bd0c9a09bb6fc92371bb2b3715230a4c21ff719719e2a1ba91a26"
+      ],
+      "output_packet_sha256": [
+        "a3cebe82c0e589079e94f36ec8c3a87ea5cf371778ba16cf97a1148bf60a8eaa"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p17-split65464-10-invalid-retry",
+      "valid": false,
+      "counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "version": 4,
+      "protocol": 17,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        65464,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 262213
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "57cce29210fefd174fe7d687d8a60663097bc8f27ab4e456d3aa4c93fee17a64",
+      "output_pcap_sha256": "64a92547bf73a5444104d3d5a695fb45abc22785f15385dd456f74364d93a9e9",
+      "input_packet_sha256": [
+        "a3cebe82c0e589079e94f36ec8c3a87ea5cf371778ba16cf97a1148bf60a8eaa",
+        "f11229281e5bd0c9a09bb6fc92371bb2b3715230a4c21ff719719e2a1ba91a26",
+        "f11229281e5bd0c9a09bb6fc92371bb2b3715230a4c21ff719719e2a1ba91a26",
+        "a3cebe82c0e589079e94f36ec8c3a87ea5cf371778ba16cf97a1148bf60a8eaa",
+        "f11229281e5bd0c9a09bb6fc92371bb2b3715230a4c21ff719719e2a1ba91a26"
+      ],
+      "output_packet_sha256": [
+        "a3cebe82c0e589079e94f36ec8c3a87ea5cf371778ba16cf97a1148bf60a8eaa"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split24-01-valid",
+      "valid": true,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "correct",
+      "arrival_offsets": [
+        0,
+        24
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "6c42f40313cb96eb719eb339cf8918afe588fca0dfaebbb78f58c7e63500932a",
+      "output_pcap_sha256": "6c42f40313cb96eb719eb339cf8918afe588fca0dfaebbb78f58c7e63500932a",
+      "input_packet_sha256": [
+        "1c405e89201c807defc20c5af1cb0117c69d857dcf4705ec621c7be0313eb616",
+        "51f806e7fa31d514bb543b0ea18ad2bff115280d153427a1e4d2b5846c8db658"
+      ],
+      "output_packet_sha256": [
+        "1c405e89201c807defc20c5af1cb0117c69d857dcf4705ec621c7be0313eb616",
+        "51f806e7fa31d514bb543b0ea18ad2bff115280d153427a1e4d2b5846c8db658"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split24-10-valid",
+      "valid": true,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "correct",
+      "arrival_offsets": [
+        24,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "dfb2177d8da684b33bed97738218de0a63108af364df020c6902349ff6d10c40",
+      "output_pcap_sha256": "dfb2177d8da684b33bed97738218de0a63108af364df020c6902349ff6d10c40",
+      "input_packet_sha256": [
+        "51f806e7fa31d514bb543b0ea18ad2bff115280d153427a1e4d2b5846c8db658",
+        "1c405e89201c807defc20c5af1cb0117c69d857dcf4705ec621c7be0313eb616"
+      ],
+      "output_packet_sha256": [
+        "51f806e7fa31d514bb543b0ea18ad2bff115280d153427a1e4d2b5846c8db658",
+        "1c405e89201c807defc20c5af1cb0117c69d857dcf4705ec621c7be0313eb616"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split32768-01-valid",
+      "valid": true,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "correct",
+      "arrival_offsets": [
+        0,
+        32768
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "6a5be8632167e419ff4cc2719787d5a3f1f2f06453973d6974e80d4d7b858143",
+      "output_pcap_sha256": "6a5be8632167e419ff4cc2719787d5a3f1f2f06453973d6974e80d4d7b858143",
+      "input_packet_sha256": [
+        "f3d0273b1686b862a85177df042d0acebc2c569df29554ea3b65ba317fc2829f",
+        "ffe210996c04f4d75b991013e1a4a9280d77e653529156b9278d629cfbd320bf"
+      ],
+      "output_packet_sha256": [
+        "f3d0273b1686b862a85177df042d0acebc2c569df29554ea3b65ba317fc2829f",
+        "ffe210996c04f4d75b991013e1a4a9280d77e653529156b9278d629cfbd320bf"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split32768-10-valid",
+      "valid": true,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "correct",
+      "arrival_offsets": [
+        32768,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "9df113f7a032a59816d0fd2dbb38733f506db14b1cf255353e0e86bb0e8bebcb",
+      "output_pcap_sha256": "9df113f7a032a59816d0fd2dbb38733f506db14b1cf255353e0e86bb0e8bebcb",
+      "input_packet_sha256": [
+        "ffe210996c04f4d75b991013e1a4a9280d77e653529156b9278d629cfbd320bf",
+        "f3d0273b1686b862a85177df042d0acebc2c569df29554ea3b65ba317fc2829f"
+      ],
+      "output_packet_sha256": [
+        "ffe210996c04f4d75b991013e1a4a9280d77e653529156b9278d629cfbd320bf",
+        "f3d0273b1686b862a85177df042d0acebc2c569df29554ea3b65ba317fc2829f"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split50000-01-valid",
+      "valid": true,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "correct",
+      "arrival_offsets": [
+        0,
+        50000
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "38181f897873083b2390a146f55ae7348318d543fe8d0b8eafbc9d9e130b3133",
+      "output_pcap_sha256": "38181f897873083b2390a146f55ae7348318d543fe8d0b8eafbc9d9e130b3133",
+      "input_packet_sha256": [
+        "c9bd41e9dbb5fb5225ecc04948b57baccc7a2b7f39c39bce97d58632e5080b3a",
+        "d5f15a2d46b5a2db1f3826804d32e2c2d2c6fb0523fd75a16f2e792ff5cd6f10"
+      ],
+      "output_packet_sha256": [
+        "c9bd41e9dbb5fb5225ecc04948b57baccc7a2b7f39c39bce97d58632e5080b3a",
+        "d5f15a2d46b5a2db1f3826804d32e2c2d2c6fb0523fd75a16f2e792ff5cd6f10"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split50000-10-valid",
+      "valid": true,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "correct",
+      "arrival_offsets": [
+        50000,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "3b0342ea03886dabe2fd71a52e1bb496dbc25d355fb091954e93713d7fdc2ce8",
+      "output_pcap_sha256": "3b0342ea03886dabe2fd71a52e1bb496dbc25d355fb091954e93713d7fdc2ce8",
+      "input_packet_sha256": [
+        "d5f15a2d46b5a2db1f3826804d32e2c2d2c6fb0523fd75a16f2e792ff5cd6f10",
+        "c9bd41e9dbb5fb5225ecc04948b57baccc7a2b7f39c39bce97d58632e5080b3a"
+      ],
+      "output_packet_sha256": [
+        "d5f15a2d46b5a2db1f3826804d32e2c2d2c6fb0523fd75a16f2e792ff5cd6f10",
+        "c9bd41e9dbb5fb5225ecc04948b57baccc7a2b7f39c39bce97d58632e5080b3a"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split65464-01-valid",
+      "valid": true,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "correct",
+      "arrival_offsets": [
+        0,
+        65464
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "54916f97124c8a7f6d8847fe33cabdbdf8a724c0f0b60499627089b064c56941",
+      "output_pcap_sha256": "54916f97124c8a7f6d8847fe33cabdbdf8a724c0f0b60499627089b064c56941",
+      "input_packet_sha256": [
+        "e31d74539294637a94928cb2e8afcb22a5facd4859913726b3634493f11da5e6",
+        "9075f20f127a4a92a851410cc2baa9ff382016dc04f9c81b5c62d99d04f237c5"
+      ],
+      "output_packet_sha256": [
+        "e31d74539294637a94928cb2e8afcb22a5facd4859913726b3634493f11da5e6",
+        "9075f20f127a4a92a851410cc2baa9ff382016dc04f9c81b5c62d99d04f237c5"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split65464-10-valid",
+      "valid": true,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "correct",
+      "arrival_offsets": [
+        65464,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 0,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 2,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 0,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "20d0b885ad245320c368242d42bd8f882bf65390ac4cff5413ee9a320d70bbcb",
+      "output_pcap_sha256": "20d0b885ad245320c368242d42bd8f882bf65390ac4cff5413ee9a320d70bbcb",
+      "input_packet_sha256": [
+        "9075f20f127a4a92a851410cc2baa9ff382016dc04f9c81b5c62d99d04f237c5",
+        "e31d74539294637a94928cb2e8afcb22a5facd4859913726b3634493f11da5e6"
+      ],
+      "output_packet_sha256": [
+        "9075f20f127a4a92a851410cc2baa9ff382016dc04f9c81b5c62d99d04f237c5",
+        "e31d74539294637a94928cb2e8afcb22a5facd4859913726b3634493f11da5e6"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split24-01-invalid",
+      "valid": false,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        24
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "a7bfacd28771324b1529a27760a50b4adce1d4078563e90d9bac4466a24959f9",
+      "output_pcap_sha256": "cd26ba22fd94f214f6015c755694863707b0ae13f87cd22f91361522ce62c657",
+      "input_packet_sha256": [
+        "22c76ca56a916de9b989f25b36f9a721448071e0bc0dada887601e218fa69fe1",
+        "51f806e7fa31d514bb543b0ea18ad2bff115280d153427a1e4d2b5846c8db658"
+      ],
+      "output_packet_sha256": [
+        "22c76ca56a916de9b989f25b36f9a721448071e0bc0dada887601e218fa69fe1"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split24-01-invalid-retry",
+      "valid": false,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        24
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 262240
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "355396ebf66142a4cef0424310895a46c8242823cbcc36a16d4ca035043960ba",
+      "output_pcap_sha256": "cd26ba22fd94f214f6015c755694863707b0ae13f87cd22f91361522ce62c657",
+      "input_packet_sha256": [
+        "22c76ca56a916de9b989f25b36f9a721448071e0bc0dada887601e218fa69fe1",
+        "51f806e7fa31d514bb543b0ea18ad2bff115280d153427a1e4d2b5846c8db658",
+        "51f806e7fa31d514bb543b0ea18ad2bff115280d153427a1e4d2b5846c8db658",
+        "22c76ca56a916de9b989f25b36f9a721448071e0bc0dada887601e218fa69fe1",
+        "51f806e7fa31d514bb543b0ea18ad2bff115280d153427a1e4d2b5846c8db658"
+      ],
+      "output_packet_sha256": [
+        "22c76ca56a916de9b989f25b36f9a721448071e0bc0dada887601e218fa69fe1"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split24-10-invalid",
+      "valid": false,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        24,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "4ec74208d498bdced7adb6c0fc98827411db4edb33ffd18aa87232a4d42c05c6",
+      "output_pcap_sha256": "4f336127bdfdbe3b3de17e0c1c6f6b17c162a8ec2fe6d69d2240ff48bdba8e9f",
+      "input_packet_sha256": [
+        "51f806e7fa31d514bb543b0ea18ad2bff115280d153427a1e4d2b5846c8db658",
+        "22c76ca56a916de9b989f25b36f9a721448071e0bc0dada887601e218fa69fe1"
+      ],
+      "output_packet_sha256": [
+        "51f806e7fa31d514bb543b0ea18ad2bff115280d153427a1e4d2b5846c8db658"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split24-10-invalid-retry",
+      "valid": false,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        24,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 196773
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "ce9267e1397d5679e62bfb4a903f7c75dd37ae3d040f7c0a8a64dde3c3db612c",
+      "output_pcap_sha256": "4f336127bdfdbe3b3de17e0c1c6f6b17c162a8ec2fe6d69d2240ff48bdba8e9f",
+      "input_packet_sha256": [
+        "51f806e7fa31d514bb543b0ea18ad2bff115280d153427a1e4d2b5846c8db658",
+        "22c76ca56a916de9b989f25b36f9a721448071e0bc0dada887601e218fa69fe1",
+        "22c76ca56a916de9b989f25b36f9a721448071e0bc0dada887601e218fa69fe1",
+        "51f806e7fa31d514bb543b0ea18ad2bff115280d153427a1e4d2b5846c8db658",
+        "22c76ca56a916de9b989f25b36f9a721448071e0bc0dada887601e218fa69fe1"
+      ],
+      "output_packet_sha256": [
+        "51f806e7fa31d514bb543b0ea18ad2bff115280d153427a1e4d2b5846c8db658"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split32768-01-invalid",
+      "valid": false,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        32768
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "c4a6f39f7774be2aac0c20504517d25b3e520f204225163980ee431c6486366f",
+      "output_pcap_sha256": "e129adb2b326cea6604cc052e2c5affe27dad6e19b6ac848e30283ac0e0b7b89",
+      "input_packet_sha256": [
+        "4a98ed0c8fbff4ea952ec11143566399396e945287ff197ed6705455b5c0997b",
+        "ffe210996c04f4d75b991013e1a4a9280d77e653529156b9278d629cfbd320bf"
+      ],
+      "output_packet_sha256": [
+        "4a98ed0c8fbff4ea952ec11143566399396e945287ff197ed6705455b5c0997b"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split32768-01-invalid-retry",
+      "valid": false,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        32768
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 229496
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "0cedfb52e7372293eddf5ae96c12acdc619f114aec57210fa064991515a747cc",
+      "output_pcap_sha256": "e129adb2b326cea6604cc052e2c5affe27dad6e19b6ac848e30283ac0e0b7b89",
+      "input_packet_sha256": [
+        "4a98ed0c8fbff4ea952ec11143566399396e945287ff197ed6705455b5c0997b",
+        "ffe210996c04f4d75b991013e1a4a9280d77e653529156b9278d629cfbd320bf",
+        "ffe210996c04f4d75b991013e1a4a9280d77e653529156b9278d629cfbd320bf",
+        "4a98ed0c8fbff4ea952ec11143566399396e945287ff197ed6705455b5c0997b",
+        "ffe210996c04f4d75b991013e1a4a9280d77e653529156b9278d629cfbd320bf"
+      ],
+      "output_packet_sha256": [
+        "4a98ed0c8fbff4ea952ec11143566399396e945287ff197ed6705455b5c0997b"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split32768-10-invalid",
+      "valid": false,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        32768,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "a76a9bea66b6c92679fd00269c38c1361a738e0beaf3460186801d55f4b75dab",
+      "output_pcap_sha256": "bb5eed0c33e00a40291665a1893107907c8fb381b4c4aa066884f9ec9c9cbd68",
+      "input_packet_sha256": [
+        "ffe210996c04f4d75b991013e1a4a9280d77e653529156b9278d629cfbd320bf",
+        "4a98ed0c8fbff4ea952ec11143566399396e945287ff197ed6705455b5c0997b"
+      ],
+      "output_packet_sha256": [
+        "ffe210996c04f4d75b991013e1a4a9280d77e653529156b9278d629cfbd320bf"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split32768-10-invalid-retry",
+      "valid": false,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        32768,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 229517
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "202f70a0a7f98427d14e697ed32620817e502e476b3aad3b88006fb33053e8a8",
+      "output_pcap_sha256": "bb5eed0c33e00a40291665a1893107907c8fb381b4c4aa066884f9ec9c9cbd68",
+      "input_packet_sha256": [
+        "ffe210996c04f4d75b991013e1a4a9280d77e653529156b9278d629cfbd320bf",
+        "4a98ed0c8fbff4ea952ec11143566399396e945287ff197ed6705455b5c0997b",
+        "4a98ed0c8fbff4ea952ec11143566399396e945287ff197ed6705455b5c0997b",
+        "ffe210996c04f4d75b991013e1a4a9280d77e653529156b9278d629cfbd320bf",
+        "4a98ed0c8fbff4ea952ec11143566399396e945287ff197ed6705455b5c0997b"
+      ],
+      "output_packet_sha256": [
+        "ffe210996c04f4d75b991013e1a4a9280d77e653529156b9278d629cfbd320bf"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split50000-01-invalid",
+      "valid": false,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        50000
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "2aa39166c7511c931ed9b4e33ca16d27276df955b1367eeeea0603ffc9fc3ea5",
+      "output_pcap_sha256": "4334c327015b77db2b81455234e8c0ef4db3ce37ace9eda4dcce50844b403b9e",
+      "input_packet_sha256": [
+        "a944633ddd9a595b7e22423da1d1c419e8fbaf8f88d6901fec7beaad2220a892",
+        "d5f15a2d46b5a2db1f3826804d32e2c2d2c6fb0523fd75a16f2e792ff5cd6f10"
+      ],
+      "output_packet_sha256": [
+        "a944633ddd9a595b7e22423da1d1c419e8fbaf8f88d6901fec7beaad2220a892"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split50000-01-invalid-retry",
+      "valid": false,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        50000
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 212264
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "52f7c3a63a5f242c0ccc0de05db6af6ee44e8d5df08530b9b0c305b93381ca00",
+      "output_pcap_sha256": "4334c327015b77db2b81455234e8c0ef4db3ce37ace9eda4dcce50844b403b9e",
+      "input_packet_sha256": [
+        "a944633ddd9a595b7e22423da1d1c419e8fbaf8f88d6901fec7beaad2220a892",
+        "d5f15a2d46b5a2db1f3826804d32e2c2d2c6fb0523fd75a16f2e792ff5cd6f10",
+        "d5f15a2d46b5a2db1f3826804d32e2c2d2c6fb0523fd75a16f2e792ff5cd6f10",
+        "a944633ddd9a595b7e22423da1d1c419e8fbaf8f88d6901fec7beaad2220a892",
+        "d5f15a2d46b5a2db1f3826804d32e2c2d2c6fb0523fd75a16f2e792ff5cd6f10"
+      ],
+      "output_packet_sha256": [
+        "a944633ddd9a595b7e22423da1d1c419e8fbaf8f88d6901fec7beaad2220a892"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split50000-10-invalid",
+      "valid": false,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        50000,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "659087bb2f7b869103de805dcd10b227d99f2eb5307634d774b2a65a6e85a82e",
+      "output_pcap_sha256": "71bd068e1a3c0c89871ff33d49cc4bae4a0f26fc4179cc378d55c4f47f913938",
+      "input_packet_sha256": [
+        "d5f15a2d46b5a2db1f3826804d32e2c2d2c6fb0523fd75a16f2e792ff5cd6f10",
+        "a944633ddd9a595b7e22423da1d1c419e8fbaf8f88d6901fec7beaad2220a892"
+      ],
+      "output_packet_sha256": [
+        "d5f15a2d46b5a2db1f3826804d32e2c2d2c6fb0523fd75a16f2e792ff5cd6f10"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split50000-10-invalid-retry",
+      "valid": false,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        50000,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 246749
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "0dbcb4a0d415718c1169d43475fc446dffc152591a0e99d618ee5cd5caf1e271",
+      "output_pcap_sha256": "71bd068e1a3c0c89871ff33d49cc4bae4a0f26fc4179cc378d55c4f47f913938",
+      "input_packet_sha256": [
+        "d5f15a2d46b5a2db1f3826804d32e2c2d2c6fb0523fd75a16f2e792ff5cd6f10",
+        "a944633ddd9a595b7e22423da1d1c419e8fbaf8f88d6901fec7beaad2220a892",
+        "a944633ddd9a595b7e22423da1d1c419e8fbaf8f88d6901fec7beaad2220a892",
+        "d5f15a2d46b5a2db1f3826804d32e2c2d2c6fb0523fd75a16f2e792ff5cd6f10",
+        "a944633ddd9a595b7e22423da1d1c419e8fbaf8f88d6901fec7beaad2220a892"
+      ],
+      "output_packet_sha256": [
+        "d5f15a2d46b5a2db1f3826804d32e2c2d2c6fb0523fd75a16f2e792ff5cd6f10"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split65464-01-invalid",
+      "valid": false,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        65464
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "673a1b525e3b5ae6fb05067dcfe5efec99c05f8a9f047367588b0df57facea82",
+      "output_pcap_sha256": "aa91687c29b3ae375c4d7739508acee0126bc344854ee6eb16082d55abb0aa12",
+      "input_packet_sha256": [
+        "22e3a2d8c7f8c25936f1028131e51b6f0b364f0d50c0b823bd4cc632e197e875",
+        "9075f20f127a4a92a851410cc2baa9ff382016dc04f9c81b5c62d99d04f237c5"
+      ],
+      "output_packet_sha256": [
+        "22e3a2d8c7f8c25936f1028131e51b6f0b364f0d50c0b823bd4cc632e197e875"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split65464-01-invalid-retry",
+      "valid": false,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        0,
+        65464
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 196800
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "ecd89f349c841f9a85cc458d482c965c50524b1f9ecea40ec8850f708b5a2ce8",
+      "output_pcap_sha256": "aa91687c29b3ae375c4d7739508acee0126bc344854ee6eb16082d55abb0aa12",
+      "input_packet_sha256": [
+        "22e3a2d8c7f8c25936f1028131e51b6f0b364f0d50c0b823bd4cc632e197e875",
+        "9075f20f127a4a92a851410cc2baa9ff382016dc04f9c81b5c62d99d04f237c5",
+        "9075f20f127a4a92a851410cc2baa9ff382016dc04f9c81b5c62d99d04f237c5",
+        "22e3a2d8c7f8c25936f1028131e51b6f0b364f0d50c0b823bd4cc632e197e875",
+        "9075f20f127a4a92a851410cc2baa9ff382016dc04f9c81b5c62d99d04f237c5"
+      ],
+      "output_packet_sha256": [
+        "22e3a2d8c7f8c25936f1028131e51b6f0b364f0d50c0b823bd4cc632e197e875"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split65464-10-invalid",
+      "valid": false,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        65464,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 2,
+        "analyzed": 2,
+        "allow": 1,
+        "block": 1,
+        "rx_bytes": 131132
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "42dc5c2397eca21fbfc41ec95f14cf397118d7ae7240dfe3dd2164d2e258ca64",
+      "output_pcap_sha256": "5c770ac54f6d5de67b583acc54a672f2f36fa4249e5800a92c757559c357e239",
+      "input_packet_sha256": [
+        "9075f20f127a4a92a851410cc2baa9ff382016dc04f9c81b5c62d99d04f237c5",
+        "22e3a2d8c7f8c25936f1028131e51b6f0b364f0d50c0b823bd4cc632e197e875"
+      ],
+      "output_packet_sha256": [
+        "9075f20f127a4a92a851410cc2baa9ff382016dc04f9c81b5c62d99d04f237c5"
+      ],
+      "events": []
+    },
+    {
+      "name": "v4-p1-split65464-10-invalid-retry",
+      "valid": false,
+      "counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "version": 4,
+      "protocol": 1,
+      "variant": "one-bit-error",
+      "arrival_offsets": [
+        65464,
+        0
+      ],
+      "expected_reassemblies_min": 1,
+      "expected_reassemblies_max": 1,
+      "expected_checksum_errors_per_reassembly": 1,
+      "first_completion_index": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "checksum_counter_passed": true,
+      "reassembly_count_passed": true,
+      "expected_checksum_errors_for_observed_reassemblies": 1,
+      "invalid_datagram_fully_forwarded": false,
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 4
+      },
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 5,
+        "analyzed": 5,
+        "allow": 1,
+        "block": 4,
+        "rx_bytes": 262213
+      },
+      "checksum_errors": 1,
+      "reassemblies": 1,
+      "checksum_bypassed": 0,
+      "input_pcap_sha256": "fa676c0fa898404b274b37b9b5a420e2bb902675a552e1a68365f095a614af88",
+      "output_pcap_sha256": "5c770ac54f6d5de67b583acc54a672f2f36fa4249e5800a92c757559c357e239",
+      "input_packet_sha256": [
+        "9075f20f127a4a92a851410cc2baa9ff382016dc04f9c81b5c62d99d04f237c5",
+        "22e3a2d8c7f8c25936f1028131e51b6f0b364f0d50c0b823bd4cc632e197e875",
+        "22e3a2d8c7f8c25936f1028131e51b6f0b364f0d50c0b823bd4cc632e197e875",
+        "9075f20f127a4a92a851410cc2baa9ff382016dc04f9c81b5c62d99d04f237c5",
+        "22e3a2d8c7f8c25936f1028131e51b6f0b364f0d50c0b823bd4cc632e197e875"
+      ],
+      "output_packet_sha256": [
+        "9075f20f127a4a92a851410cc2baa9ff382016dc04f9c81b5c62d99d04f237c5"
+      ],
+      "events": []
+    }
+  ]
+}
