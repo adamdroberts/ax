@@ -1,0 +1,33 @@
+{
+  "scope": "Pure copied-option parser and rejection state; not native reassembly or deployment.",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin27.0.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+  "command": [
+    "/usr/bin/clang++",
+    "-std=c++17",
+    "-O1",
+    "-g",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-fsanitize=address,undefined",
+    "-fno-omit-frame-pointer",
+    "/Users/adam/Dev/agent-security/ax/native-snort3/patches/ipv4_fragment_options_test.cc",
+    "-o",
+    "/private/tmp/ax-snort-fragment-options-repair/fragment-options-parser-test"
+  ],
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "binary_sha256": "cf660cb7b12ab4e9743b9a4c6c7c2ec7d42ca877765e5fd0802fd8fd400e4edc",
+  "sha256": {
+    "native-snort3/patches/ipv4_fragment_options.h": "e9029a41cb863e5065a7cfeb6ef6e1e55f967b847bf2278c5c9fc96e39caa41c",
+    "native-snort3/patches/ipv4_fragment_options_test.cc": "9e6f1e39b5a0128c947f5b1d3d93546bd15071fbdd3f2c3d551a403092318834",
+    "native-snort3/patches/record_fragment_options_build.py": "18bf64d88bb32e05c6c8388c7714139ddc7f45f161a05140b6ac19ac4a25ac89"
+  },
+  "summary": {
+    "assertions": 1393926,
+    "random_spans": 100000,
+    "state_bytes": 47
+  }
+}

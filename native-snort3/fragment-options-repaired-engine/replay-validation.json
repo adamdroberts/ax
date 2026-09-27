@@ -1,0 +1,3105 @@
+{
+  "snort_version": "3.12.2.0",
+  "source_commit": "14aeb09f5a0856812dbe08ead3c21f99e8860aa0",
+  "snort_binary_sha256": "684f08201996eadf1966ba01322188ea09d0a46208150784167c40face7117e9",
+  "scope": "Offline readback with inline simulation. would_drop/would_block are simulated verdicts; live packet blocking and deployment topology are not tested.",
+  "configuration": {
+    "snort_version": "3.12.2.0",
+    "source_commit": "14aeb09f5a0856812dbe08ead3c21f99e8860aa0",
+    "scope": "Native configuration loading and effective rule states only; no traffic or live inline enforcement.",
+    "profiles": [
+      {
+        "profile": "protocol",
+        "loaded": 208,
+        "enabled": 208,
+        "actions": {
+          "drop": 164,
+          "block": 0,
+          "alert": 44
+        }
+      },
+      {
+        "profile": "perimeter",
+        "loaded": 215,
+        "enabled": 215,
+        "actions": {
+          "drop": 164,
+          "block": 5,
+          "alert": 46
+        }
+      },
+      {
+        "profile": "http",
+        "loaded": 271,
+        "enabled": 271,
+        "actions": {
+          "drop": 164,
+          "block": 19,
+          "alert": 88
+        }
+      },
+      {
+        "profile": "both",
+        "loaded": 278,
+        "enabled": 278,
+        "actions": {
+          "drop": 164,
+          "block": 24,
+          "alert": 90
+        }
+      }
+    ],
+    "rejected_invalid_configurations": 18,
+    "plugin_sha256": {
+      "ax_nd_options.so": "f5868d88ddb4054f9e3555a0a40aaaf78a8c85bd202a3d18a2c883fc0b7da1b2"
+    },
+    "sha256": {
+      "native-snort3/protocol-ips.lua": "000cace55518af574800693f3b671e3a07d491ff5e0ad3e9c87c19abc450712c",
+      "native-snort3/agent-guard-overlay.lua": "f6b900d70900f3e9d3a042d247590a501f622c5c7fa11fd791b75ea20e8fd91d",
+      "native-snort3/protocol.states": "444f3a106d5f018ebe429d262d5f8fc79436c8fd460aa6d48ed0f4795e6cc81f",
+      "native-snort3/protocol-builtins.rules": "58b92054c4d5d7f0cf68043a1fe7ab8a8ae125791491ecd6ce309e3354f7bc27",
+      "native-snort3/builtin-inventory.json": "a48a61274609c4dfb69824bd2e0b5f7bbb0da226a27c7faa08e95c6866a118a8",
+      "native-snort3/protocol-validation.rules": "b6c36614f8e4a9853104deadcb26f494b00966271e409d21f96293fb90267ea8",
+      "native-snort3/generate_inventory.py": "4d461ea9cfbbb799592a644a651c71c872b1d430962f9cc4445e4e04eb246c0f",
+      "native-snort3/validate_profiles.py": "9d6adaacd9a4c55b913a2de9318af206e4a62a5f1882610cb2cf9091682c769e",
+      "native-snort3/plugins/README.md": "09ce38523a9abc39455c27a82f176052257e34d0832487e7ec65728e96d9f402",
+      "native-snort3/plugins/build.py": "ec2faeec4501f4e5591f35e665c25f5677182b17e76801835e64199b43458e7c",
+      "native-snort3/plugins/ax_nd_options.cc": "5ac99c5b4568c15ee05d5a9bf76254f566c41e28c7a612f6f6fa521da56a9255",
+      "native-snort3/plugins/nd_validation.h": "4f88245b813db35205d73dbff849269e43f9bc4ace81e6fb3eccdf878eabc185",
+      "native-snort3/plugins/nd_validation_test.cc": "72358ad3aac6fd0a848ddc883ec8430012573cee71185758021b942e77008ad2",
+      "native-snort3/plugins/ip_validation.h": "cb67871c83dfcb059b4c126933366a06f60472060956bbdf6b3e4bebf9792010",
+      "native-snort3/plugins/ip_validation_test.cc": "f5e057023dfc380f08825cbcc1beb3d638a947bf503e271343715ebe630eb080",
+      "native-snort3/plugins/ip4_options.h": "643255e2b38d0b67c6db2297c6b03076b0d32853ec038f20b9508ab83b18e30d",
+      "native-snort3/plugins/ip4_options_test.cc": "29927fe74d788bb6d99fd811cd0dc88b87de30c54d44e45fcf07db9219e8120a",
+      "native-snort3/plugins/ip6_options.h": "c0e938f3053eb62b1e537959d07861a5b2944312ebfc4decb13a914d1236ad50",
+      "native-snort3/plugins/ip6_options_test.cc": "7dbae601d883aa31a0a1fcd9c7dc5be8f267c7f1a5b890497958b6ac824117ef",
+      "native-snort3/plugins/esp_validation.h": "cf8ade954fcec4f1f09917798d1aa4fd748790f210adb265fe845e32d3f135fe",
+      "native-snort3/plugins/esp_validation_test.cc": "2094e98219defcb518985f3f3aa978ff08ca1c3f6e449afa0105ed071b3dc1c5",
+      "native-snort3/plugins/routing_validation.h": "825341ae93dbe5bb8cd8071cc245d5b3642d072a86291241084f03b3b2a36694",
+      "native-snort3/plugins/routing_validation_test.cc": "ed3924084f745164e72c5b5457ff5d307d1a852fe8eda9371f5199f007b58c07",
+      "pkg/security/snort/imports/agent-guard-snort3/native-only.rules": "2451962b90016f8b520521a93837ddcdcce9064e704ebdc5e67c359e90fd9d9a"
+    }
+  },
+  "fixture_source_sha256": {
+    "native-snort3/tests/generate_pcaps.py": "7a542d7f61633a4849c9147476f2dae810496247686d87c767f43a9e5470c5d1",
+    "native-snort3/tests/replay.py": "58d2cdd52c85c22cde82fc5ff2d6961b83d69588ce6c628345cce0b6dbefe76b"
+  },
+  "summary": {
+    "cases": 156,
+    "passed": 156,
+    "valid_cases": 46,
+    "malformed_cases": 106,
+    "policy_rejections": 4,
+    "failures": []
+  },
+  "cases": [
+    {
+      "name": "valid-ipv4-udp-zero-checksum",
+      "file": "valid-ipv4-udp-zero-checksum.pcap",
+      "sha256": "1bf1e4b250a32723d735be1fff50d880d0319e0da882f07151b0b1acc106e972",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "valid-ipv4-udp-large",
+      "file": "valid-ipv4-udp-large.pcap",
+      "sha256": "00257256cb364136af7ea4c9edf71c61b07976577121a8f1f8675358451c30cc",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:445:1",
+          "action": "allow",
+          "msg": "(udp) large UDP packet (> 4000 bytes)"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv4-tcp-syn",
+      "file": "valid-ipv4-tcp-syn.pcap",
+      "sha256": "4eafed935e11f0ad0ea807f3666d797f3cd8a9e8281eec978c34bee7863ab23e",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "valid-ipv4-icmp-echo",
+      "file": "valid-ipv4-icmp-echo.pcap",
+      "sha256": "882a646cf87bde1685efc17cac6d7cd5c6a030b045c9e8d30c3f0321916ad9fd",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "valid-ipv6-udp",
+      "file": "valid-ipv6-udp.pcap",
+      "sha256": "8f4c9bedd1d57de4c2bab0d033297177927ba96519520d892da754d0bcf33314",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "valid-ipv6-nd-133",
+      "file": "valid-ipv6-nd-133.pcap",
+      "sha256": "cfd16d926f13b14e4ea1a04c35cd9a42217a50fba0f1b17eb76122e374de2299",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "valid-ipv6-nd-134",
+      "file": "valid-ipv6-nd-134.pcap",
+      "sha256": "40284721b1c7c2553ba72fdc73b6e70580f499683e102c26d9a48d36126902ff",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "valid-ipv6-nd-135",
+      "file": "valid-ipv6-nd-135.pcap",
+      "sha256": "0ce1f21900fe6865bdf6fd1af23c05434bb8d641b831569c289e83d0410c9d7a",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "valid-ipv6-nd-136",
+      "file": "valid-ipv6-nd-136.pcap",
+      "sha256": "073d471a286197759989d36ac4164451e4988a69331985278c30d02fa1b95377",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "valid-ipv6-nd-137",
+      "file": "valid-ipv6-nd-137.pcap",
+      "sha256": "7b1a79eb9a2340d628f2ddef06e467e049088b87aa7a53dfb214f633ca9149e9",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "ipv4-wrong-version",
+      "file": "ipv4-wrong-version.pcap",
+      "sha256": "759df0587ce0c29767c45467a0dc17d338785329ccb1bfe033c48053a3fd0e2f",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        1
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:1:1",
+          "action": "would_drop",
+          "msg": "(ipv4) not IPv4 datagram"
+        }
+      ]
+    },
+    {
+      "name": "ipv4-short-ihl",
+      "file": "ipv4-short-ihl.pcap",
+      "sha256": "7b5fa299c9dcc8b88febb3fce27272d90d7c7acc22d751583361a3f049820483",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        2
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:2:1",
+          "action": "would_drop",
+          "msg": "(ipv4) IPv4 header length < minimum"
+        }
+      ]
+    },
+    {
+      "name": "ipv4-total-below-header",
+      "file": "ipv4-total-below-header.pcap",
+      "sha256": "3811d9a2807040a3a5b4e0cb62ad4c047688facdb499b517b52e100a9f2db49c",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        3
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:3:1",
+          "action": "would_drop",
+          "msg": "(ipv4) IPv4 datagram length < header field"
+        }
+      ]
+    },
+    {
+      "name": "ipv4-declared-length-truncated",
+      "file": "ipv4-declared-length-truncated.pcap",
+      "sha256": "d68d7dc36fac496efb1db7e3a00bc779b8de287686f28a26bd632b34710ea966",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        6
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:6:1",
+          "action": "would_drop",
+          "msg": "(ipv4) IPv4 datagram length > captured length"
+        }
+      ]
+    },
+    {
+      "name": "tcp-header-truncated",
+      "file": "tcp-header-truncated.pcap",
+      "sha256": "ea0c5e138c28c9d090e9c59e23190d009cbb13f6508ef0d9ce001d97f0c68cdc",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        45
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:45:1",
+          "action": "would_drop",
+          "msg": "(tcp) TCP packet length is smaller than 20 bytes"
+        }
+      ]
+    },
+    {
+      "name": "tcp-offset-below-minimum",
+      "file": "tcp-offset-below-minimum.pcap",
+      "sha256": "fabfe7d61ed5b62246bf466158d1938bf8b3539a08ca567efa67a01b7e82b13b",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        46
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:46:1",
+          "action": "would_drop",
+          "msg": "(tcp) TCP data offset is less than 5"
+        }
+      ]
+    },
+    {
+      "name": "tcp-offset-exceeds-packet",
+      "file": "tcp-offset-exceeds-packet.pcap",
+      "sha256": "77eec3fb199ac21ebbaebf12d7807874e6bdd8c2ca98a65fa15214f1762daa98",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        47
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:47:1",
+          "action": "would_drop",
+          "msg": "(tcp) TCP header length exceeds packet length"
+        }
+      ]
+    },
+    {
+      "name": "tcp-syn-fin",
+      "file": "tcp-syn-fin.pcap",
+      "sha256": "801946794b3591e484362f182ccc0d7b4f0bf5809020e18be70f6776260ee235",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        420
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:420:1",
+          "action": "would_drop",
+          "msg": "(tcp) TCP SYN with FIN"
+        },
+        {
+          "rule": "116:422:1",
+          "action": "would_drop",
+          "msg": "(tcp) TCP PDU missing ack for established session"
+        }
+      ]
+    },
+    {
+      "name": "udp-header-truncated",
+      "file": "udp-header-truncated.pcap",
+      "sha256": "6d9b1e75a40ab55f9d1e68299e6fbf9b6dea73d97f4ba991b1bc2779bf066e73",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        95
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:95:1",
+          "action": "would_drop",
+          "msg": "(udp) truncated UDP header"
+        }
+      ]
+    },
+    {
+      "name": "udp-length-below-header",
+      "file": "udp-length-below-header.pcap",
+      "sha256": "1ce3a02b04cb537c7f60fb05fb0f2837d9421b17e67b70e2f60e53d21b6651f7",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        96
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:96:1",
+          "action": "would_drop",
+          "msg": "(udp) invalid UDP header, length field < 8"
+        }
+      ]
+    },
+    {
+      "name": "icmpv4-header-truncated",
+      "file": "icmpv4-header-truncated.pcap",
+      "sha256": "3c9e791c3e43faccf47949d784b0961591db26da815f1e4578a417c30c133e41",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        426
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:426:1",
+          "action": "would_drop",
+          "msg": "(icmp4) truncated ICMP4 header"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-declared-length-truncated",
+      "file": "ipv6-declared-length-truncated.pcap",
+      "sha256": "eebf987e4db999a812314f96ce5a185b1818bed42a96229fc8ea0ac659143459",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        275
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:275:1",
+          "action": "would_drop",
+          "msg": "(ipv6) IPv6 datagram length > captured length"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-multicast-source",
+      "file": "ipv6-multicast-source.pcap",
+      "sha256": "7ba8eb92727a9995889e3a43b4e7d967d7071132fce240b2ae2617f76acd902f",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        277
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:277:1",
+          "action": "would_drop",
+          "msg": "(ipv6) IPv6 packet with multicast source address"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-udp-zero-checksum",
+      "file": "ipv6-udp-zero-checksum.pcap",
+      "sha256": "7e362314c7a5acc38a02486a679695b9618cb80ccfea868519c3e322b1ae174c",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        406
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:406:1",
+          "action": "would_drop",
+          "msg": "(udp) invalid IPv6 UDP packet, checksum zero"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-133-invalid-code",
+      "file": "ipv6-nd-133-invalid-code.pcap",
+      "sha256": "a3723797a455339e8c6b1b0bf0d3f4854d1ca63f5fe7e0b4c4925b9f6b7959ba",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        287
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:287:1",
+          "action": "would_drop",
+          "msg": "(icmp6) ICMPv6 router solicitation packet with a code not equal to 0"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-133-invalid-hop-limit",
+      "file": "ipv6-nd-133-invalid-hop-limit.pcap",
+      "sha256": "4effe04cc618d508d3bed021a44dc6cb9220e277cf2ac8eaf23c21b56eceba5d",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201002
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201002:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery invalid hop limit"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-133-truncated",
+      "file": "ipv6-nd-133-truncated.pcap",
+      "sha256": "b5f3f9e9897f3cf4e824fad2945ddbbf48355cda409f603c81c771259a150603",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        105
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:105:1",
+          "action": "would_drop",
+          "msg": "(icmp4) ICMP header truncated"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-134-invalid-code",
+      "file": "ipv6-nd-134-invalid-code.pcap",
+      "sha256": "8951efc493d13efc07c0d3f1f6bc74e2ba58c16439c9732d65d2dd07900dcb85",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        288
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:288:1",
+          "action": "would_drop",
+          "msg": "(icmp6) ICMPv6 router advertisement packet with a code not equal to 0"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-134-invalid-hop-limit",
+      "file": "ipv6-nd-134-invalid-hop-limit.pcap",
+      "sha256": "12d9c1fa422ad45c51208e7cdd382d2070e2493170c4835937403ec5feaa90c0",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201002
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201002:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery invalid hop limit"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-134-truncated",
+      "file": "ipv6-nd-134-truncated.pcap",
+      "sha256": "6db3bfa2b5db4ef77667aeb0083d5500ab70f62a58c98088c7e61968255b1a16",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        105
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:105:1",
+          "action": "would_drop",
+          "msg": "(icmp4) ICMP header truncated"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-135-invalid-code",
+      "file": "ipv6-nd-135-invalid-code.pcap",
+      "sha256": "0923ae2c9dd61cd3f82434dd159c43883755427afaedf8aa915770997c450b35",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201001
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201001:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery invalid code"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-135-invalid-hop-limit",
+      "file": "ipv6-nd-135-invalid-hop-limit.pcap",
+      "sha256": "3bc07d7b715dbd2e0d636f8aae91d1103bde1beddf96cca05bdfeaf2691e4972",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201002
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201002:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery invalid hop limit"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-135-truncated",
+      "file": "ipv6-nd-135-truncated.pcap",
+      "sha256": "0b6ae0c2e61398f309392da86b3b7ef6ae40864d8e6c051bc18511b61160ae2a",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        105
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:105:1",
+          "action": "would_drop",
+          "msg": "(icmp4) ICMP header truncated"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-136-invalid-code",
+      "file": "ipv6-nd-136-invalid-code.pcap",
+      "sha256": "09ead908587f5a416f8b293a06dce9dd63f6b169fb53e1fb05183f3fdb47319c",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201001
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201001:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery invalid code"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-136-invalid-hop-limit",
+      "file": "ipv6-nd-136-invalid-hop-limit.pcap",
+      "sha256": "a7e336aac26b26a602b1a02bb173ef75cf99b5fd32e5519a8e1049b5a5488f3f",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201002
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201002:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery invalid hop limit"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-136-truncated",
+      "file": "ipv6-nd-136-truncated.pcap",
+      "sha256": "b2b242aa4fd2a187f41f7e26b1c54314ce2b7511b279938fc4d76efc328b2c29",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        105
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:105:1",
+          "action": "would_drop",
+          "msg": "(icmp4) ICMP header truncated"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-137-invalid-code",
+      "file": "ipv6-nd-137-invalid-code.pcap",
+      "sha256": "3957733df821cd54a1a784e57b8a2ee3ae882e9b11cba932cd14388a5ab16395",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201001
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201001:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery invalid code"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-137-invalid-hop-limit",
+      "file": "ipv6-nd-137-invalid-hop-limit.pcap",
+      "sha256": "c373431f5ae2443f6425839017ad0d359ff7c1e1b35a0a07b426ac08fc4b226a",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201002
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201002:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery invalid hop limit"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-137-truncated",
+      "file": "ipv6-nd-137-truncated.pcap",
+      "sha256": "6e3a22156045bd9b834677bc8f0e2a2455fcaebf8afe47184bae14aa07d17b25",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        105
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:105:1",
+          "action": "would_drop",
+          "msg": "(icmp4) ICMP header truncated"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-reassembled-fragments",
+      "file": "ipv6-nd-reassembled-fragments.pcap",
+      "sha256": "fce451ec871c3a0b891f9c95550c38ea5e3b5379a096a2ed7437a81dc1a1a252",
+      "category": "malformed",
+      "packets": 2,
+      "expected_drop_rule": [
+        1,
+        9201003
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201003:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery reassembled from fragments"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-133-atomic-fragment-0",
+      "file": "ipv6-nd-133-atomic-fragment-0.pcap",
+      "sha256": "5b25b58368adbb7a1ba9b32cd462ce98fa152a52c2cc49559577ff38dfebc65e",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        458
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:458:1",
+          "action": "would_drop",
+          "msg": "(ipv6) bogus fragmentation packet, possible BSD attack"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-133-atomic-fragment-256",
+      "file": "ipv6-nd-133-atomic-fragment-256.pcap",
+      "sha256": "62c44a881483b21ee2094645d6b295d78b76223dd49a8010ae34388b238c81c1",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        458
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:458:1",
+          "action": "would_drop",
+          "msg": "(ipv6) bogus fragmentation packet, possible BSD attack"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-133-atomic-fragment-4096",
+      "file": "ipv6-nd-133-atomic-fragment-4096.pcap",
+      "sha256": "23b46a8123850de52c3d22c7e0dfd27280f4c175f025451983f577aa080cc66e",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        458
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:458:1",
+          "action": "would_drop",
+          "msg": "(ipv6) bogus fragmentation packet, possible BSD attack"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-134-atomic-fragment-0",
+      "file": "ipv6-nd-134-atomic-fragment-0.pcap",
+      "sha256": "2d81850a945366a4bc914f5ede5195b830e0b00f2df4738a365f89020ecfb974",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        458
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:458:1",
+          "action": "would_drop",
+          "msg": "(ipv6) bogus fragmentation packet, possible BSD attack"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-134-atomic-fragment-256",
+      "file": "ipv6-nd-134-atomic-fragment-256.pcap",
+      "sha256": "45ac71fd635d5ca58f8c1ebef1e44e7b6fc47f63fa05e654f099a66e8ac0f33f",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        458
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:458:1",
+          "action": "would_drop",
+          "msg": "(ipv6) bogus fragmentation packet, possible BSD attack"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-134-atomic-fragment-4096",
+      "file": "ipv6-nd-134-atomic-fragment-4096.pcap",
+      "sha256": "c96f026a9333150f0e0f74aeec84f82d2239614194ea57817a782a0f0739ff58",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        458
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:458:1",
+          "action": "would_drop",
+          "msg": "(ipv6) bogus fragmentation packet, possible BSD attack"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-135-atomic-fragment-0",
+      "file": "ipv6-nd-135-atomic-fragment-0.pcap",
+      "sha256": "db36d14141f2826c0c5555e96e999833ab5a86fdf327e774e88d911cfe038be3",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        458
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:458:1",
+          "action": "would_drop",
+          "msg": "(ipv6) bogus fragmentation packet, possible BSD attack"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-135-atomic-fragment-256",
+      "file": "ipv6-nd-135-atomic-fragment-256.pcap",
+      "sha256": "e4eb4a9cceb0fde8ae574fa56cd33d9723e5a28c3d3ac3735e848c57accd6a26",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        458
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:458:1",
+          "action": "would_drop",
+          "msg": "(ipv6) bogus fragmentation packet, possible BSD attack"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-135-atomic-fragment-4096",
+      "file": "ipv6-nd-135-atomic-fragment-4096.pcap",
+      "sha256": "3f046a157d090e60e48eb5fa4718fd8c4b4076f565910fe8013b94158ed95efa",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        458
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:458:1",
+          "action": "would_drop",
+          "msg": "(ipv6) bogus fragmentation packet, possible BSD attack"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-136-atomic-fragment-0",
+      "file": "ipv6-nd-136-atomic-fragment-0.pcap",
+      "sha256": "7ba4c9f95bfd4e20330d65d416105953fa5c801f426833797032437bea879777",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        458
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:458:1",
+          "action": "would_drop",
+          "msg": "(ipv6) bogus fragmentation packet, possible BSD attack"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-136-atomic-fragment-256",
+      "file": "ipv6-nd-136-atomic-fragment-256.pcap",
+      "sha256": "441cb7275cdc6197f1942a68df32e53683e2703d3113ca8e3601baf6724c8ae9",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        458
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:458:1",
+          "action": "would_drop",
+          "msg": "(ipv6) bogus fragmentation packet, possible BSD attack"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-136-atomic-fragment-4096",
+      "file": "ipv6-nd-136-atomic-fragment-4096.pcap",
+      "sha256": "a3c7986a39c21ae923e49e91e45fbb5dbdb5b4ab4b1523aa72dc928f01af6664",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        458
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:458:1",
+          "action": "would_drop",
+          "msg": "(ipv6) bogus fragmentation packet, possible BSD attack"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-137-atomic-fragment-0",
+      "file": "ipv6-nd-137-atomic-fragment-0.pcap",
+      "sha256": "ac2f3a2c918c8621e021fafc36efe4c9457969e5446f01202ea8d30e58f9f219",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        458
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:458:1",
+          "action": "would_drop",
+          "msg": "(ipv6) bogus fragmentation packet, possible BSD attack"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-137-atomic-fragment-256",
+      "file": "ipv6-nd-137-atomic-fragment-256.pcap",
+      "sha256": "b7373854603adcf8dae0c9b3c85dcd56aefbe1eae390ecf9be597a12deba009a",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        458
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:458:1",
+          "action": "would_drop",
+          "msg": "(ipv6) bogus fragmentation packet, possible BSD attack"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-137-atomic-fragment-4096",
+      "file": "ipv6-nd-137-atomic-fragment-4096.pcap",
+      "sha256": "a393a3c4e48033110721aa58fb68926cf322ff7b6c509ccb67e1a77786f5bffa",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        458
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:458:1",
+          "action": "would_drop",
+          "msg": "(ipv6) bogus fragmentation packet, possible BSD attack"
+        }
+      ]
+    },
+    {
+      "name": "policy-reject-valid-ipv6-atomic-udp",
+      "file": "policy-reject-valid-ipv6-atomic-udp.pcap",
+      "sha256": "d6c888c4aa0698f1675741a2ec3116dde621b1e0216ca8a27da164efdd556329",
+      "category": "policy_rejection",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        458
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:458:1",
+          "action": "would_drop",
+          "msg": "(ipv6) bogus fragmentation packet, possible BSD attack"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-134-global-source",
+      "file": "ipv6-nd-134-global-source.pcap",
+      "sha256": "bef92383254b4f81a72dbacd59c90de6825cc62c28e4f811827b954ed1d4760a",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201004
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201004:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Router Advertisement non-link-local source"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-137-global-source",
+      "file": "ipv6-nd-137-global-source.pcap",
+      "sha256": "b2365263f1df42cbe660dc672450fe175fd23a2560df6fe345009779c8f9efcd",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201005
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201005:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Redirect non-link-local source"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-multiple-advisories",
+      "file": "valid-ipv6-multiple-advisories.pcap",
+      "sha256": "c55aa3173e2930c00d84781373ed575e979fbb4ee3f7c6ade0df2328c3f34e92",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:151:1",
+          "action": "allow",
+          "msg": "(decode) same src/dst IP"
+        },
+        {
+          "rule": "116:279:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 header includes an undefined option type"
+        },
+        {
+          "rule": "116:292:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-advisories-before-block",
+      "file": "ipv6-advisories-before-block.pcap",
+      "sha256": "f9436a8fe9a02e6992f11a4092b8d199e589358fc9d7e3ed3cf7fc8e3fa74b50",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201001
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:151:1",
+          "action": "allow",
+          "msg": "(decode) same src/dst IP"
+        },
+        {
+          "rule": "116:279:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 header includes an undefined option type"
+        },
+        {
+          "rule": "116:292:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+        },
+        {
+          "rule": "1:9201001:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery invalid code"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-many-extension-options",
+      "file": "valid-ipv6-many-extension-options.pcap",
+      "sha256": "17680b950c5163501155e62232d4ef63fa605eabb4ed54d38ea45930712b4e75",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:279:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 header includes an undefined option type"
+        },
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-many-options-invalid-nd-code",
+      "file": "ipv6-many-options-invalid-nd-code.pcap",
+      "sha256": "d2b4aff829c6cb7c6f9e78bda46b5c5ccf3a5588f92fb67d53e0ee516ede0e4b",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201001
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:279:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 header includes an undefined option type"
+        },
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        },
+        {
+          "rule": "1:9201001:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery invalid code"
+        }
+      ]
+    },
+    {
+      "name": "policy-reject-ipv6-extension-budget-exceeded",
+      "file": "policy-reject-ipv6-extension-budget-exceeded.pcap",
+      "sha256": "2831300af92b6e23b6dc464b2f8fba44bdbef9abc31aba299b06c143491b4d59",
+      "category": "policy_rejection",
+      "packets": 1,
+      "expected_drop_rule": [
+        116,
+        456
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:279:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 header includes an undefined option type"
+        },
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        },
+        {
+          "rule": "116:456:1",
+          "action": "would_drop",
+          "msg": "(ipv6) too many IPv6 extension headers"
+        },
+        {
+          "rule": "1:9201016:1",
+          "action": "would_drop",
+          "msg": "AX malformed original-wire IPv6 Type 2 routing header"
+        },
+        {
+          "rule": "1:9201014:1",
+          "action": "would_drop",
+          "msg": "AX impossible visible ESP framing"
+        },
+        {
+          "rule": "1:9201013:1",
+          "action": "would_drop",
+          "msg": "AX malformed IPv6 extension option structure"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-133-unknown-zero-length",
+      "file": "ipv6-nd-133-unknown-zero-length.pcap",
+      "sha256": "88bdaa9f36ed54133e91d9168fea27c03f0e63e1f01b0c88427bd5012d100f67",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-133-reserved-zero-length",
+      "file": "ipv6-nd-133-reserved-zero-length.pcap",
+      "sha256": "e411cf0e9a05ecf2df5a8f6d4464784c04d723ac5b22a0a57df4cad8b01d26fc",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-133-unknown-then-zero-length",
+      "file": "ipv6-nd-133-unknown-then-zero-length.pcap",
+      "sha256": "89b4952a1dafe70510d855871ff868331f3885ec0256cd4d0fb8253730c5a362",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-133-option-overrun",
+      "file": "ipv6-nd-133-option-overrun.pcap",
+      "sha256": "2166cde2947f5028cdba889dcfbd2708e4c3a2706ac81f2ba9235655f23119c6",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-133-trailing-option-byte",
+      "file": "ipv6-nd-133-trailing-option-byte.pcap",
+      "sha256": "f0376cbc20c4c869c708747096c51041f302c5d2ee7f0431bf21d9662b8a7b14",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-nd-133-unknown-options",
+      "file": "valid-ipv6-nd-133-unknown-options.pcap",
+      "sha256": "1aab512ccea399cfca91d232092e6c191dfa72828c64c8c4fc94c8beabf150d0",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "ipv6-nd-134-unknown-zero-length",
+      "file": "ipv6-nd-134-unknown-zero-length.pcap",
+      "sha256": "801a4cfef90a9631dac970289016044fa84ca82178b776fa91c85cc147df08ae",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-134-reserved-zero-length",
+      "file": "ipv6-nd-134-reserved-zero-length.pcap",
+      "sha256": "2c17d2ca318b25ac45e95fff16d4ff2a5283b8520e1aa171f3c7854c3e9ae7b1",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-134-unknown-then-zero-length",
+      "file": "ipv6-nd-134-unknown-then-zero-length.pcap",
+      "sha256": "a27f36bf9cd7eaa2d9b075a00c5c9f17543fd96ebcd2d2539c35f34a852e8dab",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-134-option-overrun",
+      "file": "ipv6-nd-134-option-overrun.pcap",
+      "sha256": "7ed8081d0c2fba05c862764811cb9d45b7c170670433c775e4e770babe9d430a",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-134-trailing-option-byte",
+      "file": "ipv6-nd-134-trailing-option-byte.pcap",
+      "sha256": "0839584a67c4528711f88a405286ab8bf8e40b85e26549ee78603a41ecec3c4d",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-nd-134-unknown-options",
+      "file": "valid-ipv6-nd-134-unknown-options.pcap",
+      "sha256": "62d6a87bbb0c7f989aa60ced1b438af5ad625e141e488cb4217bbf2dc6cb2bbc",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "ipv6-nd-135-unknown-zero-length",
+      "file": "ipv6-nd-135-unknown-zero-length.pcap",
+      "sha256": "4979ed8b9e472d3c50fc304f31d8440e8e1c4c32892fc80f08ca2290ad7fd593",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-135-reserved-zero-length",
+      "file": "ipv6-nd-135-reserved-zero-length.pcap",
+      "sha256": "cd47cbb43bea1e9baea6e7efef0856ec63ad8a93e0bd9aff0fe672c5fe99d094",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-135-unknown-then-zero-length",
+      "file": "ipv6-nd-135-unknown-then-zero-length.pcap",
+      "sha256": "c75a56d4a659f7a6ba25061fa8f0d574b0b4377ac10757e5d54d614479f709a2",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-135-option-overrun",
+      "file": "ipv6-nd-135-option-overrun.pcap",
+      "sha256": "fff1f2484736c74857900868f119b151ffe814836c2c282108eac894d815718c",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-135-trailing-option-byte",
+      "file": "ipv6-nd-135-trailing-option-byte.pcap",
+      "sha256": "3fe968e3221e777a006442639010066c11fb84c93a490022a49570ef127176c3",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-nd-135-unknown-options",
+      "file": "valid-ipv6-nd-135-unknown-options.pcap",
+      "sha256": "0c9e0455949494aeae802fa3738e16c5beaf069397381bf77f5078c1f1d95a99",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "ipv6-nd-136-unknown-zero-length",
+      "file": "ipv6-nd-136-unknown-zero-length.pcap",
+      "sha256": "ee10e95529406640edf815be0b0d1c99f87fcb9815fd36478e78562f6f0f69ef",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-136-reserved-zero-length",
+      "file": "ipv6-nd-136-reserved-zero-length.pcap",
+      "sha256": "2329eb6a8d002ad1e6354e6294c55e7f78059caf7a4bfdc4bedfb3fa7db4d66f",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-136-unknown-then-zero-length",
+      "file": "ipv6-nd-136-unknown-then-zero-length.pcap",
+      "sha256": "d04a821defb141cfbf6ec9ccfe98e635b4e1bb6c46924c71a8eaa99ab8407cb4",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-136-option-overrun",
+      "file": "ipv6-nd-136-option-overrun.pcap",
+      "sha256": "027ee4bf0e2bf59d6b735b4bf8371c78c395ead672315a2e173584ee0d53b601",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-136-trailing-option-byte",
+      "file": "ipv6-nd-136-trailing-option-byte.pcap",
+      "sha256": "15e101704c38f74de5da27d79271d5c0aa575959b02e396a8d986bf527625906",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-nd-136-unknown-options",
+      "file": "valid-ipv6-nd-136-unknown-options.pcap",
+      "sha256": "958d2affe30b24fa3c6634be96bca6d49c03811b48e633f6cb5f046a57f90f99",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "ipv6-nd-137-unknown-zero-length",
+      "file": "ipv6-nd-137-unknown-zero-length.pcap",
+      "sha256": "52586e365269997bade1a42b9c660aac868b3272695fb2a0c3495c4a1957d601",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-137-reserved-zero-length",
+      "file": "ipv6-nd-137-reserved-zero-length.pcap",
+      "sha256": "427695885948e5bb0a595bd0764641003a6edba8b7f19304af1b3a297b6d1eda",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-137-unknown-then-zero-length",
+      "file": "ipv6-nd-137-unknown-then-zero-length.pcap",
+      "sha256": "7e6f62ac72f33d2f5ad0e0bb49619497ac3a0fcf8314dc8218748ec875fd418b",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-137-option-overrun",
+      "file": "ipv6-nd-137-option-overrun.pcap",
+      "sha256": "ed3278e452bf83c994868591f44d147fb2dafd9565abd868f37ebbde6eb99f76",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-137-trailing-option-byte",
+      "file": "ipv6-nd-137-trailing-option-byte.pcap",
+      "sha256": "5cfa127ce9832f77ab803077f1c71c56761a7b1626e6148dc96c36595b215018",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201006
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201006:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery malformed option framing"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-nd-137-unknown-options",
+      "file": "valid-ipv6-nd-137-unknown-options.pcap",
+      "sha256": "9dd2a156ded7ba5e85b0a8b095cd9e537e5aef3b6f1f96226c0b91a874e0af62",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "ipv6-nd-135-multicast-target",
+      "file": "ipv6-nd-135-multicast-target.pcap",
+      "sha256": "8ed5f1f4b4bf107d5f7dd589495c25bcca0a089211dc73998219a83ae4648b32",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201007
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201007:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery invalid receive semantics"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-nd-136-multicast-target",
+      "file": "ipv6-nd-136-multicast-target.pcap",
+      "sha256": "bad96ad8078fada0ff39e1e37dae0c103ce7c9252bf1871870d8c1cf1a426051",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201007
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201007:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery invalid receive semantics"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-na-multicast-destination-solicited",
+      "file": "ipv6-na-multicast-destination-solicited.pcap",
+      "sha256": "f2e8d82943019d136b39247cbbca799fe15c0f555c94b671c6b6221af4f1e33b",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201007
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201007:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery invalid receive semantics"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-na-multicast-unsolicited",
+      "file": "valid-ipv6-na-multicast-unsolicited.pcap",
+      "sha256": "c14c36721a715eca86ee65ef8ab79ecafa23bc2b0b1d61e2a4cef3fed0115378",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "ipv6-rs-unspecified-source-with-link-layer",
+      "file": "ipv6-rs-unspecified-source-with-link-layer.pcap",
+      "sha256": "45e8f31f9b57b6c7a9aa5ce116a9255bf9d7ce3624f222c63419ae8ee6d2edfd",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201007
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201007:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery invalid receive semantics"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-rs-unspecified-source",
+      "file": "valid-ipv6-rs-unspecified-source.pcap",
+      "sha256": "6f7d061ffb544a8d6987af5f25b0a84fa361ee99bff8df26d6abe1317594670c",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "ipv6-ns-unspecified-source-with-link-layer",
+      "file": "ipv6-ns-unspecified-source-with-link-layer.pcap",
+      "sha256": "97fa53ac19d4e43150784a2e4bdc93012cefeed488e39e0b62cc1dac658f1a62",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201007
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201007:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery invalid receive semantics"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-ns-unspecified-source",
+      "file": "valid-ipv6-ns-unspecified-source.pcap",
+      "sha256": "e8cb5bb7ada5e0b833aa54d62d06ed916bd4f3f6576693f1b1ce0a2c69453870",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "ipv6-ns-unspecified-source-unicast-destination",
+      "file": "ipv6-ns-unspecified-source-unicast-destination.pcap",
+      "sha256": "9744879c1a5d66dd8e0004674bb84e065a2db339fe3098b0c5d8980ce9d53190",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201007
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201007:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery invalid receive semantics"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-ns-unspecified-source-wrong-multicast-destination",
+      "file": "ipv6-ns-unspecified-source-wrong-multicast-destination.pcap",
+      "sha256": "22db254c6dcbaef6c1b77160adbf765631dbe05b017c3827326a72d2135e5821",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201007
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201007:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery invalid receive semantics"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-redirect-multicast-inner-destination",
+      "file": "ipv6-redirect-multicast-inner-destination.pcap",
+      "sha256": "fc83f43c75df3c7964742413c09553ef89925fda830f876fb67f62ba6ff779a7",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201007
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201007:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery invalid receive semantics"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-redirect-invalid-target",
+      "file": "ipv6-redirect-invalid-target.pcap",
+      "sha256": "b14e600910c4c56a460eda70dcc9fec906cc47a8c800656254d970d0967daeac",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201007
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201007:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Neighbor Discovery invalid receive semantics"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-redirect-target-is-destination",
+      "file": "valid-ipv6-redirect-target-is-destination.pcap",
+      "sha256": "9cf56dd1cf958ee1ea7e5acb0147461a0599ba8eb16d43fc972519cdc3d31124",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "valid-ipv6-hop-first-nd",
+      "file": "valid-ipv6-hop-first-nd.pcap",
+      "sha256": "4721c24c260f05c5da64b9cc2b742804d673c8cf5f0a1e75a0052d799ea1ef1a",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "ipv6-hop-misplaced-nd",
+      "file": "ipv6-hop-misplaced-nd.pcap",
+      "sha256": "b2e3cf6ede6a176a1523c80526352bc4466d079770c4e94f09c6e8429b45aff3",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201008
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        },
+        {
+          "rule": "1:9201008:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Hop-by-Hop header outside first extension position"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-hop-repeated-nd",
+      "file": "ipv6-hop-repeated-nd.pcap",
+      "sha256": "d39f762ff47af3259f92122a3fc5180fcfef18007fb922711ddf229f1b8e7566",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201008
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        },
+        {
+          "rule": "1:9201008:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Hop-by-Hop header outside first extension position"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-hop-first-udp",
+      "file": "valid-ipv6-hop-first-udp.pcap",
+      "sha256": "36b5934ee116d3807f472d8dae8ba3ad6b09351ed436002753a3821fd9959803",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "ipv6-hop-misplaced-udp",
+      "file": "ipv6-hop-misplaced-udp.pcap",
+      "sha256": "3de29f31e3abc5e426d526410e4f46489f86c584f008dd3557ed7545281ad8bf",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201008
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        },
+        {
+          "rule": "1:9201008:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Hop-by-Hop header outside first extension position"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-hop-repeated-udp",
+      "file": "ipv6-hop-repeated-udp.pcap",
+      "sha256": "d1fa23b4f23ebfafc272cab15e6e42e7b9cead36364e3e477039f7737dbdb3d8",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201008
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        },
+        {
+          "rule": "1:9201008:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Hop-by-Hop header outside first extension position"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-hop-first-none",
+      "file": "valid-ipv6-hop-first-none.pcap",
+      "sha256": "078f84fc1d0f331956606cbc7b582f70dfc85e99d07bd412c5b647d0fe80387d",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "ipv6-hop-misplaced-none",
+      "file": "ipv6-hop-misplaced-none.pcap",
+      "sha256": "c7f6d3278638f41fccb26c2cfeaff632b530827df5582a51e9b9fafd7c9a51fd",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201008
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        },
+        {
+          "rule": "1:9201008:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Hop-by-Hop header outside first extension position"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-hop-repeated-none",
+      "file": "ipv6-hop-repeated-none.pcap",
+      "sha256": "d94bfdee0309e7f2d769578c1aa9465ba97bae99259dd2e3b3e9dfbcb79baac2",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201008
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        },
+        {
+          "rule": "1:9201008:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Hop-by-Hop header outside first extension position"
+        }
+      ]
+    },
+    {
+      "name": "ipv4-ah-length-8",
+      "file": "ipv4-ah-length-8.pcap",
+      "sha256": "8d05af580e472ff3551f3d75dae4e368ea3a98d118c5842d5c57e31a7841ce78",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201009
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201014:1",
+          "action": "would_drop",
+          "msg": "AX impossible visible ESP framing"
+        },
+        {
+          "rule": "1:9201009:1",
+          "action": "would_drop",
+          "msg": "AX malformed IP Authentication Header length"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv4-ah-shape-12",
+      "file": "valid-ipv4-ah-shape-12.pcap",
+      "sha256": "e3ee1b8fd58f56e0b7c3fbab41537c89d6e75b29bbbeeb7cb084d16f9d8e2d7b",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "valid-ipv4-ah-shape-16",
+      "file": "valid-ipv4-ah-shape-16.pcap",
+      "sha256": "386c8b66c806f52d81a4a4feb052c9aeefbfda3ef8522eab498c7f34b3e27b13",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "valid-ipv4-ah-shape-20",
+      "file": "valid-ipv4-ah-shape-20.pcap",
+      "sha256": "0d3831acdaa350165c1e16bce0a4c94ffb903ec89f22bd53057705b6c89ee6df",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "valid-ipv4-ah-shape-24",
+      "file": "valid-ipv4-ah-shape-24.pcap",
+      "sha256": "5ac3ed0df359b815467203127ca8a45be7f030c880292e5ec6b554040c034c83",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "ipv6-ah-length-8",
+      "file": "ipv6-ah-length-8.pcap",
+      "sha256": "e93a8bbdc40877d27e700f05382ed5240f64b1014a334ed6b18d4b97b63a938e",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201009
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201016:1",
+          "action": "would_drop",
+          "msg": "AX malformed original-wire IPv6 Type 2 routing header"
+        },
+        {
+          "rule": "1:9201014:1",
+          "action": "would_drop",
+          "msg": "AX impossible visible ESP framing"
+        },
+        {
+          "rule": "1:9201013:1",
+          "action": "would_drop",
+          "msg": "AX malformed IPv6 extension option structure"
+        },
+        {
+          "rule": "1:9201009:1",
+          "action": "would_drop",
+          "msg": "AX malformed IP Authentication Header length"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-direct-ah-length-8",
+      "file": "ipv6-direct-ah-length-8.pcap",
+      "sha256": "edbc86eafb2cf4884deb657c71a10ac3975c3cca349fa26adfda67bb91f88ba0",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201009
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:281:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 header includes an invalid value for the 'next header' field"
+        },
+        {
+          "rule": "1:9201016:1",
+          "action": "would_drop",
+          "msg": "AX malformed original-wire IPv6 Type 2 routing header"
+        },
+        {
+          "rule": "1:9201014:1",
+          "action": "would_drop",
+          "msg": "AX impossible visible ESP framing"
+        },
+        {
+          "rule": "1:9201013:1",
+          "action": "would_drop",
+          "msg": "AX malformed IPv6 extension option structure"
+        },
+        {
+          "rule": "1:9201009:1",
+          "action": "would_drop",
+          "msg": "AX malformed IP Authentication Header length"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-ah-length-12",
+      "file": "ipv6-ah-length-12.pcap",
+      "sha256": "d933abda4eb77c24e1ddc1a23e5998dc82411d0bb7f8c799623b9f25605ecf17",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201009
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201016:1",
+          "action": "would_drop",
+          "msg": "AX malformed original-wire IPv6 Type 2 routing header"
+        },
+        {
+          "rule": "1:9201014:1",
+          "action": "would_drop",
+          "msg": "AX impossible visible ESP framing"
+        },
+        {
+          "rule": "1:9201013:1",
+          "action": "would_drop",
+          "msg": "AX malformed IPv6 extension option structure"
+        },
+        {
+          "rule": "1:9201009:1",
+          "action": "would_drop",
+          "msg": "AX malformed IP Authentication Header length"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-direct-ah-length-12",
+      "file": "ipv6-direct-ah-length-12.pcap",
+      "sha256": "7acaa3ef393e0ad201e34640f3331990a1254ccc494f5e488137fc74c3cf7cb6",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201009
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:281:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 header includes an invalid value for the 'next header' field"
+        },
+        {
+          "rule": "1:9201016:1",
+          "action": "would_drop",
+          "msg": "AX malformed original-wire IPv6 Type 2 routing header"
+        },
+        {
+          "rule": "1:9201014:1",
+          "action": "would_drop",
+          "msg": "AX impossible visible ESP framing"
+        },
+        {
+          "rule": "1:9201013:1",
+          "action": "would_drop",
+          "msg": "AX malformed IPv6 extension option structure"
+        },
+        {
+          "rule": "1:9201009:1",
+          "action": "would_drop",
+          "msg": "AX malformed IP Authentication Header length"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-ah-shape-16",
+      "file": "valid-ipv6-ah-shape-16.pcap",
+      "sha256": "b24ac1549bb4a719c25ca66d8bfccffb7178221c2257aecb21cca7d67d19b1ce",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "valid-ipv6-direct-ah-shape-16",
+      "file": "valid-ipv6-direct-ah-shape-16.pcap",
+      "sha256": "4e5763a311789f0ae31fa6fb5e2b03734a84f71e33cc1f44c61988c977f59cda",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:281:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 header includes an invalid value for the 'next header' field"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-ah-length-20",
+      "file": "ipv6-ah-length-20.pcap",
+      "sha256": "9efbd86aec5f81ec46756a3dea8d9570ca95a78db1543fc9e014b4c3c4234691",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201009
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201016:1",
+          "action": "would_drop",
+          "msg": "AX malformed original-wire IPv6 Type 2 routing header"
+        },
+        {
+          "rule": "1:9201014:1",
+          "action": "would_drop",
+          "msg": "AX impossible visible ESP framing"
+        },
+        {
+          "rule": "1:9201013:1",
+          "action": "would_drop",
+          "msg": "AX malformed IPv6 extension option structure"
+        },
+        {
+          "rule": "1:9201009:1",
+          "action": "would_drop",
+          "msg": "AX malformed IP Authentication Header length"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-direct-ah-length-20",
+      "file": "ipv6-direct-ah-length-20.pcap",
+      "sha256": "df674eb95716a1a753e4c3a7213cff168b8dd61f62904ad08fc2ea530b7273f6",
+      "category": "malformed",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201009
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:281:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 header includes an invalid value for the 'next header' field"
+        },
+        {
+          "rule": "1:9201016:1",
+          "action": "would_drop",
+          "msg": "AX malformed original-wire IPv6 Type 2 routing header"
+        },
+        {
+          "rule": "1:9201014:1",
+          "action": "would_drop",
+          "msg": "AX impossible visible ESP framing"
+        },
+        {
+          "rule": "1:9201013:1",
+          "action": "would_drop",
+          "msg": "AX malformed IPv6 extension option structure"
+        },
+        {
+          "rule": "1:9201009:1",
+          "action": "would_drop",
+          "msg": "AX malformed IP Authentication Header length"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-ah-shape-24",
+      "file": "valid-ipv6-ah-shape-24.pcap",
+      "sha256": "e133cef60bc7db939436f17bc2483f267e1fbacd3d329400a17437bc9d23ae1b",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "valid-ipv6-direct-ah-shape-24",
+      "file": "valid-ipv6-direct-ah-shape-24.pcap",
+      "sha256": "5d8dd65677a6e1e8ee485a78c3d1b8624965cb3c2477dd158a4c408342a609dd",
+      "category": "valid",
+      "packets": 1,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:281:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 header includes an invalid value for the 'next header' field"
+        }
+      ]
+    },
+    {
+      "name": "policy-reject-ipv6-unadmitted-base-next-header",
+      "file": "policy-reject-ipv6-unadmitted-base-next-header.pcap",
+      "sha256": "63e636b79cb205c8872f751c6fed849488a327030464af36fb1eaf3cf17d763a",
+      "category": "policy_rejection",
+      "packets": 1,
+      "expected_drop_rule": [
+        1,
+        9201011
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:281:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 header includes an invalid value for the 'next header' field"
+        },
+        {
+          "rule": "116:449:1",
+          "action": "allow",
+          "msg": "(decode) unassigned/reserved IP protocol"
+        },
+        {
+          "rule": "1:9201011:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 base Next Header outside admitted protocol set"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-first-fragment-none-split-8",
+      "file": "valid-ipv6-first-fragment-none-split-8.pcap",
+      "sha256": "0d212bcbbf09b91f96c1f88d95b2a539595e52d502bf2880ca2979bd1c056d83",
+      "category": "valid",
+      "packets": 2,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "valid-ipv6-first-fragment-none-split-16",
+      "file": "valid-ipv6-first-fragment-none-split-16.pcap",
+      "sha256": "0030fbba41bc0e262f5eb35bd81bf91ed6e3bbc368961a70361fe9677602e61b",
+      "category": "valid",
+      "packets": 2,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "valid-ipv6-first-fragment-none-split-24",
+      "file": "valid-ipv6-first-fragment-none-split-24.pcap",
+      "sha256": "e9261802579bc5f67c4d5c5e03726a65cf66cbab91224700978eac687c6ae2b2",
+      "category": "valid",
+      "packets": 2,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "valid-ipv6-first-fragment-none-split-32",
+      "file": "valid-ipv6-first-fragment-none-split-32.pcap",
+      "sha256": "8303b22333feb9f03212fc53fe513cc028e43ac83e3bdbd82bf665c287add656",
+      "category": "valid",
+      "packets": 2,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "ipv6-first-fragment-60-split-8",
+      "file": "ipv6-first-fragment-60-split-8.pcap",
+      "sha256": "ef745c7cffccbcb46b88a4eecce70c291d07de869d5f4e154e537585e035d486",
+      "category": "malformed",
+      "packets": 2,
+      "expected_drop_rule": [
+        1,
+        9201010
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        },
+        {
+          "rule": "1:9201010:1",
+          "action": "would_drop",
+          "msg": "AX incomplete or unsupported IPv6 first-fragment header chain"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-first-fragment-60-split-16",
+      "file": "valid-ipv6-first-fragment-60-split-16.pcap",
+      "sha256": "78f54a099d5c6e2c56c5f5b0f9e5cefe592b5361b303ea86f7c087ad7602058e",
+      "category": "valid",
+      "packets": 2,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-first-fragment-60-split-24",
+      "file": "valid-ipv6-first-fragment-60-split-24.pcap",
+      "sha256": "446ebf6433b3b4a07c91bc01d44d1ccc928ba1f912eed7833a58ddc473eda251",
+      "category": "valid",
+      "packets": 2,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-first-fragment-60-split-32",
+      "file": "valid-ipv6-first-fragment-60-split-32.pcap",
+      "sha256": "01ce6279b63564f82bd3a8fc30c4ba2569c4562be7b1fe55e14b25cc6eeba5a7",
+      "category": "valid",
+      "packets": 2,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-first-fragment-60-60-split-8",
+      "file": "ipv6-first-fragment-60-60-split-8.pcap",
+      "sha256": "5b1114a057e4e4cabf454bc75f7463d154fba82d3844f9c205d70d4b1473285e",
+      "category": "malformed",
+      "packets": 2,
+      "expected_drop_rule": [
+        1,
+        9201010
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        },
+        {
+          "rule": "1:9201016:1",
+          "action": "would_drop",
+          "msg": "AX malformed original-wire IPv6 Type 2 routing header"
+        },
+        {
+          "rule": "1:9201014:1",
+          "action": "would_drop",
+          "msg": "AX impossible visible ESP framing"
+        },
+        {
+          "rule": "1:9201013:1",
+          "action": "would_drop",
+          "msg": "AX malformed IPv6 extension option structure"
+        },
+        {
+          "rule": "1:9201010:1",
+          "action": "would_drop",
+          "msg": "AX incomplete or unsupported IPv6 first-fragment header chain"
+        },
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-first-fragment-60-60-split-16",
+      "file": "ipv6-first-fragment-60-60-split-16.pcap",
+      "sha256": "f65b14c2606c00d2f02dd8786598ee85d93414c75ec25b0b62017432b7a387c0",
+      "category": "malformed",
+      "packets": 2,
+      "expected_drop_rule": [
+        1,
+        9201010
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        },
+        {
+          "rule": "1:9201010:1",
+          "action": "would_drop",
+          "msg": "AX incomplete or unsupported IPv6 first-fragment header chain"
+        },
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-first-fragment-60-60-split-24",
+      "file": "valid-ipv6-first-fragment-60-60-split-24.pcap",
+      "sha256": "b5609e648e6a8cdba589a931f349ae7949dc023ccb42e854694d9019c717d834",
+      "category": "valid",
+      "packets": 2,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        },
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-first-fragment-60-60-split-32",
+      "file": "valid-ipv6-first-fragment-60-60-split-32.pcap",
+      "sha256": "84f9f59037d7d5dc3efb0ea959fa3fd4ef2783c3cf3666310484706546432e60",
+      "category": "valid",
+      "packets": 2,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        },
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-first-fragment-60-51-split-8",
+      "file": "ipv6-first-fragment-60-51-split-8.pcap",
+      "sha256": "634cdced8b4a413b83b6c728ae0f2665b97c95f2cc0765be2296c3568795eea9",
+      "category": "malformed",
+      "packets": 2,
+      "expected_drop_rule": [
+        1,
+        9201010
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        },
+        {
+          "rule": "1:9201016:1",
+          "action": "would_drop",
+          "msg": "AX malformed original-wire IPv6 Type 2 routing header"
+        },
+        {
+          "rule": "1:9201014:1",
+          "action": "would_drop",
+          "msg": "AX impossible visible ESP framing"
+        },
+        {
+          "rule": "1:9201013:1",
+          "action": "would_drop",
+          "msg": "AX malformed IPv6 extension option structure"
+        },
+        {
+          "rule": "1:9201010:1",
+          "action": "would_drop",
+          "msg": "AX incomplete or unsupported IPv6 first-fragment header chain"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-first-fragment-60-51-split-16",
+      "file": "ipv6-first-fragment-60-51-split-16.pcap",
+      "sha256": "5783fdd090e0654f240490acb26a575559906bdfe3fe83c838eddb5936e931b1",
+      "category": "malformed",
+      "packets": 2,
+      "expected_drop_rule": [
+        1,
+        9201010
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        },
+        {
+          "rule": "1:9201016:1",
+          "action": "would_drop",
+          "msg": "AX malformed original-wire IPv6 Type 2 routing header"
+        },
+        {
+          "rule": "1:9201014:1",
+          "action": "would_drop",
+          "msg": "AX impossible visible ESP framing"
+        },
+        {
+          "rule": "1:9201013:1",
+          "action": "would_drop",
+          "msg": "AX malformed IPv6 extension option structure"
+        },
+        {
+          "rule": "1:9201010:1",
+          "action": "would_drop",
+          "msg": "AX incomplete or unsupported IPv6 first-fragment header chain"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-first-fragment-60-51-split-24",
+      "file": "ipv6-first-fragment-60-51-split-24.pcap",
+      "sha256": "5dc3c04f3f322cbdbd8e448738cdfccb6b41a589bb32287594f99a27ac707824",
+      "category": "malformed",
+      "packets": 2,
+      "expected_drop_rule": [
+        1,
+        9201010
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        },
+        {
+          "rule": "1:9201010:1",
+          "action": "would_drop",
+          "msg": "AX incomplete or unsupported IPv6 first-fragment header chain"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-first-fragment-60-51-split-32",
+      "file": "valid-ipv6-first-fragment-60-51-split-32.pcap",
+      "sha256": "4dfc6780e51c3845aab9a57bc07d1f7eceb97637c246c18da1c0067841e6e147",
+      "category": "valid",
+      "packets": 2,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-fragment-before-hop-forward",
+      "file": "ipv6-fragment-before-hop-forward.pcap",
+      "sha256": "5fc1b3197bd9a878416277e4eecc7482ca9b3c4b05e7f0821137ac2a7106b3ec",
+      "category": "malformed",
+      "packets": 2,
+      "expected_drop_rule": [
+        1,
+        9201008
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        },
+        {
+          "rule": "1:9201010:1",
+          "action": "would_drop",
+          "msg": "AX incomplete or unsupported IPv6 first-fragment header chain"
+        },
+        {
+          "rule": "1:9201008:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Hop-by-Hop header outside first extension position"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-hop-before-fragment-forward",
+      "file": "valid-ipv6-hop-before-fragment-forward.pcap",
+      "sha256": "50e89426b2b53616d54b328cdb0dea2bfe15fa05e67a2a772e6690c81d008dfd",
+      "category": "valid",
+      "packets": 2,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "ipv6-fragment-before-hop-reverse",
+      "file": "ipv6-fragment-before-hop-reverse.pcap",
+      "sha256": "62b6bc4b86a6a3ddd1d432e7dcf44ec2013cc1821c010db2fa93bb2486752299",
+      "category": "malformed",
+      "packets": 2,
+      "expected_drop_rule": [
+        1,
+        9201008
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        },
+        {
+          "rule": "1:9201010:1",
+          "action": "would_drop",
+          "msg": "AX incomplete or unsupported IPv6 first-fragment header chain"
+        },
+        {
+          "rule": "1:9201008:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 Hop-by-Hop header outside first extension position"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-hop-before-fragment-reverse",
+      "file": "valid-ipv6-hop-before-fragment-reverse.pcap",
+      "sha256": "b04a34d545c858e8cf64b379b4d3c17dbd0843be69c55c4a7f9d778a621a61db",
+      "category": "valid",
+      "packets": 2,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    },
+    {
+      "name": "policy-reject-ipv6-first-fragment-unknown-upper",
+      "file": "policy-reject-ipv6-first-fragment-unknown-upper.pcap",
+      "sha256": "0b1a24a48f24d13a2b5ea76a0247c555c59b501c023b8fdd5a607f6028a78457",
+      "category": "policy_rejection",
+      "packets": 2,
+      "expected_drop_rule": [
+        1,
+        9201010
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "1:9201010:1",
+          "action": "would_drop",
+          "msg": "AX incomplete or unsupported IPv6 first-fragment header chain"
+        },
+        {
+          "rule": "116:281:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 header includes an invalid value for the 'next header' field"
+        },
+        {
+          "rule": "116:449:1",
+          "action": "allow",
+          "msg": "(decode) unassigned/reserved IP protocol"
+        },
+        {
+          "rule": "1:9201011:1",
+          "action": "would_drop",
+          "msg": "AX IPv6 base Next Header outside admitted protocol set"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-first-fragment-padding-cannot-complete-header",
+      "file": "ipv6-first-fragment-padding-cannot-complete-header.pcap",
+      "sha256": "a88e86aa5d469ff38c4f5e209038609fbaf07aff652988d2d9cc67b3cef96b8f",
+      "category": "malformed",
+      "packets": 2,
+      "expected_drop_rule": [
+        1,
+        9201010
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        },
+        {
+          "rule": "1:9201010:1",
+          "action": "would_drop",
+          "msg": "AX incomplete or unsupported IPv6 first-fragment header chain"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-first-fragment-with-link-padding",
+      "file": "valid-ipv6-first-fragment-with-link-padding.pcap",
+      "sha256": "9db0829846adf89ef38d78d45f99ab6dfd5c93f5b50df6a3e0bcbedb38b7ab91",
+      "category": "valid",
+      "packets": 2,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        }
+      ]
+    },
+    {
+      "name": "ipv6-incomplete-first-fragment-arrives-last",
+      "file": "ipv6-incomplete-first-fragment-arrives-last.pcap",
+      "sha256": "0f422dc89bfb5af8f28c4e7e0ab7e09d95badbfb687b60e503e4d256a2de19c3",
+      "category": "malformed",
+      "packets": 2,
+      "expected_drop_rule": [
+        1,
+        9201010
+      ],
+      "passed": true,
+      "observed": [
+        {
+          "rule": "116:296:1",
+          "action": "allow",
+          "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+        },
+        {
+          "rule": "1:9201016:1",
+          "action": "would_drop",
+          "msg": "AX malformed original-wire IPv6 Type 2 routing header"
+        },
+        {
+          "rule": "1:9201014:1",
+          "action": "would_drop",
+          "msg": "AX impossible visible ESP framing"
+        },
+        {
+          "rule": "1:9201013:1",
+          "action": "would_drop",
+          "msg": "AX malformed IPv6 extension option structure"
+        },
+        {
+          "rule": "1:9201010:1",
+          "action": "would_drop",
+          "msg": "AX incomplete or unsupported IPv6 first-fragment header chain"
+        }
+      ]
+    },
+    {
+      "name": "valid-ipv6-noninitial-fragment-different-next-header",
+      "file": "valid-ipv6-noninitial-fragment-different-next-header.pcap",
+      "sha256": "12c0aa06f104877f2dabbb8b0f91afc85da2fbdf6c49b42184dad06c7ab773d2",
+      "category": "valid",
+      "packets": 2,
+      "expected_drop_rule": null,
+      "passed": true,
+      "observed": []
+    }
+  ],
+  "policy_restrictions": [
+    "All atomic IPv6 fragments are dropped by 116:458, including otherwise valid non-ND traffic. This is a stricter local policy, not universal RFC invalidity.",
+    "More than eight IPv6 extension headers are dropped by 116:456 as a local inspection budget, not a universal RFC limit.",
+    "The base Next Header admission set retains the pinned decoder's prior set plus AH; other values remain local policy rejections, not universal RFC invalidity.",
+    "First-fragment upper-layer header shapes unknown to the bounded validator are rejected by local policy; nested Fragment and more than eight post-fragment extensions also fail closed."
+  ],
+  "limitations": [
+    "Only selected behaviors are replayed; passing fixtures are not exhaustive standards conformance.",
+    "Read-file inline simulation skips checksum-drop enforcement. Run checksum_replay.py for file-only inline DAQ verdict and forwarded-output evidence.",
+    "No live inline DAQ, deployment route, resource-exhaustion load or encrypted application traffic is tested."
+  ]
+}

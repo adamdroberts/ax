@@ -26,13 +26,22 @@ import (
 	"log/slog"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 
 	"github.com/google/ax/pkg/mcp/proxy"
 	"github.com/google/ax/pkg/security/snort"
 )
 
+type originFlags []string
+
+func (o *originFlags) String() string         { return strings.Join(*o, ",") }
+func (o *originFlags) Set(value string) error { *o = append(*o, value); return nil }
+
 func main() {
+	var origins originFlags
+	flag.Var(&origins, "allow-origin", "Allow one exact HTTP(S) origin (repeatable; default denies all network egress)")
+	profile := flag.String("profile", "default", "Built-in policy profile: default or strict")
 	rulesPath := flag.String("rules", "", "Path to custom Snort .rules file")
 	onlyCustom := flag.Bool("only-custom-rules", false, "Load only custom rules without default rules")
 	verbose := flag.Bool("verbose", false, "Enable verbose logging to stderr")
@@ -50,15 +59,23 @@ func main() {
 	var engine *snort.Engine
 	var err error
 
+	if *profile != "default" && *profile != "strict" {
+		slog.Error("unknown policy profile", "profile", *profile)
+		os.Exit(1)
+	}
+	if *onlyCustom && *rulesPath == "" {
+		slog.Error("--only-custom-rules requires a non-empty --rules file")
+		os.Exit(1)
+	}
 	if *onlyCustom {
 		engine = snort.NewEngine()
 	} else {
-		engine, err = snort.DefaultEngine()
+		engine, err = snort.NewProfileEngine(*profile)
 		if err != nil {
-			slog.Error("failed to load default snort rules", "error", err)
+			slog.Error("failed to load built-in snort rules", "error", err)
 			os.Exit(1)
 		}
-		slog.Info("loaded default snort rules", "count", engine.RuleCount())
+		slog.Info("loaded built-in snort rules", "profile", *profile, "count", engine.RuleCount())
 	}
 
 	if *rulesPath != "" {
@@ -70,7 +87,12 @@ func main() {
 		slog.Info("loaded custom snort rules", "path", *rulesPath, "added_count", count, "total_rules", engine.RuleCount())
 	}
 
-	server, err := proxy.NewServer(proxy.WithEngine(engine))
+	if engine.RuleCount() == 0 {
+		slog.Error("refusing to start with no active security rules")
+		os.Exit(1)
+	}
+
+	server, err := proxy.NewServer(proxy.WithEngine(engine), proxy.WithAllowedOrigins(origins...))
 	if err != nil {
 		slog.Error("failed to create MCP proxy server", "error", err)
 		os.Exit(1)

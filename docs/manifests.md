@@ -99,10 +99,16 @@ spec:
       protocol: HTTP
   egress:
     allowlist:
-      hosts:
-        - host: "*"      # allow everything on 443; tighten this in production
-          port: 443
+      hosts: []          # explicit deny-all; add only reviewed destinations
 ```
+
+Missing or empty gateway egress configuration now creates a deny-all policy.
+Policy application must succeed before the controller resumes a task. The current
+Substrate API supports hostname/CIDR matching but has no destination-port field;
+AX rejects a nonzero `hosts[].port` instead of silently allowing all ports. An
+entry such as `{host: api.example.com}` explicitly authorizes that hostname at
+the backend's destination scope. Use a separate port-aware network boundary and
+the MCP proxy's exact-origin policy when port restrictions are required.
 
 ## Model
 

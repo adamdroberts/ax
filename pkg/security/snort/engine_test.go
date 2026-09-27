@@ -170,7 +170,7 @@ func TestEngineDefaultRules(t *testing.T) {
 			headers:     map[string]string{},
 			body:        "",
 			expectBlock: true,
-			expectedSID: 1000021,
+			expectedSID: 1000020,
 		},
 		{
 			name:        "SQL Injection UNION SELECT",

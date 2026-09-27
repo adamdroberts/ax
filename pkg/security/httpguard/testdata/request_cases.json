@@ -1,0 +1,1197 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "name": "ordinary GET",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "JSON POST",
+      "accepted": true,
+      "arguments": {
+        "method": "POST",
+        "body": "{\"message\":\"Hello\"}",
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "form POST",
+      "accepted": true,
+      "arguments": {
+        "method": "POST",
+        "body": "q=%E2%82%AC",
+        "headers": {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "plain POST",
+      "accepted": true,
+      "arguments": {
+        "method": "POST",
+        "body": "hello\nworld",
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "authenticated request",
+      "accepted": true,
+      "arguments": {
+        "headers": {
+          "Authorization": "Bearer scoped-token"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "uppercase DNS host",
+      "accepted": true,
+      "arguments": {
+        "url": "https://API.example.com:443/v1"
+      }
+    },
+    {
+      "name": "IPv6 canonical",
+      "accepted": true,
+      "arguments": {
+        "url": "https://[2606:4700:4700::1111]/v1"
+      }
+    },
+    {
+      "name": "explicit port",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com:8443/v1"
+      }
+    },
+    {
+      "name": "encoded unicode",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/%E2%82%AC"
+      }
+    },
+    {
+      "name": "JSON quoted charset",
+      "accepted": true,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "application/json; charset=\"UTF-8\""
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "vendor JSON",
+      "accepted": true,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "application/vnd.api+json"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "JSON emoji escapes",
+      "accepted": true,
+      "arguments": {
+        "method": "POST",
+        "body": "{\"emoji\":\"\\ud83d\\ude00\"}",
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "safe max integer",
+      "accepted": true,
+      "arguments": {
+        "method": "POST",
+        "body": "{\"id\":9007199254740991}",
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject URL http://127.1/",
+      "accepted": false,
+      "arguments": {
+        "url": "http://127.1/"
+      }
+    },
+    {
+      "name": "reject URL http://2130706433/",
+      "accepted": false,
+      "arguments": {
+        "url": "http://2130706433/"
+      }
+    },
+    {
+      "name": "reject URL http://0177.0.0.1/",
+      "accepted": false,
+      "arguments": {
+        "url": "http://0177.0.0.1/"
+      }
+    },
+    {
+      "name": "reject URL http://0x7f.0x1/",
+      "accepted": false,
+      "arguments": {
+        "url": "http://0x7f.0x1/"
+      }
+    },
+    {
+      "name": "reject URL http://foo.123/",
+      "accepted": false,
+      "arguments": {
+        "url": "http://foo.123/"
+      }
+    },
+    {
+      "name": "reject URL http://foo.0x1/",
+      "accepted": false,
+      "arguments": {
+        "url": "http://foo.0x1/"
+      }
+    },
+    {
+      "name": "reject URL http://[8.8.8.8]/",
+      "accepted": false,
+      "arguments": {
+        "url": "http://[8.8.8.8]/"
+      }
+    },
+    {
+      "name": "reject URL http://[::ffff:8.8.8.8]/",
+      "accepted": false,
+      "arguments": {
+        "url": "http://[::ffff:8.8.8.8]/"
+      }
+    },
+    {
+      "name": "reject URL http://[fe80::1%25en0]/",
+      "accepted": false,
+      "arguments": {
+        "url": "http://[fe80::1%25en0]/"
+      }
+    },
+    {
+      "name": "reject URL https://api.example.com./",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com./"
+      }
+    },
+    {
+      "name": "reject URL https://api.example.com:0443/",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com:0443/"
+      }
+    },
+    {
+      "name": "reject URL https://api.example.com:65536/",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com:65536/"
+      }
+    },
+    {
+      "name": "reject URL https://api.example.com:/",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com:/"
+      }
+    },
+    {
+      "name": "reject URL https://api.example.com/#",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/#"
+      }
+    },
+    {
+      "name": "reject URL https://user@api.example.com/",
+      "accepted": false,
+      "arguments": {
+        "url": "https://user@api.example.com/"
+      }
+    },
+    {
+      "name": "reject URL https://api.example.com\\@evil.test/",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com\\@evil.test/"
+      }
+    },
+    {
+      "name": "reject URL HTTPS://api.example.com/",
+      "accepted": false,
+      "arguments": {
+        "url": "HTTPS://api.example.com/"
+      }
+    },
+    {
+      "name": "reject URL https://api.example.com/?q=%xx",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/?q=%xx"
+      }
+    },
+    {
+      "name": "reject URL https://api.example.com/%0a",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/%0a"
+      }
+    },
+    {
+      "name": "reject URL https://api.example.com/%5c",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/%5c"
+      }
+    },
+    {
+      "name": "reject URL https://api.example.com/%c0%af",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/%c0%af"
+      }
+    },
+    {
+      "name": "reject URL https://api.example.com/?q=%ed%a0%80",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/?q=%ed%a0%80"
+      }
+    },
+    {
+      "name": "reject URL https://api.example.com/?q=[1]",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/?q=[1]"
+      }
+    },
+    {
+      "name": "reject URL https://api.example.com/{x}",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/{x}"
+      }
+    },
+    {
+      "name": "reject URL https://api.example.com/£",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/£"
+      }
+    },
+    {
+      "name": "reject method 'get'",
+      "accepted": false,
+      "arguments": {
+        "method": "get",
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject method 'TRACE'",
+      "accepted": false,
+      "arguments": {
+        "method": "TRACE",
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject method 'CONNECT'",
+      "accepted": false,
+      "arguments": {
+        "method": "CONNECT",
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject method 'TRACK'",
+      "accepted": false,
+      "arguments": {
+        "method": "TRACK",
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject method 'PATCH\\nGET'",
+      "accepted": false,
+      "arguments": {
+        "method": "PATCH\nGET",
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed Host",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "Host": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed Content-Length",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "Content-Length": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed Transfer-Encoding",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "Transfer-Encoding": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed TE",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "TE": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed Trailer",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "Trailer": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed Connection",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "Connection": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed Keep-Alive",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "Keep-Alive": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed Upgrade",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "Upgrade": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed Expect",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "Expect": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed Proxy-Authorization",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "Proxy-Authorization": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed HTTP2-Settings",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "HTTP2-Settings": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed Sec-Fetch-Site",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "Sec-Fetch-Site": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed Origin",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "Origin": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed Referer",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "Referer": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed Forwarded",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "Forwarded": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed X-Forwarded-For",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "X-Forwarded-For": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed X-ForwardedHost",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "X-ForwardedHost": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed X-Original-URL",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "X-Original-URL": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed X-HTTP-Method-Override",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "X-HTTP-Method-Override": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed X-Original-Host",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "X-Original-Host": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed X-Real-IP",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "X-Real-IP": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed X-Agent-ID",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "X-Agent-ID": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed X-Approval-Token",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "X-Approval-Token": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject managed Content-Transfer-Encoding",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "Content-Transfer-Encoding": "x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject header value 'bad\\r\\nInjected: yes'",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "X-Test": "bad\r\nInjected: yes"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject header value 'bad\\tvalue'",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "X-Test": "bad\tvalue"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject header value 'spaced '",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "X-Test": "spaced "
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject header value ' leading'",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "X-Test": " leading"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject header value 'non-ASCII £'",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "X-Test": "non-ASCII £"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject media ",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": ""
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject media application/xml",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "application/xml"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject media multipart/form-data; boundary=x",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "multipart/form-data; boundary=x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject media application/octet-stream",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "application/octet-stream"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject media application/json; charset=utf-16",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "application/json; charset=utf-16"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject media application/json; charset=utf-8; charset=utf-8",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8; charset=utf-8"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject media application/json; charset*=utf-8''utf-8",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "application/json; charset*=utf-8''utf-8"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject JSON {\"a\":1,\"a\":2}",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{\"a\":1,\"a\":2}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject JSON {\"a\":1,\"\\u0061\":2}",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{\"a\":1,\"\\u0061\":2}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject JSON {\"x\":\"\\ud800\"}",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{\"x\":\"\\ud800\"}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject JSON {\"x\":\"\\uffff\"}",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{\"x\":\"\\uffff\"}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject JSON {\"x\":NaN}",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{\"x\":NaN}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject JSON {\"id\":9007199254740992}",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{\"id\":9007199254740992}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject JSON {\"id\":1e20}",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{\"id\":1e20}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject JSON [[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject form q=%ff",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "q=%ff",
+        "headers": {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject form q=%xx",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "q=%xx",
+        "headers": {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject form q=%00",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "q=%00",
+        "headers": {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject form q=%5c",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "q=%5c",
+        "headers": {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "GET body",
+      "accepted": false,
+      "arguments": {
+        "body": "hidden",
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "HEAD body",
+      "accepted": false,
+      "arguments": {
+        "method": "HEAD",
+        "body": "hidden",
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "duplicate header spelling",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "X-Test": "one",
+          "x-test": "two"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "unsupported encoding",
+      "accepted": false,
+      "arguments": {
+        "headers": {
+          "Accept-Encoding": "gzip"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "invalid timeout type",
+      "accepted": false,
+      "arguments": {
+        "timeout_seconds": true,
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "unknown field",
+      "accepted": false,
+      "arguments": {
+        "allow_origin": true,
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "request media space before semicolon",
+      "accepted": true,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "application/json ;charset=utf-8"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "request media spaces around semicolon",
+      "accepted": true,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "application/json  ;  CHARSET=\"UTF-8\""
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "request plain quoted UTF8",
+      "accepted": true,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "Text/Plain;charset=\"utf-8\""
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "request form quoted UTF8",
+      "accepted": true,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "application/x-www-form-urlencoded ; charset=\"UTF-8\""
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "request charset quoted pair",
+      "accepted": true,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "application/json; charset=\"u\\tf-8\""
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "request charset all quoted pairs",
+      "accepted": true,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "application/json; charset=\"\\u\\t\\f\\-\\8\""
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "request charset escaped hyphen",
+      "accepted": true,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "application/json; charset=\"utf\\-8\""
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject request parameter space before equals",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "text/plain; charset =utf-8"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject request parameter space after equals",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "text/plain; charset= utf-8"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject request parameter spaces around equals",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "application/json; charset = \"utf-8\""
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject request parameter repeated spaces",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "application/json; charset  =  utf-8"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject request form parameter whitespace",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "application/x-www-form-urlencoded; charset =utf-8"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject request empty trailing parameter",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "text/plain; charset=utf-8;"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject request empty parameter before charset",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "text/plain;;charset=utf-8"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject request unapproved parameter",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "text/plain; title=utf-8"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject request empty quoted charset",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "text/plain; charset=\"\""
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject request quoted non UTF8 charset",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "text/plain; charset=\"utf\\-16\""
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject request dangling charset escape",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "text/plain; charset=\"utf-8\\"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject request unterminated quoted charset",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "text/plain; charset=\"utf-8"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject request escaped quote charset",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "text/plain; charset=\"utf-8\\\"\""
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject request charset token suffix",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "text/plain; charset=utf-8x"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject request whitespace before media slash",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "text /plain; charset=utf-8"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject request whitespace after media slash",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "text/ plain; charset=utf-8"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    },
+    {
+      "name": "reject request MIME comment",
+      "accepted": false,
+      "arguments": {
+        "method": "POST",
+        "body": "{}",
+        "headers": {
+          "Content-Type": "text/plain(comment); charset=utf-8"
+        },
+        "url": "https://api.example.com/v1"
+      }
+    }
+  ]
+}

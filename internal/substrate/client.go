@@ -448,8 +448,22 @@ func (c *Client) DeleteActorTemplate(ctx context.Context, atespace, templateName
 
 // ApplyEgressPolicy applies egress rules to the Actor from a Gateway's allowlist.
 func (c *Client) ApplyEgressPolicy(ctx context.Context, atespace, actorName string, allowlist *v1alpha1.EgressAllowlist) error {
-	if allowlist == nil || len(allowlist.Hosts) == 0 {
-		return nil
+	if allowlist == nil {
+		allowlist = &v1alpha1.EgressAllowlist{}
+	}
+	if len(allowlist.Hosts) > 256 {
+		return fmt.Errorf("egress allowlist exceeds backend limit")
+	}
+	// This Substrate API version matches hostnames/CIDRs, not ports. Silently
+	// dropping HostRule.Port widens the declared permission. Fail closed until
+	// a backend representation exists; zero denotes an explicit host-only rule.
+	for _, h := range allowlist.Hosts {
+		if h == nil || strings.TrimSpace(h.Host) != h.Host || h.Host == "" {
+			return fmt.Errorf("invalid egress destination rule")
+		}
+		if h.Port != 0 {
+			return fmt.Errorf("port-scoped gateway rules are unsupported by this Substrate API; refusing to broaden the policy")
+		}
 	}
 
 	var patterns []string
@@ -457,7 +471,7 @@ func (c *Client) ApplyEgressPolicy(ctx context.Context, atespace, actorName stri
 	var cidrs []string
 
 	for _, h := range allowlist.Hosts {
-		if h.Host == "*" || h.Host == "0.0.0.0/0" {
+		if h.Host == "*" {
 			allowAll = true
 			break
 		}
@@ -514,10 +528,14 @@ func (c *Client) ApplyEgressPolicy(ctx context.Context, atespace, actorName stri
 			existing, getErr := c.control.GetActorEgressPolicy(ctx, &ateapipb.GetActorEgressPolicyRequest{
 				Actor: actorRef,
 			})
-			if getErr == nil && existing != nil && existing.Metadata != nil {
-				egressPolicy.Metadata.Uid = existing.Metadata.Uid
-				egressPolicy.Metadata.Version = existing.Metadata.Version
+			if getErr != nil {
+				return fmt.Errorf("reading existing egress policy: %w", getErr)
 			}
+			if existing == nil || existing.Metadata == nil {
+				return fmt.Errorf("existing egress policy lacks concurrency metadata")
+			}
+			egressPolicy.Metadata.Uid = existing.Metadata.Uid
+			egressPolicy.Metadata.Version = existing.Metadata.Version
 			updateReq := &ateapipb.UpdateActorEgressPolicyRequest{
 				Actor:        actorRef,
 				EgressPolicy: egressPolicy,

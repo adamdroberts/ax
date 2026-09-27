@@ -1,0 +1,386 @@
+# Generated for Snort 3.12.2.0, source commit 14aeb09f5a0856812dbe08ead3c21f99e8860aa0.
+# States override builtin actions; enable is required. See builtin-inventory.json.
+# DECODE_NOT_IPV4_DGRAM: not IPv4 datagram
+drop ( gid:116; sid:1; enable:yes; )
+# DECODE_IPV4_INVALID_HEADER_LEN: IPv4 header length < minimum
+drop ( gid:116; sid:2; enable:yes; )
+# DECODE_IPV4_DGRAM_LT_IPHDR: IPv4 datagram length < header field
+drop ( gid:116; sid:3; enable:yes; )
+# DECODE_IPV4OPT_BADLEN: IPv4 options found with bad lengths
+drop ( gid:116; sid:4; enable:yes; )
+# DECODE_IPV4OPT_TRUNCATED: truncated IPv4 options
+drop ( gid:116; sid:5; enable:yes; )
+# DECODE_IPV4_DGRAM_GT_CAPLEN: IPv4 datagram length > captured length
+drop ( gid:116; sid:6; enable:yes; )
+# DECODE_TCP_DGRAM_LT_TCPHDR: TCP packet length is smaller than 20 bytes
+drop ( gid:116; sid:45; enable:yes; )
+# DECODE_TCP_INVALID_OFFSET: TCP data offset is less than 5
+drop ( gid:116; sid:46; enable:yes; )
+# DECODE_TCP_LARGE_OFFSET: TCP header length exceeds packet length
+drop ( gid:116; sid:47; enable:yes; )
+# DECODE_TCPOPT_BADLEN: TCP options found with bad lengths
+drop ( gid:116; sid:54; enable:yes; )
+# DECODE_TCPOPT_TRUNCATED: truncated TCP options
+drop ( gid:116; sid:55; enable:yes; )
+# DECODE_TCPOPT_TTCP: T/TCP detected
+alert ( gid:116; sid:56; enable:yes; )
+# DECODE_TCPOPT_OBSOLETE: obsolete TCP options found
+alert ( gid:116; sid:57; enable:yes; )
+# DECODE_TCPOPT_EXPERIMENTAL: experimental TCP options found
+alert ( gid:116; sid:58; enable:yes; )
+# DECODE_TCPOPT_WSCALE_INVALID: TCP window scale option found with length > 14
+alert ( gid:116; sid:59; enable:yes; )
+# DECODE_UDP_DGRAM_LT_UDPHDR: truncated UDP header
+drop ( gid:116; sid:95; enable:yes; )
+# DECODE_UDP_DGRAM_INVALID_LENGTH: invalid UDP header, length field < 8
+drop ( gid:116; sid:96; enable:yes; )
+# DECODE_UDP_DGRAM_SHORT_PACKET: short UDP packet, length field > payload length
+drop ( gid:116; sid:97; enable:yes; )
+# DECODE_UDP_DGRAM_LONG_PACKET: long UDP packet, length field < payload length
+drop ( gid:116; sid:98; enable:yes; )
+# DECODE_ICMP_DGRAM_LT_ICMPHDR: ICMP header truncated
+drop ( gid:116; sid:105; enable:yes; )
+# DECODE_ICMP_DGRAM_LT_TIMESTAMPHDR: ICMP timestamp header truncated
+drop ( gid:116; sid:106; enable:yes; )
+# DECODE_ICMP_DGRAM_LT_ADDRHDR: ICMP address header truncated
+drop ( gid:116; sid:107; enable:yes; )
+# DECODE_ARP_TRUNCATED: truncated ARP
+drop ( gid:116; sid:109; enable:yes; )
+# DECODE_BAD_PPPOE_DISC: bad PPPOE discovery frame detected
+drop ( gid:116; sid:120; enable:yes; )
+# DECODE_BAD_VLAN: bad VLAN frame
+drop ( gid:116; sid:130; enable:yes; )
+# DECODE_BAD_LLC_HEADER: bad LLC header
+drop ( gid:116; sid:131; enable:yes; )
+# DECODE_BAD_LLC_OTHER: bad extra LLC info
+drop ( gid:116; sid:132; enable:yes; )
+# DECODE_BAD_TRAFFIC_LOOPBACK: loopback IP
+drop ( gid:116; sid:150; enable:yes; )
+# DECODE_BAD_TRAFFIC_SAME_SRCDST: same src/dst IP
+alert ( gid:116; sid:151; enable:yes; )
+# DECODE_GRE_DGRAM_LT_GREHDR: GRE header length > payload length
+drop ( gid:116; sid:160; enable:yes; )
+# DECODE_GRE_MULTIPLE_ENCAPSULATION: multiple encapsulations in packet
+drop ( gid:116; sid:161; enable:yes; )
+# DECODE_GRE_INVALID_VERSION: invalid GRE version
+drop ( gid:116; sid:162; enable:yes; )
+# DECODE_GRE_INVALID_HEADER: invalid GRE header
+drop ( gid:116; sid:163; enable:yes; )
+# DECODE_GRE_V1_INVALID_HEADER: invalid GRE v.1 PPTP header
+drop ( gid:116; sid:164; enable:yes; )
+# DECODE_GRE_TRANS_DGRAM_LT_TRANSHDR: GRE trans header length > payload length
+drop ( gid:116; sid:165; enable:yes; )
+# DECODE_BAD_MPLS: bad MPLS frame
+drop ( gid:116; sid:170; enable:yes; )
+# DECODE_BAD_MPLS_LABEL0: MPLS label 0 appears in bottom header when not decoding as ip4
+drop ( gid:116; sid:171; enable:yes; )
+# DECODE_BAD_MPLS_LABEL1: MPLS label 1 appears in bottom header
+drop ( gid:116; sid:172; enable:yes; )
+# DECODE_BAD_MPLS_LABEL2: MPLS label 2 appears in bottom header when not decoding as ip6
+drop ( gid:116; sid:173; enable:yes; )
+# DECODE_BAD_MPLS_LABEL3: MPLS label 3 appears in header
+drop ( gid:116; sid:174; enable:yes; )
+# DECODE_MPLS_RESERVED_LABEL: MPLS label 4, 5,.. or 15 appears in header
+drop ( gid:116; sid:175; enable:yes; )
+# DECODE_MPLS_LABEL_STACK: too many MPLS headers
+drop ( gid:116; sid:176; enable:yes; )
+# DECODE_GENEVE_DGRAM_LT_GENEVE_HDR: insufficient room for geneve header
+drop ( gid:116; sid:180; enable:yes; )
+# DECODE_GENEVE_INVALID_VERSION: invalid version
+drop ( gid:116; sid:181; enable:yes; )
+# DECODE_GENEVE_INVALID_HEADER: invalid header
+drop ( gid:116; sid:182; enable:yes; )
+# DECODE_GENEVE_INVALID_FLAGS: invalid flags
+drop ( gid:116; sid:183; enable:yes; )
+# DECODE_GENEVE_INVALID_OPTIONS: invalid options
+drop ( gid:116; sid:184; enable:yes; )
+# DECODE_ICMP_ORIG_IP_TRUNCATED: ICMP original IP header truncated
+drop ( gid:116; sid:250; enable:yes; )
+# DECODE_ICMP_ORIG_IP_VER_MISMATCH: ICMP version and original IP header versions differ
+drop ( gid:116; sid:251; enable:yes; )
+# DECODE_ICMP_ORIG_DGRAM_LT_ORIG_IP: ICMP original datagram length < original IP header length
+drop ( gid:116; sid:252; enable:yes; )
+# DECODE_ICMP_ORIG_PAYLOAD_LT_64: ICMP original IP payload < 64 bits
+drop ( gid:116; sid:253; enable:yes; )
+# DECODE_ICMP_ORIG_PAYLOAD_GT_576: ICMP original IP payload > 576 bytes
+alert ( gid:116; sid:254; enable:yes; )
+# DECODE_ICMP_ORIG_IP_WITH_FRAGOFFSET: ICMP original IP fragmented and offset not 0
+drop ( gid:116; sid:255; enable:yes; )
+# DECODE_IPV6_MIN_TTL: IPv6 packet below TTL limit
+drop ( gid:116; sid:270; enable:yes; )
+# DECODE_IPV6_IS_NOT: IPv6 header claims to not be IPv6
+drop ( gid:116; sid:271; enable:yes; )
+# DECODE_IPV6_TRUNCATED_EXT: IPv6 truncated extension header
+drop ( gid:116; sid:272; enable:yes; )
+# DECODE_IPV6_TRUNCATED: IPv6 truncated header
+drop ( gid:116; sid:273; enable:yes; )
+# DECODE_IPV6_DGRAM_LT_IPHDR: IPv6 datagram length < header field
+drop ( gid:116; sid:274; enable:yes; )
+# DECODE_IPV6_DGRAM_GT_CAPLEN: IPv6 datagram length > captured length
+drop ( gid:116; sid:275; enable:yes; )
+# DECODE_IPV6_DST_ZERO: IPv6 packet with destination address ::0
+drop ( gid:116; sid:276; enable:yes; )
+# DECODE_IPV6_SRC_MULTICAST: IPv6 packet with multicast source address
+drop ( gid:116; sid:277; enable:yes; )
+# DECODE_IPV6_DST_RESERVED_MULTICAST: IPv6 packet with reserved multicast destination address
+drop ( gid:116; sid:278; enable:yes; )
+# DECODE_IPV6_BAD_OPT_TYPE: IPv6 header includes an undefined option type
+alert ( gid:116; sid:279; enable:yes; )
+# DECODE_IPV6_BAD_MULTICAST_SCOPE: IPv6 address includes an unassigned multicast scope value
+alert ( gid:116; sid:280; enable:yes; )
+# DECODE_IPV6_BAD_NEXT_HEADER: IPv6 header includes an invalid value for the 'next header' field
+alert ( gid:116; sid:281; enable:yes; )
+# DECODE_IPV6_ROUTE_AND_HOPBYHOP: IPv6 header includes a routing extension header followed by a hop-by-hop header
+drop ( gid:116; sid:282; enable:yes; )
+# DECODE_IPV6_TWO_ROUTE_HEADERS: IPv6 header includes two routing extension headers
+alert ( gid:116; sid:283; enable:yes; )
+# DECODE_ICMPV6_TOO_BIG_BAD_MTU: ICMPv6 packet of type 2 (message too big) with MTU field < 1280
+drop ( gid:116; sid:285; enable:yes; )
+# DECODE_ICMPV6_UNREACHABLE_NON_RFC_2463_CODE: ICMPv6 packet of type 1 (destination unreachable) with non-RFC 2463 code
+alert ( gid:116; sid:286; enable:yes; )
+# DECODE_ICMPV6_SOLICITATION_BAD_CODE: ICMPv6 router solicitation packet with a code not equal to 0
+drop ( gid:116; sid:287; enable:yes; )
+# DECODE_ICMPV6_ADVERT_BAD_CODE: ICMPv6 router advertisement packet with a code not equal to 0
+drop ( gid:116; sid:288; enable:yes; )
+# DECODE_ICMPV6_SOLICITATION_BAD_RESERVED: ICMPv6 router solicitation packet with the reserved field not equal to 0
+alert ( gid:116; sid:289; enable:yes; )
+# DECODE_ICMPV6_ADVERT_BAD_REACHABLE: ICMPv6 router advertisement packet with the reachable time field set > 1 hour
+alert ( gid:116; sid:290; enable:yes; )
+# DECODE_IPV6_TUNNELED_IPV4_TRUNCATED: IPV6 tunneled over IPv4, IPv6 header truncated, possible Linux kernel attack
+drop ( gid:116; sid:291; enable:yes; )
+# DECODE_IPV6_DSTOPTS_WITH_ROUTING: IPv6 header has destination options followed by a routing header
+alert ( gid:116; sid:292; enable:yes; )
+# DECODE_IP_MULTIPLE_ENCAPSULATION: two or more IP (v4 and/or v6) encapsulation layers present
+drop ( gid:116; sid:293; enable:yes; )
+# DECODE_ESP_HEADER_TRUNC: truncated encapsulated security payload header
+drop ( gid:116; sid:294; enable:yes; )
+# DECODE_IPV6_BAD_OPT_LEN: IPv6 header includes an option which is too big for the containing header
+drop ( gid:116; sid:295; enable:yes; )
+# DECODE_IPV6_UNORDERED_EXTENSIONS: IPv6 packet includes out-of-order extension headers
+alert ( gid:116; sid:296; enable:yes; )
+# DECODE_GTP_MULTIPLE_ENCAPSULATION: two or more GTP encapsulation layers present
+drop ( gid:116; sid:297; enable:yes; )
+# DECODE_GTP_BAD_LEN: GTP header length is invalid
+drop ( gid:116; sid:298; enable:yes; )
+# DECODE_TCP_XMAS: XMAS attack detected
+drop ( gid:116; sid:400; enable:yes; )
+# DECODE_TCP_NMAP_XMAS: Nmap XMAS attack detected
+drop ( gid:116; sid:401; enable:yes; )
+# DECODE_DOS_NAPTHA: DOS NAPTHA vulnerability detected
+drop ( gid:116; sid:402; enable:yes; )
+# DECODE_SYN_TO_MULTICAST: SYN to multicast address
+drop ( gid:116; sid:403; enable:yes; )
+# DECODE_ZERO_TTL: IPv4 packet with zero TTL
+drop ( gid:116; sid:404; enable:yes; )
+# DECODE_BAD_FRAGBITS: IPv4 packet with bad frag bits (both MF and DF set)
+drop ( gid:116; sid:405; enable:yes; )
+# DECODE_UDP_IPV6_ZERO_CHECKSUM: invalid IPv6 UDP packet, checksum zero
+drop ( gid:116; sid:406; enable:yes; )
+# DECODE_IP4_LEN_OFFSET: IPv4 packet frag offset + length exceed maximum
+drop ( gid:116; sid:407; enable:yes; )
+# DECODE_IP4_SRC_THIS_NET: IPv4 packet from 'current net' source address
+alert ( gid:116; sid:408; enable:yes; )
+# DECODE_IP4_DST_THIS_NET: IPv4 packet to 'current net' dest address
+alert ( gid:116; sid:409; enable:yes; )
+# DECODE_IP4_SRC_MULTICAST: IPv4 packet from multicast source address
+drop ( gid:116; sid:410; enable:yes; )
+# DECODE_IP4_SRC_RESERVED: IPv4 packet from reserved source address
+alert ( gid:116; sid:411; enable:yes; )
+# DECODE_IP4_DST_RESERVED: IPv4 packet to reserved dest address
+alert ( gid:116; sid:412; enable:yes; )
+# DECODE_IP4_SRC_BROADCAST: IPv4 packet from broadcast source address
+drop ( gid:116; sid:413; enable:yes; )
+# DECODE_IP4_DST_BROADCAST: IPv4 packet to broadcast dest address
+alert ( gid:116; sid:414; enable:yes; )
+# DECODE_ICMP4_DST_MULTICAST: ICMP4 packet to multicast dest address
+alert ( gid:116; sid:415; enable:yes; )
+# DECODE_ICMP4_DST_BROADCAST: ICMP4 packet to broadcast dest address
+alert ( gid:116; sid:416; enable:yes; )
+# DECODE_ICMP4_TYPE_OTHER: ICMP4 type other
+alert ( gid:116; sid:418; enable:yes; )
+# DECODE_TCP_BAD_URP: TCP urgent pointer exceeds payload length or no payload
+alert ( gid:116; sid:419; enable:yes; )
+# DECODE_TCP_SYN_FIN: TCP SYN with FIN
+drop ( gid:116; sid:420; enable:yes; )
+# DECODE_TCP_SYN_RST: TCP SYN with RST
+drop ( gid:116; sid:421; enable:yes; )
+# DECODE_TCP_MUST_ACK: TCP PDU missing ack for established session
+drop ( gid:116; sid:422; enable:yes; )
+# DECODE_TCP_NO_SYN_ACK_RST: TCP has no SYN, ACK, or RST
+drop ( gid:116; sid:423; enable:yes; )
+# DECODE_ETH_HDR_TRUNC: truncated ethernet header
+drop ( gid:116; sid:424; enable:yes; )
+# DECODE_IP4_HDR_TRUNC: truncated IPv4 header
+drop ( gid:116; sid:425; enable:yes; )
+# DECODE_ICMP4_HDR_TRUNC: truncated ICMP4 header
+drop ( gid:116; sid:426; enable:yes; )
+# DECODE_ICMP6_HDR_TRUNC: truncated ICMPv6 header
+drop ( gid:116; sid:427; enable:yes; )
+# DECODE_IP4_MIN_TTL: IPv4 packet below TTL limit
+drop ( gid:116; sid:428; enable:yes; )
+# DECODE_IP6_ZERO_HOP_LIMIT: IPv6 packet has zero hop limit
+drop ( gid:116; sid:429; enable:yes; )
+# DECODE_IP4_DF_OFFSET: IPv4 packet both DF and offset set
+drop ( gid:116; sid:430; enable:yes; )
+# DECODE_ICMP6_TYPE_OTHER: ICMPv6 type not decoded
+alert ( gid:116; sid:431; enable:yes; )
+# DECODE_ICMP6_DST_MULTICAST: ICMPv6 packet to multicast address
+alert ( gid:116; sid:432; enable:yes; )
+# DECODE_TCP_SHAFT_SYNFLOOD: DDOS shaft SYN flood
+drop ( gid:116; sid:433; enable:yes; )
+# DECODE_ICMP_PING_NMAP: ICMP ping Nmap
+alert ( gid:116; sid:434; enable:yes; )
+# DECODE_ICMP_ICMPENUM: ICMP icmpenum v1.1.1
+alert ( gid:116; sid:435; enable:yes; )
+# DECODE_ICMP_REDIRECT_HOST: ICMP redirect host
+alert ( gid:116; sid:436; enable:yes; )
+# DECODE_ICMP_REDIRECT_NET: ICMP redirect net
+alert ( gid:116; sid:437; enable:yes; )
+# DECODE_ICMP_TRACEROUTE_IPOPTS: ICMP traceroute ipopts
+alert ( gid:116; sid:438; enable:yes; )
+# DECODE_ICMP_SOURCE_QUENCH: ICMP source quench
+drop ( gid:116; sid:439; enable:yes; )
+# DECODE_ICMP_BROADSCAN_SMURF_SCANNER: broadscan smurf scanner
+alert ( gid:116; sid:440; enable:yes; )
+# DECODE_ICMP_DST_UNREACH_ADMIN_PROHIBITED: ICMP destination unreachable communication administratively prohibited
+alert ( gid:116; sid:441; enable:yes; )
+# DECODE_ICMP_DST_UNREACH_DST_HOST_PROHIBITED: ICMP destination unreachable communication with destination host is administratively prohibited
+alert ( gid:116; sid:442; enable:yes; )
+# DECODE_ICMP_DST_UNREACH_DST_NET_PROHIBITED: ICMP destination unreachable communication with destination network is administratively prohibited
+alert ( gid:116; sid:443; enable:yes; )
+# DECODE_IP_OPTION_SET: IPv4 option set
+alert ( gid:116; sid:444; enable:yes; )
+# DECODE_UDP_LARGE_PACKET: large UDP packet (> 4000 bytes)
+alert ( gid:116; sid:445; enable:yes; )
+# DECODE_TCP_PORT_ZERO: TCP port 0 traffic
+drop ( gid:116; sid:446; enable:yes; )
+# DECODE_UDP_PORT_ZERO: UDP port 0 traffic
+drop ( gid:116; sid:447; enable:yes; )
+# DECODE_IP_RESERVED_FRAG_BIT: IPv4 reserved bit set
+drop ( gid:116; sid:448; enable:yes; )
+# DECODE_IP_UNASSIGNED_PROTO: unassigned/reserved IP protocol
+alert ( gid:116; sid:449; enable:yes; )
+# DECODE_IP_BAD_PROTO: bad IP protocol
+drop ( gid:116; sid:450; enable:yes; )
+# DECODE_ICMP_PATH_MTU_DOS: ICMP path MTU denial of service attempt
+drop ( gid:116; sid:451; enable:yes; )
+# DECODE_ICMP_DOS_ATTEMPT: Linux ICMP header DOS attempt
+drop ( gid:116; sid:452; enable:yes; )
+# DECODE_IPV6_ISATAP_SPOOF: ISATAP-addressed IPv6 traffic spoofing attempt
+drop ( gid:116; sid:453; enable:yes; )
+# DECODE_PGM_NAK_OVERFLOW: PGM nak list overflow attempt
+drop ( gid:116; sid:454; enable:yes; )
+# DECODE_IGMP_OPTIONS_DOS: DOS IGMP IP options validation attempt
+drop ( gid:116; sid:455; enable:yes; )
+# DECODE_IP6_EXCESS_EXT_HDR: too many IPv6 extension headers
+drop ( gid:116; sid:456; enable:yes; )
+# DECODE_ICMPV6_UNREACHABLE_NON_RFC_4443_CODE: ICMPv6 packet of type 1 (destination unreachable) with non-RFC 4443 code
+alert ( gid:116; sid:457; enable:yes; )
+# DECODE_IPV6_BAD_FRAG_PKT: bogus fragmentation packet, possible BSD attack
+drop ( gid:116; sid:458; enable:yes; )
+# DECODE_ZERO_LENGTH_FRAG: fragment with zero length
+drop ( gid:116; sid:459; enable:yes; )
+# DECODE_ICMPV6_NODE_INFO_BAD_CODE: ICMPv6 node info query/response packet with a code greater than 2
+drop ( gid:116; sid:460; enable:yes; )
+# DECODE_IPV6_ROUTE_ZERO: IPv6 routing type 0 extension header
+drop ( gid:116; sid:461; enable:yes; )
+# DECODE_ERSPAN_HDR_VERSION_MISMATCH: ERSpan header version mismatch
+drop ( gid:116; sid:462; enable:yes; )
+# DECODE_ERSPAN2_DGRAM_LT_HDR: captured length < ERSpan type2 header length
+drop ( gid:116; sid:463; enable:yes; )
+# DECODE_ERSPAN3_DGRAM_LT_HDR: captured < ERSpan type3 header length
+drop ( gid:116; sid:464; enable:yes; )
+# DECODE_AUTH_HDR_TRUNC: truncated authentication header
+drop ( gid:116; sid:465; enable:yes; )
+# DECODE_AUTH_HDR_BAD_LEN: bad authentication header length
+drop ( gid:116; sid:466; enable:yes; )
+# DECODE_FPATH_HDR_TRUNC: truncated FabricPath header
+drop ( gid:116; sid:467; enable:yes; )
+# DECODE_CISCO_META_HDR_TRUNC: truncated Cisco Metadata header
+drop ( gid:116; sid:468; enable:yes; )
+# DECODE_CISCO_META_HDR_OPT_LEN: invalid Cisco Metadata option length
+drop ( gid:116; sid:469; enable:yes; )
+# DECODE_CISCO_META_HDR_OPT_TYPE: invalid Cisco Metadata option type
+drop ( gid:116; sid:470; enable:yes; )
+# DECODE_CISCO_META_HDR_SGT: invalid Cisco Metadata security group tag
+drop ( gid:116; sid:471; enable:yes; )
+# DECODE_TOO_MANY_LAYERS: too many protocols present
+drop ( gid:116; sid:472; enable:yes; )
+# DECODE_BAD_ETHER_TYPE: ether type out of range
+drop ( gid:116; sid:473; enable:yes; )
+# DECODE_ICMP6_NOT_IP6: ICMPv6 not encapsulated in IPv6
+drop ( gid:116; sid:474; enable:yes; )
+# DECODE_MIPV6_BAD_PAYLOAD_PROTO: IPv6 mobility header includes an invalid value for the 'payload protocol' field
+drop ( gid:116; sid:475; enable:yes; )
+# DECODE_IPV6_SRC_RESERVED: IPv6 packet from reserved source address
+alert ( gid:116; sid:476; enable:yes; )
+# DECODE_IPV6_DST_RESERVED: IPv6 packet to reserved dest address
+alert ( gid:116; sid:477; enable:yes; )
+# DECODE_ICMP6_OPT_ZERO_LENGTH: ICMPv6 option length field is set to 0
+drop ( gid:116; sid:478; enable:yes; )
+# DECODE_BAD_PPPOE_SESS: bad PPPOE session frame detected
+drop ( gid:116; sid:479; enable:yes; )
+# DEFRAG_IPOPTIONS: inconsistent IP options on fragmented packets
+drop ( gid:123; sid:1; enable:yes; )
+# DEFRAG_TEARDROP: teardrop attack
+drop ( gid:123; sid:2; enable:yes; )
+# DEFRAG_SHORT_FRAG: short fragment, possible DOS attempt
+drop ( gid:123; sid:3; enable:yes; )
+# DEFRAG_ANOMALY_OVERSIZE: fragment packet ends after defragmented packet
+drop ( gid:123; sid:4; enable:yes; )
+# DEFRAG_ANOMALY_ZERO: zero-byte fragment packet
+drop ( gid:123; sid:5; enable:yes; )
+# DEFRAG_ANOMALY_BADSIZE_SM: bad fragment size, packet size is negative
+drop ( gid:123; sid:6; enable:yes; )
+# DEFRAG_ANOMALY_BADSIZE_LG: bad fragment size, packet size is greater than 65536
+drop ( gid:123; sid:7; enable:yes; )
+# DEFRAG_ANOMALY_OVLP: fragmentation overlap
+drop ( gid:123; sid:8; enable:yes; )
+# DEFRAG_MIN_TTL_EVASION: TTL value less than configured minimum, not using for reassembly
+drop ( gid:123; sid:11; enable:yes; )
+# DEFRAG_EXCESSIVE_OVERLAP: excessive fragment overlap
+drop ( gid:123; sid:12; enable:yes; )
+# DEFRAG_TINY_FRAGMENT: tiny fragment
+drop ( gid:123; sid:13; enable:yes; )
+# STREAM_TCP_SYN_ON_EST: SYN on established session
+drop ( gid:129; sid:1; enable:yes; )
+# STREAM_TCP_DATA_ON_SYN: data on SYN packet
+alert ( gid:129; sid:2; enable:yes; )
+# STREAM_TCP_DATA_ON_CLOSED: data sent on stream not accepting data
+drop ( gid:129; sid:3; enable:yes; )
+# STREAM_TCP_BAD_TIMESTAMP: TCP timestamp is outside of PAWS window
+drop ( gid:129; sid:4; enable:yes; )
+# STREAM_TCP_WINDOW_TOO_LARGE: window size (after scaling) larger than policy allows
+drop ( gid:129; sid:6; enable:yes; )
+# STREAM_TCP_EXCESSIVE_TCP_OVERLAPS: limit on number of overlapping TCP packets reached
+drop ( gid:129; sid:7; enable:yes; )
+# STREAM_TCP_DATA_AFTER_RESET: data sent on stream after TCP reset sent
+drop ( gid:129; sid:8; enable:yes; )
+# STREAM_TCP_SESSION_HIJACKED_CLIENT: TCP client possibly hijacked, different ethernet address
+drop ( gid:129; sid:9; enable:yes; )
+# STREAM_TCP_SESSION_HIJACKED_SERVER: TCP server possibly hijacked, different ethernet address
+drop ( gid:129; sid:10; enable:yes; )
+# STREAM_TCP_DATA_WITHOUT_FLAGS: TCP data with no TCP flags set
+drop ( gid:129; sid:11; enable:yes; )
+# STREAM_TCP_SMALL_SEGMENT: consecutive TCP small segments exceeding threshold
+alert ( gid:129; sid:12; enable:yes; )
+# STREAM_TCP_4WAY_HANDSHAKE: 4-way handshake detected
+alert ( gid:129; sid:13; enable:yes; )
+# STREAM_TCP_NO_TIMESTAMP: TCP timestamp is missing
+drop ( gid:129; sid:14; enable:yes; )
+# STREAM_TCP_BAD_RST: reset outside window
+drop ( gid:129; sid:15; enable:yes; )
+# STREAM_TCP_BAD_FIN: FIN number is greater than prior FIN
+drop ( gid:129; sid:16; enable:yes; )
+# STREAM_TCP_BAD_ACK: ACK number is greater than prior FIN
+drop ( gid:129; sid:17; enable:yes; )
+# STREAM_TCP_DATA_AFTER_RST_RCVD: data sent on stream after TCP reset received
+drop ( gid:129; sid:18; enable:yes; )
+# STREAM_TCP_WINDOW_SLAM: TCP window closed before receiving data
+drop ( gid:129; sid:19; enable:yes; )
+# STREAM_TCP_NO_3WHS: TCP session without 3-way handshake
+drop ( gid:129; sid:20; enable:yes; )
+# STREAM_TCP_MAX_QUEUED_BYTES_EXCEEDED: TCP max queued reassembly bytes exceeded threshold
+drop ( gid:129; sid:21; enable:yes; )
+# STREAM_TCP_MAX_QUEUED_SEGS_EXCEEDED: TCP max queued reassembly segments exceeded threshold
+drop ( gid:129; sid:22; enable:yes; )

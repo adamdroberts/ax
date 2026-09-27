@@ -1,0 +1,66 @@
+{
+  "scope": "Pure quarantine arithmetic and atomic publication; not native worker scheduling, reassembly or deployment.",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin27.0.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+  "sha256": {
+    "native-snort3/patches/fragment_pressure.h": "6530e400eb0fc1b9d7203d78b0fe48fdf6ed258e49981554fc71ac4ed17ee833",
+    "native-snort3/patches/fragment_pressure_test.cc": "06e2458fd59cb29d73c7a1ede84ca9af0ed0191f808d31d5e646803e08ba2448",
+    "native-snort3/patches/record_fragment_pressure_build.py": "148f765e3f9d27133cead9c28f61edb3c0ccb67264f8eab864eb017da6664cdf"
+  },
+  "runs": [
+    {
+      "command": [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pthread",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "/Users/adam/Dev/agent-security/ax/native-snort3/patches/fragment_pressure_test.cc",
+        "-o",
+        "/private/tmp/ax-snort-fragment-pressure-repair/fragment-pressure-memory-test"
+      ],
+      "sanitizers": [
+        "address",
+        "undefined"
+      ],
+      "binary_sha256": "84907b4e468f7a305557ce97356ad4c0178442b3f8b619a5a7fad6fcf993654a",
+      "summary": {
+        "assertions": 100017,
+        "random_deadlines": 100000,
+        "concurrent_publishers": 8,
+        "concurrent_updates": 200000
+      }
+    },
+    {
+      "command": [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pthread",
+        "-fsanitize=thread",
+        "-fno-omit-frame-pointer",
+        "/Users/adam/Dev/agent-security/ax/native-snort3/patches/fragment_pressure_test.cc",
+        "-o",
+        "/private/tmp/ax-snort-fragment-pressure-repair/fragment-pressure-concurrency-test"
+      ],
+      "sanitizers": [
+        "thread"
+      ],
+      "binary_sha256": "ea9a00411d7187c83aa0e6215851600e90cc2d228f5a49cca983a6008375ee48",
+      "summary": {
+        "assertions": 100017,
+        "random_deadlines": 100000,
+        "concurrent_publishers": 8,
+        "concurrent_updates": 200000
+      }
+    }
+  ]
+}

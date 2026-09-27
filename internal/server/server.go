@@ -124,6 +124,9 @@ func (s *Server) UpdateTask(ctx context.Context, req *v1alpha1.UpdateTaskRequest
 		return existing.GetMetadata()
 	})
 	if err := s.store.SaveTask(ctx, task); err != nil {
+		if errors.Is(err, store.ErrTaskTerminating) {
+			return nil, status.Error(codes.FailedPrecondition, "task deletion is in progress")
+		}
 		return nil, status.Errorf(codes.Internal, "saving task: %v", err)
 	}
 	return task, nil
@@ -168,6 +171,9 @@ func (s *Server) SuspendTask(ctx context.Context, req *v1alpha1.SuspendTaskReque
 	}
 	task.Spec.Suspend = true
 	if err := s.store.SaveTask(ctx, task); err != nil {
+		if errors.Is(err, store.ErrTaskTerminating) {
+			return nil, status.Error(codes.FailedPrecondition, "task deletion is in progress")
+		}
 		return nil, status.Errorf(codes.Internal, "suspending task: %v", err)
 	}
 	return task, nil
@@ -193,6 +199,9 @@ func (s *Server) ResumeTask(ctx context.Context, req *v1alpha1.ResumeTaskRequest
 	}
 	task.Spec.Suspend = false
 	if err := s.store.SaveTask(ctx, task); err != nil {
+		if errors.Is(err, store.ErrTaskTerminating) {
+			return nil, status.Error(codes.FailedPrecondition, "task deletion is in progress")
+		}
 		return nil, status.Errorf(codes.Internal, "resuming task: %v", err)
 	}
 	return task, nil
@@ -283,6 +292,12 @@ func (s *Server) UpdateGateway(ctx context.Context, req *v1alpha1.UpdateGatewayR
 	if err := s.store.SaveGateway(ctx, req.Gateway); err != nil {
 		return nil, status.Errorf(codes.Internal, "saving gateway: %v", err)
 	}
+	// Requeue even an identical update so retrying a partially published change
+	// reaches every binding. Publishing identities avoids overwriting a task
+	// whose desired configuration changed concurrently.
+	if err := s.store.EnqueueGatewayTasks(ctx, req.Gateway.Metadata.Atespace, req.Gateway.Metadata.Name); err != nil {
+		return nil, status.Errorf(codes.Internal, "gateway saved, but scheduling affected tasks was incomplete; retry the update: %v", err)
+	}
 	return req.Gateway, nil
 }
 
@@ -296,6 +311,11 @@ func (s *Server) DeleteGateway(ctx context.Context, req *v1alpha1.DeleteGatewayR
 	}
 	if err := s.store.DeleteGateway(ctx, atespace, req.Name); err != nil {
 		return nil, status.Errorf(codes.Internal, "deleting gateway: %v", err)
+	}
+	// DeleteGateway is idempotent. Repeating a delete must still fan out when
+	// the first attempt removed the record but could not enqueue all bindings.
+	if err := s.store.EnqueueGatewayTasks(ctx, atespace, req.Name); err != nil {
+		return nil, status.Errorf(codes.Internal, "gateway deleted, but scheduling affected tasks was incomplete; retry the delete: %v", err)
 	}
 	return &v1alpha1.DeleteGatewayResponse{}, nil
 }

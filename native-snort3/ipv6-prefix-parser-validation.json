@@ -1,0 +1,33 @@
+{
+  "scope": "Pure capture-boundary, reassembly-size and ECN tests; not native allocation, worker scheduling or deployment.",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin27.0.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+  "command": [
+    "/usr/bin/clang++",
+    "-std=c++17",
+    "-O1",
+    "-g",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-fsanitize=address,undefined",
+    "-fno-omit-frame-pointer",
+    "/Users/adam/Dev/agent-security/ax/native-snort3/patches/ipv6_fragment_prefix_test.cc",
+    "-o",
+    "/private/tmp/ax-snort-ipv6-prefix-repair/ipv6-prefix-parser-test"
+  ],
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "binary_sha256": "f01cf005feaa7121338b873c0d5fc409e1d94076e2736359d2396555ac70376a",
+  "summary": {
+    "assertions": 2916560,
+    "random_spans": 100000,
+    "random_geometry": 100000
+  },
+  "sha256": {
+    "native-snort3/patches/ipv6_fragment_prefix.h": "c736fe0b61fe4bd1ef286d7e11ece332c0fd1f598f672b26da9429efdc7c5e6a",
+    "native-snort3/patches/ipv6_fragment_prefix_test.cc": "477b8cd00a1b7750b16f0a11f95d95827defa5315501faf31cbe6dd798428a7e",
+    "native-snort3/patches/record_ipv6_prefix_build.py": "c8f824ed2486f0bd1a052b5cda801d68e2056ad972444e8639dd5eb5d92948dd"
+  }
+}

@@ -1,0 +1,276 @@
+--- a/src/codecs/ip/cd_tcp.cc
++++ b/src/codecs/ip/cd_tcp.cc
+@@ -37,6 +37,7 @@
+ 
+ #include "checksum.h"
+ #include "ipv6_checksum_destination.h"
++#include "ipv6_home_address.h"
+ #include "ipv4_checksum_destination.h"
+ 
+ using namespace snort;
+@@ -195,6 +196,10 @@
+ 
+     checksum::Pseudoheader6 ph6;
+     COPY4(ph6.hdr.sip, ip6h->get_src()->u6_addr32);
++    if (const auto* home = ax_home::source(
++            reinterpret_cast<const uint8_t*>(ip6h), raw.data,
++            static_cast<uint8_t>(codec.ip6_csum_proto)))
++        memcpy(ph6.hdr.sip, home, sizeof(ph6.hdr.sip));
+     COPY4(ph6.hdr.dip, ip6h->get_dst()->u6_addr32);
+     if (const auto* final = ax_checksum::destination(
+             reinterpret_cast<const uint8_t*>(ip6h), raw.data,
+@@ -240,6 +245,7 @@
+ 
+     if (snort::get_network_policy()->tcp_checksums() &&
+         (codec.is_cooked() ||
++         (snort.ip_api.is_ip6() && snort.ip_api.get_ip6h()->next() != IpProtocol::TCP) ||
+          (snort.ip_api.is_ip4() && snort.ip_api.get_ip4h()->has_options()) ||
+          !valid_checksum_from_daq(raw)))
+     {
+@@ -766,6 +772,10 @@
+             checksum::Pseudoheader6 ps6;
+             const ip::IP6Hdr* const ip6h = api.get_ip6h();
+             memcpy(ps6.hdr.sip, ip6h->get_src()->u6_addr32, sizeof(ps6.hdr.sip));
++            if (const auto* home = ax_home::source(
++                    reinterpret_cast<const uint8_t*>(ip6h), raw_pkt,
++                    static_cast<uint8_t>(IpProtocol::TCP)))
++                memcpy(ps6.hdr.sip, home, sizeof(ps6.hdr.sip));
+             memcpy(ps6.hdr.dip, ip6h->get_dst()->u6_addr32, sizeof(ps6.hdr.dip));
+             if (const auto* final = ax_checksum::destination(
+                     reinterpret_cast<const uint8_t*>(ip6h), raw_pkt,
+--- a/src/codecs/ip/cd_udp.cc
++++ b/src/codecs/ip/cd_udp.cc
+@@ -35,6 +35,7 @@
+ 
+ #include "checksum.h"
+ #include "ipv6_checksum_destination.h"
++#include "ipv6_home_address.h"
+ #include "ipv4_checksum_destination.h"
+ 
+ using namespace snort;
+@@ -301,6 +302,10 @@
+ 
+     checksum::Pseudoheader6 ph6;
+     COPY4(ph6.hdr.sip, ip6h->get_src()->u6_addr32);
++    if (const auto* home = ax_home::source(
++            reinterpret_cast<const uint8_t*>(ip6h), raw.data,
++            static_cast<uint8_t>(codec.ip6_csum_proto)))
++        memcpy(ph6.hdr.sip, home, sizeof(ph6.hdr.sip));
+     COPY4(ph6.hdr.dip, ip6h->get_dst()->u6_addr32);
+     if (const auto* final = ax_checksum::destination(
+             reinterpret_cast<const uint8_t*>(ip6h), raw.data,
+@@ -382,6 +387,7 @@
+ 
+     if (snort::get_network_policy()->udp_checksums() &&
+         (codec.is_cooked() ||
++         (snort.ip_api.is_ip6() && snort.ip_api.get_ip6h()->next() != IpProtocol::UDP) ||
+          (snort.ip_api.is_ip4() && snort.ip_api.get_ip4h()->has_options()) ||
+          !valid_checksum_from_daq(raw)))
+     {
+@@ -599,6 +605,10 @@
+             checksum::Pseudoheader6 ps6;
+             const ip::IP6Hdr* const ip6h = ip_api.get_ip6h();
+             memcpy(ps6.hdr.sip, ip6h->get_src()->u6_addr32, sizeof(ps6.hdr.sip));
++            if (const auto* home = ax_home::source(
++                    reinterpret_cast<const uint8_t*>(ip6h), raw_pkt,
++                    static_cast<uint8_t>(IpProtocol::UDP)))
++                memcpy(ps6.hdr.sip, home, sizeof(ps6.hdr.sip));
+             memcpy(ps6.hdr.dip, ip6h->get_dst()->u6_addr32, sizeof(ps6.hdr.dip));
+             if (const auto* final = ax_checksum::destination(
+                     reinterpret_cast<const uint8_t*>(ip6h), raw_pkt,
+--- a/src/codecs/ip/cd_icmp6.cc
++++ b/src/codecs/ip/cd_icmp6.cc
+@@ -34,6 +34,7 @@
+ 
+ #include "checksum.h"
+ #include "ipv6_checksum_destination.h"
++#include "ipv6_home_address.h"
+ 
+ using namespace snort;
+ 
+@@ -195,11 +196,16 @@
+     const icmp::Icmp6Hdr* const icmp6h = reinterpret_cast<const icmp::Icmp6Hdr*>(raw.data);
+ 
+     if ( snort::get_network_policy()->icmp_checksums() &&
+-        (codec.is_cooked() || !valid_checksum_from_daq(raw)))
++        (codec.is_cooked() || snort.ip_api.get_ip6h()->next() != IpProtocol::ICMPV6 ||
++         !valid_checksum_from_daq(raw)))
+     {
+         checksum::Pseudoheader6 ph6;
+         const ip::IP6Hdr* const ip6h = snort.ip_api.get_ip6h();
+         COPY4(ph6.hdr.sip, ip6h->get_src()->u6_addr32);
++        if (const auto* home = ax_home::source(
++                reinterpret_cast<const uint8_t*>(ip6h), raw.data,
++                static_cast<uint8_t>(codec.ip6_csum_proto)))
++            memcpy(ph6.hdr.sip, home, sizeof(ph6.hdr.sip));
+         COPY4(ph6.hdr.dip, ip6h->get_dst()->u6_addr32);
+         if (const auto* final = ax_checksum::destination(
+                 reinterpret_cast<const uint8_t*>(ip6h), raw.data,
+@@ -457,6 +463,10 @@
+         h->cksum = 0;
+ 
+         memcpy(ps6.hdr.sip, api.get_src()->get_ip6_ptr(), sizeof(ps6.hdr.sip));
++        if (const auto* home = ax_home::source(
++                reinterpret_cast<const uint8_t*>(api.get_ip6h()), raw_pkt,
++                static_cast<uint8_t>(IpProtocol::ICMPV6)))
++            memcpy(ps6.hdr.sip, home, sizeof(ps6.hdr.sip));
+         memcpy(ps6.hdr.dip, api.get_dst()->get_ip6_ptr(), sizeof(ps6.hdr.dip));
+         if (const auto* final = ax_checksum::destination(
+                 reinterpret_cast<const uint8_t*>(api.get_ip6h()), raw_pkt,
+--- /dev/null
++++ b/src/codecs/ip/ipv6_home_address.h
+@@ -0,0 +1,154 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#ifndef AX_HOME_ADDRESS_H
++#define AX_HOME_ADDRESS_H
++
++#include <cstddef>
++#include <cstdint>
++
++namespace ax_home
++{
++enum class Error { none, framing, budget, length, placement, alignment, duplicate, address };
++struct Result
++{
++    Error error = Error::none;
++    const std::uint8_t* source = nullptr;
++    std::size_t consumed = 0;
++    std::uint8_t next = 0;
++    bool real_fragment = false;
++};
++
++inline bool malformed_home(Error error)
++{
++    return error >= Error::length;
++}
++
++// Necessary stateless exclusions only. Routability, address ownership and the
++// RFC 6275 binding-cache relationship require independent endpoint state.
++inline bool invalid_address(const std::uint8_t* address)
++{
++    if (address[0] == 0xff || (address[0] == 0xfe && (address[1] & 0xc0) == 0x80))
++        return true;
++    bool zero = true;
++    for (unsigned i = 0; i < 15; ++i)
++        zero = zero && address[i] == 0;
++    return zero && address[15] <= 1;
++}
++
++// Walk the capture-checked payload of one selected IPv6 header, or its exact
++// extension prefix. Unknown/upper-layer data and ESP are opaque. Noninitial
++// fragments stop traversal. Eight extensions is the supplied profile's local
++// resource limit, not an RFC extension-count restriction.
++inline Result chain(std::uint8_t next, const std::uint8_t* payload, std::size_t size)
++{
++    Result result;
++    result.next = next;
++    if (!payload && size)
++    {
++        result.error = Error::framing;
++        return result;
++    }
++    bool fragment_or_ah = false;
++    unsigned extensions = 0;
++    while (true)
++    {
++        next = result.next;
++        if (next != 0 && next != 60 && next != 43 && next != 51 && next != 44)
++            return result;
++        if (extensions++ == 8)
++        {
++            result.error = Error::budget;
++            return result;
++        }
++        const auto remaining = size - result.consumed;
++        if (remaining < 8)
++        {
++            result.error = Error::framing;
++            return result;
++        }
++        const auto* header = payload + result.consumed;
++        const std::size_t length = next == 44 ? 8 : next == 51 ?
++            (static_cast<std::size_t>(header[1]) + 2) * 4 :
++            (static_cast<std::size_t>(header[1]) + 1) * 8;
++        if (length > remaining || (next == 51 && (length < 16 || length % 8)))
++        {
++            result.error = Error::framing;
++            return result;
++        }
++        if (next == 43 && result.source)
++        {
++            result.error = Error::placement; // HAO must follow Routing.
++            return result;
++        }
++        if (next == 44 || next == 51)
++            fragment_or_ah = true;
++        if (next == 0 || next == 60)
++        {
++            for (std::size_t option = 2; option < length; )
++            {
++                const auto type = header[option];
++                if (type == 0)
++                {
++                    ++option;
++                    continue;
++                }
++                if (length - option < 2 || header[option + 1] > length - option - 2)
++                {
++                    result.error = type == 0xc9 ? Error::length : Error::framing;
++                    return result;
++                }
++                const auto bytes = header[option + 1];
++                if (type == 0xc9)
++                {
++                    if (bytes != 16)
++                        result.error = Error::length;
++                    else if (next != 60 || fragment_or_ah)
++                        result.error = Error::placement;
++                    else if (option % 8 != 6)
++                        result.error = Error::alignment;
++                    else if (result.source)
++                        result.error = Error::duplicate;
++                    else if (invalid_address(header + option + 2))
++                        result.error = Error::address;
++                    if (result.error != Error::none)
++                        return result;
++                    result.source = header + option + 2;
++                }
++                option += 2 + bytes;
++            }
++        }
++        result.next = header[0];
++        result.consumed += length;
++        if (next == 44)
++        {
++            const unsigned field = (static_cast<unsigned>(header[2]) << 8) | header[3];
++            result.real_fragment = result.real_fragment || (field & 0xfff9) != 0;
++            if (field & 0xfff8)
++                return result;
++        }
++    }
++}
++
++// Decode/update callers guarantee these pointers belong to the same packet.
++// Bounds end exactly at the upper-layer boundary; payload lookalikes cannot
++// become source addresses. The IPv6 payload length may be stale during resize
++// but must still cover the prefix. This does not rewrite IP addresses or flow
++// identity, authenticate bindings, process AH/ESP, or inspect response buffers.
++inline const std::uint8_t* source(const std::uint8_t* ip6,
++    const std::uint8_t* upper, std::uint8_t protocol)
++{
++    if (!ip6 || !upper)
++        return nullptr;
++    const auto start = reinterpret_cast<std::uintptr_t>(ip6);
++    const auto finish = reinterpret_cast<std::uintptr_t>(upper);
++    if (finish < start || finish - start < 40 || finish - start > 40 + 65535)
++        return nullptr;
++    const auto size = static_cast<std::size_t>(finish - start - 40);
++    const auto declared = (static_cast<unsigned>(ip6[4]) << 8) | ip6[5];
++    if ((ip6[0] >> 4) != 6 || size > declared)
++        return nullptr;
++    const auto result = chain(ip6[6], ip6 + 40, size);
++    return result.error == Error::none && !result.real_fragment &&
++        result.consumed == size && result.next == protocol ? result.source : nullptr;
++}
++}
++#endif

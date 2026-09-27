@@ -1,0 +1,77 @@
+{
+  "snort_version": "3.12.2.0",
+  "source_commit": "14aeb09f5a0856812dbe08ead3c21f99e8860aa0",
+  "scope": "Native configuration loading and effective rule states only; no traffic or live inline enforcement.",
+  "profiles": [
+    {
+      "profile": "protocol",
+      "loaded": 208,
+      "enabled": 208,
+      "actions": {
+        "drop": 164,
+        "block": 0,
+        "alert": 44
+      }
+    },
+    {
+      "profile": "perimeter",
+      "loaded": 215,
+      "enabled": 215,
+      "actions": {
+        "drop": 164,
+        "block": 5,
+        "alert": 46
+      }
+    },
+    {
+      "profile": "http",
+      "loaded": 271,
+      "enabled": 271,
+      "actions": {
+        "drop": 164,
+        "block": 19,
+        "alert": 88
+      }
+    },
+    {
+      "profile": "both",
+      "loaded": 278,
+      "enabled": 278,
+      "actions": {
+        "drop": 164,
+        "block": 24,
+        "alert": 90
+      }
+    }
+  ],
+  "rejected_invalid_configurations": 18,
+  "plugin_sha256": {
+    "ax_nd_options.so": "f5868d88ddb4054f9e3555a0a40aaaf78a8c85bd202a3d18a2c883fc0b7da1b2"
+  },
+  "sha256": {
+    "native-snort3/protocol-ips.lua": "000cace55518af574800693f3b671e3a07d491ff5e0ad3e9c87c19abc450712c",
+    "native-snort3/agent-guard-overlay.lua": "f6b900d70900f3e9d3a042d247590a501f622c5c7fa11fd791b75ea20e8fd91d",
+    "native-snort3/protocol.states": "444f3a106d5f018ebe429d262d5f8fc79436c8fd460aa6d48ed0f4795e6cc81f",
+    "native-snort3/protocol-builtins.rules": "58b92054c4d5d7f0cf68043a1fe7ab8a8ae125791491ecd6ce309e3354f7bc27",
+    "native-snort3/builtin-inventory.json": "a48a61274609c4dfb69824bd2e0b5f7bbb0da226a27c7faa08e95c6866a118a8",
+    "native-snort3/protocol-validation.rules": "b6c36614f8e4a9853104deadcb26f494b00966271e409d21f96293fb90267ea8",
+    "native-snort3/generate_inventory.py": "4d461ea9cfbbb799592a644a651c71c872b1d430962f9cc4445e4e04eb246c0f",
+    "native-snort3/validate_profiles.py": "9d6adaacd9a4c55b913a2de9318af206e4a62a5f1882610cb2cf9091682c769e",
+    "native-snort3/plugins/README.md": "09ce38523a9abc39455c27a82f176052257e34d0832487e7ec65728e96d9f402",
+    "native-snort3/plugins/build.py": "ec2faeec4501f4e5591f35e665c25f5677182b17e76801835e64199b43458e7c",
+    "native-snort3/plugins/ax_nd_options.cc": "5ac99c5b4568c15ee05d5a9bf76254f566c41e28c7a612f6f6fa521da56a9255",
+    "native-snort3/plugins/nd_validation.h": "4f88245b813db35205d73dbff849269e43f9bc4ace81e6fb3eccdf878eabc185",
+    "native-snort3/plugins/nd_validation_test.cc": "72358ad3aac6fd0a848ddc883ec8430012573cee71185758021b942e77008ad2",
+    "native-snort3/plugins/ip_validation.h": "cb67871c83dfcb059b4c126933366a06f60472060956bbdf6b3e4bebf9792010",
+    "native-snort3/plugins/ip_validation_test.cc": "f5e057023dfc380f08825cbcc1beb3d638a947bf503e271343715ebe630eb080",
+    "native-snort3/plugins/ip4_options.h": "643255e2b38d0b67c6db2297c6b03076b0d32853ec038f20b9508ab83b18e30d",
+    "native-snort3/plugins/ip4_options_test.cc": "29927fe74d788bb6d99fd811cd0dc88b87de30c54d44e45fcf07db9219e8120a",
+    "native-snort3/plugins/ip6_options.h": "c0e938f3053eb62b1e537959d07861a5b2944312ebfc4decb13a914d1236ad50",
+    "native-snort3/plugins/ip6_options_test.cc": "7dbae601d883aa31a0a1fcd9c7dc5be8f267c7f1a5b890497958b6ac824117ef",
+    "native-snort3/plugins/esp_validation.h": "cf8ade954fcec4f1f09917798d1aa4fd748790f210adb265fe845e32d3f135fe",
+    "native-snort3/plugins/esp_validation_test.cc": "2094e98219defcb518985f3f3aa978ff08ca1c3f6e449afa0105ed071b3dc1c5",
+    "native-snort3/plugins/routing_validation.h": "825341ae93dbe5bb8cd8071cc245d5b3642d072a86291241084f03b3b2a36694",
+    "native-snort3/plugins/routing_validation_test.cc": "ed3924084f745164e72c5b5457ff5d307d1a852fe8eda9371f5199f007b58c07",
+    "pkg/security/snort/imports/agent-guard-snort3/native-only.rules": "2451962b90016f8b520521a93837ddcdcce9064e704ebdc5e67c359e90fd9d9a"
+  }
+}

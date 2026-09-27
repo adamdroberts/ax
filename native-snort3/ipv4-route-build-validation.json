@@ -1,0 +1,326 @@
+{
+  "scope": "Local matched builds and source review; no installation, live routing or deployment.",
+  "upstream_commit": "14aeb09f5a0856812dbe08ead3c21f99e8860aa0",
+  "binary_sha256": {
+    "baseline": "cdbbe878d41db1b922482d4f1c75ea373ceac1a3fe43840fe2d0052deac439df",
+    "repaired": "e031000e1e3e438aea1de0b638f943046f145a336360fc8aaa9488567e62c88f"
+  },
+  "comparison": {
+    "same_configuration": true,
+    "baseline_matches_previous_fragment_source": true,
+    "only_ipv4_route_repair_changes": true,
+    "source_changes": {
+      "ax-ipv4-route-checksum.patch": {
+        "before": null,
+        "after": "9a2f1288df51dbf22e8608f8ef08cbe83419452c9a8e941e947520398636f90d"
+      },
+      "ax-ipv4-route-source-validation.json": {
+        "before": null,
+        "after": "847b9bccc666c20eda3e5980596a9116a6033bc390a94837d9b9689f545e47cf"
+      },
+      "src/codecs/ip/cd_tcp.cc": {
+        "before": "988634f4c478a3d379d09e2daf7f6b01533e7fb5f1cc548debab75f7f45f301b",
+        "after": "c90a4874d176496d432edfe6fa604fc48d8527bf00bfa36be87d62ac610949fe"
+      },
+      "src/codecs/ip/cd_udp.cc": {
+        "before": "6ecd02b3134c925ebe693e2d48d98a261651d631603c32aeb8e1357c810b9c7c",
+        "after": "4eccc070d48a9e36edecf3272a727e87c9d71644a0536251c97061adb2cd57f9"
+      },
+      "src/codecs/ip/ipv4_checksum_destination.h": {
+        "before": null,
+        "after": "794c67f02580460956dc7503beed5646b5ca122bc06f7f571ab422f15ee55d07"
+      }
+    }
+  },
+  "configuration": {
+    "upstream_commit": "14aeb09f5a0856812dbe08ead3c21f99e8860aa0",
+    "command": [
+      "/private/tmp/ax-snort-repaired/tools/opt/cmake/bin/cmake",
+      "-S",
+      "/private/tmp/ax-snort-ipv4-route-repair/source",
+      "-B",
+      "/private/tmp/ax-snort-ipv4-route-repair/build",
+      "-G",
+      "Ninja",
+      "-DCMAKE_MAKE_PROGRAM=/private/tmp/ax-snort-repaired/tools/opt/ninja/bin/ninja",
+      "-DCMAKE_C_COMPILER=/usr/bin/clang",
+      "-DCMAKE_CXX_COMPILER=/usr/bin/clang++",
+      "-DCMAKE_CXX_FLAGS=-I/private/tmp/ax-snort-native/runtime/opt/xz/include",
+      "-DCMAKE_C_FLAGS=-I/private/tmp/ax-snort-native/runtime/opt/xz/include",
+      "-DCMAKE_INSTALL_PREFIX=/private/tmp/ax-snort-ipv4-route-repair/install",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+      "-DOPENSSL_ROOT_DIR=/private/tmp/ax-snort-repaired/tools/opt/openssl@3",
+      "-DOPENSSL_INCLUDE_DIR=/private/tmp/ax-snort-repaired/tools/opt/openssl@3/include",
+      "-DOPENSSL_CRYPTO_LIBRARY=/private/tmp/ax-snort-repaired/tools/opt/openssl@3/lib/libcrypto.dylib",
+      "-DOPENSSL_SSL_LIBRARY=/private/tmp/ax-snort-repaired/tools/opt/openssl@3/lib/libssl.dylib",
+      "-DCMAKE_PREFIX_PATH=/private/tmp/ax-snort-repaired/tools/opt/openssl@3;/private/tmp/ax-snort-native/runtime/opt/hwloc;/private/tmp/ax-snort-native/runtime/opt/jemalloc;/private/tmp/ax-snort-native/runtime/opt/xz;/private/tmp/ax-snort-native/runtime/opt/vectorscan;/private/tmp/ax-snort-native/runtime/opt/pcre2;/private/tmp/ax-snort-native/runtime/opt/daq;/private/tmp/ax-snort-native/runtime/opt/luajit;/private/tmp/ax-snort-native/runtime/opt/libdnet;/private/tmp/ax-snort-native/runtime/opt/libpcap",
+      "-DPKG_CONFIG_EXECUTABLE=/private/tmp/ax-snort-repaired/tools/opt/pkgconf/bin/pkgconf",
+      "-DFLEX_EXECUTABLE=/usr/bin/flex",
+      "-DFLEX_INCLUDES=/Library/Developer/CommandLineTools/usr/include",
+      "-DENABLE_GDB=OFF",
+      "-DENABLE_STATIC_DAQ=ON",
+      "-DENABLE_UNIT_TESTS=OFF",
+      "-DENABLE_SAFEC=OFF",
+      "-DMAKE_DOC=OFF",
+      "-DMAKE_HTML_DOC=OFF",
+      "-DMAKE_PDF_DOC=OFF",
+      "-DMAKE_TEXT_DOC=OFF"
+    ],
+    "environment": {
+      "PATH": "/private/tmp/ax-snort-repaired/tools/opt/cmake/bin:/private/tmp/ax-snort-repaired/tools/opt/ninja/bin:/private/tmp/ax-snort-repaired/tools/opt/pkgconf/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "PKG_CONFIG_LIBDIR": "/private/tmp/ax-snort-repaired/pkgconfig",
+      "PKG_CONFIG_PATH": "/private/tmp/ax-snort-repaired/pkgconfig"
+    },
+    "pkgconfig": [
+      {
+        "source": "Apple Command Line Tools SDK xml2-config --version and system libxml2.tbd",
+        "version": "2.9.13",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libxml-2.0.pc",
+        "relocated_sha256": "c2c7a369bff33392e0f9691caf96de10ab2b024af376e66ff117d834b2ceded4"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/libpcap/1.11.0/lib/pkgconfig/libpcap.pc",
+        "source_sha256": "51cb0f9fe9ec94c628f1a10b2ca566db50b1053c7af5632a7c09454332a16833",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libpcap.pc",
+        "relocated_sha256": "7f7138fd169c363558ee3f2af7c19f88652d29fa8353a53e9aa0bf4792129f36"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/luajit/2.1.1788856981/lib/pkgconfig/luajit.pc",
+        "source_sha256": "a1fe95e921e3afc852b979af3eb5dab6d49de4979309908751db1354bebd88b3",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/luajit.pc",
+        "relocated_sha256": "aba02d72f7470bb3d4d0c76fe8fe216d6a74960aea80d44f8b814c0d8a216166"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/daq/3.0.27/lib/pkgconfig/libdaq_static_trace.pc",
+        "source_sha256": "60f75caec5739b6577f41ca29e9e959e7f6ea0bfb525c1419abeb9609bc45754",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libdaq_static_trace.pc",
+        "relocated_sha256": "96c2cfdc79278a7d09f3b7cc99c3e27f3ab45b2add70c0dfca073b4d64f0f9b1"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/daq/3.0.27/lib/pkgconfig/libdaq_static_savefile.pc",
+        "source_sha256": "889b3a0b235563c2bd9e3972aab591ecd1f379e34f7a1fbec5ea5e34fb9bcfef",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libdaq_static_savefile.pc",
+        "relocated_sha256": "d00459afeabf50911897c9392cb7016dd272f6fb8c1ae08939d484502008c119"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/daq/3.0.27/lib/pkgconfig/libdaq_static_fst.pc",
+        "source_sha256": "a96b5d1086da137ecdace4785b21d28a374479114f75fab5eaed4fb5c25173e6",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libdaq_static_fst.pc",
+        "relocated_sha256": "1fee006ea48c240b9e2af8db4b70cdc7a24206ec717ac3ed9028ab7c6e87f920"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/daq/3.0.27/lib/pkgconfig/libdaq_static_pcap.pc",
+        "source_sha256": "cdb15560413f9c0fb9f4522fb8432432f8fe3ab82184d4ecbf2fd630dbb43046",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libdaq_static_pcap.pc",
+        "relocated_sha256": "0ee0057fe5a652072656cbb56d612d4aa28a88d2c928702150d1267adfb613ad"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/daq/3.0.27/lib/pkgconfig/libdaq.pc",
+        "source_sha256": "5d6d506509606486ccd1d4fe9afb509f6fe17773a703eed49e07ac5401b6dd61",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libdaq.pc",
+        "relocated_sha256": "51b9cabf9cb77fbd32a92094a3eccb52a4827e441f8d2c3cdab0d176bac07d7e"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/daq/3.0.27/lib/pkgconfig/libdaq_static_bpf.pc",
+        "source_sha256": "fdbc8010b624e60c160b982cc6c2e885f2ef511b58e65f33cadaabbb6569503a",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libdaq_static_bpf.pc",
+        "relocated_sha256": "289cbf837b518d1859e611cc09f9a52f2928972bc81c30fa269b3bd42968597b"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/daq/3.0.27/lib/pkgconfig/libdaq_static_dump.pc",
+        "source_sha256": "98ae056c7e1fc51d91f8c610549325b6abfbba8a86b3cfb4d7d2983372c4c798",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libdaq_static_dump.pc",
+        "relocated_sha256": "fbaafceaf11373b25f02bcaf0aafd984d1f8c2ac7c91298f770093e6f9910a10"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/daq/3.0.27/lib/pkgconfig/libdaq_static_divert.pc",
+        "source_sha256": "0b9c2afea77d84d75b6a5024ab0b0934d57eadb6de399b39ff53d1156bf283bd",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libdaq_static_divert.pc",
+        "relocated_sha256": "9e40177e4c0766061f571a5e0627eb6bb7f3fd69f6acb12419c4820cbf230876"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/pcre2/10.48/lib/pkgconfig/libpcre2-posix.pc",
+        "source_sha256": "51961e4582bafba3c874eab31a6371c329a864979477e97ab0d24b22531a20dc",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libpcre2-posix.pc",
+        "relocated_sha256": "36c92191e4ad6792127ecc8e19871bb68072244c461bd63074cd2d00b8e259b8"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/pcre2/10.48/lib/pkgconfig/libpcre2-8.pc",
+        "source_sha256": "f72eb206caa7a2b4c9bf61fe1dbd09f4a4aca8f5ea75ac3c48a3953c185c12a6",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libpcre2-8.pc",
+        "relocated_sha256": "484b872ae9f6c42d0957aa279f014b6bebb3ee1e00a48044763dc0eb158a9484"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/pcre2/10.48/lib/pkgconfig/libpcre2-16.pc",
+        "source_sha256": "56a1a65138626123040add6d4c629c6d86e06ff40f3f17807a22e728f7dec738",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libpcre2-16.pc",
+        "relocated_sha256": "d5a4aa0066adfff34675c09fb43eccf01a8cf4e0ff772a91fd6820c25b727fcd"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/pcre2/10.48/lib/pkgconfig/libpcre2-32.pc",
+        "source_sha256": "b422f6b672394488f775a5f647701b8459ee433c21906c3671e863997ffa3a78",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libpcre2-32.pc",
+        "relocated_sha256": "2dc47a91a71509e3fdb98278c54af4b12720be9f267d1118fe77b692e2ba3413"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/vectorscan/5.4.13/lib/pkgconfig/libhs.pc",
+        "source_sha256": "c7cfe147f5fcadf85be5172e3820688fcb350e4b64dfa3072601e90741d09903",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libhs.pc",
+        "relocated_sha256": "8b11918c64c999c4d6655084bd53218bcfd86804015f45a4935123df2db1f600"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/xz/5.8.4/lib/pkgconfig/liblzma.pc",
+        "source_sha256": "5b3fd6132ea79154c8f2a4b9fff026f38e65716d5272740ddb266a681fc4bcc1",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/liblzma.pc",
+        "relocated_sha256": "17f2aaba70bb65566fc35d88db5e284d60ba17cab05dde09000c1a3c1f66bcd5"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/jemalloc/5.4.0/lib/pkgconfig/jemalloc.pc",
+        "source_sha256": "9d92aaa464b53fec2d5e2e55d39d0d9cbfd2461c4ea7791a89c04ae93ddaf136",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/jemalloc.pc",
+        "relocated_sha256": "0c3459591bf115928261c9ef5c90523fbe9f186434e30fb7b7dbbf5df0c70cac"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/hwloc/2.15.0/lib/pkgconfig/hwloc.pc",
+        "source_sha256": "1ad5ee4ff48fb9deda51cd639e4d4d998bc255b82ad576e3a65c7fdc13de4d77",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/hwloc.pc",
+        "relocated_sha256": "ca486d20c40e0ea44072f92fc34f3c851c68ea2e6d9c8c10a3355a6873fae24f"
+      },
+      {
+        "source": "/private/tmp/ax-snort-repaired/tools/opt/openssl@3/lib/pkgconfig/openssl.pc",
+        "source_sha256": "97009955e4ab8e8f0a8a01532be36ce6d1dc6d6d986c88757e39d7eef7eefcb0",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/openssl.pc",
+        "relocated_sha256": "1768d83908536a64241bd06d6df2379b7a1bdf156975b5c2865801d7ed213c23"
+      },
+      {
+        "source": "/private/tmp/ax-snort-repaired/tools/opt/openssl@3/lib/pkgconfig/libssl.pc",
+        "source_sha256": "bcabbe9884a1b4f0087e2896ee4c0895469e32ec38cc0ed6e6a9db0ae41a9f43",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libssl.pc",
+        "relocated_sha256": "85a4371343a6a92dbb3d55712f35701c0bc8f5f4b206a6b9c2455156d32b7ec9"
+      },
+      {
+        "source": "/private/tmp/ax-snort-repaired/tools/opt/openssl@3/lib/pkgconfig/libcrypto.pc",
+        "source_sha256": "9b7bcb16a7000bb8a123d58df837f7ba2a70e29091f1962fa103a2ec5c2c9b9e",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libcrypto.pc",
+        "relocated_sha256": "4d375223eaab6e08c234dc624f641ed38ebe2168f76434918a68d7075061ad90"
+      }
+    ],
+    "returncode": 0
+  },
+  "builds": {
+    "baseline": {
+      "command": [
+        "/private/tmp/ax-snort-repaired/tools/opt/cmake/bin/cmake",
+        "--build",
+        "/private/tmp/ax-snort-ipv4-route-repair/build",
+        "--target",
+        "snort",
+        "--parallel",
+        "6"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 59.607,
+      "scope": "Local build evidence, not a hermetic reproducible-build or deployment attestation.",
+      "builder_sha256": "86dd210ab3af8d9eb9f42899c937d46b744c0033803665e24a63449429aec765",
+      "source_unchanged_during_build": true,
+      "raw_binary_sha256": "c080dd85521e67c776265c915e442a1a37857398ccdb543c5ee5ec9af23d5d21",
+      "relocations": {
+        "@@HOMEBREW_PREFIX@@/opt/luajit/lib/libluajit-5.1.2.dylib": "/private/tmp/ax-snort-native/runtime/opt/luajit/lib/libluajit-5.1.2.dylib",
+        "@@HOMEBREW_PREFIX@@/opt/daq/lib/libdaq.3.dylib": "/private/tmp/ax-snort-native/runtime/opt/daq/lib/libdaq.3.dylib",
+        "@@HOMEBREW_PREFIX@@/opt/libdnet/lib/libdnet.1.dylib": "/private/tmp/ax-snort-native/runtime/opt/libdnet/lib/libdnet.1.dylib",
+        "@@HOMEBREW_PREFIX@@/opt/hwloc/lib/libhwloc.15.dylib": "/private/tmp/ax-snort-native/runtime/opt/hwloc/lib/libhwloc.15.dylib",
+        "@@HOMEBREW_PREFIX@@/opt/openssl@3/lib/libcrypto.3.dylib": "/private/tmp/ax-snort-repaired/tools/opt/openssl@3/lib/libcrypto.3.dylib",
+        "@@HOMEBREW_PREFIX@@/opt/libpcap/lib/libpcap.A.dylib": "/private/tmp/ax-snort-native/runtime/opt/libpcap/lib/libpcap.A.dylib",
+        "@@HOMEBREW_PREFIX@@/opt/pcre2/lib/libpcre2-8.0.dylib": "/private/tmp/ax-snort-native/runtime/opt/pcre2/lib/libpcre2-8.0.dylib",
+        "@@HOMEBREW_PREFIX@@/opt/vectorscan/lib/libhs.5.dylib": "/private/tmp/ax-snort-native/runtime/opt/vectorscan/lib/libhs.5.dylib",
+        "@@HOMEBREW_PREFIX@@/opt/xz/lib/liblzma.5.dylib": "/private/tmp/ax-snort-native/runtime/opt/xz/lib/liblzma.5.dylib"
+      },
+      "binary_sha256": "cdbbe878d41db1b922482d4f1c75ea373ceac1a3fe43840fe2d0052deac439df",
+      "version_returncode": 0,
+      "version_output": "\n   ,,_     -*> Snort++ <*-\n  o\"  )~   Version 3.12.2.0\n   ''''    By Martin Roesch & The Snort Team\n           http://snort.org/contact#team\n           Copyright (C) 2014-2026 Cisco and/or its affiliates. All rights reserved.\n           Copyright (C) 1998-2013 Sourcefire, Inc., et al.\n           Using DAQ version 3.0.27\n           Using Hyperscan version 5.4.13 2026-08-23\n           Using libpcap version 1.11.0 (64-bit time_t)\n           Using LuaJIT version 2.1.1788856981\n           Using LZMA version 5.8.4\n           Using OpenSSL 3.6.4 25 Aug 2026\n           Using PCRE2 version 10.48 2026-08-31\n           Using ZLIB version 1.2.12\n\n",
+      "files": {
+        "CMakeCache.txt": "fcf612a658b4bf7475fd7d59b40a426868d7cdd9fdd10ea484c1d51bd265c528",
+        "build.log": "8930928cc678204c03cf887d3362a7a48874efa55507fec4441223cd797c3b6e",
+        "build.ninja": "e13c5ca4e0099185676fbdf756e5145c52561d9b3945b7be9edb2ff5b559be4a",
+        "compile_commands.json": "ebef68849456417d429aa3e47895d779255faea33ee124f4ace769fa2bda41e5",
+        "config.h": "793837b545e54daf894e25d2a4c8ad7bde16757aa079dfbbc23e6f352893757b",
+        "configure-manifest.json": "d2280c48fde7d585ac807784f41d1bd65160998d9ab961481d0d4e88082f0623",
+        "snort": "cdbbe878d41db1b922482d4f1c75ea373ceac1a3fe43840fe2d0052deac439df",
+        "source-hashes.json": "e4989af3bfa98a3ba3ba1b20b7132abb966507919cbf9f8595d26170674af9c6"
+      }
+    },
+    "repaired": {
+      "command": [
+        "/private/tmp/ax-snort-repaired/tools/opt/cmake/bin/cmake",
+        "--build",
+        "/private/tmp/ax-snort-ipv4-route-repair/build",
+        "--target",
+        "snort",
+        "--parallel",
+        "6"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.015,
+      "scope": "Local build evidence, not a hermetic reproducible-build or deployment attestation.",
+      "builder_sha256": "86dd210ab3af8d9eb9f42899c937d46b744c0033803665e24a63449429aec765",
+      "source_unchanged_during_build": true,
+      "raw_binary_sha256": "2744ff4fb1925969053e9e428155c5f58606e7217874fa6aa129267919c19931",
+      "relocations": {
+        "@@HOMEBREW_PREFIX@@/opt/luajit/lib/libluajit-5.1.2.dylib": "/private/tmp/ax-snort-native/runtime/opt/luajit/lib/libluajit-5.1.2.dylib",
+        "@@HOMEBREW_PREFIX@@/opt/daq/lib/libdaq.3.dylib": "/private/tmp/ax-snort-native/runtime/opt/daq/lib/libdaq.3.dylib",
+        "@@HOMEBREW_PREFIX@@/opt/libdnet/lib/libdnet.1.dylib": "/private/tmp/ax-snort-native/runtime/opt/libdnet/lib/libdnet.1.dylib",
+        "@@HOMEBREW_PREFIX@@/opt/hwloc/lib/libhwloc.15.dylib": "/private/tmp/ax-snort-native/runtime/opt/hwloc/lib/libhwloc.15.dylib",
+        "@@HOMEBREW_PREFIX@@/opt/openssl@3/lib/libcrypto.3.dylib": "/private/tmp/ax-snort-repaired/tools/opt/openssl@3/lib/libcrypto.3.dylib",
+        "@@HOMEBREW_PREFIX@@/opt/libpcap/lib/libpcap.A.dylib": "/private/tmp/ax-snort-native/runtime/opt/libpcap/lib/libpcap.A.dylib",
+        "@@HOMEBREW_PREFIX@@/opt/pcre2/lib/libpcre2-8.0.dylib": "/private/tmp/ax-snort-native/runtime/opt/pcre2/lib/libpcre2-8.0.dylib",
+        "@@HOMEBREW_PREFIX@@/opt/vectorscan/lib/libhs.5.dylib": "/private/tmp/ax-snort-native/runtime/opt/vectorscan/lib/libhs.5.dylib",
+        "@@HOMEBREW_PREFIX@@/opt/xz/lib/liblzma.5.dylib": "/private/tmp/ax-snort-native/runtime/opt/xz/lib/liblzma.5.dylib"
+      },
+      "binary_sha256": "e031000e1e3e438aea1de0b638f943046f145a336360fc8aaa9488567e62c88f",
+      "version_returncode": 0,
+      "version_output": "\n   ,,_     -*> Snort++ <*-\n  o\"  )~   Version 3.12.2.0\n   ''''    By Martin Roesch & The Snort Team\n           http://snort.org/contact#team\n           Copyright (C) 2014-2026 Cisco and/or its affiliates. All rights reserved.\n           Copyright (C) 1998-2013 Sourcefire, Inc., et al.\n           Using DAQ version 3.0.27\n           Using Hyperscan version 5.4.13 2026-08-23\n           Using libpcap version 1.11.0 (64-bit time_t)\n           Using LuaJIT version 2.1.1788856981\n           Using LZMA version 5.8.4\n           Using OpenSSL 3.6.4 25 Aug 2026\n           Using PCRE2 version 10.48 2026-08-31\n           Using ZLIB version 1.2.12\n\n",
+      "files": {
+        "CMakeCache.txt": "fcf612a658b4bf7475fd7d59b40a426868d7cdd9fdd10ea484c1d51bd265c528",
+        "build.log": "86c981fc3c0ae807f5de98b360efff81dff091980aad199968e3fd0592bad665",
+        "build.ninja": "e13c5ca4e0099185676fbdf756e5145c52561d9b3945b7be9edb2ff5b559be4a",
+        "compile_commands.json": "ebef68849456417d429aa3e47895d779255faea33ee124f4ace769fa2bda41e5",
+        "config.h": "793837b545e54daf894e25d2a4c8ad7bde16757aa079dfbbc23e6f352893757b",
+        "configure-manifest.json": "d2280c48fde7d585ac807784f41d1bd65160998d9ab961481d0d4e88082f0623",
+        "snort": "e031000e1e3e438aea1de0b638f943046f145a336360fc8aaa9488567e62c88f",
+        "source-hashes.json": "76653bf78acc92f2d901ea32623bc153fa2cd0cbd04a8ecc40f0195c9a10800b"
+      }
+    }
+  },
+  "source_repair": {
+    "upstream_commit": "14aeb09f5a0856812dbe08ead3c21f99e8860aa0",
+    "requires": "Reviewed Type 2 and fragment checksum repairs",
+    "scope": "Local source changes only; separate build and actual inline replay required.",
+    "before_sha256": {
+      "src/codecs/ip/cd_tcp.cc": "988634f4c478a3d379d09e2daf7f6b01533e7fb5f1cc548debab75f7f45f301b",
+      "src/codecs/ip/cd_udp.cc": "6ecd02b3134c925ebe693e2d48d98a261651d631603c32aeb8e1357c810b9c7c"
+    },
+    "after_sha256": {
+      "src/codecs/ip/cd_tcp.cc": "c90a4874d176496d432edfe6fa604fc48d8527bf00bfa36be87d62ac610949fe",
+      "src/codecs/ip/cd_udp.cc": "4eccc070d48a9e36edecf3272a727e87c9d71644a0536251c97061adb2cd57f9",
+      "src/codecs/ip/ipv4_checksum_destination.h": "794c67f02580460956dc7503beed5646b5ca122bc06f7f571ab422f15ee55d07"
+    },
+    "local_source_sha256": {
+      "apply_ipv4_route_repair.py": "4510f50d13a7b65de7f62f058558464a70a87992d304a70ede1584015e282280",
+      "apply_type2_repair.py": "a2467d844656195179a98fd95adae2b61c52ba23149f497bd5af89d5d58760f7",
+      "apply_fragment_checksum_repair.py": "52bbffeae79f0c1d5f44b78f0b5e1241ee1f5e66ca19a42a943a774fdceb181e",
+      "ipv4_checksum_destination.h": "794c67f02580460956dc7503beed5646b5ca122bc06f7f571ab422f15ee55d07",
+      "ipv6_checksum_destination.h": "3afe940ef6f3a47ae27d8dc3054a1bb58f96a79d8c4305c00c3fa13f8516e743"
+    },
+    "patch_sha256": "9a2f1288df51dbf22e8608f8ef08cbe83419452c9a8e941e947520398636f90d"
+  },
+  "previous_build_report_sha256": "a9b336527469d52285518de706064bde7b2b7eddb3cce5357eb6680356692582",
+  "reviewed_upstream_sha256": {
+    "src/codecs/ip/cd_ipv4.cc": "949f7cbb8f184679d40f48c5199bbf4db47120f386a4f7e00decd5bd369ed171",
+    "src/protocols/packet_manager.cc": "dcbfca32f1998036ff78b82b0a223d6706ccaf9a481eb2193522c86875385d8c",
+    "src/stream/ip/ip_defrag.cc": "027f1c19ecebd5a7d904103fc4833e8a06fce16b673b080525c32ffffb24b7e9",
+    "src/network_inspectors/normalize/norm.cc": "60f24c7cb183de57868864e4c4197f967b506d9269002bc686430b92a9f54249",
+    "src/ips_options/ips_replace.cc": "af1a91be92eabe520b5e3320c96c93a1b268bb6ae79d5ef87f0fd5ae3133417c",
+    "src/actions/act_replace.cc": "ce177848c7fa68bd5165cb74f6b3ed4d149b1230652c40ce412213e031826644"
+  }
+}

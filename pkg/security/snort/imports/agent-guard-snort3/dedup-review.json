@@ -1,0 +1,621 @@
+{
+  "mappings": [
+    {
+      "source_sid": 9102002,
+      "existing_sid": 1100901,
+      "reason": "Source anchored ^TRACE$ regex is contained in existing case-insensitive ^TRACE$ method rule; required content adds no coverage.",
+      "existing_action": "drop",
+      "source_action": "block",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9102003,
+      "existing_sid": 1100902,
+      "reason": "Source anchored ^TRACK$ regex is contained in existing case-insensitive ^TRACK$ method rule; required content adds no coverage.",
+      "existing_action": "drop",
+      "source_action": "block",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9102024,
+      "existing_sid": 1100911,
+      "reason": "Existing URI regex explicitly includes both %00 and literal NUL alternatives, without extra boundary conditions, and URI normalized views retain the raw URI.",
+      "existing_action": "drop",
+      "source_action": "block",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9102025,
+      "existing_sid": 1100911,
+      "reason": "Existing URI regex explicitly includes both %00 and literal NUL alternatives, without extra boundary conditions, and URI normalized views retain the raw URI.",
+      "existing_action": "drop",
+      "source_action": "block",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9103001,
+      "existing_sid": 1000030,
+      "reason": "Every source match requires the literal '169.254.169.254'. Existing content is the same literal (or a substring) with compatible case handling; http_uri covers http_uri.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9103013,
+      "existing_sid": 1000031,
+      "reason": "Every source match requires the literal 'metadata.google.internal'. Existing content is the same literal (or a substring) with compatible case handling; http_uri covers http_uri.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9105001,
+      "existing_sid": 1000022,
+      "reason": "Every source match requires the literal '/etc/passwd'. Existing content is the same literal (or a substring) with compatible case handling; all covers http_uri.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9105002,
+      "existing_sid": 1000022,
+      "reason": "Every source match requires the literal '/etc/passwd'. Existing content is the same literal (or a substring) with compatible case handling; all covers http_client_body.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9105026,
+      "existing_sid": 1100717,
+      "reason": "Source required socket path is one case-insensitive existing regex literal alternative in the same body buffer, with no exterior boundary requirements.",
+      "existing_action": "alert",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": true
+    },
+    {
+      "source_sid": 9105028,
+      "existing_sid": 1100717,
+      "reason": "Source required socket path is one case-insensitive existing regex literal alternative in the same body buffer, with no exterior boundary requirements.",
+      "existing_action": "alert",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": true
+    },
+    {
+      "source_sid": 9105035,
+      "existing_sid": 1101001,
+      "reason": "Required Git path literal is an existing regex alternative; the entire suffix delimiter group is optional, so it does not impose an absent boundary condition.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9105037,
+      "existing_sid": 1101001,
+      "reason": "Required Git path literal is an existing regex alternative; the entire suffix delimiter group is optional, so it does not impose an absent boundary condition.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9105039,
+      "existing_sid": 1101001,
+      "reason": "Required Git path literal is an existing regex alternative; the entire suffix delimiter group is optional, so it does not impose an absent boundary condition.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9105093,
+      "existing_sid": 1000023,
+      "reason": "Required Windows path contains an exact case-insensitive existing regex alternative (system32/config/sam or win.ini). TargetAll includes both URI and body.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9105094,
+      "existing_sid": 1000023,
+      "reason": "Required Windows path contains an exact case-insensitive existing regex alternative (system32/config/sam or win.ini). TargetAll includes both URI and body.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9105099,
+      "existing_sid": 1000023,
+      "reason": "Required Windows path contains an exact case-insensitive existing regex alternative (system32/config/sam or win.ini). TargetAll includes both URI and body.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9105100,
+      "existing_sid": 1000023,
+      "reason": "Required Windows path contains an exact case-insensitive existing regex alternative (system32/config/sam or win.ini). TargetAll includes both URI and body.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9107001,
+      "existing_sid": 1000003,
+      "reason": "Every source match requires the literal '/dev/tcp/'. Existing content is the same literal (or a substring) with compatible case handling; all covers http_uri.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9107002,
+      "existing_sid": 1000003,
+      "reason": "Every source match requires the literal '/dev/tcp/'. Existing content is the same literal (or a substring) with compatible case handling; all covers http_client_body.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9108024,
+      "existing_sid": 1100618,
+      "reason": "Source body kubectl delete regex namespace/namespaces/ns alternatives are a subset of existing namespace/namespaces/ns/all/pvc/pv alternatives, with identical whitespace and boundary requirements.",
+      "existing_action": "alert",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": true
+    },
+    {
+      "source_sid": 9109016,
+      "existing_sid": 1100411,
+      "reason": "Source and existing body schtasks optional .exe, whitespace, /create and word boundaries are regex-equivalent.",
+      "existing_action": "alert",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": true
+    },
+    {
+      "source_sid": 9109022,
+      "existing_sid": 1100510,
+      "reason": "Source body nft flush ruleset regex is exactly one existing regex alternative with identical case, whitespace and boundary handling.",
+      "existing_action": "alert",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": true
+    },
+    {
+      "source_sid": 9109026,
+      "existing_sid": 1100508,
+      "reason": "Source body wevtutil cl/clear-log regex is a subset of existing regex, which additionally permits .exe and Clear-EventLog.",
+      "existing_action": "alert",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": true
+    },
+    {
+      "source_sid": 9110001,
+      "existing_sid": 1000040,
+      "reason": "Source URI word-bounded UNION [ALL] SELECT regex is contained in existing TargetAll regex; both allow identical whitespace and the existing regex removes the word-boundary restrictions.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9110002,
+      "existing_sid": 1000040,
+      "reason": "Source body word-bounded UNION [ALL] SELECT regex is contained in existing TargetAll regex; both allow identical whitespace and the existing regex removes the word-boundary restrictions.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9111012,
+      "existing_sid": 1100818,
+      "reason": "Source required FreeMarker class is exactly the existing case-insensitive regex literal in the same body buffer.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9111015,
+      "existing_sid": 1000001,
+      "reason": "Every source match requires the literal '${jndi:'. Existing content is the same literal (or a substring) with compatible case handling; all covers http_uri.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9111016,
+      "existing_sid": 1000001,
+      "reason": "Every source match requires the literal '${jndi:'. Existing content is the same literal (or a substring) with compatible case handling; all covers http_client_body.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9111033,
+      "existing_sid": 1000050,
+      "reason": "Existing TargetAll javascript: alternative permits zero trailing whitespace and has no exterior boundary requirements; the source requires exactly that literal in URI or body.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9111034,
+      "existing_sid": 1000050,
+      "reason": "Existing TargetAll javascript: alternative permits zero trailing whitespace and has no exterior boundary requirements; the source requires exactly that literal in URI or body.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9114001,
+      "existing_sid": 1100221,
+      "reason": "Required PEM header is one exact alternative of the existing case-insensitive PEM regex in the same buffer. No exterior anchors or boundary requirements.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9114002,
+      "existing_sid": 1100201,
+      "reason": "Required PEM header is one exact alternative of the existing case-insensitive PEM regex in the same buffer. No exterior anchors or boundary requirements.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9114003,
+      "existing_sid": 1100221,
+      "reason": "Required PEM header is one exact alternative of the existing case-insensitive PEM regex in the same buffer. No exterior anchors or boundary requirements.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9114004,
+      "existing_sid": 1100201,
+      "reason": "Required PEM header is one exact alternative of the existing case-insensitive PEM regex in the same buffer. No exterior anchors or boundary requirements.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9114005,
+      "existing_sid": 1100221,
+      "reason": "Required PEM header is one exact alternative of the existing case-insensitive PEM regex in the same buffer. No exterior anchors or boundary requirements.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9114006,
+      "existing_sid": 1100201,
+      "reason": "Required PEM header is one exact alternative of the existing case-insensitive PEM regex in the same buffer. No exterior anchors or boundary requirements.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9114007,
+      "existing_sid": 1100221,
+      "reason": "Required PEM header is one exact alternative of the existing case-insensitive PEM regex in the same buffer. No exterior anchors or boundary requirements.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9114008,
+      "existing_sid": 1100201,
+      "reason": "Required PEM header is one exact alternative of the existing case-insensitive PEM regex in the same buffer. No exterior anchors or boundary requirements.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9114009,
+      "existing_sid": 1100221,
+      "reason": "Required PEM header is one exact alternative of the existing case-insensitive PEM regex in the same buffer. No exterior anchors or boundary requirements.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9114010,
+      "existing_sid": 1100201,
+      "reason": "Required PEM header is one exact alternative of the existing case-insensitive PEM regex in the same buffer. No exterior anchors or boundary requirements.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9114011,
+      "existing_sid": 1100222,
+      "reason": "Source required PGP private-key header is identical to the existing case-insensitive regex literal in the same buffer.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9114012,
+      "existing_sid": 1100202,
+      "reason": "Source required PGP private-key header is identical to the existing case-insensitive regex literal in the same buffer.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "block",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9117037,
+      "existing_sid": 1100108,
+      "reason": "Source required Llama role delimiter is the zero-whitespace case of the existing regex. Normalized body views retain raw body and the regex has no exterior anchors/boundaries.",
+      "existing_action": "alert",
+      "source_action": "alert",
+      "source_strict_action": "alert",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9118001,
+      "existing_sid": 1000060,
+      "reason": "Required User-Agent literal contains an existing case-insensitive scanner alternative. Existing whole-header scope includes the User-Agent value and imposes no anchors/boundaries.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "alert",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9118002,
+      "existing_sid": 1000060,
+      "reason": "Required User-Agent literal contains an existing case-insensitive scanner alternative. Existing whole-header scope includes the User-Agent value and imposes no anchors/boundaries.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "alert",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9118004,
+      "existing_sid": 1000060,
+      "reason": "Required User-Agent literal contains an existing case-insensitive scanner alternative. Existing whole-header scope includes the User-Agent value and imposes no anchors/boundaries.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "alert",
+      "strict_requires_promotion": false
+    },
+    {
+      "source_sid": 9118009,
+      "existing_sid": 1000060,
+      "reason": "Required User-Agent literal contains an existing case-insensitive scanner alternative. Existing whole-header scope includes the User-Agent value and imposes no anchors/boundaries.",
+      "existing_action": "drop",
+      "source_action": "alert",
+      "source_strict_action": "alert",
+      "strict_requires_promotion": false
+    }
+  ],
+  "profile_only_mappings": [
+    {
+      "source_sid": 9102001,
+      "existing_sid": 1200127,
+      "reason": "Existing strict-only regex subsumes source signature in strict profile. DO NOT omit source default rule unless retained SID is explicitly made active in default with required source action.",
+      "source_action": "block",
+      "source_strict_action": "block"
+    },
+    {
+      "source_sid": 9102005,
+      "existing_sid": 1200126,
+      "reason": "Existing strict-only regex subsumes source signature in strict profile. DO NOT omit source default rule unless retained SID is explicitly made active in default with required source action.",
+      "source_action": "alert",
+      "source_strict_action": "block"
+    },
+    {
+      "source_sid": 9102008,
+      "existing_sid": 1200128,
+      "reason": "Existing strict-only regex subsumes source signature in strict profile. DO NOT omit source default rule unless retained SID is explicitly made active in default with required source action.",
+      "source_action": "alert",
+      "source_strict_action": "block"
+    },
+    {
+      "source_sid": 9102009,
+      "existing_sid": 1200128,
+      "reason": "Existing strict-only regex subsumes source signature in strict profile. DO NOT omit source default rule unless retained SID is explicitly made active in default with required source action.",
+      "source_action": "alert",
+      "source_strict_action": "block"
+    },
+    {
+      "source_sid": 9102010,
+      "existing_sid": 1200128,
+      "reason": "Existing strict-only regex subsumes source signature in strict profile. DO NOT omit source default rule unless retained SID is explicitly made active in default with required source action.",
+      "source_action": "alert",
+      "source_strict_action": "block"
+    },
+    {
+      "source_sid": 9102011,
+      "existing_sid": 1200128,
+      "reason": "Existing strict-only regex subsumes source signature in strict profile. DO NOT omit source default rule unless retained SID is explicitly made active in default with required source action.",
+      "source_action": "alert",
+      "source_strict_action": "block"
+    },
+    {
+      "source_sid": 9102012,
+      "existing_sid": 1200128,
+      "reason": "Existing strict-only regex subsumes source signature in strict profile. DO NOT omit source default rule unless retained SID is explicitly made active in default with required source action.",
+      "source_action": "alert",
+      "source_strict_action": "block"
+    },
+    {
+      "source_sid": 9102013,
+      "existing_sid": 1200128,
+      "reason": "Existing strict-only regex subsumes source signature in strict profile. DO NOT omit source default rule unless retained SID is explicitly made active in default with required source action.",
+      "source_action": "alert",
+      "source_strict_action": "block"
+    },
+    {
+      "source_sid": 9107008,
+      "existing_sid": 1200106,
+      "reason": "Existing strict-only regex subsumes source signature in strict profile. DO NOT omit source default rule unless retained SID is explicitly made active in default with required source action.",
+      "source_action": "alert",
+      "source_strict_action": "block"
+    },
+    {
+      "source_sid": 9107036,
+      "existing_sid": 1200106,
+      "reason": "Existing strict-only regex subsumes source signature in strict profile. DO NOT omit source default rule unless retained SID is explicitly made active in default with required source action.",
+      "source_action": "alert",
+      "source_strict_action": "block"
+    },
+    {
+      "source_sid": 9108002,
+      "existing_sid": 1200117,
+      "reason": "Existing strict-only regex subsumes source signature in strict profile. DO NOT omit source default rule unless retained SID is explicitly made active in default with required source action.",
+      "source_action": "alert",
+      "source_strict_action": "block"
+    },
+    {
+      "source_sid": 9108022,
+      "existing_sid": 1200116,
+      "reason": "Existing strict-only regex subsumes source signature in strict profile. DO NOT omit source default rule unless retained SID is explicitly made active in default with required source action.",
+      "source_action": "alert",
+      "source_strict_action": "block"
+    }
+  ],
+  "caveats": [
+    "Finite positive/negative fixture overlap is not used as language-inclusion proof; mappings are justified by required-literal inclusion or explicit regex branch inclusion.",
+    "Do not collapse broader source path/metadata literals into existing regexes that impose terminal word boundaries or path/query terminators. Examples /.aws/credentials.backup and metadata.googX are additional source coverage.",
+    "Do not collapse incoming AWS/GitHub token regexes into existing signatures: source regexes are nocase and existing credential regexes are case-sensitive. Fine-grained GitHub/Slack/Stripe/database regexes also differ in lengths/boundaries.",
+    "Do not collapse http_uri and http_client_body variants together; neither source buffer includes the other. Existing TargetAll may safely subsume either.",
+    "Raw body and raw URI source signatures may be subsumed by matching normalized rules only because AX normalized views preserve raw bytes as a matching alternative.",
+    "Header-field source signatures may be subsumed by unanchored whole-header regex literals, but field start/end anchors must not be interpreted as whole-header anchors.",
+    "18 source patterns use terminal positive lookahead unsupported by Go RE2: 9103042-9103051,9103056-9103057,9104041-9104046. Replacing terminal positive lookahead with a consuming group preserves match existence for these standalone predicates.",
+    "No byte-identical predicate objects found, but case folding exposes equivalent 9112043/9112047 and required-literal containment exposes 18 additional source-to-source subsumptions. Separate rendered profiles repeat canonical SIDs by design.",
+    "Every source positive sample self-matches its declared content and Python PCRE predicates. This does not validate the entire HTTP fixture/transport."
+  ],
+  "source_to_source_mappings": [
+    {
+      "source_sid": 9103014,
+      "retained_source_sid": 9103017,
+      "reason": "The retained source rule requires 'metadata.goog' only; it is contained in 'metadata.google.internal' with compatible case handling, identical buffer and identical default/strict actions."
+    },
+    {
+      "source_sid": 9105023,
+      "retained_source_sid": 9105079,
+      "reason": "The retained source rule requires '/.bash_history' only; it is contained in '/root/.bash_history' with compatible case handling, identical buffer and identical default/strict actions."
+    },
+    {
+      "source_sid": 9105024,
+      "retained_source_sid": 9105080,
+      "reason": "The retained source rule requires '/.bash_history' only; it is contained in '/root/.bash_history' with compatible case handling, identical buffer and identical default/strict actions."
+    },
+    {
+      "source_sid": 9105029,
+      "retained_source_sid": 9112014,
+      "reason": "The retained source rule requires '/secrets' only; it is contained in '/var/run/secrets/kubernetes.io/serviceaccount/token' with compatible case handling, identical buffer and identical default/strict actions."
+    },
+    {
+      "source_sid": 9105030,
+      "retained_source_sid": 9105034,
+      "reason": "The retained source rule requires '/run/secrets/' only; it is contained in '/var/run/secrets/kubernetes.io/serviceaccount/token' with compatible case handling, identical buffer and identical default/strict actions."
+    },
+    {
+      "source_sid": 9105031,
+      "retained_source_sid": 9112014,
+      "reason": "The retained source rule requires '/secrets' only; it is contained in '/var/run/secrets/kubernetes.io/serviceaccount/ca.crt' with compatible case handling, identical buffer and identical default/strict actions."
+    },
+    {
+      "source_sid": 9105032,
+      "retained_source_sid": 9105034,
+      "reason": "The retained source rule requires '/run/secrets/' only; it is contained in '/var/run/secrets/kubernetes.io/serviceaccount/ca.crt' with compatible case handling, identical buffer and identical default/strict actions."
+    },
+    {
+      "source_sid": 9105033,
+      "retained_source_sid": 9112014,
+      "reason": "The retained source rule requires '/secrets' only; it is contained in '/run/secrets/' with compatible case handling, identical buffer and identical default/strict actions."
+    },
+    {
+      "source_sid": 9105047,
+      "retained_source_sid": 9105045,
+      "reason": "The retained source rule requires '/.env' only; it is contained in '/.env.local' with compatible case handling, identical buffer and identical default/strict actions."
+    },
+    {
+      "source_sid": 9105048,
+      "retained_source_sid": 9105046,
+      "reason": "The retained source rule requires '/.env' only; it is contained in '/.env.local' with compatible case handling, identical buffer and identical default/strict actions."
+    },
+    {
+      "source_sid": 9105049,
+      "retained_source_sid": 9105045,
+      "reason": "The retained source rule requires '/.env' only; it is contained in '/.env.production' with compatible case handling, identical buffer and identical default/strict actions."
+    },
+    {
+      "source_sid": 9105050,
+      "retained_source_sid": 9105046,
+      "reason": "The retained source rule requires '/.env' only; it is contained in '/.env.production' with compatible case handling, identical buffer and identical default/strict actions."
+    },
+    {
+      "source_sid": 9105077,
+      "retained_source_sid": 9109005,
+      "reason": "The retained source rule requires 'authorized_keys' only; it is contained in '/.ssh/authorized_keys' with compatible case handling, identical buffer and identical default/strict actions."
+    },
+    {
+      "source_sid": 9105078,
+      "retained_source_sid": 9109006,
+      "reason": "The retained source rule requires 'authorized_keys' only; it is contained in '/.ssh/authorized_keys' with compatible case handling, identical buffer and identical default/strict actions."
+    },
+    {
+      "source_sid": 9112040,
+      "retained_source_sid": 9112026,
+      "reason": "The retained source rule requires '/manage' only; it is contained in '/api/management/' with compatible case handling, identical buffer and identical default/strict actions."
+    },
+    {
+      "source_sid": 9112047,
+      "retained_source_sid": 9112043,
+      "reason": "The retained source rule requires '\"Privileged\": true' only; it is contained in '\"privileged\": true' with compatible case handling, identical buffer and identical default/strict actions."
+    },
+    {
+      "source_sid": 9113037,
+      "retained_source_sid": 9113035,
+      "reason": "The retained source rule requires 'DeleteObject' only; it is contained in 'DeleteObjects' with compatible case handling, identical buffer and identical default/strict actions."
+    },
+    {
+      "source_sid": 9113038,
+      "retained_source_sid": 9113036,
+      "reason": "The retained source rule requires 'DeleteObject' only; it is contained in 'DeleteObjects' with compatible case handling, identical buffer and identical default/strict actions."
+    },
+    {
+      "source_sid": 9113069,
+      "retained_source_sid": 9113020,
+      "reason": "The retained source rule requires 'PassRole' only; it is contained in 'iam:PassRole' with compatible case handling, identical buffer and identical default/strict actions."
+    }
+  ]
+}

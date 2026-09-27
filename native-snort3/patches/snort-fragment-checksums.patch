@@ -1,0 +1,71 @@
+--- a/src/codecs/ip/cd_tcp.cc
++++ b/src/codecs/ip/cd_tcp.cc
+@@ -225,7 +225,8 @@
+         return false;
+     }
+ 
+-    if (snort::get_network_policy()->tcp_checksums() && !valid_checksum_from_daq(raw))
++    if (snort::get_network_policy()->tcp_checksums() &&
++        (codec.is_cooked() || !valid_checksum_from_daq(raw)))
+     {
+         PegCount* bad_cksum_cnt;
+         bool valid;
+--- a/src/codecs/ip/cd_udp.cc
++++ b/src/codecs/ip/cd_udp.cc
+@@ -367,7 +367,8 @@
+         return false;
+     }
+ 
+-    if (snort::get_network_policy()->udp_checksums() && !valid_checksum_from_daq(raw))
++    if (snort::get_network_policy()->udp_checksums() &&
++        (codec.is_cooked() || !valid_checksum_from_daq(raw)))
+     {
+         PegCount* bad_cksum_cnt;
+         bool valid;
+@@ -404,7 +405,7 @@
+             bad_cksum_cnt = &stats.bad_ip6_cksum;
+         }
+ 
+-        if (!valid && !codec.is_cooked())
++        if (!valid)
+         {
+             if (!(codec.codec_flags & CODEC_UNSURE_ENCAP))
+             {
+--- a/src/codecs/ip/cd_icmp6.cc
++++ b/src/codecs/ip/cd_icmp6.cc
+@@ -194,7 +194,8 @@
+ 
+     const icmp::Icmp6Hdr* const icmp6h = reinterpret_cast<const icmp::Icmp6Hdr*>(raw.data);
+ 
+-    if ( snort::get_network_policy()->icmp_checksums() && !valid_checksum_from_daq(raw))
++    if ( snort::get_network_policy()->icmp_checksums() &&
++        (codec.is_cooked() || !valid_checksum_from_daq(raw)))
+     {
+         checksum::Pseudoheader6 ph6;
+         const ip::IP6Hdr* const ip6h = snort.ip_api.get_ip6h();
+@@ -210,7 +211,7 @@
+ 
+         uint16_t csum = checksum::icmp_cksum((const uint16_t*)(icmp6h), raw.len, ph6);
+ 
+-        if (csum && !codec.is_cooked())
++        if (csum)
+         {
+             stats.bad_ip6_cksum++;
+             snort.decode_flags |= DECODE_ERR_CKSUM_ICMP;
+--- a/src/codecs/ip/cd_icmp4.cc
++++ b/src/codecs/ip/cd_icmp4.cc
+@@ -156,11 +156,12 @@
+     const ICMPHdr* const icmph = reinterpret_cast<const ICMPHdr*>(raw.data);
+     uint16_t len = 0;
+ 
+-    if (snort::get_network_policy()->icmp_checksums() && !valid_checksum_from_daq(raw))
++    if (snort::get_network_policy()->icmp_checksums() &&
++        (codec.is_cooked() || !valid_checksum_from_daq(raw)))
+     {
+         uint16_t csum = checksum::cksum_add((const uint16_t*)icmph, raw.len);
+ 
+-        if (csum && !codec.is_cooked())
++        if (csum)
+         {
+             stats.bad_ip4_cksum++;
+             snort.decode_flags |= DECODE_ERR_CKSUM_ICMP;

@@ -1,0 +1,149 @@
+{
+  "tools": {
+    "/Library/Developer/CommandLineTools/usr/bin/clang++": {
+      "sha256": "1590ac950a3d627817d09ade5cb60b2115f17a72182a3141e010b4bcc482a0c9",
+      "version": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin27.0.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+      "returncode": 0
+    },
+    "/usr/bin/flex": {
+      "sha256": "34129c71a01a74f7f3b2443521519b2e5447553fa187f5fcafaaf8c42cc192e2",
+      "version": "flex 2.6.4\n",
+      "returncode": 0
+    },
+    "/private/tmp/ax-snort-repaired/tools/opt/cmake/bin/cmake": {
+      "sha256": "993875011fefef19f590428c0651f37544417d0356c4d3ccb880e0e7b637032f",
+      "version": "cmake version 4.4.3\n\nCMake suite maintained and supported by Kitware (kitware.com/cmake).\n",
+      "returncode": 0
+    },
+    "/private/tmp/ax-snort-repaired/tools/opt/ninja/bin/ninja": {
+      "sha256": "1474a6ef89624613732e0fc9e6d9fe5338b8885916cf64ab8c1c6097123f3ef6",
+      "version": "1.13.2\n",
+      "returncode": 0
+    },
+    "/private/tmp/ax-snort-repaired/tools/opt/pkgconf/bin/pkgconf": {
+      "sha256": "5eb399531e5eceb9e6ced67d94f419a537b6771aca9f864c90b50d1df0446d02",
+      "version": "3.0.7\n",
+      "returncode": 0
+    }
+  },
+  "binaries": {
+    "baseline": {
+      "sha256": "6c03749e19465eac65a09e083ff0165ef78d041549dc448327f08acc8e9d1549",
+      "dependencies": [
+        {
+          "path": "/private/tmp/ax-snort-native/runtime/opt/luajit/lib/libluajit-5.1.2.dylib",
+          "sha256": "3ebc72ac37c5de7020a5d3d16df7172ebc01edc9c1bae1685307dda25baf8bc8"
+        },
+        {
+          "path": "/private/tmp/ax-snort-native/runtime/opt/daq/lib/libdaq.3.dylib",
+          "sha256": "ac64c0fd613fc651cec51bb16c76d3464f2e51a28545c99c186141731f93c066"
+        },
+        {
+          "path": "/private/tmp/ax-snort-native/runtime/opt/libdnet/lib/libdnet.1.dylib",
+          "sha256": "0292da55b99f3cd171aa78180dd7cb881129e05707671b4e4560065de8fe7147"
+        },
+        {
+          "path": "/private/tmp/ax-snort-native/runtime/opt/hwloc/lib/libhwloc.15.dylib",
+          "sha256": "c9337e7cf1649b2d8506652b29aa2f9b8e5efbbd171237269b63f765c2b9d7c9"
+        },
+        {
+          "path": "/private/tmp/ax-snort-repaired/tools/opt/openssl@3/lib/libcrypto.3.dylib",
+          "sha256": "89f377d6853c207a5e92019a5c93711b365da28c2100875c9ce4f52581ca54cd"
+        },
+        {
+          "path": "/private/tmp/ax-snort-native/runtime/opt/libpcap/lib/libpcap.A.dylib",
+          "sha256": "bfb3ccc6cab18b319a4b29d788a1760b9756518cda02323704f1a7be8335e491"
+        },
+        {
+          "path": "/private/tmp/ax-snort-native/runtime/opt/pcre2/lib/libpcre2-8.0.dylib",
+          "sha256": "e2d2c308d3e97af6c0cacb00f8f783d4303b9f397e61a3217f930300b827758d"
+        },
+        {
+          "path": "/usr/lib/libz.1.dylib",
+          "system_shared_cache": true
+        },
+        {
+          "path": "/usr/lib/libSystem.B.dylib",
+          "system_shared_cache": true
+        },
+        {
+          "path": "/private/tmp/ax-snort-native/runtime/opt/vectorscan/lib/libhs.5.dylib",
+          "sha256": "68d68e29dd56e7fc25f2ce4ff77371472541f29349f336ba07bffb4a82ae0b4d"
+        },
+        {
+          "path": "/usr/lib/libiconv.2.dylib",
+          "system_shared_cache": true
+        },
+        {
+          "path": "/private/tmp/ax-snort-native/runtime/opt/xz/lib/liblzma.5.dylib",
+          "sha256": "cbcf587275bc41975a303f27a1bf94882746849362829d557701ef4982273f29"
+        },
+        {
+          "path": "/usr/lib/libc++.1.dylib",
+          "system_shared_cache": true
+        }
+      ]
+    },
+    "repaired": {
+      "sha256": "4a7fb05fefe6f3144de17613244d590fe287913b339f87c5da7bfd9d60b34c44",
+      "dependencies": [
+        {
+          "path": "/private/tmp/ax-snort-native/runtime/opt/luajit/lib/libluajit-5.1.2.dylib",
+          "sha256": "3ebc72ac37c5de7020a5d3d16df7172ebc01edc9c1bae1685307dda25baf8bc8"
+        },
+        {
+          "path": "/private/tmp/ax-snort-native/runtime/opt/daq/lib/libdaq.3.dylib",
+          "sha256": "ac64c0fd613fc651cec51bb16c76d3464f2e51a28545c99c186141731f93c066"
+        },
+        {
+          "path": "/private/tmp/ax-snort-native/runtime/opt/libdnet/lib/libdnet.1.dylib",
+          "sha256": "0292da55b99f3cd171aa78180dd7cb881129e05707671b4e4560065de8fe7147"
+        },
+        {
+          "path": "/private/tmp/ax-snort-native/runtime/opt/hwloc/lib/libhwloc.15.dylib",
+          "sha256": "c9337e7cf1649b2d8506652b29aa2f9b8e5efbbd171237269b63f765c2b9d7c9"
+        },
+        {
+          "path": "/private/tmp/ax-snort-repaired/tools/opt/openssl@3/lib/libcrypto.3.dylib",
+          "sha256": "89f377d6853c207a5e92019a5c93711b365da28c2100875c9ce4f52581ca54cd"
+        },
+        {
+          "path": "/private/tmp/ax-snort-native/runtime/opt/libpcap/lib/libpcap.A.dylib",
+          "sha256": "bfb3ccc6cab18b319a4b29d788a1760b9756518cda02323704f1a7be8335e491"
+        },
+        {
+          "path": "/private/tmp/ax-snort-native/runtime/opt/pcre2/lib/libpcre2-8.0.dylib",
+          "sha256": "e2d2c308d3e97af6c0cacb00f8f783d4303b9f397e61a3217f930300b827758d"
+        },
+        {
+          "path": "/usr/lib/libz.1.dylib",
+          "system_shared_cache": true
+        },
+        {
+          "path": "/usr/lib/libSystem.B.dylib",
+          "system_shared_cache": true
+        },
+        {
+          "path": "/private/tmp/ax-snort-native/runtime/opt/vectorscan/lib/libhs.5.dylib",
+          "sha256": "68d68e29dd56e7fc25f2ce4ff77371472541f29349f336ba07bffb4a82ae0b4d"
+        },
+        {
+          "path": "/usr/lib/libiconv.2.dylib",
+          "system_shared_cache": true
+        },
+        {
+          "path": "/private/tmp/ax-snort-native/runtime/opt/xz/lib/liblzma.5.dylib",
+          "sha256": "cbcf587275bc41975a303f27a1bf94882746849362829d557701ef4982273f29"
+        },
+        {
+          "path": "/usr/lib/libc++.1.dylib",
+          "system_shared_cache": true
+        }
+      ]
+    }
+  },
+  "source_commit": "14aeb09f5a0856812dbe08ead3c21f99e8860aa0",
+  "upstream_status": "",
+  "platform": "Darwin adams-MacBook-Pro.local 27.0.0 Darwin Kernel Version 27.0.0: Tue Aug 11 21:05:48 PDT 2026; root:xnu-13432.1.9~1/RELEASE_ARM64_T6041 arm64",
+  "sdk": "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk"
+}

@@ -4,8 +4,12 @@
 # Format:
 # <action> <proto> <src_ip> <src_port> -> <dst_ip> <dst_port> (<options>)
 #
+# These organization-specific examples append to --profile default or strict.
+# See docs/security-rules.md for the AX subset and enforcement boundaries.
 # Supported actions: drop, block, reject, alert
-# Supported modifiers: content, nocase, pcre, http_uri, http_header, http_client_body, sid, rev, classtype, msg
+# Options: content, nocase, offset, depth, pcre, http_uri, http_header,
+# http_client_body, http_method, sid, rev, classtype, msg. HTTP modifiers follow
+# the matcher; general Snort feeds and network header constraints are unsupported.
 # ==============================================================================
 
 # Custom Organization Policy: Block Outbound Crypto Mining Pools
@@ -15,4 +19,4 @@ drop tcp any any -> any any (msg:"POLICY Outbound cryptomining pool connection";
 drop tcp any any -> any any (msg:"POLICY Internal subnet probe (192.168.0.0/16)"; pcre:"/https?:\/\/192\.168\.\d+\.\d+/i"; http_uri; classtype:"bad-unknown"; sid:2000002; rev:1;)
 
 # Block Leaking AWS Secret Access Keys in Request Body
-drop tcp any any -> any any (msg:"LEAK AWS Secret Access Key in payload"; pcre:"/(aws_secret_access_key|AWS_SECRET_ACCESS_KEY)\s*[:=]\s*[A-Za-z0-9\/+=]{40}/i"; http_client_body; classtype:"credential-leak"; sid:2000003; rev:1;)
+drop tcp any any -> any any (msg:"LEAK AWS Secret Access Key in payload"; pcre:"/aws_secret_access_key[\x22\x27]?\s*[:=]\s*[\x22\x27]?[A-Za-z0-9\/+=]{40}/i"; http_client_body; classtype:"credential-leak"; sid:2000003; rev:2;)

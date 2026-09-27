@@ -1,0 +1,350 @@
+{
+  "status": "known_conformance_failure",
+  "snort_version": "3.12.2.0",
+  "snort_binary_sha256": "e080b04e42b9d6a90788871e781e9cb94a8369a35c391ebc62a50cf98d1852a2",
+  "scope": "File-only inline dump:pcap DAQ, with actual checksum counters, verdicts and forwarded packet captures. No interfaces, endpoints or deployment paths are tested.",
+  "configuration": {
+    "snort_version": "3.12.2.0",
+    "source_commit": "14aeb09f5a0856812dbe08ead3c21f99e8860aa0",
+    "scope": "Native configuration loading and effective rule states only; no traffic or live inline enforcement.",
+    "profiles": [
+      {
+        "profile": "protocol",
+        "loaded": 208,
+        "enabled": 208,
+        "actions": {
+          "drop": 164,
+          "block": 0,
+          "alert": 44
+        }
+      },
+      {
+        "profile": "perimeter",
+        "loaded": 215,
+        "enabled": 215,
+        "actions": {
+          "drop": 164,
+          "block": 5,
+          "alert": 46
+        }
+      },
+      {
+        "profile": "http",
+        "loaded": 271,
+        "enabled": 271,
+        "actions": {
+          "drop": 164,
+          "block": 19,
+          "alert": 88
+        }
+      },
+      {
+        "profile": "both",
+        "loaded": 278,
+        "enabled": 278,
+        "actions": {
+          "drop": 164,
+          "block": 24,
+          "alert": 90
+        }
+      }
+    ],
+    "rejected_invalid_configurations": 18,
+    "plugin_sha256": {
+      "ax_nd_options.so": "f5868d88ddb4054f9e3555a0a40aaaf78a8c85bd202a3d18a2c883fc0b7da1b2"
+    },
+    "sha256": {
+      "native-snort3/protocol-ips.lua": "000cace55518af574800693f3b671e3a07d491ff5e0ad3e9c87c19abc450712c",
+      "native-snort3/agent-guard-overlay.lua": "f6b900d70900f3e9d3a042d247590a501f622c5c7fa11fd791b75ea20e8fd91d",
+      "native-snort3/protocol.states": "444f3a106d5f018ebe429d262d5f8fc79436c8fd460aa6d48ed0f4795e6cc81f",
+      "native-snort3/protocol-builtins.rules": "58b92054c4d5d7f0cf68043a1fe7ab8a8ae125791491ecd6ce309e3354f7bc27",
+      "native-snort3/builtin-inventory.json": "a48a61274609c4dfb69824bd2e0b5f7bbb0da226a27c7faa08e95c6866a118a8",
+      "native-snort3/protocol-validation.rules": "b6c36614f8e4a9853104deadcb26f494b00966271e409d21f96293fb90267ea8",
+      "native-snort3/generate_inventory.py": "4d461ea9cfbbb799592a644a651c71c872b1d430962f9cc4445e4e04eb246c0f",
+      "native-snort3/validate_profiles.py": "9d6adaacd9a4c55b913a2de9318af206e4a62a5f1882610cb2cf9091682c769e",
+      "native-snort3/plugins/README.md": "09ce38523a9abc39455c27a82f176052257e34d0832487e7ec65728e96d9f402",
+      "native-snort3/plugins/build.py": "ec2faeec4501f4e5591f35e665c25f5677182b17e76801835e64199b43458e7c",
+      "native-snort3/plugins/ax_nd_options.cc": "5ac99c5b4568c15ee05d5a9bf76254f566c41e28c7a612f6f6fa521da56a9255",
+      "native-snort3/plugins/nd_validation.h": "4f88245b813db35205d73dbff849269e43f9bc4ace81e6fb3eccdf878eabc185",
+      "native-snort3/plugins/nd_validation_test.cc": "72358ad3aac6fd0a848ddc883ec8430012573cee71185758021b942e77008ad2",
+      "native-snort3/plugins/ip_validation.h": "cb67871c83dfcb059b4c126933366a06f60472060956bbdf6b3e4bebf9792010",
+      "native-snort3/plugins/ip_validation_test.cc": "f5e057023dfc380f08825cbcc1beb3d638a947bf503e271343715ebe630eb080",
+      "native-snort3/plugins/ip4_options.h": "643255e2b38d0b67c6db2297c6b03076b0d32853ec038f20b9508ab83b18e30d",
+      "native-snort3/plugins/ip4_options_test.cc": "29927fe74d788bb6d99fd811cd0dc88b87de30c54d44e45fcf07db9219e8120a",
+      "native-snort3/plugins/ip6_options.h": "c0e938f3053eb62b1e537959d07861a5b2944312ebfc4decb13a914d1236ad50",
+      "native-snort3/plugins/ip6_options_test.cc": "7dbae601d883aa31a0a1fcd9c7dc5be8f267c7f1a5b890497958b6ac824117ef",
+      "native-snort3/plugins/esp_validation.h": "cf8ade954fcec4f1f09917798d1aa4fd748790f210adb265fe845e32d3f135fe",
+      "native-snort3/plugins/esp_validation_test.cc": "2094e98219defcb518985f3f3aa978ff08ca1c3f6e449afa0105ed071b3dc1c5",
+      "native-snort3/plugins/routing_validation.h": "825341ae93dbe5bb8cd8071cc245d5b3642d072a86291241084f03b3b2a36694",
+      "native-snort3/plugins/routing_validation_test.cc": "ed3924084f745164e72c5b5457ff5d307d1a852fe8eda9371f5199f007b58c07",
+      "pkg/security/snort/imports/agent-guard-snort3/native-only.rules": "2451962b90016f8b520521a93837ddcdcce9064e704ebdc5e67c359e90fd9d9a"
+    }
+  },
+  "fixture": {
+    "source": "2001:db8::1",
+    "ipv6_base_destination_care_of": "2001:db8::2",
+    "type2_home_address_final_destination": "2001:db8::3",
+    "routing_type": 2,
+    "hdr_ext_len": 2,
+    "segments_left": 1,
+    "reserved": 0,
+    "pair_delta": "Only the two upper-layer checksum octets differ within each protocol pair."
+  },
+  "references": [
+    "https://www.rfc-editor.org/rfc/rfc8200.html#section-8.1",
+    "https://www.rfc-editor.org/rfc/rfc6275.html#section-6.4",
+    "https://www.rfc-editor.org/rfc/rfc6275.html#section-11.3.3"
+  ],
+  "reviewed_upstream": {
+    "commit": "14aeb09f5a0856812dbe08ead3c21f99e8860aa0",
+    "sha256": {
+      "src/codecs/ip/cd_routing.cc": "74f69e38912146684baec9d170bfdb78d60228e33670d8f7f66bda20eb4b93ee",
+      "src/codecs/ip/cd_tcp.cc": "d4675b2d591857d0d5773c834b90002261c247cd3551b47c3600d5a95857e4be",
+      "src/codecs/ip/cd_udp.cc": "ff606e3ddbfb5c7b7a1ce1d19d8f49dd8d28fdef0a702a58f54abe01f253fca4",
+      "src/codecs/ip/cd_icmp6.cc": "ddd09b10002106312e2231864f7f24e03bb2f5beadeacb71dc2020709e56d054"
+    },
+    "scope": "Source inspection for the pinned release; not a reproducible-build attestation.",
+    "finding": "The routing codec advances extension framing but does not provide the final Home Address to TCP, UDP or ICMPv6 checksum calculations, which read the IPv6 base destination."
+  },
+  "fixture_source_sha256": {
+    "native-snort3/tests/mobility_checksum_audit.py": "49612084493d74c08e695c2fb45d5f94188d0c99d8a2302a2b4234bdfaa53df4",
+    "native-snort3/tests/checksum_replay.py": "3194dc0fe4d21ba3a6e3d30b012d0b57e7027c44857d6c48b203447ab8e576d2",
+    "native-snort3/tests/generate_pcaps.py": "7a542d7f61633a4849c9147476f2dae810496247686d87c767f43a9e5470c5d1",
+    "native-snort3/tests/next_header_policy.py": "82abd595a1639c4c33eae1b5adef4ca052842d443b6344de2586ced67a318017",
+    "native-snort3/tests/replay.py": "58d2cdd52c85c22cde82fc5ff2d6961b83d69588ce6c628345cce0b6dbefe76b"
+  },
+  "summary": {
+    "cases": 6,
+    "standards_passed": 0,
+    "rfc_checksum_mismatches": 6,
+    "conformance_failures": [
+      "tcp-syn-final-home-address",
+      "tcp-syn-incorrect-base-address",
+      "udp-final-home-address",
+      "udp-incorrect-base-address",
+      "icmpv6-echo-final-home-address",
+      "icmpv6-echo-incorrect-base-address"
+    ],
+    "defect_reproduced": 6,
+    "correct_final_destination_checksums_rejected": 3,
+    "incorrect_base_destination_checksums_accepted": 3
+  },
+  "limitations": [
+    "These six bounded Type 2 shapes do not establish full Mobile IPv6 conformance or exploitability.",
+    "The oracle covers checksum pseudoheaders; Mobile IPv6 binding ownership and endpoint authorization are not established by synthetic addresses.",
+    "Incorrect-checksum acceptance here is a sensor parsing/validation failure; no claim is made that a conforming endpoint accepts the packet.",
+    "This artifact records an unresolved decoder failure. Reproducing it is not successful attack prevention."
+  ],
+  "cases": [
+    {
+      "name": "tcp-syn-final-home-address",
+      "protocol": "tcp-syn",
+      "next_header": 6,
+      "checksum_basis": "final-home-address",
+      "checksum_value": 36968,
+      "rfc_checksum_valid": true,
+      "final_destination_checksum_residue": 0,
+      "base_destination_checksum_residue": 1,
+      "checksum_counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_pcap_sha256": "59b00b13eedc993515cdf00c264dda1a90dd551f428575eb0897f41376de2d28",
+      "input_packet_sha256": "f5d30807e2c9765143cbe2c40839529815f4c9f6e937a71ac93fcab7f3ff2a27",
+      "observed_checksum_errors": 1,
+      "observed_checksum_bypasses": 0,
+      "checksum_counter_conformant": false,
+      "isolated_fixture_verdict_conformant": false,
+      "known_inverted_behavior_reproduced": true,
+      "blocked": true,
+      "daq_verdict": "block",
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "block": 1,
+        "rx_bytes": 98
+      },
+      "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+      "output_packets": 0,
+      "output_packet_sha256": [],
+      "events": []
+    },
+    {
+      "name": "tcp-syn-incorrect-base-address",
+      "protocol": "tcp-syn",
+      "next_header": 6,
+      "checksum_basis": "incorrect-base-address",
+      "checksum_value": 36969,
+      "rfc_checksum_valid": false,
+      "final_destination_checksum_residue": 65534,
+      "base_destination_checksum_residue": 0,
+      "checksum_counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_pcap_sha256": "3516d4167af3d40fa6211281141b4e26f50947aef91b3adb7c2519a2c31ee4bb",
+      "input_packet_sha256": "9ba2b1e225ea3141bf818a31b1175a93a7f575682f57ba4b037cb3186dd5661b",
+      "observed_checksum_errors": 0,
+      "observed_checksum_bypasses": 0,
+      "checksum_counter_conformant": false,
+      "isolated_fixture_verdict_conformant": false,
+      "known_inverted_behavior_reproduced": true,
+      "blocked": false,
+      "daq_verdict": "allow",
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "allow": 1,
+        "rx_bytes": 98
+      },
+      "output_pcap_sha256": "3516d4167af3d40fa6211281141b4e26f50947aef91b3adb7c2519a2c31ee4bb",
+      "output_packets": 1,
+      "output_packet_sha256": [
+        "9ba2b1e225ea3141bf818a31b1175a93a7f575682f57ba4b037cb3186dd5661b"
+      ],
+      "events": []
+    },
+    {
+      "name": "udp-final-home-address",
+      "protocol": "udp",
+      "next_header": 17,
+      "checksum_basis": "final-home-address",
+      "checksum_value": 30252,
+      "rfc_checksum_valid": true,
+      "final_destination_checksum_residue": 0,
+      "base_destination_checksum_residue": 1,
+      "checksum_counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_pcap_sha256": "cd2c786aeb8d85c8ab18e5d8f3abdec83fcc65f596fcd864ebf9a595527b3be8",
+      "input_packet_sha256": "07f95f51522f484748bf8ee8ef8b8c7331c8fbc1f1d6a806fc6b1a209d945272",
+      "observed_checksum_errors": 1,
+      "observed_checksum_bypasses": 0,
+      "checksum_counter_conformant": false,
+      "isolated_fixture_verdict_conformant": false,
+      "known_inverted_behavior_reproduced": true,
+      "blocked": true,
+      "daq_verdict": "block",
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "block": 1,
+        "rx_bytes": 91
+      },
+      "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+      "output_packets": 0,
+      "output_packet_sha256": [],
+      "events": []
+    },
+    {
+      "name": "udp-incorrect-base-address",
+      "protocol": "udp",
+      "next_header": 17,
+      "checksum_basis": "incorrect-base-address",
+      "checksum_value": 30253,
+      "rfc_checksum_valid": false,
+      "final_destination_checksum_residue": 65534,
+      "base_destination_checksum_residue": 0,
+      "checksum_counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_pcap_sha256": "2ef8f62e40b876618f0ca2f964fe044f726eadcd8e5c1af50f053b23ee2356e4",
+      "input_packet_sha256": "402b8cb38b05d5f4232ececd1faad566d29c84438cbe31777a9ed750c32d520f",
+      "observed_checksum_errors": 0,
+      "observed_checksum_bypasses": 0,
+      "checksum_counter_conformant": false,
+      "isolated_fixture_verdict_conformant": false,
+      "known_inverted_behavior_reproduced": true,
+      "blocked": false,
+      "daq_verdict": "allow",
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "allow": 1,
+        "rx_bytes": 91
+      },
+      "output_pcap_sha256": "2ef8f62e40b876618f0ca2f964fe044f726eadcd8e5c1af50f053b23ee2356e4",
+      "output_packets": 1,
+      "output_packet_sha256": [
+        "402b8cb38b05d5f4232ececd1faad566d29c84438cbe31777a9ed750c32d520f"
+      ],
+      "events": []
+    },
+    {
+      "name": "icmpv6-echo-final-home-address",
+      "protocol": "icmpv6-echo",
+      "next_header": 58,
+      "checksum_basis": "final-home-address",
+      "checksum_value": 9285,
+      "rfc_checksum_valid": true,
+      "final_destination_checksum_residue": 0,
+      "base_destination_checksum_residue": 1,
+      "checksum_counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_pcap_sha256": "f1e124bf3d576c42bbfc8fa4fc09cc9ebf50e24e33a7e279ab44134d77b2a0c3",
+      "input_packet_sha256": "d8d05f76c9278efd9652c32318b18bfeca005727e7dd536285b86242ed1c8731",
+      "observed_checksum_errors": 1,
+      "observed_checksum_bypasses": 0,
+      "checksum_counter_conformant": false,
+      "isolated_fixture_verdict_conformant": false,
+      "known_inverted_behavior_reproduced": true,
+      "blocked": true,
+      "daq_verdict": "block",
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "block": 1,
+        "rx_bytes": 86
+      },
+      "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+      "output_packets": 0,
+      "output_packet_sha256": [],
+      "events": []
+    },
+    {
+      "name": "icmpv6-echo-incorrect-base-address",
+      "protocol": "icmpv6-echo",
+      "next_header": 58,
+      "checksum_basis": "incorrect-base-address",
+      "checksum_value": 9286,
+      "rfc_checksum_valid": false,
+      "final_destination_checksum_residue": 65534,
+      "base_destination_checksum_residue": 0,
+      "checksum_counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_pcap_sha256": "5ca0a8ef14308b700dee84c5aa08450d9a86b8b19600c459d1076a48b36ae803",
+      "input_packet_sha256": "aa2b6004eedf26c62fa34eebb0824a4e12d26044b86c67e138d2b9b65891f7d9",
+      "observed_checksum_errors": 0,
+      "observed_checksum_bypasses": 0,
+      "checksum_counter_conformant": false,
+      "isolated_fixture_verdict_conformant": false,
+      "known_inverted_behavior_reproduced": true,
+      "blocked": false,
+      "daq_verdict": "allow",
+      "daq_counters": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "allow": 1,
+        "rx_bytes": 86
+      },
+      "output_pcap_sha256": "5ca0a8ef14308b700dee84c5aa08450d9a86b8b19600c459d1076a48b36ae803",
+      "output_packets": 1,
+      "output_packet_sha256": [
+        "aa2b6004eedf26c62fa34eebb0824a4e12d26044b86c67e138d2b9b65891f7d9"
+      ],
+      "events": []
+    }
+  ]
+}

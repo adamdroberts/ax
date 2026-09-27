@@ -1,0 +1,199 @@
+--- a/src/stream/ip/ip_session.h
++++ b/src/stream/ip/ip_session.h
+@@ -22,6 +22,7 @@
+ 
+ #include "stream/ip/ip_module.h"
+ #include "ipv4_fragment_options.h"
++#include "ipv4_fragment_prefix.h"
+ 
+ struct Fragment;
+ struct SavedIp6Prefix;
+@@ -65,6 +66,7 @@
+     uint8_t* ip_options_data; /* ip options from offset 0 packet */
+     ax_fragment::CopiedOptions copied_ip_options;
+     bool ip_options_first_seen;
++    ax_fragment::Ip4Prefix ip4_prefix;
+     SavedIp6Prefix* ip6_prefix;
+     uint8_t ip6_ecn_seen;
+     bool quarantine_only; // No fragment of this tracker was admitted.
+--- a/src/stream/ip/ip_defrag.cc
++++ b/src/stream/ip/ip_defrag.cc
+@@ -186,6 +186,7 @@
+ };
+ 
+ #include "ipv6_fragment_prefix.inc"
++#include "ipv4_fragment_prefix.inc"
+ 
+ /*  G L O B A L S  **************************************************/
+ 
+@@ -555,7 +556,8 @@
+ 
+     Packet* dpkt = DetectionEngine::set_next_packet(p);
+     if (PacketManager::encode_format(ENC_FLAG_DEF|ENC_FLAG_FWD, p, dpkt, PSEUDO_PKT_IP, nullptr, p->pkth->opaque) < 0 ||
+-        (p->is_ip6() && !RestoreIp6Prefix(ft, dpkt)))
++        (p->is_ip6() && !RestoreIp6Prefix(ft, dpkt)) ||
++        (p->is_ip4() && !RestoreIp4Prefix(ft, dpkt)))
+     {
+         RejectIp6Rebuild(ft, p);
+         return;
+@@ -791,6 +793,7 @@
+     delete ft->ip6_prefix;
+     ft->ip6_prefix = nullptr;
+     ft->ip6_ecn_seen = 0;
++    ft->ip4_prefix = {};
+     ft->ip_options_len = 0;
+     if (ft->ip_options_data)
+     {
+@@ -808,7 +811,7 @@
+     ip_stats.drops++;
+     if (ft->frag_flags & FRAG_ECN_BAD)
+     {
+-        p->active->set_drop_reason("ip6_reassembly_ecn");
++        p->active->set_drop_reason("ip_reassembly_ecn");
+         ip_stats.ecn_drops++;
+     }
+     else if (ft->frag_flags & FRAG_PREFIX_BAD)
+@@ -1108,6 +1111,9 @@
+     // Validate before changing reassembly geometry or storing fragment data.
+     if (p->is_ip4() && !FragHandleIPOptions(ft, p, net_frag_offset))
+         return FRAG_INSERT_ANOMALY;
++
++    if (p->is_ip4() && !CaptureIp4Prefix(ft, p, net_frag_offset))
++        return FRAG_INSERT_PREFIX_INVALID;
+ 
+     if (p->is_ip6() && !CaptureIp6Prefix(ft, p, net_frag_offset))
+         return FRAG_INSERT_PREFIX_INVALID;
+@@ -1833,6 +1839,12 @@
+         return 1;
+     }
+ 
++    if (p->is_ip4() && !CaptureIp4Prefix(ft, p, frag_off))
++    {
++        ip_stats.discards++;
++        return 1;
++    }
++
+     if (p->is_ip6() && !CaptureIp6Prefix(ft, p, frag_off))
+     {
+         ip_stats.discards++;
+--- /dev/null
++++ b/src/stream/ip/ipv4_fragment_prefix.h
+@@ -0,0 +1,62 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#ifndef AX_IPV4_FRAGMENT_PREFIX_H
++#define AX_IPV4_FRAGMENT_PREFIX_H
++
++#include <cstddef>
++#include <cstdint>
++#include <cstring>
++
++namespace ax_fragment
++{
++// Trivial state: the native FragTracker is cleared with memset. Options remain
++// owned by its existing offset-zero option buffer, validated independently.
++struct Ip4Prefix
++{
++    uint8_t first[20];
++    uint32_t largest_end;
++    uint8_t ecn_seen;
++    bool first_seen;
++};
++
++enum class Ip4PrefixResult : uint8_t { okay, invalid_header_or_size, conflicting_ecn };
++
++inline bool ip4_rebuilt_fits(size_t header, size_t payload, size_t outer, size_t capacity)
++{
++    return header >= 20 && header <= 60 && !(header % 4) &&
++        payload <= 65535 - header && outer <= capacity &&
++        header <= capacity - outer && payload <= capacity - outer - header;
++}
++
++inline Ip4PrefixResult observe_ip4_prefix(Ip4Prefix& state, const uint8_t* ip,
++    size_t captured, uint16_t fragment_offset, size_t payload)
++{
++    if (!ip || captured < 20 || (ip[0] >> 4) != 4)
++        return Ip4PrefixResult::invalid_header_or_size;
++    const size_t header = (ip[0] & 15) * 4;
++    const size_t total = (static_cast<unsigned>(ip[2]) << 8) | ip[3];
++    const unsigned flags_offset = (static_cast<unsigned>(ip[6]) << 8) | ip[7];
++    if (header < 20 || header > captured || total > captured || total <= header ||
++        total - header != payload || ((flags_offset & 8191) * 8) != fragment_offset ||
++        !(flags_offset & 0x3fff))
++        return Ip4PrefixResult::invalid_header_or_size;
++    // total bounds payload before addition, so this cannot wrap even on 32-bit.
++    const uint32_t end = fragment_offset + static_cast<uint32_t>(payload);
++    const uint32_t largest = end > state.largest_end ? end : state.largest_end;
++    const size_t first_header = state.first_seen ? (state.first[0] & 15) * 4 :
++        fragment_offset ? 20 : header;
++    if (!ip4_rebuilt_fits(first_header, largest, 0, 65535))
++        return Ip4PrefixResult::invalid_header_or_size;
++    const uint8_t codes = state.ecn_seen | (1u << (ip[1] & 3));
++    if ((codes & 9) == 9)
++        return Ip4PrefixResult::conflicting_ecn;
++    state.largest_end = largest;
++    state.ecn_seen = codes;
++    if (!fragment_offset && !state.first_seen)
++    {
++        std::memcpy(state.first, ip, sizeof(state.first));
++        state.first_seen = true;
++    }
++    return Ip4PrefixResult::okay;
++}
++}
++#endif
+--- /dev/null
++++ b/src/stream/ip/ipv4_fragment_prefix.inc
+@@ -0,0 +1,53 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// Included by the pinned ip_defrag.cc after its native declarations.
++static bool CaptureIp4Prefix(FragTracker* ft, const Packet* p, uint16_t fragment_offset)
++{
++    const auto start = reinterpret_cast<uintptr_t>(p->pkt);
++    const auto selected = reinterpret_cast<uintptr_t>(p->ptrs.ip_api.get_ip4h());
++    auto result = ax_fragment::Ip4PrefixResult::invalid_header_or_size;
++    if (selected >= start && selected - start <= p->pktlen)
++    {
++        const auto* ip = reinterpret_cast<const uint8_t*>(selected);
++        const size_t available = p->pktlen - (selected - start);
++        // Require the decoded fragment span to refer to the bounded wire header.
++        if (available >= 20 && static_cast<size_t>((ip[0] & 15) * 4) <= available &&
++            p->data == ip + (ip[0] & 15) * 4)
++            result = ax_fragment::observe_ip4_prefix(ft->ip4_prefix, ip, available,
++                fragment_offset, p->dsize);
++    }
++    if (result == ax_fragment::Ip4PrefixResult::okay)
++        return true;
++    ft->frag_flags |= FRAG_BAD | FRAG_DROP_FRAGMENTS |
++        (result == ax_fragment::Ip4PrefixResult::conflicting_ecn ? FRAG_ECN_BAD : FRAG_PREFIX_BAD);
++    return false;
++}
++
++static bool RestoreIp4Prefix(FragTracker* ft, Packet* rebuilt)
++{
++    const auto& saved = ft->ip4_prefix;
++    const auto start = reinterpret_cast<uintptr_t>(rebuilt->pkt);
++    const auto selected = reinterpret_cast<uintptr_t>(rebuilt->ptrs.ip_api.get_ip4h());
++    const size_t header = (saved.first[0] & 15) * 4;
++    const int inner = layer::get_inner_ip_lyr_index(rebuilt);
++    if (!saved.first_seen || !ft->ip_options_first_seen || inner < 0 ||
++        inner >= rebuilt->num_layers || rebuilt->layers[inner].start != reinterpret_cast<const uint8_t*>(selected) ||
++        selected < start || selected - start > Codec::PKT_MAX ||
++        header != ip::IP4_HEADER_LEN + ft->ip_options_len ||
++        (ft->ip_options_len && !ft->ip_options_data) ||
++        !ax_fragment::ip4_rebuilt_fits(header, ft->calculated_size, selected - start, Codec::PKT_MAX))
++        return false;
++    // RFC 3168's reassembly table is the same for both IP versions. Reuse the
++    // previously tested helper; first-header codepoint is used where unspecified.
++    const auto ecn = ax_fragment::ip6_rebuilt_ecn(saved.ecn_seen, saved.first[1] & 3);
++    if (ecn == 0xff)
++        return false;
++    auto* ip = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(selected));
++    memcpy(ip, saved.first, sizeof(saved.first));
++    ip[1] = (ip[1] & 0xfc) | ecn;
++    rebuilt->ptrs.ip_api.set(reinterpret_cast<const ip::IP4Hdr*>(ip));
++    // Existing reconstruction copies saved options immediately after this base
++    // header and updates total length/checksum before decoding the rebuilt packet.
++    rebuilt->data = ip + ip::IP4_HEADER_LEN;
++    rebuilt->layers[inner].length = ip::IP4_HEADER_LEN;
++    return true;
++}

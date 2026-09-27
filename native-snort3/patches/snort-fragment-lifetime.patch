@@ -1,0 +1,181 @@
+--- a/src/stream/ip/ip_defrag.cc
++++ b/src/stream/ip/ip_defrag.cc
+@@ -69,6 +69,7 @@
+ #endif
+ 
+ #include "ip_defrag.h"
++#include "fragment_lifetime.h"
+ 
+ #include "codecs/ip/ipv4_checksum_destination.h"
+ 
+@@ -99,6 +100,7 @@
+ #define FRAG_BAD            0x00000008
+ #define FRAG_NO_BSD_VULN    0x00000010
+ #define FRAG_DROP_FRAGMENTS 0x00000020
++#define FRAG_TIMED_OUT      0x00000040
+ 
+ /* return values for insert() */
+ #define FRAG_INSERT_OK          0
+@@ -254,15 +256,11 @@
+ }
+ 
+ static inline bool frag_timed_out(
+-    const timeval* current_time, const timeval* start_time, FragEngine* engine)
+-{
+-    struct timeval tv_diff;
+-    TIMERSUB(current_time, start_time, &tv_diff);   // cppcheck-suppress unreadVariable
+-
+-    if (tv_diff.tv_sec >= (int)engine->frag_timeout)
+-        return true;
+-
+-    return false;
++    const timeval* current_time, const timeval* start_time, FragEngine* engine, bool ipv6)
++{
++    return ax_fragment::lifetime_expired(current_time->tv_sec, current_time->tv_usec,
++        start_time->tv_sec, start_time->tv_usec,
++        ax_fragment::reassembly_seconds(ipv6, engine->frag_timeout));
+ }
+ 
+ /**
+@@ -762,6 +760,11 @@
+         delete dump_me;
+     }
+     ft->fraglist = nullptr;
++    ft->fraglist_tail = nullptr;
++    ft->fraglist_count = 0;
++    ft->frag_bytes = 0;
++    ft->calculated_size = 0;
++    ft->ip_options_len = 0;
+     if (ft->ip_options_data)
+     {
+         snort_free(ft->ip_options_data);
+@@ -876,30 +879,19 @@
+         new_tracker(p, ft);
+         return;
+     }
+-    else if (expired(p, ft, fe) )
+-    {
+-        /* Time'd out FragTrackers are just purged of their packets.
+-         * Reset the timestamp per this packet.
+-         * And reset the rest of the tracker as if this is the
+-         * first packet on the tracker, and continue. */
+-
+-        /* This fixes an issue raised on bugtraq relating to
+-         * timeout frags not getting purged correctly when
+-         * the entire set of frags show up later. */
+-
+-        ft->ttl = p->ptrs.ip_api.ttl(); /* store the first ttl we got */
+-    }
+-
+-    // Update frag time when we get a frag associated with this tracker
+-    ft->frag_time.tv_sec = p->pkth->ts.tv_sec;
+-    ft->frag_time.tv_usec = p->pkth->ts.tv_usec;
++    // The datagram deadline is measured from its first arriving fragment.
++    // Do not slide it forward on activity or restart it after abandonment.
++    expired(p, ft, fe);
+ 
+     //don't forward fragments to engine if some previous fragment was dropped
+     if ( ft->frag_flags & FRAG_DROP_FRAGMENTS )
+     {
+         DetectionEngine::disable_content(p);
+         p->active->daq_drop_packet(p);
++        if (ft->frag_flags & FRAG_TIMED_OUT)
++            p->active->set_drop_reason("ip_reassembly_timeout");
+         ip_stats.drops++;
++        return;
+     }
+ 
+     /*
+@@ -1960,7 +1952,10 @@
+     /*
+      * Check the FragTracker that was passed in first
+      */
+-    if ( frag_timed_out(&p->pkth->ts, &(ft)->frag_time, fe) )
++    if (ft->frag_flags & FRAG_TIMED_OUT)
++        return true;
++
++    if ( frag_timed_out(&p->pkth->ts, &(ft)->frag_time, fe, p->is_ip6()) )
+     {
+         // Oops, we've timed out, whack the FragTracker
+         /*
+@@ -1971,6 +1966,9 @@
+          * relative to the timeout
+          */
+         delete_tracker(ft);
++        // Retain a small rejection record, not stale geometry or payload.
++        // Late arrivals and retries cannot reconstruct this abandoned datagram.
++        ft->frag_flags = FRAG_BAD | FRAG_DROP_FRAGMENTS | FRAG_TIMED_OUT;
+ 
+         ip_stats.frag_timeouts++;
+ 
+--- a/src/stream/ip/ip_session.cc
++++ b/src/stream/ip/ip_session.cc
+@@ -22,6 +22,7 @@
+ #endif
+ 
+ #include "ip_session.h"
++#include "fragment_lifetime.h"
+ 
+ #include "framework/data_bus.h"
+ #include "profiler/profiler_defs.h"
+@@ -158,6 +159,15 @@
+ 
+     StreamIpConfig* pc = get_ip_cfg(flow->ssn_server);
+     flow->set_default_session_timeout(pc->session_timeout, false);
++    if (p->is_fragment())
++    {
++        const auto retention = ax_fragment::retention_seconds(
++            p->is_ip6(), pc->session_timeout);
++        if (flow->default_session_timeout < retention)
++            flow->set_default_session_timeout(retention, true);
++        if (flow->idle_timeout < retention)
++            flow->set_idle_timeout(retention);
++    }
+ 
+     if ( p->ptrs.decode_flags & DECODE_FRAG )
+     {
+--- /dev/null
++++ b/src/stream/ip/fragment_lifetime.h
+@@ -0,0 +1,42 @@
++// Bounded fragment lifetime policy for the reviewed cumulative Snort repair.
++// SPDX-License-Identifier: GPL-2.0-only
++#ifndef AX_FRAGMENT_LIFETIME_H
++#define AX_FRAGMENT_LIFETIME_H
++#include <cstdint>
++#include <limits>
++
++namespace ax_fragment
++{
++// RFC 8200 section 4.5 places a 60-second ceiling on IPv6 reassembly.
++// A smaller configured budget is an explicitly stricter local policy.
++inline uint32_t reassembly_seconds(bool ipv6, uint32_t configured)
++{
++    return ipv6 && configured > 60 ? 60 : configured;
++}
++
++// Keep the flow's rejection state past ordinary reassembly retention windows.
++// This is a local IPS quarantine policy, not an RFC receiver requirement.
++// The extra second covers the flow cache's whole-second expiration arithmetic.
++inline uint32_t retention_seconds(bool ipv6, uint32_t configured)
++{
++    const uint32_t floor = ipv6 ? 60 : 120;
++    const uint32_t value = configured < floor ? floor : configured;
++    return value == std::numeric_limits<uint32_t>::max() ? value : value + 1;
++}
++
++inline bool lifetime_expired(int64_t now_seconds, int64_t now_microseconds,
++    int64_t first_seconds, int64_t first_microseconds, uint32_t budget)
++{
++    // DAQ timestamps are trusted local metadata. Reject malformed or reversed
++    // time instead of allowing underflow or a backward clock to extend a lease.
++    if (now_seconds < 0 || first_seconds < 0 || now_microseconds < 0 ||
++        now_microseconds >= 1000000 || first_microseconds < 0 ||
++        first_microseconds >= 1000000 || now_seconds < first_seconds ||
++        (now_seconds == first_seconds && now_microseconds < first_microseconds))
++        return true;
++    const uint64_t seconds = static_cast<uint64_t>(now_seconds) -
++        static_cast<uint64_t>(first_seconds);
++    return seconds > budget || (seconds == budget && now_microseconds >= first_microseconds);
++}
++}
++#endif

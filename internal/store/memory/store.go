@@ -69,6 +69,9 @@ func taskKey(atespace, name string) string {
 }
 
 func (s *MemoryStore) SaveTask(ctx context.Context, task *v1alpha1.Task) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
 	if task.Metadata == nil {
 		task.Metadata = &v1alpha1.ObjectMeta{}
 	}
@@ -88,6 +91,10 @@ func (s *MemoryStore) SaveTask(ctx context.Context, task *v1alpha1.Task) error {
 	key := taskKey(task.Metadata.Atespace, task.Metadata.Name)
 
 	s.mu.Lock()
+	if existing := s.tasks[key]; existing.GetStatus().GetPhase() == v1alpha1.PhaseTerminating {
+		s.mu.Unlock()
+		return store.ErrTaskTerminating
+	}
 	cp := clone(task)
 	s.tasks[key] = cp
 
@@ -153,6 +160,9 @@ func (s *MemoryStore) ListTasks(ctx context.Context, atespace string, limit, off
 }
 
 func (s *MemoryStore) UpdateTaskStatus(ctx context.Context, atespace, name string, status *v1alpha1.TaskStatus) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
 	key := taskKey(atespace, name)
 
 	s.mu.Lock()
@@ -162,7 +172,16 @@ func (s *MemoryStore) UpdateTaskStatus(ctx context.Context, atespace, name strin
 	if !ok {
 		return store.ErrNotFound
 	}
-	t.Status = status
+	// Deletion is sticky across status reports from reconciliations that began
+	// before the delete request. Preserve the current desired configuration.
+	if t.GetStatus().GetPhase() == v1alpha1.PhaseTerminating {
+		return nil
+	}
+	if status == nil {
+		t.Status = nil
+	} else {
+		t.Status = clone(status)
+	}
 	cp := clone(t)
 
 	if chs, ok := s.watchers[key]; ok {
@@ -177,6 +196,12 @@ func (s *MemoryStore) UpdateTaskStatus(ctx context.Context, atespace, name strin
 }
 
 func (s *MemoryStore) MarkTaskDeleting(ctx context.Context, atespace, name string) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	if atespace == "" {
+		atespace = "default"
+	}
 	key := taskKey(atespace, name)
 
 	s.mu.Lock()
@@ -208,6 +233,7 @@ func (s *MemoryStore) MarkTaskDeleting(ctx context.Context, atespace, name strin
 		Action:   "delete",
 	}:
 	default:
+		return fmt.Errorf("task marked terminating but deletion queue is full; retry deletion")
 	}
 	return nil
 }

@@ -1,0 +1,2267 @@
+{
+  "status": "verified_wire_prefix_oracle",
+  "scope": "File-only inline audit under Snort's current wire-identity flow grouping; not Mobile IPv6 endpoint-validity, binding-state or deployment proof.",
+  "snort_binary_sha256": "8d5d77f559865164e82ce2d6b2e6208dc85c6cff42de9f08d979021c25be41fb",
+  "configuration": {
+    "snort_version": "3.12.2.0",
+    "source_commit": "14aeb09f5a0856812dbe08ead3c21f99e8860aa0",
+    "scope": "Native configuration loading and effective rule states only; no traffic or live inline enforcement.",
+    "profiles": [
+      {
+        "profile": "protocol",
+        "loaded": 208,
+        "enabled": 208,
+        "actions": {
+          "drop": 164,
+          "block": 0,
+          "alert": 44
+        }
+      },
+      {
+        "profile": "perimeter",
+        "loaded": 215,
+        "enabled": 215,
+        "actions": {
+          "drop": 164,
+          "block": 5,
+          "alert": 46
+        }
+      },
+      {
+        "profile": "http",
+        "loaded": 271,
+        "enabled": 271,
+        "actions": {
+          "drop": 164,
+          "block": 19,
+          "alert": 88
+        }
+      },
+      {
+        "profile": "both",
+        "loaded": 278,
+        "enabled": 278,
+        "actions": {
+          "drop": 164,
+          "block": 24,
+          "alert": 90
+        }
+      }
+    ],
+    "rejected_invalid_configurations": 18,
+    "plugin_sha256": {
+      "ax_nd_options.so": "3dde09c3191beefd8ca35121762daa282631705cd7938d306f53732c1b83f6fb"
+    },
+    "sha256": {
+      "native-snort3/protocol-ips.lua": "000cace55518af574800693f3b671e3a07d491ff5e0ad3e9c87c19abc450712c",
+      "native-snort3/agent-guard-overlay.lua": "f6b900d70900f3e9d3a042d247590a501f622c5c7fa11fd791b75ea20e8fd91d",
+      "native-snort3/protocol.states": "444f3a106d5f018ebe429d262d5f8fc79436c8fd460aa6d48ed0f4795e6cc81f",
+      "native-snort3/protocol-builtins.rules": "58b92054c4d5d7f0cf68043a1fe7ab8a8ae125791491ecd6ce309e3354f7bc27",
+      "native-snort3/builtin-inventory.json": "a48a61274609c4dfb69824bd2e0b5f7bbb0da226a27c7faa08e95c6866a118a8",
+      "native-snort3/protocol-validation.rules": "ffd1f9e078a45f234c489408bb93edce6646d4f99f260d4e5877dcc5383330b3",
+      "native-snort3/generate_inventory.py": "4d461ea9cfbbb799592a644a651c71c872b1d430962f9cc4445e4e04eb246c0f",
+      "native-snort3/validate_profiles.py": "5a208668309dce2cc0503b8acf93ec7f36ba1a4fdd301233ec2f2e32f9e7a48f",
+      "native-snort3/plugins/README.md": "44f0b78823e63a06d725cd395a989ff8c46b3dddc26238833f9ce8bb3a163f21",
+      "native-snort3/plugins/build.py": "3ba291e364ef6cfc6b227cfcf45da3e037bdbe494a4d4be0958a216058f36e0b",
+      "native-snort3/plugins/ax_nd_options.cc": "5ac99c5b4568c15ee05d5a9bf76254f566c41e28c7a612f6f6fa521da56a9255",
+      "native-snort3/plugins/nd_validation.h": "4f88245b813db35205d73dbff849269e43f9bc4ace81e6fb3eccdf878eabc185",
+      "native-snort3/plugins/nd_validation_test.cc": "72358ad3aac6fd0a848ddc883ec8430012573cee71185758021b942e77008ad2",
+      "native-snort3/plugins/ip_validation.h": "cb67871c83dfcb059b4c126933366a06f60472060956bbdf6b3e4bebf9792010",
+      "native-snort3/plugins/ip_validation_test.cc": "f5e057023dfc380f08825cbcc1beb3d638a947bf503e271343715ebe630eb080",
+      "native-snort3/plugins/ip4_options.h": "643255e2b38d0b67c6db2297c6b03076b0d32853ec038f20b9508ab83b18e30d",
+      "native-snort3/plugins/ip4_options_test.cc": "29927fe74d788bb6d99fd811cd0dc88b87de30c54d44e45fcf07db9219e8120a",
+      "native-snort3/plugins/ip6_options.h": "e16e61d1471da2dca574fdd423bc27f8929b14d89acd7b806320708dbdce8357",
+      "native-snort3/plugins/ip6_options_test.cc": "7dbae601d883aa31a0a1fcd9c7dc5be8f267c7f1a5b890497958b6ac824117ef",
+      "native-snort3/plugins/esp_validation.h": "cf8ade954fcec4f1f09917798d1aa4fd748790f210adb265fe845e32d3f135fe",
+      "native-snort3/plugins/esp_validation_test.cc": "2094e98219defcb518985f3f3aa978ff08ca1c3f6e449afa0105ed071b3dc1c5",
+      "native-snort3/plugins/routing_validation.h": "825341ae93dbe5bb8cd8071cc245d5b3642d072a86291241084f03b3b2a36694",
+      "native-snort3/plugins/routing_validation_test.cc": "ed3924084f745164e72c5b5457ff5d307d1a852fe8eda9371f5199f007b58c07",
+      "native-snort3/plugins/home_address.h": "8540117639d519f6c5b51ccc8f893a506deb61bdb9ec181c968dcd7d35e0aa62",
+      "native-snort3/plugins/home_address_test.cc": "9a93efacfc92e91062b28c4bcd2c9c91c1ac71b0e3030e6bf99e07684b54e236",
+      "pkg/security/snort/imports/agent-guard-snort3/native-only.rules": "2451962b90016f8b520521a93837ddcdcce9064e704ebdc5e67c359e90fd9d9a"
+    }
+  },
+  "fixture_source_sha256": {
+    "native-snort3/tests/home_address_replay.py": "1c01f8d29b25931f551fc570c7ff7a69e616624ac8f30d617c2f5e0391b9f76e",
+    "native-snort3/tests/checksum_replay.py": "3194dc0fe4d21ba3a6e3d30b012d0b57e7027c44857d6c48b203447ab8e576d2",
+    "native-snort3/tests/fragment_lifetime_replay.py": "52c25212e4c9e8f5dd70996cc71f64d9f2e488479738edafcb1c788e171346e2",
+    "native-snort3/tests/fragment_checksum_replay.py": "de40d37eb58a5316d48ead17cc7d62906a4eb0861af7ecfd5dc8aa7bec14bc3e",
+    "native-snort3/tests/generate_pcaps.py": "7a542d7f61633a4849c9147476f2dae810496247686d87c767f43a9e5470c5d1",
+    "native-snort3/tests/next_header_policy.py": "82abd595a1639c4c33eae1b5adef4ca052842d443b6344de2586ced67a318017",
+    "native-snort3/tests/replay.py": "58d2cdd52c85c22cde82fc5ff2d6961b83d69588ce6c628345cce0b6dbefe76b",
+    "native-snort3/tests/type2_repair_replay.py": "da1b79830466ef7b7bef20e84bbb027b1dbef289d254bda0f8103ef0fc6f5dcc",
+    "native-snort3/tests/ipv6_fragment_prefix_audit.py": "a6554036e743305a232bd5dcf7b65770bc939e27ea4e5a2ccbb29d1506f43175"
+  },
+  "normalizer_configuration_sha256": {
+    "tcp": "4663441a4147578b960fe9baefdf163da875168f6b8ba6a91c388b3b6ac07e1e",
+    "rewrite": "9ef3382f0ef3abb73b993ffe1e099b8c94ae47ea3ee057a17002539ae1f88a8b"
+  },
+  "summary": {
+    "cases": 48,
+    "passed": 48,
+    "failures": [],
+    "structural_cases": 0,
+    "fragment_cases": 48,
+    "retry_cases": 0,
+    "normalization_cases": 0
+  },
+  "cases": [
+    {
+      "name": "p6-different-home-01-matches-oracle",
+      "protocol": 6,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.750100",
+          "pkt_num": 2,
+          "proto": "TCP",
+          "src_ap": "2001:db8::1:50000",
+          "dst_ap": "2001:db8::2:80",
+          "rule": "129:2:1",
+          "action": "allow",
+          "msg": "(stream_tcp) data on SYN packet"
+        }
+      ],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "d7d2268a5feb8bd67d4dae9fd5052e45a713496dbe68a34b001db19bbfef52e2",
+      "output_pcap_sha256": "d7d2268a5feb8bd67d4dae9fd5052e45a713496dbe68a34b001db19bbfef52e2",
+      "input_packet_sha256": [
+        "adce9d6fdb0ac30fc39fdd7d5732f9b7e435bc50c61a1fab39c6fdae84fed433",
+        "39d48749036a9971c693b78e6aefa880933a7608ebaa7ba7c09449d4de680f5a"
+      ],
+      "output_packet_sha256": [
+        "adce9d6fdb0ac30fc39fdd7d5732f9b7e435bc50c61a1fab39c6fdae84fed433",
+        "39d48749036a9971c693b78e6aefa880933a7608ebaa7ba7c09449d4de680f5a"
+      ],
+      "expected_output_packet_sha256": [
+        "adce9d6fdb0ac30fc39fdd7d5732f9b7e435bc50c61a1fab39c6fdae84fed433",
+        "39d48749036a9971c693b78e6aefa880933a7608ebaa7ba7c09449d4de680f5a"
+      ]
+    },
+    {
+      "name": "p6-different-home-10-matches-oracle",
+      "protocol": 6,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.750100",
+          "pkt_num": 2,
+          "proto": "TCP",
+          "src_ap": "2001:db8::1:50000",
+          "dst_ap": "2001:db8::2:80",
+          "rule": "129:2:1",
+          "action": "allow",
+          "msg": "(stream_tcp) data on SYN packet"
+        }
+      ],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "fa0288322c3e171b86325babe7481eab112aa90fc4bb2197709075fe371db437",
+      "output_pcap_sha256": "fa0288322c3e171b86325babe7481eab112aa90fc4bb2197709075fe371db437",
+      "input_packet_sha256": [
+        "39d48749036a9971c693b78e6aefa880933a7608ebaa7ba7c09449d4de680f5a",
+        "adce9d6fdb0ac30fc39fdd7d5732f9b7e435bc50c61a1fab39c6fdae84fed433"
+      ],
+      "output_packet_sha256": [
+        "39d48749036a9971c693b78e6aefa880933a7608ebaa7ba7c09449d4de680f5a",
+        "adce9d6fdb0ac30fc39fdd7d5732f9b7e435bc50c61a1fab39c6fdae84fed433"
+      ],
+      "expected_output_packet_sha256": [
+        "39d48749036a9971c693b78e6aefa880933a7608ebaa7ba7c09449d4de680f5a",
+        "adce9d6fdb0ac30fc39fdd7d5732f9b7e435bc50c61a1fab39c6fdae84fed433"
+      ]
+    },
+    {
+      "name": "p6-different-home-01-differs-from-oracle",
+      "protocol": 6,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "10c695f5d0eb8a8b4e02d2bc68bed1c290757724fc735e0bab5f8621bd524c0d",
+      "output_pcap_sha256": "c6f48519c3099363ef28496e91ae641914296865db5f562d7cb9cac9c987a3c2",
+      "input_packet_sha256": [
+        "1a7390effdaffa5b1cd9abb7ef12e934f18b293f4a7fa052b61e9c17dd122587",
+        "39d48749036a9971c693b78e6aefa880933a7608ebaa7ba7c09449d4de680f5a"
+      ],
+      "output_packet_sha256": [
+        "1a7390effdaffa5b1cd9abb7ef12e934f18b293f4a7fa052b61e9c17dd122587"
+      ],
+      "expected_output_packet_sha256": [
+        "1a7390effdaffa5b1cd9abb7ef12e934f18b293f4a7fa052b61e9c17dd122587"
+      ]
+    },
+    {
+      "name": "p6-different-home-10-differs-from-oracle",
+      "protocol": 6,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "ac7ba0e77cf4a1bf8f45454141b7051d33b2d3e3aef6a1b10392b9b3c4cb7171",
+      "output_pcap_sha256": "73b51bd7dc746e4582e1e9c43dfb89f5a9d17ab4edddbbd114a1fbbdfa35ca53",
+      "input_packet_sha256": [
+        "39d48749036a9971c693b78e6aefa880933a7608ebaa7ba7c09449d4de680f5a",
+        "1a7390effdaffa5b1cd9abb7ef12e934f18b293f4a7fa052b61e9c17dd122587"
+      ],
+      "output_packet_sha256": [
+        "39d48749036a9971c693b78e6aefa880933a7608ebaa7ba7c09449d4de680f5a"
+      ],
+      "expected_output_packet_sha256": [
+        "39d48749036a9971c693b78e6aefa880933a7608ebaa7ba7c09449d4de680f5a"
+      ]
+    },
+    {
+      "name": "p6-missing-home-01-matches-oracle",
+      "protocol": 6,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.750100",
+          "pkt_num": 2,
+          "proto": "TCP",
+          "src_ap": "2001:db8::1:50000",
+          "dst_ap": "2001:db8::2:80",
+          "rule": "129:2:1",
+          "action": "allow",
+          "msg": "(stream_tcp) data on SYN packet"
+        }
+      ],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "c45d565ae19de6908ff2cb099808c4885dffc7372d30ca0009e43019a3b88cce",
+      "output_pcap_sha256": "c45d565ae19de6908ff2cb099808c4885dffc7372d30ca0009e43019a3b88cce",
+      "input_packet_sha256": [
+        "adce9d6fdb0ac30fc39fdd7d5732f9b7e435bc50c61a1fab39c6fdae84fed433",
+        "c283109f07545e10a900ba8a81daf009dd71ef7c2dc2d57b2e8291b83a78ec11"
+      ],
+      "output_packet_sha256": [
+        "adce9d6fdb0ac30fc39fdd7d5732f9b7e435bc50c61a1fab39c6fdae84fed433",
+        "c283109f07545e10a900ba8a81daf009dd71ef7c2dc2d57b2e8291b83a78ec11"
+      ],
+      "expected_output_packet_sha256": [
+        "adce9d6fdb0ac30fc39fdd7d5732f9b7e435bc50c61a1fab39c6fdae84fed433",
+        "c283109f07545e10a900ba8a81daf009dd71ef7c2dc2d57b2e8291b83a78ec11"
+      ]
+    },
+    {
+      "name": "p6-missing-home-10-matches-oracle",
+      "protocol": 6,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.750100",
+          "pkt_num": 2,
+          "proto": "TCP",
+          "src_ap": "2001:db8::1:50000",
+          "dst_ap": "2001:db8::2:80",
+          "rule": "129:2:1",
+          "action": "allow",
+          "msg": "(stream_tcp) data on SYN packet"
+        }
+      ],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "172e96a3175fedd086ae7af961aaf41bceba0dc0258162c906a2837749fed09d",
+      "output_pcap_sha256": "172e96a3175fedd086ae7af961aaf41bceba0dc0258162c906a2837749fed09d",
+      "input_packet_sha256": [
+        "c283109f07545e10a900ba8a81daf009dd71ef7c2dc2d57b2e8291b83a78ec11",
+        "adce9d6fdb0ac30fc39fdd7d5732f9b7e435bc50c61a1fab39c6fdae84fed433"
+      ],
+      "output_packet_sha256": [
+        "c283109f07545e10a900ba8a81daf009dd71ef7c2dc2d57b2e8291b83a78ec11",
+        "adce9d6fdb0ac30fc39fdd7d5732f9b7e435bc50c61a1fab39c6fdae84fed433"
+      ],
+      "expected_output_packet_sha256": [
+        "c283109f07545e10a900ba8a81daf009dd71ef7c2dc2d57b2e8291b83a78ec11",
+        "adce9d6fdb0ac30fc39fdd7d5732f9b7e435bc50c61a1fab39c6fdae84fed433"
+      ]
+    },
+    {
+      "name": "p6-missing-home-01-differs-from-oracle",
+      "protocol": 6,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "933c1565aa70df81fba60f24168843f3a240dbe55be5d6a7241d41556f5bd830",
+      "output_pcap_sha256": "b24f5a3cdc175a1b56ed08dcd14184da498ee517a752fd2602848dba65ef1e08",
+      "input_packet_sha256": [
+        "2fc0f61703d316542720c72c23c89bf13967212e71682fb7ae496279b06e3fe0",
+        "c283109f07545e10a900ba8a81daf009dd71ef7c2dc2d57b2e8291b83a78ec11"
+      ],
+      "output_packet_sha256": [
+        "2fc0f61703d316542720c72c23c89bf13967212e71682fb7ae496279b06e3fe0"
+      ],
+      "expected_output_packet_sha256": [
+        "2fc0f61703d316542720c72c23c89bf13967212e71682fb7ae496279b06e3fe0"
+      ]
+    },
+    {
+      "name": "p6-missing-home-10-differs-from-oracle",
+      "protocol": 6,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "aacf863ecbf051c0c716ae9773a43c58f44916fffab303e7d34f8e75a9b4ae18",
+      "output_pcap_sha256": "d07abcbf01dc6dd531512e1a141da1041e759bd7e353eb2ee2e07ee86090c574",
+      "input_packet_sha256": [
+        "c283109f07545e10a900ba8a81daf009dd71ef7c2dc2d57b2e8291b83a78ec11",
+        "2fc0f61703d316542720c72c23c89bf13967212e71682fb7ae496279b06e3fe0"
+      ],
+      "output_packet_sha256": [
+        "c283109f07545e10a900ba8a81daf009dd71ef7c2dc2d57b2e8291b83a78ec11"
+      ],
+      "expected_output_packet_sha256": [
+        "c283109f07545e10a900ba8a81daf009dd71ef7c2dc2d57b2e8291b83a78ec11"
+      ]
+    },
+    {
+      "name": "p6-added-home-01-matches-oracle",
+      "protocol": 6,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::1",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.750100",
+          "pkt_num": 2,
+          "proto": "TCP",
+          "src_ap": "2001:db8::1:50000",
+          "dst_ap": "2001:db8::2:80",
+          "rule": "129:2:1",
+          "action": "allow",
+          "msg": "(stream_tcp) data on SYN packet"
+        }
+      ],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "f09a363bb52e082518462e8e9c1bc460f97723be1d96a84a2e0174eb95c6dfbf",
+      "output_pcap_sha256": "f09a363bb52e082518462e8e9c1bc460f97723be1d96a84a2e0174eb95c6dfbf",
+      "input_packet_sha256": [
+        "d353c23e62cee166f6476acc535e870de3defa09e73fa908348f0ad7f7151f3d",
+        "39d48749036a9971c693b78e6aefa880933a7608ebaa7ba7c09449d4de680f5a"
+      ],
+      "output_packet_sha256": [
+        "d353c23e62cee166f6476acc535e870de3defa09e73fa908348f0ad7f7151f3d",
+        "39d48749036a9971c693b78e6aefa880933a7608ebaa7ba7c09449d4de680f5a"
+      ],
+      "expected_output_packet_sha256": [
+        "d353c23e62cee166f6476acc535e870de3defa09e73fa908348f0ad7f7151f3d",
+        "39d48749036a9971c693b78e6aefa880933a7608ebaa7ba7c09449d4de680f5a"
+      ]
+    },
+    {
+      "name": "p6-added-home-10-matches-oracle",
+      "protocol": 6,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::1",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.750100",
+          "pkt_num": 2,
+          "proto": "TCP",
+          "src_ap": "2001:db8::1:50000",
+          "dst_ap": "2001:db8::2:80",
+          "rule": "129:2:1",
+          "action": "allow",
+          "msg": "(stream_tcp) data on SYN packet"
+        }
+      ],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "3020372fcef366070d2860f60404eabaeb2e773f001821855bc51584ad78842b",
+      "output_pcap_sha256": "3020372fcef366070d2860f60404eabaeb2e773f001821855bc51584ad78842b",
+      "input_packet_sha256": [
+        "39d48749036a9971c693b78e6aefa880933a7608ebaa7ba7c09449d4de680f5a",
+        "d353c23e62cee166f6476acc535e870de3defa09e73fa908348f0ad7f7151f3d"
+      ],
+      "output_packet_sha256": [
+        "39d48749036a9971c693b78e6aefa880933a7608ebaa7ba7c09449d4de680f5a",
+        "d353c23e62cee166f6476acc535e870de3defa09e73fa908348f0ad7f7151f3d"
+      ],
+      "expected_output_packet_sha256": [
+        "39d48749036a9971c693b78e6aefa880933a7608ebaa7ba7c09449d4de680f5a",
+        "d353c23e62cee166f6476acc535e870de3defa09e73fa908348f0ad7f7151f3d"
+      ]
+    },
+    {
+      "name": "p6-added-home-01-differs-from-oracle",
+      "protocol": 6,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::1",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "586f1b32a43a5167415de3621df03d0dba02a1c27d1118258f6493cee33727b9",
+      "output_pcap_sha256": "7f78d486ca2acd47064818621c579584b0e31a7ec35c90b2bac05b7bce77c854",
+      "input_packet_sha256": [
+        "25cebe7ad82bd7c37b686c274f45f5e4b23fcd9816efc436c4b25ab5026965c2",
+        "39d48749036a9971c693b78e6aefa880933a7608ebaa7ba7c09449d4de680f5a"
+      ],
+      "output_packet_sha256": [
+        "25cebe7ad82bd7c37b686c274f45f5e4b23fcd9816efc436c4b25ab5026965c2"
+      ],
+      "expected_output_packet_sha256": [
+        "25cebe7ad82bd7c37b686c274f45f5e4b23fcd9816efc436c4b25ab5026965c2"
+      ]
+    },
+    {
+      "name": "p6-added-home-10-differs-from-oracle",
+      "protocol": 6,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::1",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "831fbbecbad89fc24a88f814f0d24a70ce8672af39d5acb8c9960ede506b96cd",
+      "output_pcap_sha256": "73b51bd7dc746e4582e1e9c43dfb89f5a9d17ab4edddbbd114a1fbbdfa35ca53",
+      "input_packet_sha256": [
+        "39d48749036a9971c693b78e6aefa880933a7608ebaa7ba7c09449d4de680f5a",
+        "25cebe7ad82bd7c37b686c274f45f5e4b23fcd9816efc436c4b25ab5026965c2"
+      ],
+      "output_packet_sha256": [
+        "39d48749036a9971c693b78e6aefa880933a7608ebaa7ba7c09449d4de680f5a"
+      ],
+      "expected_output_packet_sha256": [
+        "39d48749036a9971c693b78e6aefa880933a7608ebaa7ba7c09449d4de680f5a"
+      ]
+    },
+    {
+      "name": "p6-different-padding-01-matches-oracle",
+      "protocol": 6,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.750100",
+          "pkt_num": 2,
+          "proto": "TCP",
+          "src_ap": "2001:db8::1:50000",
+          "dst_ap": "2001:db8::2:80",
+          "rule": "129:2:1",
+          "action": "allow",
+          "msg": "(stream_tcp) data on SYN packet"
+        }
+      ],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "62c06392b1d0706943f66ecc352eb1abdfd12391c9a8e94c9fab46522629fcb0",
+      "output_pcap_sha256": "62c06392b1d0706943f66ecc352eb1abdfd12391c9a8e94c9fab46522629fcb0",
+      "input_packet_sha256": [
+        "adce9d6fdb0ac30fc39fdd7d5732f9b7e435bc50c61a1fab39c6fdae84fed433",
+        "d37799e253d6cb2dc60f1bc2a7c552709790936f2725ea942ab1d5b0fa5b61e6"
+      ],
+      "output_packet_sha256": [
+        "adce9d6fdb0ac30fc39fdd7d5732f9b7e435bc50c61a1fab39c6fdae84fed433",
+        "d37799e253d6cb2dc60f1bc2a7c552709790936f2725ea942ab1d5b0fa5b61e6"
+      ],
+      "expected_output_packet_sha256": [
+        "adce9d6fdb0ac30fc39fdd7d5732f9b7e435bc50c61a1fab39c6fdae84fed433",
+        "d37799e253d6cb2dc60f1bc2a7c552709790936f2725ea942ab1d5b0fa5b61e6"
+      ]
+    },
+    {
+      "name": "p6-different-padding-10-matches-oracle",
+      "protocol": 6,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [
+        {
+          "timestamp": "11/14-23:13:20.750100",
+          "pkt_num": 2,
+          "proto": "TCP",
+          "src_ap": "2001:db8::1:50000",
+          "dst_ap": "2001:db8::2:80",
+          "rule": "129:2:1",
+          "action": "allow",
+          "msg": "(stream_tcp) data on SYN packet"
+        }
+      ],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "190233a70f70443ca7ce82a48b5278cba3d348449e29cd7a8980a26ec0030fb4",
+      "output_pcap_sha256": "190233a70f70443ca7ce82a48b5278cba3d348449e29cd7a8980a26ec0030fb4",
+      "input_packet_sha256": [
+        "d37799e253d6cb2dc60f1bc2a7c552709790936f2725ea942ab1d5b0fa5b61e6",
+        "adce9d6fdb0ac30fc39fdd7d5732f9b7e435bc50c61a1fab39c6fdae84fed433"
+      ],
+      "output_packet_sha256": [
+        "d37799e253d6cb2dc60f1bc2a7c552709790936f2725ea942ab1d5b0fa5b61e6",
+        "adce9d6fdb0ac30fc39fdd7d5732f9b7e435bc50c61a1fab39c6fdae84fed433"
+      ],
+      "expected_output_packet_sha256": [
+        "d37799e253d6cb2dc60f1bc2a7c552709790936f2725ea942ab1d5b0fa5b61e6",
+        "adce9d6fdb0ac30fc39fdd7d5732f9b7e435bc50c61a1fab39c6fdae84fed433"
+      ]
+    },
+    {
+      "name": "p6-different-padding-01-differs-from-oracle",
+      "protocol": 6,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "364301df7366d99feb34bd1bf5e43a3c2fd97b23c947646423a8e221d42c4a5a",
+      "output_pcap_sha256": "b24f5a3cdc175a1b56ed08dcd14184da498ee517a752fd2602848dba65ef1e08",
+      "input_packet_sha256": [
+        "2fc0f61703d316542720c72c23c89bf13967212e71682fb7ae496279b06e3fe0",
+        "d37799e253d6cb2dc60f1bc2a7c552709790936f2725ea942ab1d5b0fa5b61e6"
+      ],
+      "output_packet_sha256": [
+        "2fc0f61703d316542720c72c23c89bf13967212e71682fb7ae496279b06e3fe0"
+      ],
+      "expected_output_packet_sha256": [
+        "2fc0f61703d316542720c72c23c89bf13967212e71682fb7ae496279b06e3fe0"
+      ]
+    },
+    {
+      "name": "p6-different-padding-10-differs-from-oracle",
+      "protocol": 6,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "afb6201b3b5cd15ee20d45442842dc3a5b4f95584b64c73e31df14c8c2444bb5",
+      "output_pcap_sha256": "4a8e77fcda3ccf76dc0885bbb10439db6bb5566741005ffb420100d28cc9a48a",
+      "input_packet_sha256": [
+        "d37799e253d6cb2dc60f1bc2a7c552709790936f2725ea942ab1d5b0fa5b61e6",
+        "2fc0f61703d316542720c72c23c89bf13967212e71682fb7ae496279b06e3fe0"
+      ],
+      "output_packet_sha256": [
+        "d37799e253d6cb2dc60f1bc2a7c552709790936f2725ea942ab1d5b0fa5b61e6"
+      ],
+      "expected_output_packet_sha256": [
+        "d37799e253d6cb2dc60f1bc2a7c552709790936f2725ea942ab1d5b0fa5b61e6"
+      ]
+    },
+    {
+      "name": "p17-different-home-01-matches-oracle",
+      "protocol": 17,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "2ab53d9953180fbbf942a5602b01c2a04bb9e53e6b8cbb4e3c51b11d0aef41af",
+      "output_pcap_sha256": "2ab53d9953180fbbf942a5602b01c2a04bb9e53e6b8cbb4e3c51b11d0aef41af",
+      "input_packet_sha256": [
+        "8645ebca5a9a642cc9e65691b0df87478c7051761f077ba506ff5388d23a5438",
+        "dcebdb16626e1581f73e1df8e19664053d271fb02a07d4d3d3851c47eba48c5f"
+      ],
+      "output_packet_sha256": [
+        "8645ebca5a9a642cc9e65691b0df87478c7051761f077ba506ff5388d23a5438",
+        "dcebdb16626e1581f73e1df8e19664053d271fb02a07d4d3d3851c47eba48c5f"
+      ],
+      "expected_output_packet_sha256": [
+        "8645ebca5a9a642cc9e65691b0df87478c7051761f077ba506ff5388d23a5438",
+        "dcebdb16626e1581f73e1df8e19664053d271fb02a07d4d3d3851c47eba48c5f"
+      ]
+    },
+    {
+      "name": "p17-different-home-10-matches-oracle",
+      "protocol": 17,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "9c09bedc42c22292ac0bf8307cfd464b129e707e87c70a29633888ce24a69a77",
+      "output_pcap_sha256": "9c09bedc42c22292ac0bf8307cfd464b129e707e87c70a29633888ce24a69a77",
+      "input_packet_sha256": [
+        "dcebdb16626e1581f73e1df8e19664053d271fb02a07d4d3d3851c47eba48c5f",
+        "8645ebca5a9a642cc9e65691b0df87478c7051761f077ba506ff5388d23a5438"
+      ],
+      "output_packet_sha256": [
+        "dcebdb16626e1581f73e1df8e19664053d271fb02a07d4d3d3851c47eba48c5f",
+        "8645ebca5a9a642cc9e65691b0df87478c7051761f077ba506ff5388d23a5438"
+      ],
+      "expected_output_packet_sha256": [
+        "dcebdb16626e1581f73e1df8e19664053d271fb02a07d4d3d3851c47eba48c5f",
+        "8645ebca5a9a642cc9e65691b0df87478c7051761f077ba506ff5388d23a5438"
+      ]
+    },
+    {
+      "name": "p17-different-home-01-differs-from-oracle",
+      "protocol": 17,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "80c649c33e2d914156b4df2e2c1e0c10f05949c4e639525549049080711cb5f6",
+      "output_pcap_sha256": "fd0a9764a64f4c4c0c3e6405410d346814025491c192f2e68bd4323826195f41",
+      "input_packet_sha256": [
+        "305ff4ad25352ca65f7676aba0fdb9b387e04688be647782050e0a61e22e8c25",
+        "dcebdb16626e1581f73e1df8e19664053d271fb02a07d4d3d3851c47eba48c5f"
+      ],
+      "output_packet_sha256": [
+        "305ff4ad25352ca65f7676aba0fdb9b387e04688be647782050e0a61e22e8c25"
+      ],
+      "expected_output_packet_sha256": [
+        "305ff4ad25352ca65f7676aba0fdb9b387e04688be647782050e0a61e22e8c25"
+      ]
+    },
+    {
+      "name": "p17-different-home-10-differs-from-oracle",
+      "protocol": 17,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "8a1a151fd45b784512c546664eab4228887225b52dd50073d0f42dbdc74c5aa2",
+      "output_pcap_sha256": "0cac7679a07780d21f5e3082ce5a29ad227df8ff5f2357a090ba917140dc698b",
+      "input_packet_sha256": [
+        "dcebdb16626e1581f73e1df8e19664053d271fb02a07d4d3d3851c47eba48c5f",
+        "305ff4ad25352ca65f7676aba0fdb9b387e04688be647782050e0a61e22e8c25"
+      ],
+      "output_packet_sha256": [
+        "dcebdb16626e1581f73e1df8e19664053d271fb02a07d4d3d3851c47eba48c5f"
+      ],
+      "expected_output_packet_sha256": [
+        "dcebdb16626e1581f73e1df8e19664053d271fb02a07d4d3d3851c47eba48c5f"
+      ]
+    },
+    {
+      "name": "p17-missing-home-01-matches-oracle",
+      "protocol": 17,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "f706e4c4ddbcccea6e939535ba39517e07b81293d74210ace885db58957895b7",
+      "output_pcap_sha256": "f706e4c4ddbcccea6e939535ba39517e07b81293d74210ace885db58957895b7",
+      "input_packet_sha256": [
+        "8645ebca5a9a642cc9e65691b0df87478c7051761f077ba506ff5388d23a5438",
+        "9ea0702c3627d763e71f43f1c53180767ede663b1b2b20dbf83d0f576c438bf9"
+      ],
+      "output_packet_sha256": [
+        "8645ebca5a9a642cc9e65691b0df87478c7051761f077ba506ff5388d23a5438",
+        "9ea0702c3627d763e71f43f1c53180767ede663b1b2b20dbf83d0f576c438bf9"
+      ],
+      "expected_output_packet_sha256": [
+        "8645ebca5a9a642cc9e65691b0df87478c7051761f077ba506ff5388d23a5438",
+        "9ea0702c3627d763e71f43f1c53180767ede663b1b2b20dbf83d0f576c438bf9"
+      ]
+    },
+    {
+      "name": "p17-missing-home-10-matches-oracle",
+      "protocol": 17,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "94044cf6a163d64e6b25da5ff454ceb4f25a525634f7b31155f9ee7e32d2e102",
+      "output_pcap_sha256": "94044cf6a163d64e6b25da5ff454ceb4f25a525634f7b31155f9ee7e32d2e102",
+      "input_packet_sha256": [
+        "9ea0702c3627d763e71f43f1c53180767ede663b1b2b20dbf83d0f576c438bf9",
+        "8645ebca5a9a642cc9e65691b0df87478c7051761f077ba506ff5388d23a5438"
+      ],
+      "output_packet_sha256": [
+        "9ea0702c3627d763e71f43f1c53180767ede663b1b2b20dbf83d0f576c438bf9",
+        "8645ebca5a9a642cc9e65691b0df87478c7051761f077ba506ff5388d23a5438"
+      ],
+      "expected_output_packet_sha256": [
+        "9ea0702c3627d763e71f43f1c53180767ede663b1b2b20dbf83d0f576c438bf9",
+        "8645ebca5a9a642cc9e65691b0df87478c7051761f077ba506ff5388d23a5438"
+      ]
+    },
+    {
+      "name": "p17-missing-home-01-differs-from-oracle",
+      "protocol": 17,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "84bb4b3914f7082b113d8ae250c27547e407c4caf5c570dfcc82d5c38057f536",
+      "output_pcap_sha256": "9311e44ca72e9119011328e8b5f4bd195a480399fe68bdce6a346296c37cb9de",
+      "input_packet_sha256": [
+        "3b41aebd5756981ef9d23c8a63469b92717795d400d61f7da78be0706c69ef61",
+        "9ea0702c3627d763e71f43f1c53180767ede663b1b2b20dbf83d0f576c438bf9"
+      ],
+      "output_packet_sha256": [
+        "3b41aebd5756981ef9d23c8a63469b92717795d400d61f7da78be0706c69ef61"
+      ],
+      "expected_output_packet_sha256": [
+        "3b41aebd5756981ef9d23c8a63469b92717795d400d61f7da78be0706c69ef61"
+      ]
+    },
+    {
+      "name": "p17-missing-home-10-differs-from-oracle",
+      "protocol": 17,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "7a662c064cc9f33733eaf2d79d16de6ac29c65bf1ce7d4d1302a1a9e099f4cc1",
+      "output_pcap_sha256": "4ba6f7dd8311438c8253fe888779e07c1f695d3756e37170a4f336d9a8b39ea5",
+      "input_packet_sha256": [
+        "9ea0702c3627d763e71f43f1c53180767ede663b1b2b20dbf83d0f576c438bf9",
+        "3b41aebd5756981ef9d23c8a63469b92717795d400d61f7da78be0706c69ef61"
+      ],
+      "output_packet_sha256": [
+        "9ea0702c3627d763e71f43f1c53180767ede663b1b2b20dbf83d0f576c438bf9"
+      ],
+      "expected_output_packet_sha256": [
+        "9ea0702c3627d763e71f43f1c53180767ede663b1b2b20dbf83d0f576c438bf9"
+      ]
+    },
+    {
+      "name": "p17-added-home-01-matches-oracle",
+      "protocol": 17,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::1",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "2514035483a696f473d42383e24d90cd3748c7bb224469f4e46867ad38dbba9d",
+      "output_pcap_sha256": "2514035483a696f473d42383e24d90cd3748c7bb224469f4e46867ad38dbba9d",
+      "input_packet_sha256": [
+        "220f2a6bb85f7a11c77bac0ee1ccba3fb80a4c3a8b37d94c188fcfaf5bd55ea9",
+        "dcebdb16626e1581f73e1df8e19664053d271fb02a07d4d3d3851c47eba48c5f"
+      ],
+      "output_packet_sha256": [
+        "220f2a6bb85f7a11c77bac0ee1ccba3fb80a4c3a8b37d94c188fcfaf5bd55ea9",
+        "dcebdb16626e1581f73e1df8e19664053d271fb02a07d4d3d3851c47eba48c5f"
+      ],
+      "expected_output_packet_sha256": [
+        "220f2a6bb85f7a11c77bac0ee1ccba3fb80a4c3a8b37d94c188fcfaf5bd55ea9",
+        "dcebdb16626e1581f73e1df8e19664053d271fb02a07d4d3d3851c47eba48c5f"
+      ]
+    },
+    {
+      "name": "p17-added-home-10-matches-oracle",
+      "protocol": 17,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::1",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "4c42cfbe95a9b2b8156614474eb592583479699e7534b440cf4cc2ed8275bb90",
+      "output_pcap_sha256": "4c42cfbe95a9b2b8156614474eb592583479699e7534b440cf4cc2ed8275bb90",
+      "input_packet_sha256": [
+        "dcebdb16626e1581f73e1df8e19664053d271fb02a07d4d3d3851c47eba48c5f",
+        "220f2a6bb85f7a11c77bac0ee1ccba3fb80a4c3a8b37d94c188fcfaf5bd55ea9"
+      ],
+      "output_packet_sha256": [
+        "dcebdb16626e1581f73e1df8e19664053d271fb02a07d4d3d3851c47eba48c5f",
+        "220f2a6bb85f7a11c77bac0ee1ccba3fb80a4c3a8b37d94c188fcfaf5bd55ea9"
+      ],
+      "expected_output_packet_sha256": [
+        "dcebdb16626e1581f73e1df8e19664053d271fb02a07d4d3d3851c47eba48c5f",
+        "220f2a6bb85f7a11c77bac0ee1ccba3fb80a4c3a8b37d94c188fcfaf5bd55ea9"
+      ]
+    },
+    {
+      "name": "p17-added-home-01-differs-from-oracle",
+      "protocol": 17,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::1",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "506d08fc456c1cd2a260af03f90041fd35415ed1f8bbcc869f1dfce4eae024c9",
+      "output_pcap_sha256": "352c578f3833727a16b8000b6572257d540f8de7ffb40ea4d95b8391b75b43d2",
+      "input_packet_sha256": [
+        "74acad1df40d97bebd4b47b1880d69567051221c9f5cd3adbbdb52f986d6aa33",
+        "dcebdb16626e1581f73e1df8e19664053d271fb02a07d4d3d3851c47eba48c5f"
+      ],
+      "output_packet_sha256": [
+        "74acad1df40d97bebd4b47b1880d69567051221c9f5cd3adbbdb52f986d6aa33"
+      ],
+      "expected_output_packet_sha256": [
+        "74acad1df40d97bebd4b47b1880d69567051221c9f5cd3adbbdb52f986d6aa33"
+      ]
+    },
+    {
+      "name": "p17-added-home-10-differs-from-oracle",
+      "protocol": 17,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::1",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "f98a6a5e76f20784b94919886e30f6b499a269857a5b420f491d02646ecc7081",
+      "output_pcap_sha256": "0cac7679a07780d21f5e3082ce5a29ad227df8ff5f2357a090ba917140dc698b",
+      "input_packet_sha256": [
+        "dcebdb16626e1581f73e1df8e19664053d271fb02a07d4d3d3851c47eba48c5f",
+        "74acad1df40d97bebd4b47b1880d69567051221c9f5cd3adbbdb52f986d6aa33"
+      ],
+      "output_packet_sha256": [
+        "dcebdb16626e1581f73e1df8e19664053d271fb02a07d4d3d3851c47eba48c5f"
+      ],
+      "expected_output_packet_sha256": [
+        "dcebdb16626e1581f73e1df8e19664053d271fb02a07d4d3d3851c47eba48c5f"
+      ]
+    },
+    {
+      "name": "p17-different-padding-01-matches-oracle",
+      "protocol": 17,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "ec97b412d65c85abf34930ca9f9c9035eb10d922898aad0022e754e8035246de",
+      "output_pcap_sha256": "ec97b412d65c85abf34930ca9f9c9035eb10d922898aad0022e754e8035246de",
+      "input_packet_sha256": [
+        "8645ebca5a9a642cc9e65691b0df87478c7051761f077ba506ff5388d23a5438",
+        "6bc364ccbbeefb497a4a85e7167e8f5a507f3c1e6b3b07fc4f61b637e52e697a"
+      ],
+      "output_packet_sha256": [
+        "8645ebca5a9a642cc9e65691b0df87478c7051761f077ba506ff5388d23a5438",
+        "6bc364ccbbeefb497a4a85e7167e8f5a507f3c1e6b3b07fc4f61b637e52e697a"
+      ],
+      "expected_output_packet_sha256": [
+        "8645ebca5a9a642cc9e65691b0df87478c7051761f077ba506ff5388d23a5438",
+        "6bc364ccbbeefb497a4a85e7167e8f5a507f3c1e6b3b07fc4f61b637e52e697a"
+      ]
+    },
+    {
+      "name": "p17-different-padding-10-matches-oracle",
+      "protocol": 17,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "7e494e59bb365a32674aee42c234ab15ac05e381a134a61a5dbcca782b369e5e",
+      "output_pcap_sha256": "7e494e59bb365a32674aee42c234ab15ac05e381a134a61a5dbcca782b369e5e",
+      "input_packet_sha256": [
+        "6bc364ccbbeefb497a4a85e7167e8f5a507f3c1e6b3b07fc4f61b637e52e697a",
+        "8645ebca5a9a642cc9e65691b0df87478c7051761f077ba506ff5388d23a5438"
+      ],
+      "output_packet_sha256": [
+        "6bc364ccbbeefb497a4a85e7167e8f5a507f3c1e6b3b07fc4f61b637e52e697a",
+        "8645ebca5a9a642cc9e65691b0df87478c7051761f077ba506ff5388d23a5438"
+      ],
+      "expected_output_packet_sha256": [
+        "6bc364ccbbeefb497a4a85e7167e8f5a507f3c1e6b3b07fc4f61b637e52e697a",
+        "8645ebca5a9a642cc9e65691b0df87478c7051761f077ba506ff5388d23a5438"
+      ]
+    },
+    {
+      "name": "p17-different-padding-01-differs-from-oracle",
+      "protocol": 17,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "6d05d5a9e72f011a0e0c87e1708ae03df8000e9f1d990dff85de10e3e265740f",
+      "output_pcap_sha256": "9311e44ca72e9119011328e8b5f4bd195a480399fe68bdce6a346296c37cb9de",
+      "input_packet_sha256": [
+        "3b41aebd5756981ef9d23c8a63469b92717795d400d61f7da78be0706c69ef61",
+        "6bc364ccbbeefb497a4a85e7167e8f5a507f3c1e6b3b07fc4f61b637e52e697a"
+      ],
+      "output_packet_sha256": [
+        "3b41aebd5756981ef9d23c8a63469b92717795d400d61f7da78be0706c69ef61"
+      ],
+      "expected_output_packet_sha256": [
+        "3b41aebd5756981ef9d23c8a63469b92717795d400d61f7da78be0706c69ef61"
+      ]
+    },
+    {
+      "name": "p17-different-padding-10-differs-from-oracle",
+      "protocol": 17,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "a85867a649f13f05b91aafeb0ff9e40fcf4fa3c226c12a45bfe32c04071ddb5e",
+      "output_pcap_sha256": "0fab7d690290fbaca34705ada65fee4f6a88c369dba56a3ae1aa8ac70ffeac45",
+      "input_packet_sha256": [
+        "6bc364ccbbeefb497a4a85e7167e8f5a507f3c1e6b3b07fc4f61b637e52e697a",
+        "3b41aebd5756981ef9d23c8a63469b92717795d400d61f7da78be0706c69ef61"
+      ],
+      "output_packet_sha256": [
+        "6bc364ccbbeefb497a4a85e7167e8f5a507f3c1e6b3b07fc4f61b637e52e697a"
+      ],
+      "expected_output_packet_sha256": [
+        "6bc364ccbbeefb497a4a85e7167e8f5a507f3c1e6b3b07fc4f61b637e52e697a"
+      ]
+    },
+    {
+      "name": "p58-different-home-01-matches-oracle",
+      "protocol": 58,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "46b58b2394b28e546026402771e2c991e53eb8ff0ddf25863f1440d250f37da3",
+      "output_pcap_sha256": "46b58b2394b28e546026402771e2c991e53eb8ff0ddf25863f1440d250f37da3",
+      "input_packet_sha256": [
+        "620901c0015267d63006dfed96029cc26105fe5b8e28219dcd9abbea4942bc36",
+        "93bb0db3974522302f3608022b44889550f691f1387d4da66eef9009db438ce2"
+      ],
+      "output_packet_sha256": [
+        "620901c0015267d63006dfed96029cc26105fe5b8e28219dcd9abbea4942bc36",
+        "93bb0db3974522302f3608022b44889550f691f1387d4da66eef9009db438ce2"
+      ],
+      "expected_output_packet_sha256": [
+        "620901c0015267d63006dfed96029cc26105fe5b8e28219dcd9abbea4942bc36",
+        "93bb0db3974522302f3608022b44889550f691f1387d4da66eef9009db438ce2"
+      ]
+    },
+    {
+      "name": "p58-different-home-10-matches-oracle",
+      "protocol": 58,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "967384b9497bfe606e8aac5163b31280b921e960b1c72a422c3c59af0c9fe7c3",
+      "output_pcap_sha256": "967384b9497bfe606e8aac5163b31280b921e960b1c72a422c3c59af0c9fe7c3",
+      "input_packet_sha256": [
+        "93bb0db3974522302f3608022b44889550f691f1387d4da66eef9009db438ce2",
+        "620901c0015267d63006dfed96029cc26105fe5b8e28219dcd9abbea4942bc36"
+      ],
+      "output_packet_sha256": [
+        "93bb0db3974522302f3608022b44889550f691f1387d4da66eef9009db438ce2",
+        "620901c0015267d63006dfed96029cc26105fe5b8e28219dcd9abbea4942bc36"
+      ],
+      "expected_output_packet_sha256": [
+        "93bb0db3974522302f3608022b44889550f691f1387d4da66eef9009db438ce2",
+        "620901c0015267d63006dfed96029cc26105fe5b8e28219dcd9abbea4942bc36"
+      ]
+    },
+    {
+      "name": "p58-different-home-01-differs-from-oracle",
+      "protocol": 58,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "f018c5db40c3fa8ee6c08cfeed6e03f194e2a2480b4e0bf078fb373c100f17d6",
+      "output_pcap_sha256": "76880dd536f0f7b64fca1a6bac9aa6eb5958be6b50e8802521a06839ea3cd05c",
+      "input_packet_sha256": [
+        "2ee4db75955d3a1472b072870b80285b9a74683ca06953d2012d6b21f5e8c374",
+        "93bb0db3974522302f3608022b44889550f691f1387d4da66eef9009db438ce2"
+      ],
+      "output_packet_sha256": [
+        "2ee4db75955d3a1472b072870b80285b9a74683ca06953d2012d6b21f5e8c374"
+      ],
+      "expected_output_packet_sha256": [
+        "2ee4db75955d3a1472b072870b80285b9a74683ca06953d2012d6b21f5e8c374"
+      ]
+    },
+    {
+      "name": "p58-different-home-10-differs-from-oracle",
+      "protocol": 58,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "ee90c584d52dbae464039b860d53ae18d940b27afabe71f8ea1c774c25fc79be",
+      "output_pcap_sha256": "473a3fcdc791e64d99f3a1b1617e657cbe54b603388ddee021943ff5534f2c6c",
+      "input_packet_sha256": [
+        "93bb0db3974522302f3608022b44889550f691f1387d4da66eef9009db438ce2",
+        "2ee4db75955d3a1472b072870b80285b9a74683ca06953d2012d6b21f5e8c374"
+      ],
+      "output_packet_sha256": [
+        "93bb0db3974522302f3608022b44889550f691f1387d4da66eef9009db438ce2"
+      ],
+      "expected_output_packet_sha256": [
+        "93bb0db3974522302f3608022b44889550f691f1387d4da66eef9009db438ce2"
+      ]
+    },
+    {
+      "name": "p58-missing-home-01-matches-oracle",
+      "protocol": 58,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "487b87bdb8a0887d55e14665d597b93df4d33a0fd035b05a7de92e6ecb2332cf",
+      "output_pcap_sha256": "487b87bdb8a0887d55e14665d597b93df4d33a0fd035b05a7de92e6ecb2332cf",
+      "input_packet_sha256": [
+        "620901c0015267d63006dfed96029cc26105fe5b8e28219dcd9abbea4942bc36",
+        "5a7c442c7a9c6a935563f31c8ac29ebaf1e0819dedb14fe95522491954ce823b"
+      ],
+      "output_packet_sha256": [
+        "620901c0015267d63006dfed96029cc26105fe5b8e28219dcd9abbea4942bc36",
+        "5a7c442c7a9c6a935563f31c8ac29ebaf1e0819dedb14fe95522491954ce823b"
+      ],
+      "expected_output_packet_sha256": [
+        "620901c0015267d63006dfed96029cc26105fe5b8e28219dcd9abbea4942bc36",
+        "5a7c442c7a9c6a935563f31c8ac29ebaf1e0819dedb14fe95522491954ce823b"
+      ]
+    },
+    {
+      "name": "p58-missing-home-10-matches-oracle",
+      "protocol": 58,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "d450f49b63e75021649faa2d2f4ab761e61a568bbfeb8f5df7e85f69b41aae98",
+      "output_pcap_sha256": "d450f49b63e75021649faa2d2f4ab761e61a568bbfeb8f5df7e85f69b41aae98",
+      "input_packet_sha256": [
+        "5a7c442c7a9c6a935563f31c8ac29ebaf1e0819dedb14fe95522491954ce823b",
+        "620901c0015267d63006dfed96029cc26105fe5b8e28219dcd9abbea4942bc36"
+      ],
+      "output_packet_sha256": [
+        "5a7c442c7a9c6a935563f31c8ac29ebaf1e0819dedb14fe95522491954ce823b",
+        "620901c0015267d63006dfed96029cc26105fe5b8e28219dcd9abbea4942bc36"
+      ],
+      "expected_output_packet_sha256": [
+        "5a7c442c7a9c6a935563f31c8ac29ebaf1e0819dedb14fe95522491954ce823b",
+        "620901c0015267d63006dfed96029cc26105fe5b8e28219dcd9abbea4942bc36"
+      ]
+    },
+    {
+      "name": "p58-missing-home-01-differs-from-oracle",
+      "protocol": 58,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "3d258c62a96544aa814f8b13721b21eea5978996c581b6be2459a122857b3eb8",
+      "output_pcap_sha256": "002aac0942ef260efc7e330ee036affdcd7253d062b21c3b48ac753772ec46e6",
+      "input_packet_sha256": [
+        "b05c4514e0cf4eadbf3b3a504ecae800f791ebc66400f4cb67772fc473141327",
+        "5a7c442c7a9c6a935563f31c8ac29ebaf1e0819dedb14fe95522491954ce823b"
+      ],
+      "output_packet_sha256": [
+        "b05c4514e0cf4eadbf3b3a504ecae800f791ebc66400f4cb67772fc473141327"
+      ],
+      "expected_output_packet_sha256": [
+        "b05c4514e0cf4eadbf3b3a504ecae800f791ebc66400f4cb67772fc473141327"
+      ]
+    },
+    {
+      "name": "p58-missing-home-10-differs-from-oracle",
+      "protocol": 58,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "1f61dd8c6cd96731476cde5eea4519ecee30759e0eb26d1d26b0b43cd78c59e5",
+      "output_pcap_sha256": "1a22c3200e9cd29a55d2397d261a82b6cd3ed89224a6aa675f2f4c3d34f48210",
+      "input_packet_sha256": [
+        "5a7c442c7a9c6a935563f31c8ac29ebaf1e0819dedb14fe95522491954ce823b",
+        "b05c4514e0cf4eadbf3b3a504ecae800f791ebc66400f4cb67772fc473141327"
+      ],
+      "output_packet_sha256": [
+        "5a7c442c7a9c6a935563f31c8ac29ebaf1e0819dedb14fe95522491954ce823b"
+      ],
+      "expected_output_packet_sha256": [
+        "5a7c442c7a9c6a935563f31c8ac29ebaf1e0819dedb14fe95522491954ce823b"
+      ]
+    },
+    {
+      "name": "p58-added-home-01-matches-oracle",
+      "protocol": 58,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::1",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "e581533eae3a2d7fea57e525cf50da24d31d572bbe10e92a0ba71e37b8d4a94e",
+      "output_pcap_sha256": "e581533eae3a2d7fea57e525cf50da24d31d572bbe10e92a0ba71e37b8d4a94e",
+      "input_packet_sha256": [
+        "b52be65c66e1d0b0834b8f838022cbbb700752e19f09b68deac4110694fd4024",
+        "93bb0db3974522302f3608022b44889550f691f1387d4da66eef9009db438ce2"
+      ],
+      "output_packet_sha256": [
+        "b52be65c66e1d0b0834b8f838022cbbb700752e19f09b68deac4110694fd4024",
+        "93bb0db3974522302f3608022b44889550f691f1387d4da66eef9009db438ce2"
+      ],
+      "expected_output_packet_sha256": [
+        "b52be65c66e1d0b0834b8f838022cbbb700752e19f09b68deac4110694fd4024",
+        "93bb0db3974522302f3608022b44889550f691f1387d4da66eef9009db438ce2"
+      ]
+    },
+    {
+      "name": "p58-added-home-10-matches-oracle",
+      "protocol": 58,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::1",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "2888c55b6fa285bdc6b9d79ad852d440742f85e1509c741fd42175ec7b0b9d1a",
+      "output_pcap_sha256": "2888c55b6fa285bdc6b9d79ad852d440742f85e1509c741fd42175ec7b0b9d1a",
+      "input_packet_sha256": [
+        "93bb0db3974522302f3608022b44889550f691f1387d4da66eef9009db438ce2",
+        "b52be65c66e1d0b0834b8f838022cbbb700752e19f09b68deac4110694fd4024"
+      ],
+      "output_packet_sha256": [
+        "93bb0db3974522302f3608022b44889550f691f1387d4da66eef9009db438ce2",
+        "b52be65c66e1d0b0834b8f838022cbbb700752e19f09b68deac4110694fd4024"
+      ],
+      "expected_output_packet_sha256": [
+        "93bb0db3974522302f3608022b44889550f691f1387d4da66eef9009db438ce2",
+        "b52be65c66e1d0b0834b8f838022cbbb700752e19f09b68deac4110694fd4024"
+      ]
+    },
+    {
+      "name": "p58-added-home-01-differs-from-oracle",
+      "protocol": 58,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::1",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "f7dbe9706f7d6c8bfd272a2b54d62922a3d0b094ab19b6f2b53befe2ffa1ad21",
+      "output_pcap_sha256": "91fa86cb1108fe05a1540eb8934433edad2a5e44ca48c0cc64db906eb3161009",
+      "input_packet_sha256": [
+        "f8a50c331ba19f1a023f7893d8cce32d52e5e9bb9f865c18b68fb407072a28d9",
+        "93bb0db3974522302f3608022b44889550f691f1387d4da66eef9009db438ce2"
+      ],
+      "output_packet_sha256": [
+        "f8a50c331ba19f1a023f7893d8cce32d52e5e9bb9f865c18b68fb407072a28d9"
+      ],
+      "expected_output_packet_sha256": [
+        "f8a50c331ba19f1a023f7893d8cce32d52e5e9bb9f865c18b68fb407072a28d9"
+      ]
+    },
+    {
+      "name": "p58-added-home-10-differs-from-oracle",
+      "protocol": 58,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::1",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "ee7fb748a6a2d1a5250b83304b37fd4dbb43155c987bc990553520773516d6a8",
+      "output_pcap_sha256": "473a3fcdc791e64d99f3a1b1617e657cbe54b603388ddee021943ff5534f2c6c",
+      "input_packet_sha256": [
+        "93bb0db3974522302f3608022b44889550f691f1387d4da66eef9009db438ce2",
+        "f8a50c331ba19f1a023f7893d8cce32d52e5e9bb9f865c18b68fb407072a28d9"
+      ],
+      "output_packet_sha256": [
+        "93bb0db3974522302f3608022b44889550f691f1387d4da66eef9009db438ce2"
+      ],
+      "expected_output_packet_sha256": [
+        "93bb0db3974522302f3608022b44889550f691f1387d4da66eef9009db438ce2"
+      ]
+    },
+    {
+      "name": "p58-different-padding-01-matches-oracle",
+      "protocol": 58,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "64faf9f513d7467ae06344121a489d65f77faa05883d3fd3702724c97230315f",
+      "output_pcap_sha256": "64faf9f513d7467ae06344121a489d65f77faa05883d3fd3702724c97230315f",
+      "input_packet_sha256": [
+        "620901c0015267d63006dfed96029cc26105fe5b8e28219dcd9abbea4942bc36",
+        "bc503bb140fe3c234f8702fc0f5202c632077be44ae31f6c8404927fc9e5604b"
+      ],
+      "output_packet_sha256": [
+        "620901c0015267d63006dfed96029cc26105fe5b8e28219dcd9abbea4942bc36",
+        "bc503bb140fe3c234f8702fc0f5202c632077be44ae31f6c8404927fc9e5604b"
+      ],
+      "expected_output_packet_sha256": [
+        "620901c0015267d63006dfed96029cc26105fe5b8e28219dcd9abbea4942bc36",
+        "bc503bb140fe3c234f8702fc0f5202c632077be44ae31f6c8404927fc9e5604b"
+      ]
+    },
+    {
+      "name": "p58-different-padding-10-matches-oracle",
+      "protocol": 58,
+      "structural_rejection": false,
+      "checksum_valid": true,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 0,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 0,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 2
+      },
+      "expected_verdicts": {
+        "allow": 2
+      },
+      "input_pcap_sha256": "38cf45aac54c9dcae0ba82ef7e2aaaa24093aa5799e567d2ee522df9a6d89991",
+      "output_pcap_sha256": "38cf45aac54c9dcae0ba82ef7e2aaaa24093aa5799e567d2ee522df9a6d89991",
+      "input_packet_sha256": [
+        "bc503bb140fe3c234f8702fc0f5202c632077be44ae31f6c8404927fc9e5604b",
+        "620901c0015267d63006dfed96029cc26105fe5b8e28219dcd9abbea4942bc36"
+      ],
+      "output_packet_sha256": [
+        "bc503bb140fe3c234f8702fc0f5202c632077be44ae31f6c8404927fc9e5604b",
+        "620901c0015267d63006dfed96029cc26105fe5b8e28219dcd9abbea4942bc36"
+      ],
+      "expected_output_packet_sha256": [
+        "bc503bb140fe3c234f8702fc0f5202c632077be44ae31f6c8404927fc9e5604b",
+        "620901c0015267d63006dfed96029cc26105fe5b8e28219dcd9abbea4942bc36"
+      ]
+    },
+    {
+      "name": "p58-different-padding-01-differs-from-oracle",
+      "protocol": 58,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "cbd0a8065c31fc0a9dbd83f1f9581d66d6b1585ea8c74ce79306270abfb96888",
+      "output_pcap_sha256": "002aac0942ef260efc7e330ee036affdcd7253d062b21c3b48ac753772ec46e6",
+      "input_packet_sha256": [
+        "b05c4514e0cf4eadbf3b3a504ecae800f791ebc66400f4cb67772fc473141327",
+        "bc503bb140fe3c234f8702fc0f5202c632077be44ae31f6c8404927fc9e5604b"
+      ],
+      "output_packet_sha256": [
+        "b05c4514e0cf4eadbf3b3a504ecae800f791ebc66400f4cb67772fc473141327"
+      ],
+      "expected_output_packet_sha256": [
+        "b05c4514e0cf4eadbf3b3a504ecae800f791ebc66400f4cb67772fc473141327"
+      ]
+    },
+    {
+      "name": "p58-different-padding-10-differs-from-oracle",
+      "protocol": 58,
+      "structural_rejection": false,
+      "checksum_valid": false,
+      "checksum_source": "2001:db8::9",
+      "checksum_destination": "2001:db8::2",
+      "fragmented": true,
+      "retry": false,
+      "normalization": "",
+      "expected_reassemblies": 1,
+      "expected_checksum_errors": 1,
+      "passed": true,
+      "enforcement_passed": true,
+      "counter_passed": true,
+      "structural_guard_passed": true,
+      "counters": {
+        "checksum_errors": 1,
+        "checksum_bypassed": 0,
+        "reassembled": 1
+      },
+      "events": [],
+      "daq_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "expected_verdicts": {
+        "allow": 1,
+        "block": 1
+      },
+      "input_pcap_sha256": "b8eeeacea2558d9f564d6ccf8c88ddb91760c5e00516265647b083dcfed42a6f",
+      "output_pcap_sha256": "adaac049615e041d4f415f854b11892edc7bb7527ecfc1f99763e65ba4c6a8e7",
+      "input_packet_sha256": [
+        "bc503bb140fe3c234f8702fc0f5202c632077be44ae31f6c8404927fc9e5604b",
+        "b05c4514e0cf4eadbf3b3a504ecae800f791ebc66400f4cb67772fc473141327"
+      ],
+      "output_packet_sha256": [
+        "bc503bb140fe3c234f8702fc0f5202c632077be44ae31f6c8404927fc9e5604b"
+      ],
+      "expected_output_packet_sha256": [
+        "bc503bb140fe3c234f8702fc0f5202c632077be44ae31f6c8404927fc9e5604b"
+      ]
+    }
+  ],
+  "oracle": {
+    "representation": "Select the checksum source from the offset-zero fragment's original wire prefix.",
+    "limitation": "Differing Home Address semantics may change source identity before endpoint reassembly; these fixtures do not establish that all fragments belong to one authorized endpoint context.",
+    "required_follow_up": "Independently verify offset-zero prefix retention and endpoint processing before queueing, including logical source grouping and binding validation."
+  }
+}

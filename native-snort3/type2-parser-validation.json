@@ -1,0 +1,29 @@
+{
+  "scope": "Pure bounded checksum address selection and source patch context; no native traffic enforcement.",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin27.0.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+  "command": [
+    "c++",
+    "-std=c++17",
+    "-O1",
+    "-g",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-pedantic",
+    "-fsanitize=address,undefined",
+    "-fno-omit-frame-pointer",
+    "/Users/adam/Dev/agent-security/ax/native-snort3/patches/ipv6_checksum_destination_test.cc",
+    "-o",
+    "/private/tmp/ax-checksum-parser-tests/root-validated"
+  ],
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "sha256": {
+    "native-snort3/patches/ipv6_checksum_destination.h": "3afe940ef6f3a47ae27d8dc3054a1bb58f96a79d8c4305c00c3fa13f8516e743",
+    "native-snort3/patches/ipv6_checksum_destination_test.cc": "b41c77afa268f64f787aad61a547713dc10b4c17c7947dd4139ccaeaea164375",
+    "native-snort3/patches/apply_type2_repair.py": "a2467d844656195179a98fd95adae2b61c52ba23149f497bd5af89d5d58760f7"
+  },
+  "test_output": "111027 IPv6 checksum destination assertions passed (100000 random spans)"
+}

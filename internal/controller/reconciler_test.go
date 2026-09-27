@@ -16,6 +16,7 @@ package controller_test
 
 import (
 	"context"
+	"errors"
 	"net"
 	"net/http"
 	"testing"
@@ -26,7 +27,9 @@ import (
 	"github.com/google/ax/internal/substrate"
 	"github.com/google/ax/pkg/apis/v1alpha1"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/status"
 )
 
 type mockControlServer struct {
@@ -40,6 +43,15 @@ type mockControlServer struct {
 	deletedActors    []string
 	actorTemplates   map[string]bool
 	deletedTemplates []string
+	policyError      error
+	atespaceError    error
+	actorError       error
+	suspendError     error
+	policyRequests   []*ateapipb.EgressPolicy
+	events           []string
+	existingPolicy   *ateapipb.EgressPolicy
+	policyReadError  error
+	updatedPolicies  []*ateapipb.EgressPolicy
 }
 
 // noSecrets is a SecretResolver for tests: it never finds a key and never touches a cluster.
@@ -53,6 +65,9 @@ func (m *mockControlServer) CreateAtespace(ctx context.Context, req *ateapipb.Cr
 		name = req.Atespace.Metadata.Name
 	}
 	m.createdAtespaces = append(m.createdAtespaces, name)
+	if m.atespaceError != nil {
+		return nil, m.atespaceError
+	}
 	return &ateapipb.Atespace{Metadata: &ateapipb.ResourceMetadata{Name: name}}, nil
 }
 
@@ -62,6 +77,9 @@ func (m *mockControlServer) CreateActor(ctx context.Context, req *ateapipb.Creat
 		name = req.Actor.Metadata.Name
 	}
 	m.createdActors = append(m.createdActors, name)
+	if m.actorError != nil {
+		return nil, m.actorError
+	}
 	return &ateapipb.Actor{
 		Metadata: &ateapipb.ResourceMetadata{Name: name},
 		Status: &ateapipb.ActorStatus{
@@ -76,6 +94,7 @@ func (m *mockControlServer) ResumeActor(ctx context.Context, req *ateapipb.Resum
 		name = req.Actor.Name
 	}
 	m.resumedActors = append(m.resumedActors, name)
+	m.events = append(m.events, "resume")
 	wIP := "10.244.1.42"
 	if m.workerIP != "" {
 		wIP = m.workerIP
@@ -101,6 +120,10 @@ func (m *mockControlServer) SuspendActor(ctx context.Context, req *ateapipb.Susp
 		name = req.Actor.Name
 	}
 	m.suspendedActors = append(m.suspendedActors, name)
+	m.events = append(m.events, "suspend")
+	if m.suspendError != nil {
+		return nil, m.suspendError
+	}
 	return &ateapipb.SuspendActorResponse{}, nil
 }
 
@@ -110,7 +133,20 @@ func (m *mockControlServer) CreateActorEgressPolicy(ctx context.Context, req *at
 		actorName = req.Actor.Name
 	}
 	m.createdPolicies = append(m.createdPolicies, actorName)
-	return &ateapipb.EgressPolicy{}, nil
+	m.policyRequests = append(m.policyRequests, req.EgressPolicy)
+	m.events = append(m.events, "policy")
+	if m.policyError != nil {
+		return nil, m.policyError
+	}
+	return req.EgressPolicy, nil
+}
+
+func (m *mockControlServer) GetActorEgressPolicy(context.Context, *ateapipb.GetActorEgressPolicyRequest) (*ateapipb.EgressPolicy, error) {
+	return m.existingPolicy, m.policyReadError
+}
+func (m *mockControlServer) UpdateActorEgressPolicy(_ context.Context, req *ateapipb.UpdateActorEgressPolicyRequest) (*ateapipb.EgressPolicy, error) {
+	m.updatedPolicies = append(m.updatedPolicies, req.EgressPolicy)
+	return req.EgressPolicy, nil
 }
 
 func (m *mockControlServer) DeleteActor(ctx context.Context, req *ateapipb.DeleteActorRequest) (*ateapipb.Actor, error) {
@@ -134,6 +170,149 @@ func (m *mockControlServer) DeleteActorTemplate(ctx context.Context, req *ateapi
 	delete(m.actorTemplates, name)
 	m.deletedTemplates = append(m.deletedTemplates, name)
 	return &ateapipb.ActorTemplate{Metadata: &ateapipb.ResourceMetadata{Name: name}}, nil
+}
+
+func securityTestClient(t *testing.T, server *mockControlServer) *substrate.Client {
+	t.Helper()
+	lis, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		t.Fatal(err)
+	}
+	grpcServer := grpc.NewServer()
+	ateapipb.RegisterControlServer(grpcServer, server)
+	go grpcServer.Serve(lis)
+	t.Cleanup(func() { grpcServer.Stop(); lis.Close() })
+	client, err := substrate.NewClient(lis.Addr().String(), grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { client.Close() })
+	return client
+}
+
+func TestEgressDefaultDenyIsAppliedBeforeResume(t *testing.T) {
+	m := &mockControlServer{}
+	r := controller.NewTaskReconciler(securityTestClient(t, m), "test-template", "ax-system")
+	r.SecretResolver = noSecrets
+	// Skip unrelated readiness polling; this test verifies admission ordering.
+	task := &v1alpha1.Task{Metadata: &v1alpha1.ObjectMeta{Name: "deny-default"}, Status: &v1alpha1.TaskStatus{Conditions: []*v1alpha1.Condition{{Type: "WorkspaceReady", Status: "True"}}}}
+	if _, err := r.Reconcile(context.Background(), task, nil); err != nil {
+		t.Fatal(err)
+	}
+	if len(m.policyRequests) != 1 || len(m.policyRequests[0].Rules) != 0 {
+		t.Fatalf("missing explicit deny-all policy: %v", m.policyRequests)
+	}
+	if len(m.events) != 2 || m.events[0] != "policy" || m.events[1] != "resume" {
+		t.Fatalf("unsafe admission order: %v", m.events)
+	}
+}
+
+func TestPolicyFailurePreventsResumeAndAttemptsContainment(t *testing.T) {
+	for _, suspendFails := range []bool{false, true} {
+		t.Run(map[bool]string{false: "suspend succeeds", true: "suspend fails"}[suspendFails], func(t *testing.T) {
+			m := &mockControlServer{policyError: status.Error(codes.Unavailable, "control-plane failure")}
+			if suspendFails {
+				m.suspendError = errors.New("suspension failed")
+			}
+			r := controller.NewTaskReconciler(securityTestClient(t, m), "test-template", "ax-system")
+			r.SecretResolver = noSecrets
+			task := &v1alpha1.Task{Metadata: &v1alpha1.ObjectMeta{Name: "running-task"}, Status: &v1alpha1.TaskStatus{Phase: "Running", WorkerIp: "old-worker"}}
+			result, err := r.Reconcile(context.Background(), task, nil)
+			if err == nil || result.Status.Phase != "Failed" || result.Status.WorkerIp != "" || len(m.resumedActors) != 0 || len(m.suspendedActors) != 1 {
+				t.Fatalf("failed to contain: result=%v err=%v events=%v", result.Status, err, m.events)
+			}
+			for _, condition := range result.Status.Conditions {
+				if condition.Type == "NetworkContainment" && condition.Status == "True" && suspendFails {
+					t.Fatal("claimed containment after suspend failed")
+				}
+			}
+		})
+	}
+}
+
+func TestEarlyAdmissionFailureContainsPreviouslyRunningActor(t *testing.T) {
+	for _, stage := range []string{"atespace", "actor", "cancelled"} {
+		t.Run(stage, func(t *testing.T) {
+			m := &mockControlServer{}
+			ctx, cancel := context.WithCancel(context.Background())
+			defer cancel()
+			switch stage {
+			case "atespace":
+				m.atespaceError = status.Error(codes.PermissionDenied, "atespace creation unavailable")
+			case "actor":
+				m.actorError = status.Error(codes.Unavailable, "actor lookup unavailable")
+			case "cancelled":
+				cancel()
+			}
+			r := controller.NewTaskReconciler(securityTestClient(t, m), "test-template", "ax-system")
+			r.SecretResolver = noSecrets
+			task := &v1alpha1.Task{Metadata: &v1alpha1.ObjectMeta{Name: "existing-actor"}, Status: &v1alpha1.TaskStatus{
+				Actor: "untrusted-status-name", Phase: "Running", WorkerIp: "previous-worker"}}
+			result, err := r.Reconcile(ctx, task, nil)
+			if err == nil || result.Status.Phase != "Failed" || result.Status.WorkerIp != "" || result.Status.Actor != "existing-actor" {
+				t.Fatalf("early failure retained running admission: %v, %v", result.Status, err)
+			}
+			if len(m.resumedActors) != 0 || len(m.policyRequests) != 1 || len(m.policyRequests[0].Rules) != 0 || len(m.suspendedActors) != 1 || m.suspendedActors[0] != "existing-actor" {
+				t.Fatalf("early failure skipped containment: events=%v policy=%v actors=%v", m.events, m.policyRequests, m.suspendedActors)
+			}
+		})
+	}
+}
+
+func TestEmptyPolicyReplacesExistingBroadPolicy(t *testing.T) {
+	m := &mockControlServer{policyError: status.Error(codes.AlreadyExists, "exists"), existingPolicy: &ateapipb.EgressPolicy{Metadata: &ateapipb.ResourceMetadata{Uid: "policy-uid", Version: 7}, Rules: []*ateapipb.EgressRule{{Hostnames: &ateapipb.HostnameRule{Patterns: []string{"*.example.com"}}}}}}
+	client := securityTestClient(t, m)
+	if err := client.ApplyEgressPolicy(context.Background(), "default", "actor", nil); err != nil {
+		t.Fatal(err)
+	}
+	if len(m.updatedPolicies) != 1 || len(m.updatedPolicies[0].Rules) != 0 || m.updatedPolicies[0].Metadata.Version != 7 {
+		t.Fatalf("empty policy did not replace broader policy: %v", m.updatedPolicies)
+	}
+}
+
+func TestUnsupportedPortAndMalformedPolicyCannotBroadenAccess(t *testing.T) {
+	for _, hosts := range [][]*v1alpha1.HostRule{{{Host: "api.example.com", Port: 443}}, {nil}, {{Host: ""}}, {{Host: " example.com"}}} {
+		m := &mockControlServer{}
+		client := securityTestClient(t, m)
+		if err := client.ApplyEgressPolicy(context.Background(), "default", "actor", &v1alpha1.EgressAllowlist{Hosts: hosts}); err == nil {
+			t.Fatal("unrepresentable policy accepted")
+		}
+		if len(m.createdPolicies) != 0 {
+			t.Fatal("invalid policy was transmitted")
+		}
+	}
+}
+
+func TestPolicyReadFailureDoesNotBlindlyOverwrite(t *testing.T) {
+	m := &mockControlServer{policyError: status.Error(codes.AlreadyExists, "exists"), policyReadError: status.Error(codes.Unavailable, "read failed")}
+	client := securityTestClient(t, m)
+	if err := client.ApplyEgressPolicy(context.Background(), "default", "actor", nil); err == nil || len(m.updatedPolicies) != 0 {
+		t.Fatalf("blind policy update: err=%v updates=%d", err, len(m.updatedPolicies))
+	}
+}
+
+func TestIPv4AnyCIDRDoesNotAuthorizeIPv6(t *testing.T) {
+	m := &mockControlServer{}
+	client := securityTestClient(t, m)
+	if err := client.ApplyEgressPolicy(context.Background(), "default", "actor", &v1alpha1.EgressAllowlist{Hosts: []*v1alpha1.HostRule{{Host: "0.0.0.0/0"}}}); err != nil {
+		t.Fatal(err)
+	}
+	rules := m.policyRequests[0].Rules
+	if len(rules) != 1 || rules[0].All != nil || rules[0].GetCidrs().GetCidrs()[0] != "0.0.0.0/0" {
+		t.Fatal("IPv4 scope was broadened to all protocols/address families", rules)
+	}
+}
+
+func TestInvalidPortPolicyTriggersEmergencyDeny(t *testing.T) {
+	m := &mockControlServer{}
+	r := controller.NewTaskReconciler(securityTestClient(t, m), "test-template", "ax-system")
+	r.SecretResolver = noSecrets
+	task := &v1alpha1.Task{Metadata: &v1alpha1.ObjectMeta{Name: "invalid-policy"}}
+	gateway := &v1alpha1.Gateway{Spec: &v1alpha1.GatewaySpec{Egress: &v1alpha1.EgressConfig{Allowlist: &v1alpha1.EgressAllowlist{Hosts: []*v1alpha1.HostRule{{Host: "api.example.com", Port: 443}}}}}}
+	_, err := r.Reconcile(context.Background(), task, gateway)
+	if err == nil || len(m.resumedActors) != 0 || len(m.policyRequests) != 1 || len(m.policyRequests[0].Rules) != 0 || len(m.suspendedActors) != 1 {
+		t.Fatalf("missing emergency deny: err=%v events=%v policies=%v", err, m.events, m.policyRequests)
+	}
 }
 
 func TestTaskReconciler(t *testing.T) {
@@ -188,8 +367,8 @@ func TestTaskReconciler(t *testing.T) {
 			Egress: &v1alpha1.EgressConfig{
 				Allowlist: &v1alpha1.EgressAllowlist{
 					Hosts: []*v1alpha1.HostRule{
-						{Host: "api.anthropic.com", Port: 443},
-						{Host: "github.com", Port: 443},
+						{Host: "api.anthropic.com"},
+						{Host: "github.com"},
 					},
 				},
 			},

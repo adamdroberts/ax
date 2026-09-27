@@ -1,0 +1,375 @@
+{
+  "scope": "Local build and pure-parser records. Baseline sources were preserved before editing. Native replay is separate.",
+  "baseline": {
+    "snort_version": "3.12.2.0",
+    "plugin": "/private/tmp/ax-nd-plugin/ax_nd_options.so",
+    "plugin_sha256": "f5868d88ddb4054f9e3555a0a40aaaf78a8c85bd202a3d18a2c883fc0b7da1b2",
+    "sdk_sha256": {
+      "protocols/ipv6.h": "4bff3d59ab543445d703a2ca2534b9e952867b39ae624ead8a81896de7018e9a",
+      "protocols/protocol_ids.h": "937ebd964888ed51f687854c5eee3101f9e5eadb12fa7de9ca4c6440699cf7cc"
+    },
+    "source_sha256": {
+      "ax_nd_options.cc": "5ac99c5b4568c15ee05d5a9bf76254f566c41e28c7a612f6f6fa521da56a9255",
+      "nd_validation.h": "4f88245b813db35205d73dbff849269e43f9bc4ace81e6fb3eccdf878eabc185",
+      "nd_validation_test.cc": "72358ad3aac6fd0a848ddc883ec8430012573cee71185758021b942e77008ad2",
+      "ip_validation.h": "cb67871c83dfcb059b4c126933366a06f60472060956bbdf6b3e4bebf9792010",
+      "ip_validation_test.cc": "f5e057023dfc380f08825cbcc1beb3d638a947bf503e271343715ebe630eb080",
+      "ip4_options.h": "643255e2b38d0b67c6db2297c6b03076b0d32853ec038f20b9508ab83b18e30d",
+      "ip4_options_test.cc": "29927fe74d788bb6d99fd811cd0dc88b87de30c54d44e45fcf07db9219e8120a",
+      "ip6_options.h": "c0e938f3053eb62b1e537959d07861a5b2944312ebfc4decb13a914d1236ad50",
+      "ip6_options_test.cc": "7dbae601d883aa31a0a1fcd9c7dc5be8f267c7f1a5b890497958b6ac824117ef",
+      "esp_validation.h": "cf8ade954fcec4f1f09917798d1aa4fd748790f210adb265fe845e32d3f135fe",
+      "esp_validation_test.cc": "2094e98219defcb518985f3f3aa978ff08ca1c3f6e449afa0105ed071b3dc1c5",
+      "routing_validation.h": "825341ae93dbe5bb8cd8071cc245d5b3642d072a86291241084f03b3b2a36694",
+      "routing_validation_test.cc": "ed3924084f745164e72c5b5457ff5d307d1a852fe8eda9371f5199f007b58c07",
+      "build.py": "ec2faeec4501f4e5591f35e665c25f5677182b17e76801835e64199b43458e7c"
+    },
+    "commands": [
+      [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O2",
+        "-fPIC",
+        "-fvisibility=hidden",
+        "-DHAVE_VISIBILITY=1",
+        "-Wall",
+        "-Wextra",
+        "-shared",
+        "-Wl,-undefined,dynamic_lookup",
+        "-isystem",
+        "/private/tmp/ax-snort-native/runtime/Cellar/snort/3.12.2.0/include/snort",
+        "-isystem",
+        "/private/tmp/ax-snort-native/runtime/Cellar/daq/3.0.27/include",
+        "/Users/adam/Dev/agent-security/ax/native-snort3/plugins/ax_nd_options.cc",
+        "-o",
+        "/private/tmp/ax-nd-plugin/ax_nd_options.so"
+      ],
+      [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "/Users/adam/Dev/agent-security/ax/native-snort3/plugins/nd_validation_test.cc",
+        "-o",
+        "/private/tmp/ax-nd-plugin/nd_validation_test"
+      ],
+      [
+        "/private/tmp/ax-nd-plugin/nd_validation_test"
+      ],
+      [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "/Users/adam/Dev/agent-security/ax/native-snort3/plugins/ip_validation_test.cc",
+        "-o",
+        "/private/tmp/ax-nd-plugin/ip_validation_test"
+      ],
+      [
+        "/private/tmp/ax-nd-plugin/ip_validation_test"
+      ],
+      [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "/Users/adam/Dev/agent-security/ax/native-snort3/plugins/ip4_options_test.cc",
+        "-o",
+        "/private/tmp/ax-nd-plugin/ip4_options_test"
+      ],
+      [
+        "/private/tmp/ax-nd-plugin/ip4_options_test"
+      ],
+      [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "/Users/adam/Dev/agent-security/ax/native-snort3/plugins/ip6_options_test.cc",
+        "-o",
+        "/private/tmp/ax-nd-plugin/ip6_options_test"
+      ],
+      [
+        "/private/tmp/ax-nd-plugin/ip6_options_test"
+      ],
+      [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "/Users/adam/Dev/agent-security/ax/native-snort3/plugins/esp_validation_test.cc",
+        "-o",
+        "/private/tmp/ax-nd-plugin/esp_validation_test"
+      ],
+      [
+        "/private/tmp/ax-nd-plugin/esp_validation_test"
+      ],
+      [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "/Users/adam/Dev/agent-security/ax/native-snort3/plugins/routing_validation_test.cc",
+        "-o",
+        "/private/tmp/ax-nd-plugin/routing_validation_test"
+      ],
+      [
+        "/private/tmp/ax-nd-plugin/routing_validation_test"
+      ]
+    ],
+    "sanitizers": true,
+    "unit_tests": "nd_validation_test: 206 assertions and 100000 deterministic randomized cases passed\nip_validation_test: 535904 IP framing assertions and 100000 deterministic randomized cases passed\nip4_options_test: 1177304 assertions and 100000 deterministic randomized cases passed\nip6_options_test: 2168 IPv6 option assertions and 100000 randomized cases passed\nesp_validation_test: 6920 ESP framing assertions and 100000 deterministic randomized cases passed\nrouting_validation_test: 3253 Routing Type 2 assertions and 100000 randomized cases passed",
+    "scope": "Build and pure-parser checks only. Load and PCAP replay must be validated separately."
+  },
+  "repaired": {
+    "snort_version": "3.12.2.0",
+    "plugin": "/private/tmp/ax-home-address-plugin/ax_nd_options.so",
+    "plugin_sha256": "3dde09c3191beefd8ca35121762daa282631705cd7938d306f53732c1b83f6fb",
+    "sdk_sha256": {
+      "protocols/ipv6.h": "4bff3d59ab543445d703a2ca2534b9e952867b39ae624ead8a81896de7018e9a",
+      "protocols/protocol_ids.h": "937ebd964888ed51f687854c5eee3101f9e5eadb12fa7de9ca4c6440699cf7cc"
+    },
+    "source_sha256": {
+      "ax_nd_options.cc": "5ac99c5b4568c15ee05d5a9bf76254f566c41e28c7a612f6f6fa521da56a9255",
+      "nd_validation.h": "4f88245b813db35205d73dbff849269e43f9bc4ace81e6fb3eccdf878eabc185",
+      "nd_validation_test.cc": "72358ad3aac6fd0a848ddc883ec8430012573cee71185758021b942e77008ad2",
+      "ip_validation.h": "cb67871c83dfcb059b4c126933366a06f60472060956bbdf6b3e4bebf9792010",
+      "ip_validation_test.cc": "f5e057023dfc380f08825cbcc1beb3d638a947bf503e271343715ebe630eb080",
+      "ip4_options.h": "643255e2b38d0b67c6db2297c6b03076b0d32853ec038f20b9508ab83b18e30d",
+      "ip4_options_test.cc": "29927fe74d788bb6d99fd811cd0dc88b87de30c54d44e45fcf07db9219e8120a",
+      "ip6_options.h": "e16e61d1471da2dca574fdd423bc27f8929b14d89acd7b806320708dbdce8357",
+      "ip6_options_test.cc": "7dbae601d883aa31a0a1fcd9c7dc5be8f267c7f1a5b890497958b6ac824117ef",
+      "esp_validation.h": "cf8ade954fcec4f1f09917798d1aa4fd748790f210adb265fe845e32d3f135fe",
+      "esp_validation_test.cc": "2094e98219defcb518985f3f3aa978ff08ca1c3f6e449afa0105ed071b3dc1c5",
+      "routing_validation.h": "825341ae93dbe5bb8cd8071cc245d5b3642d072a86291241084f03b3b2a36694",
+      "routing_validation_test.cc": "ed3924084f745164e72c5b5457ff5d307d1a852fe8eda9371f5199f007b58c07",
+      "home_address.h": "8540117639d519f6c5b51ccc8f893a506deb61bdb9ec181c968dcd7d35e0aa62",
+      "home_address_test.cc": "9a93efacfc92e91062b28c4bcd2c9c91c1ac71b0e3030e6bf99e07684b54e236",
+      "build.py": "3ba291e364ef6cfc6b227cfcf45da3e037bdbe494a4d4be0958a216058f36e0b"
+    },
+    "commands": [
+      [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O2",
+        "-fPIC",
+        "-fvisibility=hidden",
+        "-DHAVE_VISIBILITY=1",
+        "-Wall",
+        "-Wextra",
+        "-shared",
+        "-Wl,-undefined,dynamic_lookup",
+        "-isystem",
+        "/private/tmp/ax-snort-native/runtime/Cellar/snort/3.12.2.0/include/snort",
+        "-isystem",
+        "/private/tmp/ax-snort-native/runtime/Cellar/daq/3.0.27/include",
+        "/Users/adam/Dev/agent-security/ax/native-snort3/plugins/ax_nd_options.cc",
+        "-o",
+        "/private/tmp/ax-home-address-plugin/ax_nd_options.so"
+      ],
+      [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "/Users/adam/Dev/agent-security/ax/native-snort3/plugins/nd_validation_test.cc",
+        "-o",
+        "/private/tmp/ax-home-address-plugin/nd_validation_test"
+      ],
+      [
+        "/private/tmp/ax-home-address-plugin/nd_validation_test"
+      ],
+      [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "/Users/adam/Dev/agent-security/ax/native-snort3/plugins/ip_validation_test.cc",
+        "-o",
+        "/private/tmp/ax-home-address-plugin/ip_validation_test"
+      ],
+      [
+        "/private/tmp/ax-home-address-plugin/ip_validation_test"
+      ],
+      [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "/Users/adam/Dev/agent-security/ax/native-snort3/plugins/ip4_options_test.cc",
+        "-o",
+        "/private/tmp/ax-home-address-plugin/ip4_options_test"
+      ],
+      [
+        "/private/tmp/ax-home-address-plugin/ip4_options_test"
+      ],
+      [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "/Users/adam/Dev/agent-security/ax/native-snort3/plugins/ip6_options_test.cc",
+        "-o",
+        "/private/tmp/ax-home-address-plugin/ip6_options_test"
+      ],
+      [
+        "/private/tmp/ax-home-address-plugin/ip6_options_test"
+      ],
+      [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "/Users/adam/Dev/agent-security/ax/native-snort3/plugins/esp_validation_test.cc",
+        "-o",
+        "/private/tmp/ax-home-address-plugin/esp_validation_test"
+      ],
+      [
+        "/private/tmp/ax-home-address-plugin/esp_validation_test"
+      ],
+      [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "/Users/adam/Dev/agent-security/ax/native-snort3/plugins/routing_validation_test.cc",
+        "-o",
+        "/private/tmp/ax-home-address-plugin/routing_validation_test"
+      ],
+      [
+        "/private/tmp/ax-home-address-plugin/routing_validation_test"
+      ],
+      [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "/Users/adam/Dev/agent-security/ax/native-snort3/plugins/home_address_test.cc",
+        "-o",
+        "/private/tmp/ax-home-address-plugin/home_address_test"
+      ],
+      [
+        "/private/tmp/ax-home-address-plugin/home_address_test"
+      ]
+    ],
+    "sanitizers": true,
+    "unit_tests": "nd_validation_test: 206 assertions and 100000 deterministic randomized cases passed\nip_validation_test: 535904 IP framing assertions and 100000 deterministic randomized cases passed\nip4_options_test: 1177304 assertions and 100000 deterministic randomized cases passed\nip6_options_test: 2168 IPv6 option assertions and 100000 randomized cases passed\nesp_validation_test: 6920 ESP framing assertions and 100000 deterministic randomized cases passed\nrouting_validation_test: 3253 Routing Type 2 assertions and 100000 randomized cases passed\nhome_address_test: 306943 Home Address assertions, 100000 semantic cases and 100000 arbitrary spans passed",
+    "scope": "Build and pure-parser checks only. Load and PCAP replay must be validated separately."
+  },
+  "same_sdk": true,
+  "source_changes": {
+    "home_address_test.cc": {
+      "before": null,
+      "after": "9a93efacfc92e91062b28c4bcd2c9c91c1ac71b0e3030e6bf99e07684b54e236"
+    },
+    "README.md": {
+      "before": "09ce38523a9abc39455c27a82f176052257e34d0832487e7ec65728e96d9f402",
+      "after": "44f0b78823e63a06d725cd395a989ff8c46b3dddc26238833f9ce8bb3a163f21"
+    },
+    "ip6_options.h": {
+      "before": "c0e938f3053eb62b1e537959d07861a5b2944312ebfc4decb13a914d1236ad50",
+      "after": "e16e61d1471da2dca574fdd423bc27f8929b14d89acd7b806320708dbdce8357"
+    },
+    "home_address.h": {
+      "before": null,
+      "after": "8540117639d519f6c5b51ccc8f893a506deb61bdb9ec181c968dcd7d35e0aa62"
+    },
+    "build.py": {
+      "before": "ec2faeec4501f4e5591f35e665c25f5677182b17e76801835e64199b43458e7c",
+      "after": "3ba291e364ef6cfc6b227cfcf45da3e037bdbe494a4d4be0958a216058f36e0b"
+    }
+  },
+  "baseline_source_sha256": {
+    "nd_validation.h": "4f88245b813db35205d73dbff849269e43f9bc4ace81e6fb3eccdf878eabc185",
+    "build.py": "ec2faeec4501f4e5591f35e665c25f5677182b17e76801835e64199b43458e7c",
+    "routing_validation_test.cc": "ed3924084f745164e72c5b5457ff5d307d1a852fe8eda9371f5199f007b58c07",
+    "ip4_options_test.cc": "29927fe74d788bb6d99fd811cd0dc88b87de30c54d44e45fcf07db9219e8120a",
+    "ip4_options.h": "643255e2b38d0b67c6db2297c6b03076b0d32853ec038f20b9508ab83b18e30d",
+    "ax_nd_options.cc": "5ac99c5b4568c15ee05d5a9bf76254f566c41e28c7a612f6f6fa521da56a9255",
+    "ip_validation.h": "cb67871c83dfcb059b4c126933366a06f60472060956bbdf6b3e4bebf9792010",
+    "esp_validation_test.cc": "2094e98219defcb518985f3f3aa978ff08ca1c3f6e449afa0105ed071b3dc1c5",
+    "README.md": "09ce38523a9abc39455c27a82f176052257e34d0832487e7ec65728e96d9f402",
+    "routing_validation.h": "825341ae93dbe5bb8cd8071cc245d5b3642d072a86291241084f03b3b2a36694",
+    "ip6_options.h": "c0e938f3053eb62b1e537959d07861a5b2944312ebfc4decb13a914d1236ad50",
+    "ip_validation_test.cc": "f5e057023dfc380f08825cbcc1beb3d638a947bf503e271343715ebe630eb080",
+    "nd_validation_test.cc": "72358ad3aac6fd0a848ddc883ec8430012573cee71185758021b942e77008ad2",
+    "esp_validation.h": "cf8ade954fcec4f1f09917798d1aa4fd748790f210adb265fe845e32d3f135fe",
+    "ip6_options_test.cc": "7dbae601d883aa31a0a1fcd9c7dc5be8f267c7f1a5b890497958b6ac824117ef"
+  },
+  "repaired_source_sha256": {
+    "nd_validation.h": "4f88245b813db35205d73dbff849269e43f9bc4ace81e6fb3eccdf878eabc185",
+    "build.py": "3ba291e364ef6cfc6b227cfcf45da3e037bdbe494a4d4be0958a216058f36e0b",
+    "routing_validation_test.cc": "ed3924084f745164e72c5b5457ff5d307d1a852fe8eda9371f5199f007b58c07",
+    "ip4_options_test.cc": "29927fe74d788bb6d99fd811cd0dc88b87de30c54d44e45fcf07db9219e8120a",
+    "ip4_options.h": "643255e2b38d0b67c6db2297c6b03076b0d32853ec038f20b9508ab83b18e30d",
+    "home_address_test.cc": "9a93efacfc92e91062b28c4bcd2c9c91c1ac71b0e3030e6bf99e07684b54e236",
+    "ax_nd_options.cc": "5ac99c5b4568c15ee05d5a9bf76254f566c41e28c7a612f6f6fa521da56a9255",
+    "ip_validation.h": "cb67871c83dfcb059b4c126933366a06f60472060956bbdf6b3e4bebf9792010",
+    "esp_validation_test.cc": "2094e98219defcb518985f3f3aa978ff08ca1c3f6e449afa0105ed071b3dc1c5",
+    "README.md": "44f0b78823e63a06d725cd395a989ff8c46b3dddc26238833f9ce8bb3a163f21",
+    "routing_validation.h": "825341ae93dbe5bb8cd8071cc245d5b3642d072a86291241084f03b3b2a36694",
+    "ip6_options.h": "e16e61d1471da2dca574fdd423bc27f8929b14d89acd7b806320708dbdce8357",
+    "ip_validation_test.cc": "f5e057023dfc380f08825cbcc1beb3d638a947bf503e271343715ebe630eb080",
+    "nd_validation_test.cc": "72358ad3aac6fd0a848ddc883ec8430012573cee71185758021b942e77008ad2",
+    "esp_validation.h": "cf8ade954fcec4f1f09917798d1aa4fd748790f210adb265fe845e32d3f135fe",
+    "home_address.h": "8540117639d519f6c5b51ccc8f893a506deb61bdb9ec181c968dcd7d35e0aa62",
+    "ip6_options_test.cc": "7dbae601d883aa31a0a1fcd9c7dc5be8f267c7f1a5b890497958b6ac824117ef"
+  },
+  "input_report_sha256": {
+    "/private/tmp/ax-nd-plugin/build-report.json": "6c4f8e27360f17af6d90f5a889d8223aeb9db3c6ac6908fec1b00d3dde0dd3ce",
+    "/private/tmp/ax-home-address-plugin/build-report.json": "82938357c68c1726af6ee30413446ca67b3e53507917a2f8f47200df26399c8f"
+  },
+  "recorder_sha256": "e6a2ab2b6950f22a83644775bca346b6bd20308bca4ea04068cd7302e289c6d4"
+}

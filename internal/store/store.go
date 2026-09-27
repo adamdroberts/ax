@@ -23,7 +23,8 @@ import (
 )
 
 var (
-	ErrNotFound = errors.New("resource not found")
+	ErrNotFound        = errors.New("resource not found")
+	ErrTaskTerminating = errors.New("task is terminating")
 )
 
 // TaskEvent represents an event published to the task event stream.
@@ -57,6 +58,8 @@ type Subscription interface {
 type Store interface {
 	EventQueue
 
+	// SaveTask creates or updates a task. An existing delete mark cannot be
+	// cleared by an update; such writes return ErrTaskTerminating.
 	SaveTask(ctx context.Context, task *v1alpha1.Task) error
 	GetTask(ctx context.Context, atespace, name string) (*v1alpha1.Task, error)
 	ListTasks(ctx context.Context, atespace string, limit, offset int64) ([]*v1alpha1.Task, error)
@@ -74,6 +77,11 @@ type Store interface {
 	GetGateway(ctx context.Context, atespace, name string) (*v1alpha1.Gateway, error)
 	ListGateways(ctx context.Context, atespace string) ([]*v1alpha1.Gateway, error)
 	DeleteGateway(ctx context.Context, atespace, name string) error
+	// EnqueueGatewayTasks publishes reconcile events for every non-terminating
+	// task bound to this gateway in this exact atespace, without changing task
+	// records. Publication may partially succeed; errors must be surfaced and
+	// retries may publish duplicate events. It does not wait for reconciliation.
+	EnqueueGatewayTasks(ctx context.Context, atespace, name string) error
 
 	SaveWorkspace(ctx context.Context, ws *v1alpha1.Workspace) error
 	GetWorkspace(ctx context.Context, atespace, name string) (*v1alpha1.Workspace, error)

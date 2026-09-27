@@ -114,19 +114,17 @@ func (r *TaskReconciler) Reconcile(ctx context.Context, task *v1alpha1.Task, gat
 	slog.Info("reconciling task", "name", task.Metadata.Name, "atespace", atespace, "image", task.Spec.Image)
 
 	now := time.Now()
+	actorName := task.Metadata.Name
+	task.Status.Actor = actorName
 
 	// 1. Ensure the Atespace exists in Substrate
 	if err := r.client.EnsureAtespace(ctx, atespace); err != nil {
-		r.setCondition(task, "Ready", "False", "AtespaceCreationFailed", err.Error(), now)
-		task.Status.Phase = "Failed"
-		return task, fmt.Errorf("ensuring atespace: %w", err)
+		return task, r.rejectNetworkAdmission(ctx, task, "AtespaceCreationFailed", fmt.Errorf("ensuring atespace: %w", err), now)
 	}
 
 	// 2. The actor is always named after the task, so the two can be used
 	// interchangeably (for example in the router's ate-target-actor header).
 	// Whatever a client put in status.actor is overwritten.
-	actorName := task.Metadata.Name
-	task.Status.Actor = actorName
 	if task.Status.Id == "" {
 		task.Status.Id = fmt.Sprintf("task-%s-%d", task.Metadata.Name, now.Unix())
 	}
@@ -180,9 +178,7 @@ func (r *TaskReconciler) Reconcile(ctx context.Context, task *v1alpha1.Task, gat
 
 	_, err := r.client.EnsureActor(ctx, atespace, actorName, templateAtespace, templateName)
 	if err != nil {
-		r.setNotReady(task, "ActorCreationFailed", err.Error(), now)
-		task.Status.Phase = "Failed"
-		return task, fmt.Errorf("ensuring actor: %w", err)
+		return task, r.rejectNetworkAdmission(ctx, task, "ActorCreationFailed", fmt.Errorf("ensuring actor: %w", err), now)
 	}
 
 	// 4. Apply Egress Policy to Actor
@@ -190,18 +186,16 @@ func (r *TaskReconciler) Reconcile(ctx context.Context, task *v1alpha1.Task, gat
 	if gateway != nil && gateway.Spec != nil && gateway.Spec.Egress != nil && gateway.Spec.Egress.Allowlist != nil {
 		egressAllowlist = gateway.Spec.Egress.Allowlist
 	} else {
-		// Default to allow all egress if no explicit gateway restriction is set
-		egressAllowlist = &v1alpha1.EgressAllowlist{
-			Hosts: []*v1alpha1.HostRule{
-				{Host: "*", Port: 443},
-			},
-		}
+		// Absence of a gateway is an explicit empty policy, never unrestricted
+		// egress. ApplyEgressPolicy persists it even for an existing actor.
+		egressAllowlist = &v1alpha1.EgressAllowlist{}
 	}
 	if err := r.client.ApplyEgressPolicy(ctx, atespace, actorName, egressAllowlist); err != nil {
-		slog.Warn("could not apply egress policy (continuing)", "actor", actorName, "error", err)
-		r.setCondition(task, condGatewayReady, "False", "PolicyApplyFailed", err.Error(), now)
+		slog.Error("egress policy failed; refusing to resume actor", "actor", actorName, "error", err)
+		return task, r.rejectNetworkAdmission(ctx, task, "PolicyApplyFailed", fmt.Errorf("applying egress policy: %w", err), now)
 	} else {
-		r.setCondition(task, condGatewayReady, "True", "PoliciesApplied", "Network policies active", now)
+		r.setCondition(task, condGatewayReady, "True", "PoliciesApplied", "Network policy accepted by control plane", now)
+		r.setCondition(task, "NetworkContainment", "True", "PolicyApplied", "Network policy accepted by control plane", now)
 	}
 
 	// 5. Suspend or Resume the Actor
@@ -325,6 +319,37 @@ const (
 	// condGatewayReady reports whether the gateway's network policies were applied to the actor.
 	condGatewayReady = "GatewayReady"
 )
+
+// rejectNetworkAdmission also covers failures before the ordinary policy step:
+// an actor from a previous reconciliation can still be running with old access.
+func (r *TaskReconciler) rejectNetworkAdmission(ctx context.Context, task *v1alpha1.Task, reason string, cause error, now time.Time) error {
+	r.setCondition(task, condGatewayReady, "False", reason, "Current network policy could not be established", now)
+	r.setNotReady(task, reason, cause.Error(), now)
+	task.Status.WorkerIp = ""
+	task.Status.Phase = "Failed"
+	// Caller cancellation must not skip containment. Reserve half the total
+	// ten-second budget for suspension even if the emergency policy RPC stalls.
+	containCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), 10*time.Second)
+	defer cancel()
+	denyCtx, denyCancel := context.WithTimeout(containCtx, 5*time.Second)
+	denyErr := r.client.ApplyEgressPolicy(denyCtx, task.Metadata.Atespace, task.Metadata.Name, &v1alpha1.EgressAllowlist{})
+	denyCancel()
+	suspendErr := r.client.SuspendActor(containCtx, task.Metadata.Atespace, task.Metadata.Name)
+	if suspendErr != nil {
+		r.setCondition(task, "NetworkContainment", "Unknown", "ActorSuspendFailed", "Suspension failed; verify emergency deny policy and external containment", now)
+	} else if denyErr != nil {
+		r.setCondition(task, "NetworkContainment", "Unknown", "EmergencyDenyFailed", "Actor suspended but deny policy failed; router auto-resume requires external quarantine", now)
+	} else {
+		r.setCondition(task, "NetworkContainment", "True", "EmergencyDenyApplied", "Emergency deny policy accepted and actor suspended; dataplane verification remains external", now)
+	}
+	if denyErr != nil {
+		cause = errors.Join(cause, fmt.Errorf("applying emergency deny policy: %w", denyErr))
+	}
+	if suspendErr != nil {
+		cause = errors.Join(cause, fmt.Errorf("suspending unprotected actor: %w", suspendErr))
+	}
+	return cause
+}
 
 // setNotReady marks the task's Ready condition False. WorkspaceReady is left untouched:
 // workspace setup is a one-time step whose result outlives actor failures and suspends.

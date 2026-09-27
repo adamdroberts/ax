@@ -1,0 +1,286 @@
+--- a/src/stream/ip/ip_session.h
++++ b/src/stream/ip/ip_session.h
+@@ -21,6 +21,7 @@
+ #define IP_SESSION_H
+ 
+ #include "stream/ip/ip_module.h"
++#include "ipv4_fragment_options.h"
+ 
+ struct Fragment;
+ struct FragEngine;
+@@ -61,7 +62,8 @@
+ 
+     uint8_t ip_options_len;  /* length of ip options for this set of frags */
+     uint8_t* ip_options_data; /* ip options from offset 0 packet */
+-    uint8_t copied_ip_options_len;  /* length of 'copied' ip options */
++    ax_fragment::CopiedOptions copied_ip_options;
++    bool ip_options_first_seen;
+ 
+     FragEngine* engine;
+ 
+--- a/src/stream/ip/ip_defrag.cc
++++ b/src/stream/ip/ip_defrag.cc
+@@ -69,6 +69,8 @@
+ #endif
+ 
+ #include "ip_defrag.h"
++
++#include "codecs/ip/ipv4_checksum_destination.h"
+ 
+ #include "detection/detection_engine.h"
+ #include "log/messages.h"
+@@ -398,64 +400,27 @@
+     const Packet* const p,
+     const uint16_t frag_offset)
+ {
+-    const uint16_t ip_options_len = p->ptrs.ip_api.get_ip_opt_len();
+-
+-    if (frag_offset == 0)
+-    {
+-        /*
+-         * This is the first packet.  If it has IP options,
+-         * save them off, so we can set them on the reassembled packet.
+-         */
+-        if (ip_options_len)
+-        {
+-            if (ft->ip_options_data)
+-            {
+-                /* Already seen 0 offset packet and copied some IP options */
+-                if ((ft->frag_flags & FRAG_GOT_FIRST)
+-                    && (ft->ip_options_len != ip_options_len))
+-                {
+-                    EventAnomIpOpts(ft->engine);
+-                }
+-            }
+-            else
+-            {
+-                /* Allocate and copy in the options */
+-                ft->ip_options_data = (uint8_t*)snort_calloc(ip_options_len);
+-                memcpy(ft->ip_options_data, p->ptrs.ip_api.get_ip_opt_data(), ip_options_len);
+-                ft->ip_options_len = ip_options_len;
+-            }
+-        }
+-    }
+-    else
+-    {
+-        /* check that options match those from other non-offset 0 packets */
+-
+-        /* could check each individual option here, but that would be
+-         * performance ugly.  So, we'll just check that the option sizes
+-         * match.  Alert if invalid, but still include in reassembly.
+-         */
+-        if (ft->copied_ip_options_len)
+-        {
+-            if (ft->copied_ip_options_len != ip_options_len)
+-            {
+-                EventAnomIpOpts(ft->engine);
+-            }
+-        }
+-        else
+-        {
+-            ft->copied_ip_options_len = ip_options_len;
+-
+-            ip::IpOptionIterator iter(p->ptrs.ip_api.get_ip4h(), p);
+-
+-            for (const ip::IpOptions& opt : iter)
+-            {
+-                /* Is the high bit set?  If not, weird anomaly. */
+-                if ( !(static_cast<uint8_t>(opt.code) & 0x80) &&
+-                    (opt.code != ip::IPOptionCodes::EOL) )
+-                {
+-                    EventAnomIpOpts(ft->engine);
+-                }
+-            }
++    const uint16_t length = p->ptrs.ip_api.get_ip_opt_len();
++    const uint8_t* options = p->ptrs.ip_api.get_ip_opt_data();
++    const auto* destination = ax_checksum::ipv4_destination(
++        reinterpret_cast<const uint8_t*>(p->ptrs.ip_api.get_ip4h()), options + length);
++    if (!ax_fragment::observe(ft->copied_ip_options, options, length,
++            frag_offset != 0, destination))
++    {
++        // Re-queue on every retry, so the existing 123:1 drop action applies
++        // to each packet. Never reconstruct an inconsistent tracked datagram.
++        EventAnomIpOpts(ft->engine);
++        ft->frag_flags |= FRAG_BAD;
++        return 0;
++    }
++    if (!frag_offset && !ft->ip_options_first_seen)
++    {
++        ft->ip_options_first_seen = true;
++        if (length)
++        {
++            ft->ip_options_data = (uint8_t*)snort_calloc(length);
++            memcpy(ft->ip_options_data, options, length);
++            ft->ip_options_len = length;
+         }
+     }
+     return 1;
+@@ -597,12 +562,6 @@
+             memcpy_s(rebuild_ptr, IP_MAXPACKET, ft->ip_options_data, ft->ip_options_len);
+             rebuild_ptr += ft->ip_options_len;
+             offset += ft->ip_options_len;
+-        }
+-        else if (ft->copied_ip_options_len)
+-        {
+-            /* should we log a warning here?  there were IP options copied
+-             * across all fragments, EXCEPT the offset 0 fragment.
+-             */
+         }
+ 
+         /*
+@@ -1069,6 +1028,10 @@
+     int16_t fragLength;
+     const uint16_t net_frag_offset = p->ptrs.ip_api.off();
+ 
++    // Validate before changing reassembly geometry or storing fragment data.
++    if (p->is_ip4() && !FragHandleIPOptions(ft, p, net_frag_offset))
++        return FRAG_INSERT_ANOMALY;
++
+     if (p->is_ip6() && (net_frag_offset == 0))
+     {
+         const ip::IP6Frag* const fragHdr = layer::get_inner_ip6_frag();
+@@ -1179,13 +1142,6 @@
+         return FRAG_INSERT_ANOMALY;
+     }
+ 
+-
+-    /*
+-     * This may alert on bad options, but we still want to
+-     * insert the packet
+-     */
+-    if ( p->is_ip4() )
+-        FragHandleIPOptions(ft, p, frag_offset);
+ 
+     ft->frag_pkts++;
+ 
+@@ -1782,10 +1738,17 @@
+     ft->alert_count = 0;
+     ft->ip_options_len = 0;
+     ft->ip_options_data = nullptr;
+-    ft->copied_ip_options_len = 0;
+     ft->ordinal = 0;
+     ft->frag_policy = p->flow->ssn_policy ? p->flow->ssn_policy : engine.frag_policy;
+     ft->engine = &engine;
++
++    // A nonzero fragment may be the first arrival. Keep a rejection in its
++    // tracker, but do not allocate or insert its payload.
++    if (p->is_ip4() && !FragHandleIPOptions(ft, p, frag_off))
++    {
++        ip_stats.discards++;
++        return 1;
++    }
+ 
+     /* initialize the fragment list */
+     ft->fraglist = nullptr;
+@@ -1837,9 +1800,6 @@
+     FragCheckFirstLast(p, ft, frag_off);
+ 
+     ft->frag_bytes += fragLength;
+-
+-    if ( p->is_ip4() )
+-        FragHandleIPOptions(ft, p, frag_off);
+ 
+     return 1;
+ }
+--- /dev/null
++++ b/src/stream/ip/ipv4_fragment_options.h
+@@ -0,0 +1,99 @@
++// Bounded IPv4 copied-option consistency state for the reviewed Snort repair.
++// SPDX-License-Identifier: GPL-2.0-only
++#ifndef AX_IPV4_FRAGMENT_OPTIONS_H
++#define AX_IPV4_FRAGMENT_OPTIONS_H
++
++#include <cstddef>
++#include <cstdint>
++#include <cstring>
++
++namespace ax_fragment
++{
++// POD: Snort initializes its containing FragTracker with memset.
++struct CopiedOptions
++{
++    uint8_t bytes[40];
++    uint8_t destination[4];
++    uint8_t length;
++    bool seen;
++    bool rejected;
++};
++
++// Inspect original IHL bytes, not a decoder-shortened option list. The caller
++// supplies the validated ultimate destination, or nullptr for an invalid route.
++// NOP/EOL padding and non-copied offset-zero options do not form part of the key.
++// Unknown data and source-route records can be mutable; compare their type and
++// length only. Router Alert's value is preserved. This is a bounded strict
++// reassembly policy, not authentication or a definition of unknown options.
++inline bool observe(CopiedOptions& state, const uint8_t* options, size_t length,
++    bool continuation, const uint8_t* destination)
++{
++    if (state.rejected)
++        return false;
++    uint8_t key[40] = {};
++    size_t used = 0;
++    bool valid = length <= sizeof(key) && (!length || options) && destination;
++    for (size_t pos = 0; valid && pos < length; )
++    {
++        const uint8_t kind = options[pos];
++        if (!kind)
++        {
++            // RFC 791 header padding is zero, including after EOL.
++            for (; pos < length; ++pos)
++                valid = valid && options[pos] == 0;
++            break;
++        }
++        if (kind == 1)
++        {
++            ++pos;
++            continue;
++        }
++        if (length - pos < 2 || options[pos + 1] < 2 ||
++            options[pos + 1] > length - pos)
++        {
++            valid = false;
++            break;
++        }
++        const size_t size = options[pos + 1];
++        if (kind & 0x80)
++        {
++            key[used] = kind;
++            key[used + 1] = static_cast<uint8_t>(size);
++            if (kind == 148) // RFC 2113 Router Alert
++            {
++                if (size != 4)
++                {
++                    valid = false;
++                    break;
++                }
++                key[used + 2] = options[pos + 2];
++                key[used + 3] = options[pos + 3];
++            }
++            used += size; // Sum of disjoint option lengths cannot exceed 40.
++        }
++        else if (continuation)
++        {
++            valid = false;
++            break;
++        }
++        pos += size;
++    }
++    if (valid && state.seen)
++        valid = state.length == used && !std::memcmp(state.bytes, key, used) &&
++            !std::memcmp(state.destination, destination, 4);
++    if (!valid)
++    {
++        state.rejected = true;
++        return false;
++    }
++    if (!state.seen)
++    {
++        std::memcpy(state.bytes, key, used);
++        std::memcpy(state.destination, destination, 4);
++        state.length = static_cast<uint8_t>(used);
++        state.seen = true; // An empty option list is a real observation.
++    }
++    return true;
++}
++}
++#endif

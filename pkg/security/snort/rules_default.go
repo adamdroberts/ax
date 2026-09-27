@@ -15,60 +15,113 @@
 package snort
 
 import (
+	_ "embed"
+	"encoding/json"
+	"fmt"
+	"io"
+	"strconv"
 	"strings"
 )
 
-// DefaultRulesSnort contains the embedded baseline Snort rule definitions
-// for zero-day mitigation, RCE prevention, SQLi, SSRF, and exploit protection.
-const DefaultRulesSnort = `
-# ==============================================================================
-# AX Intrusion Prevention & Zero-Day Exploit Protection Rules
-# ==============================================================================
+// DefaultRulesSnort is the shared, versioned AX rule catalog (not full Snort).
+//
+//go:embed rules/default.rules
+var DefaultRulesSnort string
 
-# --- Remote Code Execution (RCE) & Command Injection ---
-drop tcp any any -> any any (msg:"EXPLOIT Log4Shell JNDI injection attempt"; content:"${jndi:"; nocase; classtype:"attempted-admin"; sid:1000001; rev:1;)
-drop tcp any any -> any any (msg:"EXPLOIT Log4Shell obfuscated JNDI pattern"; pcre:"/\$\{[^}]*jndi[^}]*:/i"; classtype:"attempted-admin"; sid:1000002; rev:1;)
-drop tcp any any -> any any (msg:"EXPLOIT Reverse Shell /dev/tcp payload"; content:"/dev/tcp/"; nocase; classtype:"attempted-admin"; sid:1000003; rev:1;)
-drop tcp any any -> any any (msg:"EXPLOIT Netcat reverse shell execution"; pcre:"/nc(\.traditional)?\s+.*-e\s+(\/bin\/(ba)?sh)/i"; classtype:"attempted-admin"; sid:1000004; rev:1;)
-drop tcp any any -> any any (msg:"EXPLOIT Remote pipe to shell execution"; pcre:"/(curl|wget)\s+.*\|\s*(ba)?sh/i"; classtype:"attempted-admin"; sid:1000005; rev:1;)
-drop tcp any any -> any any (msg:"EXPLOIT Shell command injection attempt"; pcre:"/(;|\||`|\$\().*\b(cat\s+\/etc\/passwd|whoami|id|uname\s+-a|rm\s+-rf)/i"; classtype:"attempted-admin"; sid:1000006; rev:1;)
+// StrictRulesSnort contains optional policy restrictions with higher false positives.
+//
+//go:embed rules/strict.rules
+var StrictRulesSnort string
 
-# --- Zero-Day & Framework Exploits ---
-drop tcp any any -> any any (msg:"EXPLOIT Spring4Shell classLoader manipulation"; content:"class.module.classLoader"; nocase; classtype:"attempted-admin"; sid:1000010; rev:1;)
-drop tcp any any -> any any (msg:"EXPLOIT Apache Struts OGNL injection"; content:"#_memberAccess"; nocase; classtype:"attempted-admin"; sid:1000011; rev:1;)
-drop tcp any any -> any any (msg:"EXPLOIT PHP CGI argument injection"; pcre:"/\?-d\+allow_url_include/i"; classtype:"attempted-admin"; sid:1000012; rev:1;)
+// StrictActionsJSON promotes baseline advisory signatures without duplicating
+// their detection logic in the strict catalog.
+//
+//go:embed rules/strict-actions.json
+var StrictActionsJSON string
 
-# --- Path Traversal & Sensitive File Exposure ---
-drop tcp any any -> any any (msg:"EXPLOIT Path Traversal directory climbing"; content:"../../"; http_uri; classtype:"web-application-attack"; sid:1000020; rev:1;)
-drop tcp any any -> any any (msg:"EXPLOIT URL-encoded path traversal"; pcre:"/(\.\.%2f|\.\.%5c|%2e%2e%2f)/i"; http_uri; classtype:"web-application-attack"; sid:1000021; rev:1;)
-drop tcp any any -> any any (msg:"EXPLOIT Sensitive system file access /etc/passwd"; content:"/etc/passwd"; nocase; classtype:"attempted-recon"; sid:1000022; rev:1;)
-drop tcp any any -> any any (msg:"EXPLOIT Windows system file access"; pcre:"/(win\.ini|boot\.ini|system32\/config\/sam)/i"; nocase; classtype:"attempted-recon"; sid:1000023; rev:1;)
+// DefaultEngine loads the baseline profile, including advisory alert rules.
+func DefaultEngine() (*Engine, error) { return NewProfileEngine("default") }
 
-# --- Server-Side Request Forgery (SSRF) & Metadata Theft ---
-drop tcp any any -> any any (msg:"ATTACK SSRF Cloud instance metadata probe"; content:"169.254.169.254"; http_uri; classtype:"bad-unknown"; sid:1000030; rev:1;)
-drop tcp any any -> any any (msg:"ATTACK SSRF GCP metadata header probe"; content:"metadata.google.internal"; nocase; http_uri; classtype:"bad-unknown"; sid:1000031; rev:1;)
-drop tcp any any -> any any (msg:"ATTACK SSRF Loopback service probe"; pcre:"/https?:\/\/(127\.0\.0\.1|localhost|0\.0\.0\.0|\[::1\])(:\d+)?(\/|$)/i"; http_uri; classtype:"bad-unknown"; sid:1000032; rev:1;)
-
-# --- SQL Injection (SQLi) ---
-drop tcp any any -> any any (msg:"EXPLOIT SQL Injection UNION SELECT"; pcre:"/union(\s+all)?\s+select/i"; classtype:"web-application-attack"; sid:1000040; rev:1;)
-drop tcp any any -> any any (msg:"EXPLOIT SQL Injection classic OR tautology"; pcre:"/('\s*or\s+'?1'?\s*=\s*'?1|or\s+1\s*=\s*1\s*(--|#))/i"; classtype:"web-application-attack"; sid:1000041; rev:1;)
-drop tcp any any -> any any (msg:"EXPLOIT SQL Injection stacked DROP/DELETE query"; pcre:"/(;\s*drop\s+(table|database)|;\s*truncate\s+table)/i"; classtype:"web-application-attack"; sid:1000042; rev:1;)
-drop tcp any any -> any any (msg:"EXPLOIT SQL Injection time delay"; pcre:"/(waitfor\s+delay\s+'|sleep\(\s*\d+\s*\)|benchmark\(\s*\d+\s*,)/i"; classtype:"web-application-attack"; sid:1000043; rev:1;)
-
-# --- Cross-Site Scripting (XSS) & CRLF Injection ---
-drop tcp any any -> any any (msg:"EXPLOIT Cross-Site Scripting script injection"; pcre:"/<script[^>]*>|javascript:\s*/i"; classtype:"web-application-attack"; sid:1000050; rev:1;)
-drop tcp any any -> any any (msg:"EXPLOIT CRLF header injection attempt"; pcre:"/(\r\n|\n\r|%0d%0a|%0a%0d)(Set-Cookie|Location):/i"; classtype:"web-application-attack"; sid:1000051; rev:1;)
-
-# --- Automated Scanning & Hacking Tools ---
-drop tcp any any -> any any (msg:"ATTACK Automated vulnerability scanner detected"; pcre:"/(sqlmap|nikto|havij|acunetix|dirbuster|nmap)/i"; http_header; classtype:"attempted-recon"; sid:1000060; rev:1;)
-`
-
-// DefaultEngine returns an Engine preloaded with the default baseline rules.
-func DefaultEngine() (*Engine, error) {
-	eng := NewEngine()
-	_, err := eng.LoadRulesFromReader(strings.NewReader(DefaultRulesSnort))
-	if err != nil {
+// NewProfileEngine loads default rules, optionally followed by strict policy rules.
+func NewProfileEngine(profile string) (*Engine, error) {
+	if profile != "default" && profile != "strict" {
+		return nil, fmt.Errorf("unknown rule profile %q", profile)
+	}
+	e := NewEngine()
+	if _, err := e.LoadRulesFromReader(strings.NewReader(DefaultRulesSnort)); err != nil {
 		return nil, err
 	}
-	return eng, nil
+	if profile == "strict" {
+		if _, err := e.LoadRulesFromReader(strings.NewReader(StrictRulesSnort)); err != nil {
+			return nil, err
+		}
+		if err := e.applyStrictActions(strings.NewReader(StrictActionsJSON)); err != nil {
+			return nil, err
+		}
+	}
+	return e, nil
+}
+
+// applyStrictActions validates the complete map before replacing any rule. Only
+// alert-to-blocking promotions are valid; a profile cannot weaken a signature.
+func (e *Engine) applyStrictActions(r io.Reader) error {
+	decoder := json.NewDecoder(r)
+	token, err := decoder.Token()
+	if err != nil || token != json.Delim('{') {
+		return fmt.Errorf("strict actions must be a JSON object")
+	}
+	actions := map[int]Action{}
+	for decoder.More() {
+		token, err := decoder.Token()
+		if err != nil {
+			return fmt.Errorf("reading strict action SID: %w", err)
+		}
+		key, ok := token.(string)
+		sid64, err := strconv.ParseUint(key, 10, 31)
+		sid := int(sid64)
+		if !ok || err != nil || sid <= 0 || strconv.Itoa(sid) != key {
+			return fmt.Errorf("invalid strict action SID %q", key)
+		}
+		if _, exists := actions[sid]; exists {
+			return fmt.Errorf("duplicate strict action SID %d", sid)
+		}
+		var action Action
+		if err := decoder.Decode(&action); err != nil {
+			return fmt.Errorf("invalid strict action for SID %d: %w", sid, err)
+		}
+		if action != ActionDrop && action != ActionBlock && action != ActionReject {
+			return fmt.Errorf("strict action for SID %d must block", sid)
+		}
+		actions[sid] = action
+	}
+	if token, err := decoder.Token(); err != nil || token != json.Delim('}') {
+		return fmt.Errorf("invalid strict action object ending")
+	}
+	var extra any
+	if err := decoder.Decode(&extra); err != io.EOF {
+		return fmt.Errorf("unexpected data after strict actions")
+	}
+	e.mu.Lock()
+	defer e.mu.Unlock()
+	indexes := map[int]int{}
+	for i, rule := range e.rules {
+		indexes[rule.SID] = i
+	}
+	for sid := range actions {
+		i, exists := indexes[sid]
+		if !exists {
+			return fmt.Errorf("strict action references unknown SID %d", sid)
+		}
+		if e.rules[i].Action != ActionAlert {
+			return fmt.Errorf("strict action SID %d must refer to an alert rule", sid)
+		}
+	}
+	for sid, action := range actions {
+		i := indexes[sid]
+		updated := *e.rules[i]
+		updated.Raw = string(action) + updated.Raw[len(updated.Action):]
+		updated.Action = action
+		e.rules[i] = &updated
+	}
+	return nil
 }

@@ -1,0 +1,97 @@
+--- a/src/stream/ip/ip_defrag.cc
++++ b/src/stream/ip/ip_defrag.cc
+@@ -108,6 +108,7 @@
+ #define FRAG_STATE_LOST     0x00000100
+ #define FRAG_PREFIX_BAD     0x00000200
+ #define FRAG_ECN_BAD        0x00000400
++#define FRAG_OVERLAP_BAD    0x00000800
+ 
+ /* return values for insert() */
+ #define FRAG_INSERT_OK          0
+@@ -120,6 +121,7 @@
+ #define FRAG_INSERT_OVERLAP_LIMIT  7
+ #define FRAG_INSERT_RESOURCE_LIMIT 8
+ #define FRAG_INSERT_PREFIX_INVALID 9
++#define FRAG_INSERT_OVERLAP_REJECTED 10
+ 
+ /* return values for FragCheckFirstLast() */
+ #define FRAG_FIRSTLAST_OK       0
+@@ -809,7 +811,12 @@
+     DetectionEngine::disable_content(p);
+     p->active->daq_drop_packet(p);
+     ip_stats.drops++;
+-    if (ft->frag_flags & FRAG_ECN_BAD)
++    if (ft->frag_flags & FRAG_OVERLAP_BAD)
++    {
++        p->active->set_drop_reason("ip_reassembly_overlap");
++        ip_stats.overlap_drops++;
++    }
++    else if (ft->frag_flags & FRAG_ECN_BAD)
+     {
+         p->active->set_drop_reason("ip_reassembly_ecn");
+         ip_stats.ecn_drops++;
+@@ -977,6 +984,7 @@
+          */
+         switch (insert_return)
+         {
++        case FRAG_INSERT_OVERLAP_REJECTED:
+         case FRAG_INSERT_PREFIX_INVALID:
+             delete_tracker(ft);
+             DropTrackedFragment(p, ft);
+@@ -1111,6 +1119,25 @@
+     // Validate before changing reassembly geometry or storing fragment data.
+     if (p->is_ip4() && !FragHandleIPOptions(ft, p, net_frag_offset))
+         return FRAG_INSERT_ANOMALY;
++
++    // RFC 8200 abandons an IPv6 datagram on any overlap. IPv4's configured
++    // threshold of one requests the same strict local policy. Test before
++    // first/last bookkeeping, prefix capture, trimming or node allocation.
++    if ((p->is_ip6() || fe->max_overlaps == 1) && p->dsize)
++    {
++        const uint32_t end = static_cast<uint32_t>(net_frag_offset) + p->dsize;
++        for (const Fragment* saved = ft->fraglist; saved && saved->offset < end; saved = saved->next)
++        {
++            if (saved->size && net_frag_offset < static_cast<uint32_t>(saved->offset) + saved->size)
++            {
++                ip_stats.overlaps++;
++                ft->overlap_count++;
++                EventAnomOverlap(fe);
++                ft->frag_flags |= FRAG_BAD | FRAG_DROP_FRAGMENTS | FRAG_OVERLAP_BAD;
++                return FRAG_INSERT_OVERLAP_REJECTED;
++            }
++        }
++    }
+ 
+     if (p->is_ip4() && !CaptureIp4Prefix(ft, p, net_frag_offset))
+         return FRAG_INSERT_PREFIX_INVALID;
+--- a/src/stream/ip/ip_session.cc
++++ b/src/stream/ip/ip_session.cc
+@@ -71,6 +71,7 @@
+     { CountType::SUM, "premature_state_losses", "fragment trackers discarded before retention elapsed" },
+     { CountType::SUM, "prefix_drops", "fragments rejected because reconstruction headers or size are invalid" },
+     { CountType::SUM, "ecn_drops", "fragments rejected because CE and Not-ECT conflict" },
++    { CountType::SUM, "overlap_drops", "fragments rejected after a prohibited overlap" },
+     { CountType::END, nullptr, nullptr }
+ };
+ 
+--- a/src/stream/ip/ip_module.h
++++ b/src/stream/ip/ip_module.h
+@@ -87,6 +87,7 @@
+     PegCount premature_state_losses;
+     PegCount prefix_drops;
+     PegCount ecn_drops;
++    PegCount overlap_drops;
+ };
+ 
+ extern const PegInfo ip_pegs[];
+--- a/src/stream/ip/ip_module.cc
++++ b/src/stream/ip/ip_module.cc
+@@ -107,7 +107,7 @@
+       "maximum number of simultaneous fragments being tracked" },
+ 
+     { "max_overlaps", Parameter::PT_INT, "0:max32", "0",
+-      "maximum allowed overlaps per datagram; 0 is unlimited" },
++      "IPv4 overlap threshold; 0 is unlimited, 1 rejects first overlap; IPv6 always rejects overlaps" },
+ 
+     { "min_frag_length", Parameter::PT_INT, "0:65535", "0",
+       "alert if fragment length is below this limit before or after trimming" },

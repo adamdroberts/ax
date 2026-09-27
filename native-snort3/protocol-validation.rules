@@ -1,0 +1,67 @@
+# Supplemental native rules for verified gaps in Snort 3.12.2.0 builtins.
+# SID 9201001: RFC 4861 sections 7.1.1, 7.1.2 and 8.1 require Code=0.
+# Router Solicitation/Advertisement Code=0 is already enforced by 116:287/288.
+drop icmp any any -> any any (msg:"AX IPv6 Neighbor Discovery invalid code"; ip_proto:58; itype:135<=>137; icode:>0; sid:9201001; rev:1;)
+
+# SID 9201002: RFC 4861 sections 6.1.1, 6.1.2, 7.1.1, 7.1.2 and 8.1
+# require received ND messages to have IPv6 Hop Limit 255.
+# Native ttl reads the IPv6 hop limit; ip_proto prevents an IPv4 type collision.
+drop icmp any any -> any any (msg:"AX IPv6 Neighbor Discovery invalid hop limit"; ip_proto:58; itype:133<=>137; ttl:<255; sid:9201002; rev:1;)
+
+# RFC 6980 section 5 forbids Fragment headers in these ND message types.
+# only_frag identifies Snort-reassembled datagrams, not atomic Fragment headers.
+# Existing builtin 116:458 drops all atomic IPv6 fragments under this profile.
+drop icmp any any -> any any (msg:"AX IPv6 Neighbor Discovery reassembled from fragments"; ip_proto:58; itype:133<=>137; flow:only_frag; sid:9201003; rev:1;)
+
+# RFC 4861 section 6.1.2: received Router Advertisements require a link-local
+# source. This is source-scope validation, not router identity authorization.
+drop icmp !fe80::/10 any -> any any (msg:"AX IPv6 Router Advertisement non-link-local source"; ip_proto:58; itype:134; sid:9201004; rev:1;)
+
+# RFC 4861 section 8.1: received Redirects require a link-local source. Whether
+# it is the current first-hop router still requires trusted routing state.
+drop icmp !fe80::/10 any -> any any (msg:"AX IPv6 Redirect non-link-local source"; ip_proto:58; itype:137; sid:9201005; rev:1;)
+
+# Required native IPS options from plugins/. Unknown but structurally valid
+# options are skipped safely and scanning continues through the whole ND body.
+drop icmp any any -> any any (msg:"AX IPv6 Neighbor Discovery malformed option framing"; ip_proto:58; itype:133<=>137; ax_nd_options; sid:9201006; rev:1;)
+
+# Stateless RFC 4861 target/flag/source-option/destination relationships.
+# This does not establish router ownership or current first-hop provenance.
+drop icmp any any -> any any (msg:"AX IPv6 Neighbor Discovery invalid receive semantics"; ip_proto:58; itype:133<=>137; ax_nd_semantics; sid:9201007; rev:1;)
+
+# RFC 8200 sections 4 and 4.1: only Hop-by-Hop has a mandatory first position.
+# Keep the generic ordering event advisory for legal reordered/repeated headers.
+drop ip any any -> any any (msg:"AX IPv6 Hop-by-Hop header outside first extension position"; ax_ip6_hop_order; sid:9201008; rev:1;)
+
+# RFC 4302 sections 2 and 2.2: fixed fields need twelve bytes, and IPv6 AH is
+# aligned to eight-byte units. This does not verify IPsec authentication or SA state.
+drop ip any any -> any any (msg:"AX malformed IP Authentication Header length"; ax_ah_header; sid:9201009; rev:1;)
+
+# RFC 7112 and RFC 8200 require the first fragment to contain the complete header
+# chain. Unknown upper-layer header shapes are rejected as local strict policy.
+drop ip any any -> any any (msg:"AX incomplete or unsupported IPv6 first-fragment header chain"; ax_ip6_first_fragment; sid:9201010; rev:1;)
+
+# The pinned decoder's 116:281 list omits AH despite having an AH codec.
+# Keep that event advisory and preserve its rejection set except protocol51.
+# Header shapes and AH authentication are separate concerns; no pass rule here.
+drop ip any any -> any any (msg:"AX IPv6 base Next Header outside admitted protocol set"; ax_ip6_base_next_header; sid:9201011; rev:1;)
+
+# RFC 791/1122/2113 option formats. Enforce sender structure as strict IPS policy;
+# preserve opaque well-formed unknown options and Router Alert values.
+drop ip any any -> any any (msg:"AX malformed IPv4 options or header padding"; ax_ip4_options; sid:9201012; rev:1;)
+
+# RFC 8200/2711/2675/6275: bounded TLV framing, Router Alert/Jumbo and Home Address.
+# Inspect original first-fragment bytes too; no reliance on reassembly alone.
+drop ip any any -> any any (msg:"AX malformed IPv6 extension option structure"; ax_ip6_options; sid:9201013; rev:2;)
+
+# RFC 4303 visible fixed fields, nonzero SPI and room for mandatory trailer bytes.
+# The default native ESP codec skips decoding; this never guesses decrypted data.
+drop ip any any -> any any (msg:"AX impossible visible ESP framing"; ax_esp_header; sid:9201014; rev:1;)
+
+# RFC 4443 sections 4.1/4.2 define Echo Request/Reply Code=0.
+drop icmp any any -> any any (msg:"AX IPv6 Echo invalid code"; ip_proto:58; itype:128<=>129; icode:>0; sid:9201015; rev:1;)
+
+# RFC 6275 sections 6.4.1/11.3.3: Type2 length=2 and SegmentsLeft=1 on wire.
+# Internal post-routing SegmentsLeft=0 is not an original-wire control here.
+# Reserved fields stay ignored; endpoint home-address ownership remains external.
+drop ip any any -> any any (msg:"AX malformed original-wire IPv6 Type 2 routing header"; ax_ip6_type2_routing; sid:9201016; rev:1;)

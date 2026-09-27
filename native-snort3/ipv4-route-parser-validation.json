@@ -1,0 +1,27 @@
+{
+  "scope": "Pure IPv4 source-route address selection and bounds; not native packet or deployment evidence.",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin27.0.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+  "command": [
+    "/usr/bin/clang++",
+    "-std=c++17",
+    "-O1",
+    "-g",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-fsanitize=address,undefined",
+    "-fno-omit-frame-pointer",
+    "/Users/adam/Dev/agent-security/ax/native-snort3/patches/ipv4_checksum_destination_test.cc",
+    "-o",
+    "/private/tmp/ax-snort-ipv4-route-repair/ipv4-parser-test"
+  ],
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "sha256": {
+    "native-snort3/patches/ipv4_checksum_destination_test.cc": "69b115bc8da59efa096efd76a5511a76269b3b52f710bfbd56ce74231a4104ae",
+    "native-snort3/patches/ipv4_checksum_destination.h": "794c67f02580460956dc7503beed5646b5ca122bc06f7f571ab422f15ee55d07"
+  },
+  "test_output": "157183 assertions; 100000 randomized spans\n"
+}

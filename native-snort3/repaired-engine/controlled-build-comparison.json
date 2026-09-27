@@ -1,0 +1,32 @@
+{
+  "same_build_configuration": true,
+  "source_changes": {
+    "ax-type2-checksum.patch": {
+      "before": null,
+      "after": "1ece45a6152198b6fb922fe72895123ae54c8ea00f7037aea4639f4e8703e1a4"
+    },
+    "ax-type2-source-validation.json": {
+      "before": null,
+      "after": "92bb5b942bdca9bb13ad52099ab0671f1a95ca72484b9b78768ed2be244c810b"
+    },
+    "src/codecs/ip/cd_icmp6.cc": {
+      "before": "ddd09b10002106312e2231864f7f24e03bb2f5beadeacb71dc2020709e56d054",
+      "after": "9f43dedb61d03e575c9313ae5c682896a8c3af8942283b23f7fa7dbb6f4edad5"
+    },
+    "src/codecs/ip/cd_tcp.cc": {
+      "before": "d4675b2d591857d0d5773c834b90002261c247cd3551b47c3600d5a95857e4be",
+      "after": "70fa85c573fb6a7c4d2350563110f6d67c51af71b3245efba219c514a544cac9"
+    },
+    "src/codecs/ip/cd_udp.cc": {
+      "before": "ff606e3ddbfb5c7b7a1ce1d19d8f49dd8d28fdef0a702a58f54abe01f253fca4",
+      "after": "a4aebd7e853d8dd85e91faf52da711ac4c0f6135549f696e8b3b1830c1da8a05"
+    },
+    "src/codecs/ip/ipv6_checksum_destination.h": {
+      "before": null,
+      "after": "3afe940ef6f3a47ae27d8dc3054a1bb58f96a79d8c4305c00c3fa13f8516e743"
+    }
+  },
+  "baseline_sha256": "6c03749e19465eac65a09e083ff0165ef78d041549dc448327f08acc8e9d1549",
+  "repaired_sha256": "4a7fb05fefe6f3144de17613244d590fe287913b339f87c5da7bfd9d60b34c44",
+  "repaired_profile_load_returncode": 0
+}

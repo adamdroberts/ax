@@ -1,0 +1,293 @@
+--- a/src/stream/ip/ip_session.h
++++ b/src/stream/ip/ip_session.h
+@@ -64,6 +64,8 @@
+     uint8_t* ip_options_data; /* ip options from offset 0 packet */
+     ax_fragment::CopiedOptions copied_ip_options;
+     bool ip_options_first_seen;
++    bool quarantine_only; // No fragment of this tracker was admitted.
++    int64_t fragment_last_seen; // Not refreshed by lookup of an expired flow.
+ 
+     FragEngine* engine;
+ 
+--- a/src/stream/ip/ip_defrag.cc
++++ b/src/stream/ip/ip_defrag.cc
+@@ -70,6 +70,8 @@
+ 
+ #include "ip_defrag.h"
+ #include "fragment_lifetime.h"
++#include "fragment_pressure.h"
++#include "time/packet_time.h"
+ 
+ #include "codecs/ip/ipv4_checksum_destination.h"
+ 
+@@ -101,6 +103,8 @@
+ #define FRAG_NO_BSD_VULN    0x00000010
+ #define FRAG_DROP_FRAGMENTS 0x00000020
+ #define FRAG_TIMED_OUT      0x00000040
++#define FRAG_RESOURCE_DROP  0x00000080
++#define FRAG_STATE_LOST     0x00000100
+ 
+ /* return values for insert() */
+ #define FRAG_INSERT_OK          0
+@@ -111,6 +115,7 @@
+ #define FRAG_INSERT_ANOMALY     5
+ #define FRAG_INSERT_TTL         6
+ #define FRAG_INSERT_OVERLAP_LIMIT  7
++#define FRAG_INSERT_RESOURCE_LIMIT 8
+ 
+ /* return values for FragCheckFirstLast() */
+ #define FRAG_FIRSTLAST_OK       0
+@@ -119,6 +124,9 @@
+ 
+ /*  D A T A   S T R U C T U R E S  **********************************/
+ 
++
++// Separate from resettable statistics; owned by each packet thread.
++static THREAD_LOCAL uint64_t live_fragment_nodes = 0;
+ 
+ struct Fragment
+ {
+@@ -137,6 +145,8 @@
+     ~Fragment()
+     {
+         delete[] fptr;
++        assert(live_fragment_nodes);
++        --live_fragment_nodes;
+         ip_stats.nodes_released++;
+     }
+ 
+@@ -164,6 +174,9 @@
+ 
+         memcpy(this->fptr, fptr, flen);
+ 
++        ++live_fragment_nodes;
++        if (ip_stats.max_fragment_nodes < live_fragment_nodes)
++            ip_stats.max_fragment_nodes = live_fragment_nodes;
+         ip_stats.nodes_created++;
+     }
+ };
+@@ -774,6 +787,25 @@
+     ip_stats.trackers_cleared++;
+ }
+ 
++static void DropTrackedFragment(Packet* p, const FragTracker* ft)
++{
++    DetectionEngine::disable_content(p);
++    p->active->daq_drop_packet(p);
++    ip_stats.drops++;
++    if (ft->frag_flags & FRAG_RESOURCE_DROP)
++    {
++        p->active->set_drop_reason("ip_reassembly_resources");
++        ip_stats.resource_drops++;
++    }
++    else if (ft->frag_flags & FRAG_STATE_LOST)
++    {
++        p->active->set_drop_reason("ip_reassembly_state_lost");
++        ip_stats.state_lost_drops++;
++    }
++    else if (ft->frag_flags & FRAG_TIMED_OUT)
++        p->active->set_drop_reason("ip_reassembly_timeout");
++}
++
+ static void release_tracker(FragTracker* ft)
+ {
+     delete_tracker(ft);
+@@ -876,9 +908,26 @@
+ 
+     if (!ft->engine )
+     {
+-        new_tracker(p, ft);
++        if (!new_tracker(p, ft))
++        {
++            // Failed admission must not forward a fragment without a tracker.
++            // Both failure paths precede payload/option allocation.
++            memset(ft, 0, sizeof(*ft));
++            ft->engine = fe;
++            ft->frag_time = p->pkth->ts;
++            ft->fragment_last_seen = packet_time();
++            ft->quarantine_only = true;
++            ft->frag_flags = FRAG_BAD | FRAG_DROP_FRAGMENTS | FRAG_RESOURCE_DROP;
++        }
++        if (ft->frag_flags & FRAG_DROP_FRAGMENTS)
++            DropTrackedFragment(p, ft);
+         return;
+     }
++    // FlowCache::find refreshes last_data_seen before expired-session cleanup.
++    // Keep the old tracker's clock separate so normal expiry is not state loss.
++    if (ft->fragment_last_seen < packet_time())
++        ft->fragment_last_seen = packet_time();
++
+     // The datagram deadline is measured from its first arriving fragment.
+     // Do not slide it forward on activity or restart it after abandonment.
+     expired(p, ft, fe);
+@@ -886,11 +935,7 @@
+     //don't forward fragments to engine if some previous fragment was dropped
+     if ( ft->frag_flags & FRAG_DROP_FRAGMENTS )
+     {
+-        DetectionEngine::disable_content(p);
+-        p->active->daq_drop_packet(p);
+-        if (ft->frag_flags & FRAG_TIMED_OUT)
+-            p->active->set_drop_reason("ip_reassembly_timeout");
+-        ip_stats.drops++;
++        DropTrackedFragment(p, ft);
+         return;
+     }
+ 
+@@ -905,7 +950,17 @@
+          */
+         switch (insert_return)
+         {
++        case FRAG_INSERT_RESOURCE_LIMIT:
++            delete_tracker(ft);
++            ft->frag_flags |= FRAG_BAD | FRAG_DROP_FRAGMENTS | FRAG_RESOURCE_DROP;
++            DropTrackedFragment(p, ft);
++            ip_stats.discards++;
++            return;
++
+         case FRAG_INSERT_FAILED:
++            delete_tracker(ft);
++            ft->frag_flags |= FRAG_BAD | FRAG_DROP_FRAGMENTS | FRAG_RESOURCE_DROP;
++            DropTrackedFragment(p, ft);
+             debug_logf(stream_ip_trace, p, "WARNING: Insert into Fraglist failed, (offset: %hu).\n",
+                 frag_offset);
+             return;
+@@ -1734,6 +1789,16 @@
+     ft->frag_policy = p->flow->ssn_policy ? p->flow->ssn_policy : engine.frag_policy;
+     ft->engine = &engine;
+ 
++    ft->fragment_last_seen = packet_time();
++    if (ax_fragment::state_loss_quarantine(p->is_ip6(), packet_time()))
++    {
++        ft->quarantine_only = true;
++        ft->frag_flags = FRAG_BAD | FRAG_DROP_FRAGMENTS | FRAG_STATE_LOST;
++        return 1;
++    }
++    if (live_fragment_nodes >= engine.max_frags)
++        return 0;
++
+     // A nonzero fragment may be the first arrival. Keep a rejection in its
+     // tracker, but do not allocate or insert its payload.
+     if (p->is_ip4() && !FragHandleIPOptions(ft, p, frag_off))
+@@ -1862,6 +1927,9 @@
+         return FRAG_INSERT_ANOMALY;
+     }
+ 
++    if (live_fragment_nodes >= fe->max_frags)
++        return FRAG_INSERT_RESOURCE_LIMIT;
++
+     newfrag = new Fragment(fragLength, fragStart, ft->ordinal++);
+ 
+     /*
+@@ -1913,6 +1981,9 @@
+  */
+ int Defrag::dup_frag_node( FragTracker* ft, Fragment* left, Fragment** retFrag)
+ {
++    if (live_fragment_nodes >= ft->engine->max_frags)
++        return FRAG_INSERT_RESOURCE_LIMIT;
++
+     Fragment* newfrag = new Fragment(left, ft->ordinal++);
+ 
+     add_node(ft, left, newfrag);
+--- a/src/stream/ip/ip_session.cc
++++ b/src/stream/ip/ip_session.cc
+@@ -23,8 +23,11 @@
+ 
+ #include "ip_session.h"
+ #include "fragment_lifetime.h"
++#include "fragment_pressure.h"
++#include "time/packet_time.h"
+ 
+ #include "framework/data_bus.h"
++#include "flow/flow_key.h"
+ #include "profiler/profiler_defs.h"
+ #include "protocols/packet.h"
+ #include "pub_sub/stream_event_ids.h"
+@@ -62,6 +65,10 @@
+     { CountType::SUM, "nodes_deleted", "fragments deleted from tracker" },
+     { CountType::SUM, "reassembled_bytes", "total reassembled bytes" },
+     { CountType::SUM, "fragmented_bytes", "total fragmented bytes" },
++    { CountType::MAX, "max_fragment_nodes", "maximum concurrently allocated fragment nodes" },
++    { CountType::SUM, "resource_drops", "fragments rejected because reassembly resources are unavailable" },
++    { CountType::SUM, "state_lost_drops", "new fragment trackers rejected during loss-of-state quarantine" },
++    { CountType::SUM, "premature_state_losses", "fragment trackers discarded before retention elapsed" },
+     { CountType::END, nullptr, nullptr }
+ };
+ 
+@@ -74,6 +81,15 @@
+ 
+ static void IpSessionCleanup(Flow* lws, FragTracker* tracker)
+ {
++    // Completion releases engine before cleanup. Quarantine-only trackers
++    // forwarded no fragments and must not prolong the global quarantine.
++    if (tracker->engine && !tracker->quarantine_only)
++    {
++        const bool ipv6 = lws->key->version == 6;
++        const auto retention = ax_fragment::retention_seconds(ipv6, tracker->engine->frag_timeout);
++        if (ax_fragment::remember_state_loss(ipv6, tracker->fragment_last_seen, packet_time(), retention))
++            ip_stats.premature_state_losses++;
++    }
+     if ( lws->ssn_server )
+     {
+         Defrag* d = get_defrag(lws->ssn_server);
+--- a/src/stream/ip/ip_module.h
++++ b/src/stream/ip/ip_module.h
+@@ -81,6 +81,10 @@
+     PegCount nodes_released;
+     PegCount reassembled_bytes;
+     PegCount fragmented_bytes;
++    PegCount max_fragment_nodes;
++    PegCount resource_drops;
++    PegCount state_lost_drops;
++    PegCount premature_state_losses;
+ };
+ 
+ extern const PegInfo ip_pegs[];
+--- /dev/null
++++ b/src/stream/ip/fragment_pressure.h
+@@ -0,0 +1,46 @@
++// Bounded loss-of-state quarantine for the reviewed Snort engine repair.
++// SPDX-License-Identifier: GPL-2.0-only
++#ifndef AX_FRAGMENT_PRESSURE_H
++#define AX_FRAGMENT_PRESSURE_H
++#include <atomic>
++#include <cstdint>
++#include <limits>
++
++namespace ax_fragment
++{
++inline std::atomic<uint64_t>& lost_state_deadline(bool ipv6)
++{
++    static std::atomic<uint64_t> v4{0};
++    static std::atomic<uint64_t> v6{0};
++    return ipv6 ? v6 : v4;
++}
++
++// Nonnegative int64 seconds plus uint32 retention cannot overflow uint64.
++// Invalid local clock metadata produces a fail-closed sentinel.
++inline uint64_t loss_deadline(int64_t last_seen, uint32_t retention)
++{
++    if (last_seen < 0)
++        return std::numeric_limits<uint64_t>::max();
++    return static_cast<uint64_t>(last_seen) + retention;
++}
++
++inline bool remember_state_loss(bool ipv6, int64_t last_seen, int64_t now, uint32_t retention)
++{
++    const uint64_t until = loss_deadline(last_seen, retention);
++    if (now >= 0 && static_cast<uint64_t>(now) >= until)
++        return false;
++    auto& deadline = lost_state_deadline(ipv6);
++    uint64_t previous = deadline.load(std::memory_order_relaxed);
++    while (previous < until && !deadline.compare_exchange_weak(previous, until,
++            std::memory_order_relaxed, std::memory_order_relaxed))
++    { }
++    return true;
++}
++
++inline bool state_loss_quarantine(bool ipv6, int64_t now)
++{
++    return now < 0 || static_cast<uint64_t>(now) <
++        lost_state_deadline(ipv6).load(std::memory_order_relaxed);
++}
++}
++#endif

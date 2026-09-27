@@ -159,30 +159,7 @@ func (s *Store) SaveTask(ctx context.Context, task *v1alpha1.Task) error {
 		return fmt.Errorf("marshaling task: %w", err)
 	}
 
-	atespace := task.Metadata.Atespace
-	name := task.Metadata.Name
-	score := float64(time.Now().UnixNano())
-	member := fmt.Sprintf("%s:%s", atespace, name)
-
-	pipe := s.client.TxPipeline()
-	pipe.Set(ctx, s.taskKey(atespace, name), data, s.opts.TTL)
-	pipe.ZAdd(ctx, s.taskIndexKey(), redis.Z{Score: score, Member: member})
-	pipe.ZAdd(ctx, s.taskAtespaceIndexKey(atespace), redis.Z{Score: score, Member: name})
-	pipe.XAdd(ctx, &redis.XAddArgs{
-		Stream: s.opts.StreamName,
-		Values: map[string]interface{}{
-			"action":   "reconcile",
-			"atespace": atespace,
-			"name":     name,
-		},
-	})
-	pipe.Publish(ctx, s.taskPubSubChannel(atespace, name), data)
-
-	_, err = pipe.Exec(ctx)
-	if err != nil {
-		return fmt.Errorf("saving task to redis: %w", err)
-	}
-	return nil
+	return s.saveTaskUnlessTerminating(ctx, task.Metadata.Atespace, task.Metadata.Name, data)
 }
 
 // GetTask retrieves a task by atespace and name.
@@ -269,61 +246,27 @@ func (s *Store) ListTasks(ctx context.Context, atespace string, limit, offset in
 
 // UpdateTaskStatus updates only the status portion of a task.
 func (s *Store) UpdateTaskStatus(ctx context.Context, atespace, name string, status *v1alpha1.TaskStatus) error {
-	task, err := s.GetTask(ctx, atespace, name)
-	if err != nil {
-		return err
-	}
-
-	task.Status = status
-	data, err := jsonMarshalOpts.Marshal(task)
-	if err != nil {
-		return fmt.Errorf("marshaling task status: %w", err)
-	}
-
-	pipe := s.client.TxPipeline()
-	pipe.Set(ctx, s.taskKey(atespace, name), data, s.opts.TTL)
-	pipe.Publish(ctx, s.taskPubSubChannel(atespace, name), data)
-	_, err = pipe.Exec(ctx)
-	if err != nil {
-		return fmt.Errorf("updating task status in redis: %w", err)
-	}
-	return nil
+	return s.mutateTask(ctx, atespace, name, "", func(task *v1alpha1.Task) bool {
+		if task.GetStatus().GetPhase() == v1alpha1.PhaseTerminating {
+			return false
+		}
+		task.Status = status
+		return true
+	})
 }
 
 // MarkTaskDeleting flips the task to the Terminating phase, notifies watchers, and
 // publishes a delete event for the controller. The record stays until DeleteTask.
 func (s *Store) MarkTaskDeleting(ctx context.Context, atespace, name string) error {
-	if atespace == "" {
-		atespace = "default"
-	}
-	task, err := s.GetTask(ctx, atespace, name)
-	if err != nil {
-		return err
-	}
-	if task.Status == nil {
-		task.Status = &v1alpha1.TaskStatus{}
-	}
-	task.Status.Phase = v1alpha1.PhaseTerminating
-	data, err := protojson.Marshal(task)
-	if err != nil {
-		return fmt.Errorf("marshaling task: %w", err)
-	}
-
-	pipe := s.client.TxPipeline()
-	pipe.Set(ctx, s.taskKey(atespace, name), data, s.opts.TTL)
-	pipe.Publish(ctx, s.taskPubSubChannel(atespace, name), data)
-	pipe.XAdd(ctx, &redis.XAddArgs{
-		Stream: s.opts.StreamName,
-		Values: map[string]interface{}{
-			"action":   "delete",
-			"atespace": atespace,
-			"name":     name,
-		},
+	return s.mutateTask(ctx, atespace, name, "delete", func(task *v1alpha1.Task) bool {
+		if task.Status == nil {
+			task.Status = &v1alpha1.TaskStatus{}
+		}
+		task.Status.Phase = v1alpha1.PhaseTerminating
+		// Even an existing delete mark republishes the event so a failed
+		// cleanup can be retried through the normal API.
+		return true
 	})
-	if _, err := pipe.Exec(ctx); err != nil {
-		return fmt.Errorf("marking task deleting in redis: %w", err)
-	}
-	return nil
 }
 
 // DeleteTask removes the task record and its index entries. No event is published.

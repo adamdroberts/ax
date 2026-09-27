@@ -21,12 +21,16 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
+	"math"
 	"net/http"
 	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
+	"unicode/utf8"
 
+	"github.com/google/ax/pkg/security/egress"
+	"github.com/google/ax/pkg/security/httpguard"
 	"github.com/google/ax/pkg/security/snort"
 )
 
@@ -35,7 +39,9 @@ const (
 	ServerName      = "ax-mcp-proxy"
 	ServerVersion   = "1.0.0"
 
-	MaxResponseBodyBytes = 10 * 1024 * 1024 // 10 MB
+	MaxResponseBodyBytes  = 10 * 1024 * 1024 // 10 MiB
+	MaxSessionInspections = 1000
+	MaxSessionBytes       = 64 * 1024 * 1024
 )
 
 // JSONRPCRequest represents a JSON-RPC 2.0 request.
@@ -49,7 +55,7 @@ type JSONRPCRequest struct {
 // JSONRPCResponse represents a JSON-RPC 2.0 response.
 type JSONRPCResponse struct {
 	JSONRPC string        `json:"jsonrpc"`
-	ID      any           `json:"id,omitempty"`
+	ID      any           `json:"id"`
 	Result  any           `json:"result,omitempty"`
 	Error   *JSONRPCError `json:"error,omitempty"`
 }
@@ -82,20 +88,40 @@ type Stats struct {
 
 // Server is the Model Context Protocol security proxy server.
 type Server struct {
-	engine     *snort.Engine
-	httpClient *http.Client
-	stats      Stats
-	mu         sync.Mutex
+	engine             *snort.Engine
+	httpClient         *http.Client
+	allowedOrigins     []string
+	originsConfigured  bool
+	egressPolicy       *egress.Policy
+	customClient       bool
+	inspectionAttempts uint64
+	inspectionBytes    uint64
+	responseBytes      uint64
+	rpcMessages        uint64
+	rpcBytes           uint64
+	stats              Stats
+	mu                 sync.Mutex
+	transportMu        sync.Mutex
 }
 
 // ServerOption configures a Server.
 type ServerOption func(*Server)
 
-// WithHTTPClient overrides the default HTTP client used for proxying.
+// WithHTTPClient is a TRUSTED embedding/testing escape hatch: its transport is
+// responsible for DNS/IP enforcement. It bypasses the default origin policy unless
+// WithAllowedOrigins is also provided. Never expose this option to agent input.
+// Redirects and automatic cookies are still disabled on a copy.
 func WithHTTPClient(client *http.Client) ServerOption {
 	return func(s *Server) {
 		s.httpClient = client
+		s.customClient = true
 	}
+}
+
+// WithAllowedOrigins configures exact administrator-owned outbound origins.
+// An empty list denies all egress. No wildcard or request-level overrides exist.
+func WithAllowedOrigins(origins ...string) ServerOption {
+	return func(s *Server) { s.allowedOrigins = append([]string(nil), origins...); s.originsConfigured = true }
 }
 
 // WithEngine sets the Snort engine.
@@ -107,11 +133,7 @@ func WithEngine(engine *snort.Engine) ServerOption {
 
 // NewServer creates a new MCP Security Proxy Server.
 func NewServer(opts ...ServerOption) (*Server, error) {
-	s := &Server{
-		httpClient: &http.Client{
-			Timeout: 30 * time.Second,
-		},
-	}
+	s := &Server{}
 
 	for _, opt := range opts {
 		opt(s)
@@ -125,15 +147,40 @@ func NewServer(opts ...ServerOption) (*Server, error) {
 		s.engine = eng
 	}
 
+	if s.customClient && s.httpClient == nil {
+		return nil, fmt.Errorf("HTTP client must not be nil")
+	}
+	if s.httpClient == nil {
+		var err error
+		s.httpClient, err = egress.NewClient(s.allowedOrigins)
+		if err != nil {
+			return nil, err
+		}
+		s.originsConfigured = true
+	}
+	if s.originsConfigured {
+		var err error
+		s.egressPolicy, err = egress.NewPolicy(s.allowedOrigins)
+		if err != nil {
+			return nil, err
+		}
+	}
+	// Never follow an uninspected redirect or let a cookie jar add headers after
+	// inspection. Copy the client to preserve the caller's configuration.
+	client := *s.httpClient
+	client.CheckRedirect = func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }
+	client.Jar = nil
+	s.httpClient = &client
+
 	return s, nil
 }
 
 // Serve reads JSON-RPC messages from in and writes responses to out until EOF or error.
 func (s *Server) Serve(ctx context.Context, in io.Reader, out io.Writer) error {
 	scanner := bufio.NewScanner(in)
-	// Support larger payloads up to 16MB
+	// Bound the wire envelope independently of decoded request fields.
 	buf := make([]byte, 64*1024)
-	scanner.Buffer(buf, 16*1024*1024)
+	scanner.Buffer(buf, 8*1024*1024+1)
 
 	encoder := json.NewEncoder(out)
 
@@ -145,17 +192,24 @@ func (s *Server) Serve(ctx context.Context, in io.Reader, out io.Writer) error {
 		}
 
 		line := scanner.Bytes()
+		if atomic.AddUint64(&s.rpcMessages, 1) > 10000 || atomic.AddUint64(&s.rpcBytes, uint64(len(line))) > MaxSessionBytes {
+			return fmt.Errorf("process RPC input budget exhausted")
+		}
 		if len(strings.TrimSpace(string(line))) == 0 {
 			continue
 		}
 
 		var req JSONRPCRequest
-		if err := json.Unmarshal(line, &req); err != nil {
+		if err := decodeRequest(line, &req); err != nil {
+			code := -32600
+			if !json.Valid(line) || !utf8.Valid(line) {
+				code = -32700
+			}
 			resp := JSONRPCResponse{
 				JSONRPC: "2.0",
 				Error: &JSONRPCError{
-					Code:    -32700,
-					Message: "Parse error",
+					Code:    code,
+					Message: "Invalid JSON-RPC request",
 				},
 			}
 			s.mu.Lock()
@@ -181,6 +235,11 @@ func (s *Server) Serve(ctx context.Context, in io.Reader, out io.Writer) error {
 func (s *Server) handleRequest(ctx context.Context, req *JSONRPCRequest) *JSONRPCResponse {
 	// Notifications (no ID) do not require a response unless error
 	isNotification := req.ID == nil
+	// MCP tool operations require an ID. A notification must never cause an
+	// unacknowledged network side effect.
+	if isNotification {
+		return nil
+	}
 
 	switch req.Method {
 	case "initialize":
@@ -256,11 +315,32 @@ type toolCallParams struct {
 
 func (s *Server) handleToolCall(ctx context.Context, rawParams json.RawMessage) (*ToolCallResult, *JSONRPCError) {
 	var p toolCallParams
-	if err := json.Unmarshal(rawParams, &p); err != nil {
+	if err := httpguard.ValidateJSON(rawParams); err != nil {
+		return nil, &JSONRPCError{Code: -32602, Message: "Invalid params"}
+	}
+	var properties map[string]json.RawMessage
+	if err := json.Unmarshal(rawParams, &properties); err != nil || properties == nil {
+		return nil, &JSONRPCError{Code: -32602, Message: "Tool params must be an object"}
+	}
+	for key := range properties {
+		if key != "name" && key != "arguments" && key != "_meta" {
+			return nil, &JSONRPCError{Code: -32602, Message: "Unknown tool param"}
+		}
+	}
+	if meta, exists := properties["_meta"]; exists && (len(meta) == 0 || meta[0] != '{') {
+		return nil, &JSONRPCError{Code: -32602, Message: "Tool metadata must be an object"}
+	}
+	if err := json.Unmarshal(rawParams, &p); err != nil || p.Name == "" {
 		return nil, &JSONRPCError{
 			Code:    -32602,
-			Message: "Invalid params: " + err.Error(),
+			Message: "Invalid tool params",
 		}
+	}
+	if raw, exists := properties["arguments"]; exists && (len(raw) == 0 || raw[0] != '{') {
+		return nil, &JSONRPCError{Code: -32602, Message: "Tool arguments must be an object"}
+	}
+	if p.Arguments == nil {
+		p.Arguments = map[string]any{}
 	}
 
 	switch p.Name {
@@ -269,6 +349,9 @@ func (s *Server) handleToolCall(ctx context.Context, rawParams json.RawMessage) 
 	case "check_security_payload":
 		return s.executeCheckPayload(p.Arguments)
 	case "get_security_stats":
+		if len(p.Arguments) != 0 {
+			return nil, &JSONRPCError{Code: -32602, Message: "Statistics tool has no arguments"}
+		}
 		return s.executeGetStats()
 	default:
 		return nil, &JSONRPCError{
@@ -278,172 +361,234 @@ func (s *Server) handleToolCall(ctx context.Context, rawParams json.RawMessage) 
 	}
 }
 
-func (s *Server) executeHTTPRequest(ctx context.Context, args map[string]any) (*ToolCallResult, *JSONRPCError) {
-	atomic.AddUint64(&s.stats.TotalInspected, 1)
-
+// buildHTTPRequest is shared by dispatch and diagnostics so an input cannot
+// pass one path and be interpreted differently by the other.
+func buildHTTPRequest(ctx context.Context, args map[string]any) (*http.Request, string, time.Duration, error) {
+	for key := range args {
+		switch key {
+		case "url", "method", "body", "headers", "timeout_seconds":
+		default:
+			return nil, "", 0, fmt.Errorf("unknown request argument")
+		}
+	}
 	rawURL, ok := args["url"].(string)
 	if !ok || rawURL == "" {
-		return &ToolCallResult{
-			IsError: true,
-			Content: []ToolContent{{Type: "text", Text: "Missing required argument 'url'"}},
-		}, nil
+		return nil, "", 0, fmt.Errorf("a non-empty string 'url' is required")
+	}
+	if len(rawURL) > snort.MaxURLBytes {
+		return nil, "", 0, fmt.Errorf("URL exceeds the 16 KiB inspection limit")
+	}
+	if err := httpguard.ValidateURL(rawURL); err != nil {
+		return nil, "", 0, err
 	}
 
 	method := "GET"
-	if m, ok := args["method"].(string); ok && m != "" {
-		method = strings.ToUpper(m)
+	if value, exists := args["method"]; exists {
+		m, ok := value.(string)
+		if !ok || m == "" {
+			return nil, "", 0, fmt.Errorf("method must be a non-empty string")
+		}
+		method = m
 	}
-
-	bodyStr := ""
-	if b, ok := args["body"].(string); ok {
-		bodyStr = b
-	}
-
-	headers := make(map[string]string)
-	if h, ok := args["headers"].(map[string]any); ok {
-		for k, v := range h {
-			if vs, ok := v.(string); ok {
-				headers[k] = vs
-			}
+	body := ""
+	if value, exists := args["body"]; exists {
+		var ok bool
+		body, ok = value.(string)
+		if !ok {
+			return nil, "", 0, fmt.Errorf("body must be a string")
 		}
 	}
-
-	timeoutSec := 30
-	if ts, ok := args["timeout_seconds"].(float64); ok && ts > 0 {
-		timeoutSec = int(ts)
+	if len(body) > snort.MaxBodyBytes {
+		return nil, "", 0, fmt.Errorf("body exceeds the 1 MiB inspection limit")
 	}
 
-	// 1. Build and Inspect HTTP request with Snort Engine
-	httpReq, err := http.NewRequestWithContext(ctx, method, rawURL, strings.NewReader(bodyStr))
+	timeout := 30 * time.Second
+	if value, exists := args["timeout_seconds"]; exists {
+		seconds, ok := value.(float64)
+		if !ok || math.IsNaN(seconds) || math.IsInf(seconds, 0) || seconds < 1 || seconds > 120 || math.Trunc(seconds) != seconds {
+			return nil, "", 0, fmt.Errorf("timeout_seconds must be an integer between 1 and 120")
+		}
+		timeout = time.Duration(seconds) * time.Second
+	}
+
+	req, err := http.NewRequestWithContext(ctx, method, rawURL, strings.NewReader(body))
 	if err != nil {
-		return &ToolCallResult{
-			IsError: true,
-			Content: []ToolContent{{Type: "text", Text: "Invalid HTTP request: " + err.Error()}},
-		}, nil
+		// net/http errors can include the URL, including query credentials.
+		return nil, "", 0, fmt.Errorf("invalid HTTP request parameters")
 	}
-
-	for k, v := range headers {
-		httpReq.Header.Set(k, v)
+	if value, exists := args["headers"]; exists {
+		headers, ok := value.(map[string]any)
+		if !ok {
+			return nil, "", 0, fmt.Errorf("headers must be an object containing string values")
+		}
+		if len(headers) > snort.MaxHeaders {
+			return nil, "", 0, fmt.Errorf("headers exceed the 128 header inspection limit")
+		}
+		headerBytes := 0
+		seen := make(map[string]bool, len(headers))
+		for name, value := range headers {
+			text, ok := value.(string)
+			if !ok {
+				return nil, "", 0, fmt.Errorf("invalid HTTP header name or value")
+			}
+			if err := httpguard.ValidateHeader(name, text); err != nil {
+				return nil, "", 0, err
+			}
+			headerBytes += len(name) + len(text) + 4
+			if headerBytes > snort.MaxHeaderBytes {
+				return nil, "", 0, fmt.Errorf("headers exceed the 64 KiB inspection limit")
+			}
+			key := strings.ToLower(name)
+			if seen[key] {
+				return nil, "", 0, fmt.Errorf("duplicate HTTP header names are not permitted")
+			}
+			seen[key] = true
+			req.Header.Set(name, text)
+		}
 	}
+	if err := httpguard.Prepare(req, body); err != nil {
+		return nil, "", 0, err
+	}
+	return req, body, timeout, nil
+}
 
-	match := s.engine.InspectHTTPRequest(httpReq, []byte(bodyStr))
+func (s *Server) inspectArguments(ctx context.Context, args map[string]any) (*http.Request, time.Duration, snort.MatchResult) {
+	if atomic.AddUint64(&s.inspectionAttempts, 1) > MaxSessionInspections {
+		return nil, 0, snort.MatchResult{Blocked: true, Action: snort.ActionBlock, Reason: "process inspection count budget exhausted"}
+	}
+	if atomic.LoadUint64(&s.responseBytes) >= MaxSessionBytes {
+		return nil, 0, snort.MatchResult{Blocked: true, Action: snort.ActionBlock, Reason: "process response byte budget exhausted"}
+	}
+	req, body, timeout, err := buildHTTPRequest(ctx, args)
+	if err != nil {
+		return nil, 0, snort.MatchResult{Blocked: true, Action: snort.ActionBlock, Reason: err.Error()}
+	}
+	inspectedBytes := len(req.URL.String()) + len(body)
+	for name, values := range req.Header {
+		for _, value := range values {
+			inspectedBytes += len(name) + len(value) + 4
+		}
+	}
+	if atomic.AddUint64(&s.inspectionBytes, uint64(inspectedBytes)) > MaxSessionBytes {
+		return nil, 0, snort.MatchResult{Blocked: true, Action: snort.ActionBlock, Reason: "process inspection byte budget exhausted"}
+	}
+	match := s.engine.InspectHTTPRequest(req, []byte(body))
+	if !match.Blocked && s.egressPolicy != nil {
+		if err := s.egressPolicy.CheckURL(req.URL.String()); err != nil {
+			return nil, 0, snort.MatchResult{Blocked: true, Action: snort.ActionBlock, Reason: "destination is not allowed by the configured egress policy"}
+		}
+	}
+	return req, timeout, match
+}
+
+func toolError(message string) (*ToolCallResult, *JSONRPCError) {
+	return &ToolCallResult{IsError: true, Content: []ToolContent{{Type: "text", Text: message}}}, nil
+}
+
+func (s *Server) executeHTTPRequest(ctx context.Context, args map[string]any) (*ToolCallResult, *JSONRPCError) {
+	// Stdio is serial; retain that invariant for trusted concurrent embedders so
+	// response budgets cannot be oversubscribed by parallel body readers.
+	s.transportMu.Lock()
+	defer s.transportMu.Unlock()
+	atomic.AddUint64(&s.stats.TotalInspected, 1)
+	httpReq, timeout, match := s.inspectArguments(ctx, args)
 	if match.Blocked {
 		atomic.AddUint64(&s.stats.TotalBlocked, 1)
-		slog.Warn("outbound request blocked by snort rule",
-			"url", rawURL,
-			"method", method,
-			"sid", match.MatchedRule.SID,
-			"reason", match.Reason,
-		)
-		return &ToolCallResult{
-			IsError: true,
-			Content: []ToolContent{{
-				Type: "text",
-				Text: fmt.Sprintf("SECURITY VIOLATION: Outbound request blocked by policy. Reason: %s (Action: %s)",
-					match.Reason, match.Action),
-			}},
-		}, nil
+		// Record policy identifiers only; URLs, bodies and headers may contain
+		// secrets even when the request is blocked.
+		sid := 0
+		if match.MatchedRule != nil {
+			sid = match.MatchedRule.SID
+		}
+		slog.Warn("outbound request blocked by security policy", "sid", sid, "validation_failure", match.MatchedRule == nil)
+		return toolError(fmt.Sprintf("SECURITY VIOLATION: Outbound request blocked by policy. Reason: %s (Action: %s)", match.Reason, match.Action))
 	}
-
+	if match.Matched && match.MatchedRule != nil {
+		slog.Info("outbound request matched security advisory", "sid", match.MatchedRule.SID, "action", match.Action)
+	}
 	atomic.AddUint64(&s.stats.TotalPassed, 1)
 
-	// 2. Execute the request safely
-	reqCtx, cancel := context.WithTimeout(ctx, time.Duration(timeoutSec)*time.Second)
+	reqCtx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
 	httpReq = httpReq.WithContext(reqCtx)
-
 	resp, err := s.httpClient.Do(httpReq)
 	if err != nil {
-		return &ToolCallResult{
-			IsError: true,
-			Content: []ToolContent{{Type: "text", Text: "Request failed: " + err.Error()}},
-		}, nil
+		return toolError("Request failed during HTTP transport")
 	}
 	defer resp.Body.Close()
 
-	respBytes, err := io.ReadAll(io.LimitReader(resp.Body, MaxResponseBodyBytes))
+	// Read one extra byte to distinguish a complete response from truncation.
+	remaining := int64(MaxSessionBytes) - int64(atomic.LoadUint64(&s.responseBytes))
+	limit := int64(MaxResponseBodyBytes)
+	if remaining < limit {
+		limit = remaining
+	}
+	if limit < 0 {
+		return toolError("Process response byte budget exhausted")
+	}
+	respBytes, err := io.ReadAll(io.LimitReader(resp.Body, limit+1))
+	if atomic.AddUint64(&s.responseBytes, uint64(len(respBytes))) > MaxSessionBytes {
+		return toolError("Process response byte budget exhausted")
+	}
 	if err != nil {
-		return &ToolCallResult{
-			IsError: true,
-			Content: []ToolContent{{Type: "text", Text: "Reading response body failed: " + err.Error()}},
-		}, nil
+		return toolError("Reading response body failed")
+	}
+	if len(respBytes) > MaxResponseBodyBytes {
+		return toolError("Response body exceeds the 10 MiB limit")
+	}
+	if !utf8.Valid(respBytes) {
+		return toolError("Response body is not UTF-8 text")
 	}
 
-	// Format response output
-	outHeaders := make(map[string]string)
+	outHeaders := make(map[string]any)
 	for k, v := range resp.Header {
-		outHeaders[k] = strings.Join(v, ", ")
+		if strings.EqualFold(k, "Set-Cookie") {
+			outHeaders[k] = v
+		} else {
+			outHeaders[k] = strings.Join(v, ", ")
+		}
 	}
-
 	summary := map[string]any{
-		"status_code": resp.StatusCode,
-		"status":      resp.Status,
-		"headers":     outHeaders,
-		"body":        string(respBytes),
+		"status_code":   resp.StatusCode,
+		"status":        resp.Status,
+		"headers":       outHeaders,
+		"header_values": resp.Header,
+		"body":          string(respBytes),
 	}
 	encoded, _ := json.MarshalIndent(summary, "", "  ")
-
 	return &ToolCallResult{
 		IsError: resp.StatusCode >= 400,
-		Content: []ToolContent{{
-			Type: "text",
-			Text: string(encoded),
-		}},
+		Content: []ToolContent{{Type: "text", Text: string(encoded)}},
 	}, nil
 }
 
 func (s *Server) executeCheckPayload(args map[string]any) (*ToolCallResult, *JSONRPCError) {
-	rawURL, _ := args["url"].(string)
-	method := "GET"
-	if m, ok := args["method"].(string); ok && m != "" {
-		method = strings.ToUpper(m)
+	_, _, match := s.inspectArguments(context.Background(), args)
+	res := map[string]any{"blocked": match.Blocked, "matched": match.Matched, "dns_checked": false}
+	if match.Reason != "" {
+		res["reason"] = match.Reason
 	}
-	bodyStr, _ := args["body"].(string)
-
-	headers := make(map[string]string)
-	if h, ok := args["headers"].(map[string]any); ok {
-		for k, v := range h {
-			if vs, ok := v.(string); ok {
-				headers[k] = vs
-			}
-		}
-	}
-
-	httpReq, err := http.NewRequest(method, rawURL, strings.NewReader(bodyStr))
-	if err != nil {
-		return &ToolCallResult{
-			IsError: true,
-			Content: []ToolContent{{Type: "text", Text: "Invalid URL or request parameters: " + err.Error()}},
-		}, nil
-	}
-	for k, v := range headers {
-		httpReq.Header.Set(k, v)
-	}
-
-	match := s.engine.InspectHTTPRequest(httpReq, []byte(bodyStr))
-	res := map[string]any{
-		"blocked": match.Blocked,
-		"matched": match.Matched,
+	if match.Blocked || match.Matched {
+		res["action"] = string(match.Action)
 	}
 	if match.MatchedRule != nil {
 		res["rule_sid"] = match.MatchedRule.SID
 		res["rule_msg"] = match.MatchedRule.Message
 		res["classtype"] = match.MatchedRule.ClassType
-		res["action"] = string(match.Action)
 	}
-
 	encoded, _ := json.MarshalIndent(res, "", "  ")
-	return &ToolCallResult{
-		Content: []ToolContent{{Type: "text", Text: string(encoded)}},
-	}, nil
+	return &ToolCallResult{Content: []ToolContent{{Type: "text", Text: string(encoded)}}}, nil
 }
 
 func (s *Server) executeGetStats() (*ToolCallResult, *JSONRPCError) {
 	stats := map[string]any{
-		"total_inspected": atomic.LoadUint64(&s.stats.TotalInspected),
-		"total_passed":    atomic.LoadUint64(&s.stats.TotalPassed),
-		"total_blocked":   atomic.LoadUint64(&s.stats.TotalBlocked),
-		"rules_loaded":    s.engine.RuleCount(),
+		"total_inspected":     atomic.LoadUint64(&s.stats.TotalInspected),
+		"total_passed":        atomic.LoadUint64(&s.stats.TotalPassed),
+		"total_blocked":       atomic.LoadUint64(&s.stats.TotalBlocked),
+		"rules_loaded":        s.engine.RuleCount(),
+		"inspection_attempts": atomic.LoadUint64(&s.inspectionAttempts),
+		"inspection_bytes":    atomic.LoadUint64(&s.inspectionBytes),
+		"response_bytes":      atomic.LoadUint64(&s.responseBytes),
 	}
 	encoded, _ := json.MarshalIndent(stats, "", "  ")
 	return &ToolCallResult{
@@ -455,51 +600,55 @@ func (s *Server) toolDefinitions() []map[string]any {
 	return []map[string]any{
 		{
 			"name":        "http_request",
-			"description": "Proxies outbound HTTP/API requests with Snort-based intrusion detection and exploit protection. Replaces raw curl, socket, or python HTTP calls to 3rd-party servers.",
+			"description": "Sends inspected HTTP requests to administrator-approved origins under strict protocol, destination and resource policies. Other tools require independent network confinement.",
 			"inputSchema": map[string]any{
 				"type": "object",
 				"properties": map[string]any{
 					"url": map[string]any{
 						"type":        "string",
-						"description": "The destination URL to request (e.g. https://api.anthropic.com/v1/messages or https://api.github.com/repos)",
+						"description": "Absolute ASCII HTTP(S) URL on an administrator-approved origin; maximum 16 KiB, no userinfo or fragments",
 					},
 					"method": map[string]any{
 						"type":        "string",
-						"description": "HTTP method (GET, POST, PUT, DELETE, PATCH, HEAD)",
-						"enum":        []string{"GET", "POST", "PUT", "DELETE", "PATCH", "HEAD"},
+						"description": "HTTP method (GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS)",
+						"enum":        []string{"GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"},
 						"default":     "GET",
 					},
 					"headers": map[string]any{
 						"type":                 "object",
-						"description":          "HTTP headers as key-value pairs (e.g. Authorization, Content-Type)",
+						"description":          "ASCII HTTP header values; up to 128 fields, 8 KiB each, 64 KiB total. Framing, routing and browser-context headers are managed by policy.",
 						"additionalProperties": map[string]any{"type": "string"},
 					},
 					"body": map[string]any{
 						"type":        "string",
-						"description": "Request body payload for POST/PUT/PATCH requests",
+						"description": "UTF-8 plain text, JSON or form data, maximum 1 MiB; GET/HEAD bodies and compressed or opaque media are unsupported",
 					},
 					"timeout_seconds": map[string]any{
 						"type":        "integer",
-						"description": "Request timeout in seconds (default: 30)",
+						"description": "Request timeout in seconds, between 1 and 120 (default: 30)",
 						"default":     30,
+						"minimum":     1,
+						"maximum":     120,
 					},
 				},
-				"required": []string{"url"},
+				"required":             []string{"url"},
+				"additionalProperties": false,
 			},
 		},
 		{
 			"name":        "check_security_payload",
-			"description": "Pre-flight diagnostic tool to inspect whether a URL, headers, or body violates Snort security rules without sending network traffic.",
+			"description": "Checks request syntax, signatures and configured origins without network traffic; DNS and TLS are checked only during dispatch. Diagnostics consume inspection capacity.",
 			"inputSchema": map[string]any{
 				"type": "object",
 				"properties": map[string]any{
 					"url": map[string]any{
 						"type":        "string",
-						"description": "URL to inspect",
+						"description": "Absolute HTTP(S) URL to inspect (maximum 16 KiB, no userinfo)",
 					},
 					"method": map[string]any{
 						"type":    "string",
 						"default": "GET",
+						"enum":    []string{"GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"},
 					},
 					"headers": map[string]any{
 						"type":                 "object",
@@ -508,16 +657,19 @@ func (s *Server) toolDefinitions() []map[string]any {
 					"body": map[string]any{
 						"type": "string",
 					},
+					"timeout_seconds": map[string]any{"type": "integer", "minimum": 1, "maximum": 120, "default": 30},
 				},
-				"required": []string{"url"},
+				"required":             []string{"url"},
+				"additionalProperties": false,
 			},
 		},
 		{
 			"name":        "get_security_stats",
 			"description": "Returns operational statistics on requests inspected, passed, and blocked by Snort rules.",
 			"inputSchema": map[string]any{
-				"type":       "object",
-				"properties": map[string]any{},
+				"type":                 "object",
+				"properties":           map[string]any{},
+				"additionalProperties": false,
 			},
 		},
 	}

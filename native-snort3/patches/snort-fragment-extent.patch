@@ -1,0 +1,246 @@
+--- a/src/stream/ip/ip_session.h
++++ b/src/stream/ip/ip_session.h
+@@ -23,6 +23,7 @@
+ #include "stream/ip/ip_module.h"
+ #include "ipv4_fragment_options.h"
+ #include "ipv4_fragment_prefix.h"
++#include "fragment_extent.h"
+ 
+ struct Fragment;
+ struct SavedIp6Prefix;
+@@ -67,6 +68,7 @@
+     ax_fragment::CopiedOptions copied_ip_options;
+     bool ip_options_first_seen;
+     ax_fragment::Ip4Prefix ip4_prefix;
++    ax_fragment::Extent extent;
+     SavedIp6Prefix* ip6_prefix;
+     uint8_t ip6_ecn_seen;
+     bool quarantine_only; // No fragment of this tracker was admitted.
+--- a/src/stream/ip/ip_defrag.cc
++++ b/src/stream/ip/ip_defrag.cc
+@@ -109,6 +109,7 @@
+ #define FRAG_PREFIX_BAD     0x00000200
+ #define FRAG_ECN_BAD        0x00000400
+ #define FRAG_OVERLAP_BAD    0x00000800
++#define FRAG_EXTENT_BAD     0x00001000
+ 
+ /* return values for insert() */
+ #define FRAG_INSERT_OK          0
+@@ -122,6 +123,7 @@
+ #define FRAG_INSERT_RESOURCE_LIMIT 8
+ #define FRAG_INSERT_PREFIX_INVALID 9
+ #define FRAG_INSERT_OVERLAP_REJECTED 10
++#define FRAG_INSERT_EXTENT_INVALID 11
+ 
+ /* return values for FragCheckFirstLast() */
+ #define FRAG_FIRSTLAST_OK       0
+@@ -275,6 +277,16 @@
+ {
+     DetectionEngine::queue_event(GID_DEFRAG, DEFRAG_MIN_TTL_EVASION);
+     ip_stats.alerts++;
++}
++
++static bool ObserveFragmentExtent(FragTracker* ft, Packet* p, uint16_t offset)
++{
++    if (ax_fragment::observe_extent(ft->extent, offset, p->dsize,
++        p->ptrs.decode_flags & DECODE_MF))
++        return true;
++    EventAnomOversize(ft->engine);
++    ft->frag_flags |= FRAG_BAD | FRAG_DROP_FRAGMENTS | FRAG_EXTENT_BAD;
++    return false;
+ }
+ 
+ static inline bool frag_timed_out(
+@@ -501,51 +513,12 @@
+  */
+ static inline int FragIsComplete(FragTracker* ft)
+ {
+-    debug_log(stream_ip_trace, nullptr, "[$] Checking completion criteria\n");
+-
+-    /*
+-     * check to see if the first and last frags have arrived
+-     */
+-    if ((ft->frag_flags & FRAG_GOT_FIRST) &&
+-        (ft->frag_flags & FRAG_GOT_LAST))
+-    {
+-        debug_log(stream_ip_trace, nullptr, "   Got First and Last frags\n");
+-
+-        /*
+-         * if we've accumulated enough data to match the calculated size
+-         * of the defragged packet, return 1
+-         */
+-        if (ft->frag_bytes == ft->calculated_size)
+-        {
+-            debug_log(stream_ip_trace, nullptr, "   [!] frag_bytes = calculated_size!\n");
+-
+-            ip_stats.trackers_completed++;
+-
+-            return 1;
+-        }
+-
+-        if (ft->frag_bytes > ft->calculated_size)
+-        {
+-            debug_log(stream_ip_trace, nullptr, "   [!] frag_bytes > calculated_size!\n");
+-
+-            ip_stats.trackers_completed++;
+-
+-            return 1;
+-        }
+-
+-        debug_logf(stream_ip_trace, nullptr, "   Calc size (%u) != frag bytes (%u)\n",
+-            ft->calculated_size, ft->frag_bytes);
+-
+-        /*
+-         * no dice
+-         */
++    if (!(ft->frag_flags & FRAG_GOT_FIRST) || !(ft->frag_flags & FRAG_GOT_LAST) ||
++        !ft->extent.final_seen || ft->calculated_size != ft->extent.final_end ||
++        !ax_fragment::complete_ranges(ft->fraglist, ft->extent.final_end))
+         return 0;
+-    }
+-
+-    debug_logf(stream_ip_trace, nullptr, "   Missing First or Last frags (frag_flags: 0x%X)\n",
+-        ft->frag_flags);
+-
+-    return 0;
++    ip_stats.trackers_completed++;
++    return 1;
+ }
+ 
+ /*
+@@ -796,6 +769,7 @@
+     ft->ip6_prefix = nullptr;
+     ft->ip6_ecn_seen = 0;
+     ft->ip4_prefix = {};
++    ft->extent = {};
+     ft->ip_options_len = 0;
+     if (ft->ip_options_data)
+     {
+@@ -811,7 +785,12 @@
+     DetectionEngine::disable_content(p);
+     p->active->daq_drop_packet(p);
+     ip_stats.drops++;
+-    if (ft->frag_flags & FRAG_OVERLAP_BAD)
++    if (ft->frag_flags & FRAG_EXTENT_BAD)
++    {
++        p->active->set_drop_reason("ip_reassembly_extent");
++        ip_stats.extent_drops++;
++    }
++    else if (ft->frag_flags & FRAG_OVERLAP_BAD)
+     {
+         p->active->set_drop_reason("ip_reassembly_overlap");
+         ip_stats.overlap_drops++;
+@@ -984,6 +963,7 @@
+          */
+         switch (insert_return)
+         {
++        case FRAG_INSERT_EXTENT_INVALID:
+         case FRAG_INSERT_OVERLAP_REJECTED:
+         case FRAG_INSERT_PREFIX_INVALID:
+             delete_tracker(ft);
+@@ -1144,6 +1124,9 @@
+ 
+     if (p->is_ip6() && !CaptureIp6Prefix(ft, p, net_frag_offset))
+         return FRAG_INSERT_PREFIX_INVALID;
++
++    if (!ObserveFragmentExtent(ft, p, net_frag_offset))
++        return FRAG_INSERT_EXTENT_INVALID;
+ 
+     /*
+      * Check to see if this fragment is the first or last one and
+@@ -1878,6 +1861,13 @@
+         return 1;
+     }
+ 
++    if (!ObserveFragmentExtent(ft, p, frag_off))
++    {
++        delete_tracker(ft);
++        ip_stats.discards++;
++        return 1;
++    }
++
+     /* initialize the fragment list */
+     ft->fraglist = nullptr;
+ 
+--- a/src/stream/ip/ip_session.cc
++++ b/src/stream/ip/ip_session.cc
+@@ -72,6 +72,7 @@
+     { CountType::SUM, "prefix_drops", "fragments rejected because reconstruction headers or size are invalid" },
+     { CountType::SUM, "ecn_drops", "fragments rejected because CE and Not-ECT conflict" },
+     { CountType::SUM, "overlap_drops", "fragments rejected after a prohibited overlap" },
++    { CountType::SUM, "extent_drops", "fragments rejected after contradictory datagram length" },
+     { CountType::END, nullptr, nullptr }
+ };
+ 
+--- a/src/stream/ip/ip_module.h
++++ b/src/stream/ip/ip_module.h
+@@ -88,6 +88,7 @@
+     PegCount prefix_drops;
+     PegCount ecn_drops;
+     PegCount overlap_drops;
++    PegCount extent_drops;
+ };
+ 
+ extern const PegInfo ip_pegs[];
+--- /dev/null
++++ b/src/stream/ip/fragment_extent.h
+@@ -0,0 +1,59 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#ifndef AX_FRAGMENT_EXTENT_H
++#define AX_FRAGMENT_EXTENT_H
++
++#include <cstdint>
++
++namespace ax_fragment
++{
++// Trivial storage: the native tracker is initialized and released with memset.
++struct Extent
++{
++    uint32_t more_end;
++    uint32_t final_end;
++    bool final_seen;
++};
++
++// A final fragment fixes the length. Every non-final fragment must end before
++// that length. Reject contradictory declarations without mutating saved state.
++// Offset alignment and version-specific header/size checks are separate gates.
++inline bool observe_extent(Extent& state, uint16_t offset, uint16_t length, bool more)
++{
++    const uint32_t end = static_cast<uint32_t>(offset) + length;
++    if (!length || end > 65535 ||
++        (state.final_seen && (more ? end >= state.final_end : end != state.final_end)) ||
++        (!more && state.more_end >= end))
++        return false;
++    if (more)
++    {
++        if (end > state.more_end)
++            state.more_end = end;
++    }
++    else
++    {
++        state.final_end = end;
++        state.final_seen = true;
++    }
++    return true;
++}
++
++// Byte totals cannot establish coverage: bytes beyond the final boundary can
++// compensate for a hole. Require the ordered native list to cover every byte
++// exactly once. A cycle or zero-length node cannot make this scan unbounded.
++template <typename Fragment>
++inline bool complete_ranges(const Fragment* fragment, uint32_t end)
++{
++    if (!fragment || !end || end > 65535)
++        return false;
++    uint32_t position = 0;
++    for (; fragment; fragment = fragment->next)
++    {
++        const uint32_t size = fragment->size;
++        if (fragment->offset != position || !size || size > end - position)
++            return false;
++        position += size;
++    }
++    return position == end;
++}
++}
++#endif

@@ -1,0 +1,193 @@
+--- a/src/codecs/ip/cd_tcp.cc
++++ b/src/codecs/ip/cd_tcp.cc
+@@ -37,6 +37,7 @@
+ 
+ #include "checksum.h"
+ #include "ipv6_checksum_destination.h"
++#include "ipv4_checksum_destination.h"
+ 
+ using namespace snort;
+ 
+@@ -176,7 +177,11 @@
+ 
+     checksum::Pseudoheader ph;
+     ph.hdr.sip = ip4h->get_src();
+-    ph.hdr.dip = ip4h->get_dst();
++    const auto* final = ax_checksum::ipv4_destination(
++        reinterpret_cast<const uint8_t*>(ip4h), raw.data);
++    if (!final)
++        return false;
++    memcpy(&ph.hdr.dip, final, sizeof(ph.hdr.dip));
+     ph.hdr.zero = 0;
+     ph.hdr.protocol = IpProtocol::TCP;
+     ph.hdr.len = htons((uint16_t) raw.len);
+@@ -225,8 +230,18 @@
+         return false;
+     }
+ 
++    if (snort.ip_api.is_ip4() && snort.ip_api.get_ip4h()->has_options() &&
++        !ax_checksum::ipv4_destination(
++            reinterpret_cast<const uint8_t*>(snort.ip_api.get_ip4h()), raw.data))
++    {
++        codec_event(codec, DECODE_IPV4OPT_BADLEN);
++        return false;
++    }
++
+     if (snort::get_network_policy()->tcp_checksums() &&
+-        (codec.is_cooked() || !valid_checksum_from_daq(raw)))
++        (codec.is_cooked() ||
++         (snort.ip_api.is_ip4() && snort.ip_api.get_ip4h()->has_options()) ||
++         !valid_checksum_from_daq(raw)))
+     {
+         PegCount* bad_cksum_cnt;
+         bool valid;
+@@ -738,6 +753,9 @@
+             const ip::IP4Hdr* const ip4h = api.get_ip4h();
+             ps.hdr.sip = ip4h->get_src();
+             ps.hdr.dip = ip4h->get_dst();
++            if (const auto* final = ax_checksum::ipv4_destination(
++                    reinterpret_cast<const uint8_t*>(ip4h), raw_pkt))
++                memcpy(&ps.hdr.dip, final, sizeof(ps.hdr.dip));
+             ps.hdr.zero = 0;
+             ps.hdr.protocol = IpProtocol::TCP;
+             ps.hdr.len = htons((uint16_t)updated_len);
+--- a/src/codecs/ip/cd_udp.cc
++++ b/src/codecs/ip/cd_udp.cc
+@@ -35,6 +35,7 @@
+ 
+ #include "checksum.h"
+ #include "ipv6_checksum_destination.h"
++#include "ipv4_checksum_destination.h"
+ 
+ using namespace snort;
+ 
+@@ -282,7 +283,11 @@
+ 
+     checksum::Pseudoheader ph;
+     ph.hdr.sip = ip4h->get_src();
+-    ph.hdr.dip = ip4h->get_dst();
++    const auto* final = ax_checksum::ipv4_destination(
++        reinterpret_cast<const uint8_t*>(ip4h), raw.data);
++    if (!final)
++        return false;
++    memcpy(&ph.hdr.dip, final, sizeof(ph.hdr.dip));
+     ph.hdr.zero = 0;
+     ph.hdr.protocol = IpProtocol::UDP;
+     ph.hdr.len = htons((uint16_t) raw.len);
+@@ -367,8 +372,18 @@
+         return false;
+     }
+ 
++    if (snort.ip_api.is_ip4() && snort.ip_api.get_ip4h()->has_options() &&
++        !ax_checksum::ipv4_destination(
++            reinterpret_cast<const uint8_t*>(snort.ip_api.get_ip4h()), raw.data))
++    {
++        codec_event(codec, DECODE_IPV4OPT_BADLEN);
++        return false;
++    }
++
+     if (snort::get_network_policy()->udp_checksums() &&
+-        (codec.is_cooked() || !valid_checksum_from_daq(raw)))
++        (codec.is_cooked() ||
++         (snort.ip_api.is_ip4() && snort.ip_api.get_ip4h()->has_options()) ||
++         !valid_checksum_from_daq(raw)))
+     {
+         PegCount* bad_cksum_cnt;
+         bool valid;
+@@ -571,6 +586,9 @@
+             const ip::IP4Hdr* const ip4h = ip_api.get_ip4h();
+             ps.hdr.sip = ip4h->get_src();
+             ps.hdr.dip = ip4h->get_dst();
++            if (const auto* final = ax_checksum::ipv4_destination(
++                    reinterpret_cast<const uint8_t*>(ip4h), raw_pkt))
++                memcpy(&ps.hdr.dip, final, sizeof(ps.hdr.dip));
+             ps.hdr.zero = 0;
+             ps.hdr.protocol = IpProtocol::UDP;
+             ps.hdr.len = htons((uint16_t)updated_len);
+--- /dev/null
++++ b/src/codecs/ip/ipv4_checksum_destination.h
+@@ -0,0 +1,84 @@
++// Local Snort 3.12.2.0 decoder repair. SPDX-License-Identifier: GPL-2.0-only
++#ifndef AX_IPV4_CHECKSUM_DESTINATION_H
++#define AX_IPV4_CHECKSUM_DESTINATION_H
++
++#include <cstddef>
++#include <cstdint>
++
++namespace ax_checksum
++{
++// Read only the original IPv4 options span, never transport payload. The route
++// slots contain four-byte addresses. An active pointer selects a remaining
++// slot; its final slot is the ultimate destination. When the pointer exceeds
++// the option length, the route is complete and the base destination applies.
++// RFC 791 section 3.1; RFC 1122 section 3.2.1.8(c); RFC 9293 section 3.9.2.1.
++// False means malformed/ambiguous framing, not an absent route. The caller
++// must not silently use the base address after that result.
++inline bool ipv4_route_destination(const std::uint8_t* options, std::size_t size,
++    const std::uint8_t*& final)
++{
++    final = nullptr;
++    if (size > 40 || size % 4 || (!options && size))
++        return false;
++    bool route_seen = false;
++    std::size_t offset = 0;
++    while (offset < size)
++    {
++        const auto type = options[offset];
++        if (type == 0) // EOL; original padding validation is a separate rule.
++            return true;
++        if (type == 1)
++        {
++            ++offset;
++            continue;
++        }
++        if (size - offset < 2)
++            return false;
++        const std::size_t length = options[offset + 1];
++        if (length < 2 || length > size - offset)
++            return false;
++        if (type == 131 || type == 137) // LSRR or SSRR, never both.
++        {
++            if (route_seen || length < 3 || (length - 3) % 4)
++                return false;
++            route_seen = true;
++            const auto pointer = options[offset + 2];
++            if (pointer < 4)
++                return false;
++            if (pointer <= length)
++            {
++                if ((pointer - 4) % 4 || length - pointer + 1 < 4)
++                    return false;
++                final = options + offset + length - 4;
++            }
++        }
++        offset += length;
++    }
++    return true;
++}
++
++// Snort's selected IPv4 header and current transport layer must belong to the
++// SAME packet buffer. Decode and encode_update supply that invariant. These
++// checks bound the original IHL span; they do not establish buffer ownership.
++// Intervening headers (e.g. AH) are not searched for route-like bytes.
++// nullptr means invalid; a valid result always points at four address bytes.
++inline const std::uint8_t* ipv4_destination(const std::uint8_t* ip4,
++    const std::uint8_t* upper)
++{
++    if (!ip4 || !upper)
++        return nullptr;
++    const auto begin = reinterpret_cast<std::uintptr_t>(ip4);
++    const auto end = reinterpret_cast<std::uintptr_t>(upper);
++    if (end < begin || end - begin < 20 || end - begin > 65535)
++        return nullptr;
++    const auto length = static_cast<std::size_t>(ip4[0] & 15) * 4;
++    const auto declared = (static_cast<unsigned>(ip4[2]) << 8) | ip4[3];
++    if ((ip4[0] >> 4) != 4 || length < 20 || length > end - begin || declared < end - begin)
++        return nullptr;
++    const std::uint8_t* final;
++    if (!ipv4_route_destination(ip4 + 20, length - 20, final))
++        return nullptr;
++    return final ? final : ip4 + 16;
++}
++}
++#endif

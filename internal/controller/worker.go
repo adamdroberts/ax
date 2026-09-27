@@ -106,16 +106,7 @@ func (w *Worker) Run(ctx context.Context) error {
 
 func (w *Worker) processEvent(ctx context.Context, ev store.TaskEvent) error {
 	if ev.Action == "delete" {
-		slog.Info("handling task deletion event", "atespace", ev.Atespace, "name", ev.Name)
-		if err := w.reconciler.ReconcileDelete(ctx, ev.Atespace, ev.Name); err != nil {
-			// Leave the record in Terminating so the failure is visible; re-running
-			// `ax delete` republishes the event and retries the cleanup.
-			return fmt.Errorf("cleaning up task %s/%s: %w", ev.Atespace, ev.Name, err)
-		}
-		if err := w.store.DeleteTask(ctx, ev.Atespace, ev.Name); err != nil {
-			return fmt.Errorf("removing task record %s/%s: %w", ev.Atespace, ev.Name, err)
-		}
-		return nil
+		return w.processDeletion(ctx, ev)
 	}
 
 	task, err := w.store.GetTask(ctx, ev.Atespace, ev.Name)
@@ -125,6 +116,12 @@ func (w *Worker) processEvent(ctx context.Context, ev store.TaskEvent) error {
 			return nil
 		}
 		return fmt.Errorf("fetching task %s/%s: %w", ev.Atespace, ev.Name, err)
+	}
+	// A gateway change or older task update may already have queued a
+	// reconciliation before deletion was requested. Deletion takes precedence;
+	// never resume an actor whose persisted task is now terminating.
+	if task.GetStatus().GetPhase() == v1alpha1.PhaseTerminating {
+		return w.processDeletion(ctx, ev)
 	}
 
 	var gw *v1alpha1.Gateway
@@ -163,5 +160,18 @@ func (w *Worker) processEvent(ctx context.Context, ev store.TaskEvent) error {
 		return fmt.Errorf("updating task status %s/%s: %w", task.Metadata.Atespace, task.Metadata.Name, err)
 	}
 
+	return nil
+}
+
+func (w *Worker) processDeletion(ctx context.Context, ev store.TaskEvent) error {
+	slog.Info("handling task deletion event", "atespace", ev.Atespace, "name", ev.Name)
+	if err := w.reconciler.ReconcileDelete(ctx, ev.Atespace, ev.Name); err != nil {
+		// Leave the record in Terminating so the failure is visible; re-running
+		// `ax delete` republishes the event and retries the cleanup.
+		return fmt.Errorf("cleaning up task %s/%s: %w", ev.Atespace, ev.Name, err)
+	}
+	if err := w.store.DeleteTask(ctx, ev.Atespace, ev.Name); err != nil {
+		return fmt.Errorf("removing task record %s/%s: %w", ev.Atespace, ev.Name, err)
+	}
 	return nil
 }

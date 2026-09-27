@@ -22,10 +22,22 @@ import threading
 
 
 class MockHTTPHandler(BaseHTTPRequestHandler):
+    protocol_version = "HTTP/1.1"
+    redirect_target_hits = 0
+
     def do_GET(self):
+        if self.path == "/redirect":
+            self.send_response(302)
+            self.send_header("Location", "/redirect-target")
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
+        if self.path == "/redirect-target":
+            type(self).redirect_target_hits += 1
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
         self.send_header("X-Mock-Server", "Active")
+        self.send_header("Content-Length", str(len(b'{"message": "legitimate_success"}')))
         self.end_headers()
         self.wfile.write(b'{"message": "legitimate_success"}')
 
@@ -34,6 +46,7 @@ class MockHTTPHandler(BaseHTTPRequestHandler):
         _ = self.rfile.read(content_length)
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(b'{"status": "created"}')))
         self.end_headers()
         self.wfile.write(b'{"status": "created"}')
 
@@ -280,41 +293,115 @@ class TestAXMCPProxy(unittest.TestCase):
         self.assertGreaterEqual(stats["total_blocked"], 1)
         self.assertGreaterEqual(stats["rules_loaded"], 10)
 
-    def test_live_proxy_forwarding(self):
-        from unittest.mock import patch, MagicMock
+    def make_server(self):
         sys.path.insert(0, "cmd/ax-mcp-proxy")
         from ax_mcp_proxy import SnortEngine, MCPServer
-
         engine = SnortEngine()
-        engine.load_rules('drop tcp any any -> any any (msg:"Test Block"; content:"evil_string"; sid:999999; rev:1;)\n')
-        server = MCPServer(engine)
-
-        mock_resp = MagicMock()
-        mock_resp.status = 200
-        mock_resp.headers = {"Content-Type": "application/json", "X-Mock-Server": "Active"}
-        mock_resp.read.return_value = b'{"message": "legitimate_success"}'
-        mock_resp.__enter__.return_value = mock_resp
-
+        engine.load_rules('drop tcp any any -> any any (content:"evil_string"; sid:999999; rev:1;)')
+        import urllib.request
+        from ax_mcp_proxy import NoRedirectHandler
+        server = MCPServer(engine, opener=urllib.request.build_opener(urllib.request.ProxyHandler({}), NoRedirectHandler()))
         captured = []
         server._send_response = lambda req_id, result: captured.append(result)
+        return server, captured
 
-        with patch("urllib.request.urlopen", return_value=mock_resp):
-            server._execute_http_request(
-                req_id=40,
-                args={
-                    "url": "https://api.github.com/repos/google/ax",
-                    "method": "GET",
-                    "headers": {"Accept": "application/json"},
-                },
-            )
-
+    def test_live_proxy_forwarding(self):
+        server, captured = self.make_server()
+        server._execute_http_request(40, {"url": f"http://127.0.0.1:{self.port}/safe"})
         self.assertEqual(len(captured), 1)
-        res = captured[0]
-        self.assertFalse(res.get("isError"))
-        data = json.loads(res["content"][0]["text"])
-        self.assertEqual(data["status_code"], 200)
-        self.assertIn("legitimate_success", data["body"])
-        self.assertEqual(data["headers"].get("X-Mock-Server"), "Active")
+        self.assertFalse(captured[0]["isError"])
+        result = json.loads(captured[0]["content"][0]["text"])
+        self.assertEqual(result["status_code"], 200)
+        self.assertIn("legitimate_success", result["body"])
+        self.assertEqual(result["headers"].get("X-Mock-Server"), "Active")
+
+    def test_redirect_does_not_make_uninspected_request(self):
+        server, captured = self.make_server()
+        MockHTTPHandler.redirect_target_hits = 0
+        server._execute_http_request(41, {"url": f"http://127.0.0.1:{self.port}/redirect"})
+        self.assertFalse(captured[0]["isError"])
+        result = json.loads(captured[0]["content"][0]["text"])
+        self.assertEqual(result["status_code"], 302)
+        self.assertEqual(MockHTTPHandler.redirect_target_hits, 0)
+
+    def test_invalid_requests_never_reach_transport(self):
+        from unittest.mock import patch
+        cases = [
+            {"url": "file:///etc/passwd"},
+            {"url": "https://user:password@example.com/"},
+            {"url": "https://example.com/", "headers": {"Content-Encoding": "gzip"}},
+            {"url": "https://example.com/", "headers": {"X-Test": "ok\r\nInjected: yes"}},
+            {"url": "https://example.com/", "body": "x" * (1024 * 1024 + 1)},
+            {"url": "https://example.com/", "timeout_seconds": "nan"},
+            {"url": "https://example.com/", "headers": []},
+            {"url": "https://example.com/", "headers": {"Host": "169.254.169.254"}},
+            {"url": "https://example.com/", "headers": {"Transfer-Encoding": "chunked"}},
+            {"url": "https://example.com/", "timeout_seconds": 0.5},
+            {"url": "https://example.com/", "timeout_seconds": True},
+            {"url": "https://example.com/", "method": None},
+        ]
+        for args in cases:
+            with self.subTest(args=list(args)):
+                server, captured = self.make_server()
+                with patch.object(server.opener, "open") as opened:
+                    server._execute_http_request(42, args)
+                    opened.assert_not_called()
+                self.assertTrue(captured[0]["isError"])
+                self.assertEqual(server.stats["total_blocked"], 1)
+
+    def test_security_log_does_not_include_payload_or_url(self):
+        server, captured = self.make_server()
+        with self.assertLogs(level="WARNING") as logs:
+            server._execute_http_request(43, {"url": "https://example.com/?token=super-secret", "method": "POST", "body": "evil_string super-secret"})
+        self.assertNotIn("super-secret", "".join(logs.output))
+        self.assertNotIn("example.com", "".join(logs.output))
+
+    def test_alert_advisory_is_logged_without_payload(self):
+        server, captured = self.make_server()
+        server.engine.rules[0].action = "alert"
+        with self.assertLogs(level="INFO") as logs:
+            server._execute_http_request(45, {"url": f"http://127.0.0.1:{self.port}/safe?secret=super-secret", "method": "POST", "body": "evil_string super-secret"})
+        self.assertFalse(captured[0]["isError"])
+        self.assertIn("SID 999999 action alert", "".join(logs.output))
+        self.assertNotIn("super-secret", "".join(logs.output))
+        self.assertNotIn("127.0.0.1", "".join(logs.output))
+
+    def test_inspection_timeout_blocks_dispatch_and_diagnostics(self):
+        from unittest.mock import patch
+        import ax_mcp_proxy
+        server, captured = self.make_server()
+        with patch.object(server.engine, "inspect", side_effect=ax_mcp_proxy.InspectionBudgetError("Request exceeded inspection time limit")), patch.object(server.opener, "open") as opened:
+            server._execute_http_request(46, {"url": "https://example.com/"})
+            server._execute_check_payload(47, {"url": "https://example.com/"})
+            opened.assert_not_called()
+        self.assertTrue(captured[0]["isError"])
+        self.assertIn("inspection time limit", captured[0]["content"][0]["text"])
+        diagnostic = json.loads(captured[1]["content"][0]["text"])
+        self.assertTrue(diagnostic["blocked"])
+        self.assertFalse(diagnostic["matched"])
+        self.assertIn("inspection time limit", diagnostic["error"])
+
+    def test_error_responses_have_bounded_reads(self):
+        import io
+        import urllib.error
+        from unittest.mock import patch
+        import ax_mcp_proxy
+        server, captured = self.make_server()
+        stream = io.BytesIO(b"x" * 100)
+        response = urllib.error.HTTPError("https://example.com/", 500, "error", {}, stream)
+        with patch.object(ax_mcp_proxy, "MAX_RESPONSE_BYTES", 32), patch.object(server.opener, "open", side_effect=response):
+            server._execute_http_request(44, {"url": "https://example.com/"})
+        self.assertTrue(captured[0]["isError"])
+        self.assertIn("size limits", captured[0]["content"][0]["text"])
+
+    def test_custom_only_requires_explicit_rules(self):
+        proc = subprocess.run([sys.executable, "cmd/ax-mcp-proxy/ax_mcp_proxy.py", "--only-custom-rules"], input="", text=True, capture_output=True)
+        self.assertNotEqual(proc.returncode, 0)
+        self.assertIn("requires --rules", proc.stderr)
+
+    def test_nonobject_tool_arguments_rejected(self):
+        responses, _ = self.run_mcp_session([{"jsonrpc": "2.0", "id": 1, "method": "tools/call", "params": {"name": "http_request", "arguments": []}}])
+        self.assertEqual(responses[0]["error"]["code"], -32602)
 
 
 if __name__ == "__main__":

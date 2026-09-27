@@ -79,9 +79,7 @@ spec:
       protocol: HTTP
   egress:
     allowlist:
-      hosts:
-        - host: "*"
-          port: 443
+      hosts: [] # deny by default; review destinations before granting access
 ---
 apiVersion: ax.io/v1alpha1
 kind: Model

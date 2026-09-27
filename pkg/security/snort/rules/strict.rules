@@ -1,0 +1,48 @@
+# Copyright 2026 Google LLC
+# SPDX-License-Identifier: Apache-2.0
+#
+# AX request-inspection rules, written for the AX supported Snort-style subset.
+# These are original signatures, not an imported vendor or community ruleset.
+# Stable SID allocation: 1000001-1000060 historical baseline; 110xxxx default;
+# 120xxxx original strict-policy IDs; some now also provide default telemetry.
+# 91xxxxx imported Agent Guard IDs. A SID identifies one behavior, not a severity rank.
+#
+# Scope: requests visible to this HTTP proxy. TLS, DNS, local execution, responses,
+# arbitrary encodings, and authorized-looking abuse require separate controls.
+# Signatures cannot establish intent or completely prevent hostile agent actions.
+# BODY rules inspect request bodies; URI rules inspect destinations/path/query;
+# HEADER rules deliberately inspect headers. Secret patterns avoid auth headers.
+# Decoded matching is bounded by the engine. Base64 is not globally decoded.
+# Legacy regex wildcard spans are capped at 256 or 512 characters for predictable
+# Python matching cost. Separating an attack across larger spans can evade a SID.
+# Alerts preserve visibility for ambiguous prompts and ordinary administration.
+# Drops may match security research, quoted examples, or authorized operations;
+# tune by SID and use destination/tool authorization for enforcement boundaries.
+# Every SID has positive and benign near-miss fixtures in ../testdata/rule_cases.json.
+
+# Load this pack in addition to default only when these policy denials are intended.
+
+# --- STRICT Opt-in agent control and data egress policy; expect legitimate workflows to be denied ---
+drop tcp any any -> any any (msg:"STRICT Dynamic language execution option"; pcre:"/\b(python[23]?|ruby|perl|node)\s+(-c|-e)\s/i"; http_client_body; classtype:"policy-violation"; sid:1200107; rev:1;)
+drop tcp any any -> any any (msg:"STRICT Download command invocation"; pcre:"/\b(curl|wget)\s+(https?://|-[A-Za-z])/i"; http_client_body; classtype:"policy-violation"; sid:1200108; rev:1;)
+drop tcp any any -> any any (msg:"STRICT SSH remote shell invocation"; pcre:"/\bssh\s+(-[^\s]+\s+)*[^\s@]+@[^\s]+/i"; http_client_body; classtype:"policy-violation"; sid:1200109; rev:1;)
+drop tcp any any -> any any (msg:"STRICT SCP or rsync remote copy"; pcre:"/\b(scp|rsync)\s+.{0,160}[a-z0-9_.-]+@[a-z0-9_.-]+:/i"; http_client_body; classtype:"policy-violation"; sid:1200110; rev:1;)
+drop tcp any any -> any any (msg:"STRICT Netcat network connection tool"; pcre:"/\b(nc|ncat|netcat)\s+(-[^\s]+\s+)*[a-z0-9_.:-]+\s+\d{2,5}\b/i"; http_client_body; classtype:"policy-violation"; sid:1200111; rev:1;)
+drop tcp any any -> any any (msg:"STRICT Tunnel client invocation"; pcre:"/\b(ngrok\s+(http|tcp|start)|cloudflared\s+tunnel|chisel\s+(client|server))\b/i"; http_client_body; classtype:"policy-violation"; sid:1200112; rev:1;)
+drop tcp any any -> any any (msg:"STRICT SSH reverse port forwarding"; pcre:"/\bssh\s+.{0,120}-R\s*\S+/i"; http_client_body; classtype:"policy-violation"; sid:1200113; rev:1;)
+drop tcp any any -> any any (msg:"STRICT Package installation lifecycle execution"; pcre:"/\b(npm\s+(install|i|exec)|pnpm\s+(add|install|dlx)|yarn\s+(add|install|dlx)|pip[3]?\s+install)\b/i"; http_client_body; classtype:"policy-violation"; sid:1200114; rev:1;)
+drop tcp any any -> any any (msg:"STRICT Git push operation"; pcre:"/\bgit\s+push\b/i"; http_client_body; classtype:"policy-violation"; sid:1200115; rev:1;)
+drop tcp any any -> any any (msg:"STRICT PowerShell recursive deletion"; pcre:"/\bRemove-Item\b.{0,160}-Recurse\b/i"; http_client_body; classtype:"policy-violation"; sid:1200118; rev:1;)
+drop tcp any any -> any any (msg:"STRICT Sudo privilege escalation"; pcre:"/\bsudo\s+(-[^\s]+\s+)*[a-z/][^\s]*/i"; http_client_body; classtype:"policy-violation"; sid:1200119; rev:1;)
+drop tcp any any -> any any (msg:"STRICT Account management command"; pcre:"/\b(useradd|usermod|userdel|adduser|passwd)\s+/i"; http_client_body; classtype:"policy-violation"; sid:1200120; rev:1;)
+drop tcp any any -> any any (msg:"STRICT Kubernetes mutation command"; pcre:"/\bkubectl\s+(apply|create|delete|replace|patch|edit|exec|scale)\b/i"; http_client_body; classtype:"policy-violation"; sid:1200121; rev:1;)
+drop tcp any any -> any any (msg:"STRICT Container process execution"; pcre:"/\b(docker|podman)\s+(run|exec|cp|build)\b/i"; http_client_body; classtype:"policy-violation"; sid:1200122; rev:1;)
+drop tcp any any -> any any (msg:"STRICT AWS identity mutation"; pcre:"/\baws\s+iam\s+(create|put|attach|update|delete|add|remove|detach|set)-/i"; http_client_body; classtype:"policy-violation"; sid:1200123; rev:1;)
+drop tcp any any -> any any (msg:"STRICT GCP IAM policy mutation"; pcre:"/\bgcloud\b.{0,100}(add-iam-policy-binding|set-iam-policy|remove-iam-policy-binding)\b/i"; http_client_body; classtype:"policy-violation"; sid:1200124; rev:1;)
+drop tcp any any -> any any (msg:"STRICT Azure role assignment mutation"; pcre:"/\baz\s+role\s+assignment\s+(create|delete)\b/i"; http_client_body; classtype:"policy-violation"; sid:1200125; rev:1;)
+drop tcp any any -> any any (msg:"STRICT Sensitive plaintext assignment"; pcre:"/\b(password|passwd|api_key|api-key|access_token|client_secret)[\x22\x27]?\s*[=:]\s*[\x22\x27]?[A-Za-z0-9_+/=-]{12,}/i"; http_client_body; classtype:"policy-violation"; sid:1200129; rev:1;)
+drop tcp any any -> any any (msg:"STRICT JSON Web Token in body"; pcre:"/\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}/"; http_client_body; classtype:"policy-violation"; sid:1200130; rev:1;)
+drop tcp any any -> any any (msg:"STRICT Private network destination URI"; pcre:"/https?://(10\.[0-9.]+|192\.168\.[0-9.]+|172\.(1[6-9]|2[0-9]|3[01])\.[0-9.]+)([:/?#]|$)/i"; http_uri; classtype:"policy-violation"; sid:1200131; rev:1;)
+drop tcp any any -> any any (msg:"STRICT DNS-over-HTTPS request route"; pcre:"//dns-query([?#]|$)/i"; http_uri; classtype:"policy-violation"; sid:1200133; rev:1;)
+drop tcp any any -> any any (msg:"STRICT Bulk secret export command"; pcre:"/\b(env|printenv|set)\s*\|\s*(curl|wget|nc|ncat)\b/i"; http_client_body; classtype:"policy-violation"; sid:1200134; rev:1;)
+drop tcp any any -> any any (msg:"STRICT Credential filename in upload command"; pcre:"/\b(curl|wget|scp|rsync)\b.{0,160}(\.aws/credentials|\.ssh/id_(rsa|ed25519)|\.env\b|\.kube/config)/i"; http_client_body; classtype:"policy-violation"; sid:1200135; rev:1;)

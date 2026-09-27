@@ -1,0 +1,5621 @@
+{
+  "scope": "File-only inline DAQ; no live interfaces, deployment, routing state, or Mobile IPv6 binding ownership.",
+  "configuration": {
+    "snort_version": "3.12.2.0",
+    "source_commit": "14aeb09f5a0856812dbe08ead3c21f99e8860aa0",
+    "scope": "Native configuration loading and effective rule states only; no traffic or live inline enforcement.",
+    "profiles": [
+      {
+        "profile": "protocol",
+        "loaded": 208,
+        "enabled": 208,
+        "actions": {
+          "drop": 164,
+          "block": 0,
+          "alert": 44
+        }
+      },
+      {
+        "profile": "perimeter",
+        "loaded": 215,
+        "enabled": 215,
+        "actions": {
+          "drop": 164,
+          "block": 5,
+          "alert": 46
+        }
+      },
+      {
+        "profile": "http",
+        "loaded": 271,
+        "enabled": 271,
+        "actions": {
+          "drop": 164,
+          "block": 19,
+          "alert": 88
+        }
+      },
+      {
+        "profile": "both",
+        "loaded": 278,
+        "enabled": 278,
+        "actions": {
+          "drop": 164,
+          "block": 24,
+          "alert": 90
+        }
+      }
+    ],
+    "rejected_invalid_configurations": 18,
+    "plugin_sha256": {
+      "ax_nd_options.so": "f5868d88ddb4054f9e3555a0a40aaaf78a8c85bd202a3d18a2c883fc0b7da1b2"
+    },
+    "sha256": {
+      "native-snort3/protocol-ips.lua": "000cace55518af574800693f3b671e3a07d491ff5e0ad3e9c87c19abc450712c",
+      "native-snort3/agent-guard-overlay.lua": "f6b900d70900f3e9d3a042d247590a501f622c5c7fa11fd791b75ea20e8fd91d",
+      "native-snort3/protocol.states": "444f3a106d5f018ebe429d262d5f8fc79436c8fd460aa6d48ed0f4795e6cc81f",
+      "native-snort3/protocol-builtins.rules": "58b92054c4d5d7f0cf68043a1fe7ab8a8ae125791491ecd6ce309e3354f7bc27",
+      "native-snort3/builtin-inventory.json": "a48a61274609c4dfb69824bd2e0b5f7bbb0da226a27c7faa08e95c6866a118a8",
+      "native-snort3/protocol-validation.rules": "b6c36614f8e4a9853104deadcb26f494b00966271e409d21f96293fb90267ea8",
+      "native-snort3/generate_inventory.py": "4d461ea9cfbbb799592a644a651c71c872b1d430962f9cc4445e4e04eb246c0f",
+      "native-snort3/validate_profiles.py": "9d6adaacd9a4c55b913a2de9318af206e4a62a5f1882610cb2cf9091682c769e",
+      "native-snort3/plugins/README.md": "09ce38523a9abc39455c27a82f176052257e34d0832487e7ec65728e96d9f402",
+      "native-snort3/plugins/build.py": "ec2faeec4501f4e5591f35e665c25f5677182b17e76801835e64199b43458e7c",
+      "native-snort3/plugins/ax_nd_options.cc": "5ac99c5b4568c15ee05d5a9bf76254f566c41e28c7a612f6f6fa521da56a9255",
+      "native-snort3/plugins/nd_validation.h": "4f88245b813db35205d73dbff849269e43f9bc4ace81e6fb3eccdf878eabc185",
+      "native-snort3/plugins/nd_validation_test.cc": "72358ad3aac6fd0a848ddc883ec8430012573cee71185758021b942e77008ad2",
+      "native-snort3/plugins/ip_validation.h": "cb67871c83dfcb059b4c126933366a06f60472060956bbdf6b3e4bebf9792010",
+      "native-snort3/plugins/ip_validation_test.cc": "f5e057023dfc380f08825cbcc1beb3d638a947bf503e271343715ebe630eb080",
+      "native-snort3/plugins/ip4_options.h": "643255e2b38d0b67c6db2297c6b03076b0d32853ec038f20b9508ab83b18e30d",
+      "native-snort3/plugins/ip4_options_test.cc": "29927fe74d788bb6d99fd811cd0dc88b87de30c54d44e45fcf07db9219e8120a",
+      "native-snort3/plugins/ip6_options.h": "c0e938f3053eb62b1e537959d07861a5b2944312ebfc4decb13a914d1236ad50",
+      "native-snort3/plugins/ip6_options_test.cc": "7dbae601d883aa31a0a1fcd9c7dc5be8f267c7f1a5b890497958b6ac824117ef",
+      "native-snort3/plugins/esp_validation.h": "cf8ade954fcec4f1f09917798d1aa4fd748790f210adb265fe845e32d3f135fe",
+      "native-snort3/plugins/esp_validation_test.cc": "2094e98219defcb518985f3f3aa978ff08ca1c3f6e449afa0105ed071b3dc1c5",
+      "native-snort3/plugins/routing_validation.h": "825341ae93dbe5bb8cd8071cc245d5b3642d072a86291241084f03b3b2a36694",
+      "native-snort3/plugins/routing_validation_test.cc": "ed3924084f745164e72c5b5457ff5d307d1a852fe8eda9371f5199f007b58c07",
+      "pkg/security/snort/imports/agent-guard-snort3/native-only.rules": "2451962b90016f8b520521a93837ddcdcce9064e704ebdc5e67c359e90fd9d9a"
+    }
+  },
+  "binary_sha256": {
+    "baseline": "6c03749e19465eac65a09e083ff0165ef78d041549dc448327f08acc8e9d1549",
+    "repaired": "4a7fb05fefe6f3144de17613244d590fe287913b339f87c5da7bfd9d60b34c44"
+  },
+  "source_repair": {
+    "upstream_commit": "14aeb09f5a0856812dbe08ead3c21f99e8860aa0",
+    "scope": "Local source patch only; separate build and native replay are required.",
+    "upstream_sha256": {
+      "src/codecs/ip/cd_tcp.cc": "d4675b2d591857d0d5773c834b90002261c247cd3551b47c3600d5a95857e4be",
+      "src/codecs/ip/cd_udp.cc": "ff606e3ddbfb5c7b7a1ce1d19d8f49dd8d28fdef0a702a58f54abe01f253fca4",
+      "src/codecs/ip/cd_icmp6.cc": "ddd09b10002106312e2231864f7f24e03bb2f5beadeacb71dc2020709e56d054"
+    },
+    "repaired_sha256": {
+      "src/codecs/ip/cd_tcp.cc": "70fa85c573fb6a7c4d2350563110f6d67c51af71b3245efba219c514a544cac9",
+      "src/codecs/ip/cd_udp.cc": "a4aebd7e853d8dd85e91faf52da711ac4c0f6135549f696e8b3b1830c1da8a05",
+      "src/codecs/ip/cd_icmp6.cc": "9f43dedb61d03e575c9313ae5c682896a8c3af8942283b23f7fa7dbb6f4edad5",
+      "src/codecs/ip/ipv6_checksum_destination.h": "3afe940ef6f3a47ae27d8dc3054a1bb58f96a79d8c4305c00c3fa13f8516e743"
+    },
+    "local_source_sha256": {
+      "apply_type2_repair.py": "a2467d844656195179a98fd95adae2b61c52ba23149f497bd5af89d5d58760f7",
+      "ipv6_checksum_destination.h": "3afe940ef6f3a47ae27d8dc3054a1bb58f96a79d8c4305c00c3fa13f8516e743"
+    },
+    "patch_sha256": "1ece45a6152198b6fb922fe72895123ae54c8ea00f7037aea4639f4e8703e1a4"
+  },
+  "fixture_source_sha256": {
+    "native-snort3/tests/type2_repair_replay.py": "da1b79830466ef7b7bef20e84bbb027b1dbef289d254bda0f8103ef0fc6f5dcc",
+    "native-snort3/tests/checksum_replay.py": "3194dc0fe4d21ba3a6e3d30b012d0b57e7027c44857d6c48b203447ab8e576d2",
+    "native-snort3/tests/next_header_policy.py": "82abd595a1639c4c33eae1b5adef4ca052842d443b6344de2586ced67a318017",
+    "native-snort3/tests/generate_pcaps.py": "7a542d7f61633a4849c9147476f2dae810496247686d87c767f43a9e5470c5d1",
+    "native-snort3/tests/replay.py": "58d2cdd52c85c22cde82fc5ff2d6961b83d69588ce6c628345cce0b6dbefe76b",
+    "native-snort3/patches/ipv6_checksum_destination_test.cc": "b41c77afa268f64f787aad61a547713dc10b4c17c7947dd4139ccaeaea164375"
+  },
+  "build_manifest_sha256": "3dfb5a07e6708640112506f50c49fbb4c43d9bc84717e80e03a976565edcfb43",
+  "normalizer_fixture_configuration_sha256": "5479f6ac4f494bfe6cf7a8632acff613aa2253de2e5356c9c4a1abf9c75155cc",
+  "comparison_limit": "Source and binary hashes are recorded; build provenance is supplied separately. These fixtures do not establish universal IPv6 routing or checksum conformance.",
+  "summary": {
+    "cases": 90,
+    "native_runs": 180,
+    "passed": 90,
+    "failures": [],
+    "routed_cases": 78,
+    "normalization_cases": 6
+  },
+  "cases": [
+    {
+      "name": "direct-tcp-correct",
+      "valid": true,
+      "routed": false,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "0d48f4975cf074dd2caf92d9ef7151d92300deeac25c3d57387607a2a2ec9ee1",
+      "expected_forwarded_packet_sha256": "0d48f4975cf074dd2caf92d9ef7151d92300deeac25c3d57387607a2a2ec9ee1",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 74
+        },
+        "output_pcap_sha256": "65c672f4bbf094e4bf8f604a1c45e34f1cd4902f3fcb9fa754eba4649ac20b0d",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "0d48f4975cf074dd2caf92d9ef7151d92300deeac25c3d57387607a2a2ec9ee1"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 74
+        },
+        "output_pcap_sha256": "65c672f4bbf094e4bf8f604a1c45e34f1cd4902f3fcb9fa754eba4649ac20b0d",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "0d48f4975cf074dd2caf92d9ef7151d92300deeac25c3d57387607a2a2ec9ee1"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "direct-tcp-incorrect",
+      "valid": false,
+      "routed": false,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "3cb8da90371ea780b3c7087011641fcedd8993dcbc31d12e4545bbc5d7ca1073",
+      "expected_forwarded_packet_sha256": "3cb8da90371ea780b3c7087011641fcedd8993dcbc31d12e4545bbc5d7ca1073",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 74
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 74
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "direct-udp-correct",
+      "valid": true,
+      "routed": false,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "84cdde6cc916193c8e3e2c2e994288bccfc7ce8e48380f4389e7de24e630b7a1",
+      "expected_forwarded_packet_sha256": "84cdde6cc916193c8e3e2c2e994288bccfc7ce8e48380f4389e7de24e630b7a1",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 86
+        },
+        "output_pcap_sha256": "8d8a6384a419749c962868a19daebd0d6131ea2ad8b88c701bb6fae09725638d",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "84cdde6cc916193c8e3e2c2e994288bccfc7ce8e48380f4389e7de24e630b7a1"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 86
+        },
+        "output_pcap_sha256": "8d8a6384a419749c962868a19daebd0d6131ea2ad8b88c701bb6fae09725638d",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "84cdde6cc916193c8e3e2c2e994288bccfc7ce8e48380f4389e7de24e630b7a1"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "direct-udp-incorrect",
+      "valid": false,
+      "routed": false,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "cb91d099b7b9b2b8e911d7430ffe9e482c057a0424a36411ade89bdd67a123fd",
+      "expected_forwarded_packet_sha256": "cb91d099b7b9b2b8e911d7430ffe9e482c057a0424a36411ade89bdd67a123fd",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 86
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 86
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "direct-icmp6-correct",
+      "valid": true,
+      "routed": false,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "b50c0531da5bb7aafea575857044f069037b0969c067b2c303d932a2b478c7f2",
+      "expected_forwarded_packet_sha256": "b50c0531da5bb7aafea575857044f069037b0969c067b2c303d932a2b478c7f2",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 62
+        },
+        "output_pcap_sha256": "b908867e6e7b69f7182712d4b9545ba23238a6948878a56d0018cbec4db2b7df",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "b50c0531da5bb7aafea575857044f069037b0969c067b2c303d932a2b478c7f2"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 62
+        },
+        "output_pcap_sha256": "b908867e6e7b69f7182712d4b9545ba23238a6948878a56d0018cbec4db2b7df",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "b50c0531da5bb7aafea575857044f069037b0969c067b2c303d932a2b478c7f2"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "direct-icmp6-incorrect",
+      "valid": false,
+      "routed": false,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "0ea7a62441da22b926acd9c2d36e377d5b23e791e7655c5002acf8059e7b8f4d",
+      "expected_forwarded_packet_sha256": "0ea7a62441da22b926acd9c2d36e377d5b23e791e7655c5002acf8059e7b8f4d",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 62
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 62
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "destination-only-tcp-correct",
+      "valid": true,
+      "routed": false,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "7b95025d1105261ee57648e335bafe045ce1c1c90c44ec38cac44135ef467c48",
+      "expected_forwarded_packet_sha256": "7b95025d1105261ee57648e335bafe045ce1c1c90c44ec38cac44135ef467c48",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 82
+        },
+        "output_pcap_sha256": "d70327a28569e4cebe65339f25879d732beccffa509a174f49d3dc7f2b79e659",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "7b95025d1105261ee57648e335bafe045ce1c1c90c44ec38cac44135ef467c48"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 82
+        },
+        "output_pcap_sha256": "d70327a28569e4cebe65339f25879d732beccffa509a174f49d3dc7f2b79e659",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "7b95025d1105261ee57648e335bafe045ce1c1c90c44ec38cac44135ef467c48"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "destination-only-tcp-incorrect",
+      "valid": false,
+      "routed": false,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "ea6db47f1c5d2009f2aa36f94df1f0fb0529dc2f58afbf93ccb070583633486d",
+      "expected_forwarded_packet_sha256": "ea6db47f1c5d2009f2aa36f94df1f0fb0529dc2f58afbf93ccb070583633486d",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 82
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 82
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "destination-only-udp-correct",
+      "valid": true,
+      "routed": false,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "5005c3b0f4a2644a2b594d75e47d6f0c4e9b0414598db83fb07aee5c5493557f",
+      "expected_forwarded_packet_sha256": "5005c3b0f4a2644a2b594d75e47d6f0c4e9b0414598db83fb07aee5c5493557f",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 94
+        },
+        "output_pcap_sha256": "9b5b32fd9dab3ddc23b166315dfe366ff27d1812408cc93610d467f89496998d",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "5005c3b0f4a2644a2b594d75e47d6f0c4e9b0414598db83fb07aee5c5493557f"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 94
+        },
+        "output_pcap_sha256": "9b5b32fd9dab3ddc23b166315dfe366ff27d1812408cc93610d467f89496998d",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "5005c3b0f4a2644a2b594d75e47d6f0c4e9b0414598db83fb07aee5c5493557f"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "destination-only-udp-incorrect",
+      "valid": false,
+      "routed": false,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "b14bda6e81168196ff1ecec0ebfdca865480eedc0c2fc8fc93a1179e8c3377a0",
+      "expected_forwarded_packet_sha256": "b14bda6e81168196ff1ecec0ebfdca865480eedc0c2fc8fc93a1179e8c3377a0",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 94
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 94
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "destination-only-icmp6-correct",
+      "valid": true,
+      "routed": false,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "67503044fe60b9aeae24ff475a798cd2c1ff39f27930c6e8111070ef9830e2c2",
+      "expected_forwarded_packet_sha256": "67503044fe60b9aeae24ff475a798cd2c1ff39f27930c6e8111070ef9830e2c2",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 70
+        },
+        "output_pcap_sha256": "e6a4fa2ad3856a1e2d180f993e5ece054333af7b9c44a38df2151f99906bf270",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "67503044fe60b9aeae24ff475a798cd2c1ff39f27930c6e8111070ef9830e2c2"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 70
+        },
+        "output_pcap_sha256": "e6a4fa2ad3856a1e2d180f993e5ece054333af7b9c44a38df2151f99906bf270",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "67503044fe60b9aeae24ff475a798cd2c1ff39f27930c6e8111070ef9830e2c2"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "destination-only-icmp6-incorrect",
+      "valid": false,
+      "routed": false,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "30d886fbe414b44cebd596c9c75fa2279358f8af799a95fa40aba1cb221ced95",
+      "expected_forwarded_packet_sha256": "30d886fbe414b44cebd596c9c75fa2279358f8af799a95fa40aba1cb221ced95",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 70
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 70
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-tcp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "f5d30807e2c9765143cbe2c40839529815f4c9f6e937a71ac93fcab7f3ff2a27",
+      "expected_forwarded_packet_sha256": "f5d30807e2c9765143cbe2c40839529815f4c9f6e937a71ac93fcab7f3ff2a27",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 98
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 98
+        },
+        "output_pcap_sha256": "59b00b13eedc993515cdf00c264dda1a90dd551f428575eb0897f41376de2d28",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "f5d30807e2c9765143cbe2c40839529815f4c9f6e937a71ac93fcab7f3ff2a27"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-tcp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "9ba2b1e225ea3141bf818a31b1175a93a7f575682f57ba4b037cb3186dd5661b",
+      "expected_forwarded_packet_sha256": "9ba2b1e225ea3141bf818a31b1175a93a7f575682f57ba4b037cb3186dd5661b",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 98
+        },
+        "output_pcap_sha256": "3516d4167af3d40fa6211281141b4e26f50947aef91b3adb7c2519a2c31ee4bb",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "9ba2b1e225ea3141bf818a31b1175a93a7f575682f57ba4b037cb3186dd5661b"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 98
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-udp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "94e2d8dbd43e4820a34c1520013146e2dae17b21635f3da86d5d5d715a023f26",
+      "expected_forwarded_packet_sha256": "94e2d8dbd43e4820a34c1520013146e2dae17b21635f3da86d5d5d715a023f26",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 110
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 110
+        },
+        "output_pcap_sha256": "7a448eee550e3dd49e47eaf361ec2632ba9fe76ca724862f883f4d4e8b6973b5",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "94e2d8dbd43e4820a34c1520013146e2dae17b21635f3da86d5d5d715a023f26"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-udp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "1cc80ec3a548176538fb31dd6e7973b17c618d2a539796a10b8dac4845c77804",
+      "expected_forwarded_packet_sha256": "1cc80ec3a548176538fb31dd6e7973b17c618d2a539796a10b8dac4845c77804",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 110
+        },
+        "output_pcap_sha256": "b328d296837e7e255027e676662d45f97d03b0ab33b48bf324f2943ff2dbc0d5",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "1cc80ec3a548176538fb31dd6e7973b17c618d2a539796a10b8dac4845c77804"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 110
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-icmp6-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "d8d05f76c9278efd9652c32318b18bfeca005727e7dd536285b86242ed1c8731",
+      "expected_forwarded_packet_sha256": "d8d05f76c9278efd9652c32318b18bfeca005727e7dd536285b86242ed1c8731",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 86
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 86
+        },
+        "output_pcap_sha256": "f1e124bf3d576c42bbfc8fa4fc09cc9ebf50e24e33a7e279ab44134d77b2a0c3",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "d8d05f76c9278efd9652c32318b18bfeca005727e7dd536285b86242ed1c8731"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-icmp6-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "aa2b6004eedf26c62fa34eebb0824a4e12d26044b86c67e138d2b9b65891f7d9",
+      "expected_forwarded_packet_sha256": "aa2b6004eedf26c62fa34eebb0824a4e12d26044b86c67e138d2b9b65891f7d9",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 86
+        },
+        "output_pcap_sha256": "5ca0a8ef14308b700dee84c5aa08450d9a86b8b19600c459d1076a48b36ae803",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "aa2b6004eedf26c62fa34eebb0824a4e12d26044b86c67e138d2b9b65891f7d9"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 86
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "hop-type2-tcp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "a4f6aaa39100cb29da838b7dd0165e6417515cb5260116d74645bd798353f155",
+      "expected_forwarded_packet_sha256": "a4f6aaa39100cb29da838b7dd0165e6417515cb5260116d74645bd798353f155",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 106
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 106
+        },
+        "output_pcap_sha256": "5192cee5e6178a3ef27020dea869af55810acd5b35ddc41d18d515ef8851c8f6",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "a4f6aaa39100cb29da838b7dd0165e6417515cb5260116d74645bd798353f155"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "hop-type2-tcp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "0e2440b1696cd257014ebf283a2ffd8dc74f189b450aceabaa36a33645b8da85",
+      "expected_forwarded_packet_sha256": "0e2440b1696cd257014ebf283a2ffd8dc74f189b450aceabaa36a33645b8da85",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 106
+        },
+        "output_pcap_sha256": "ed69fa816cf62dceefe9c4b1a19c4eb74ba10ea15194c43ad1c01668b66ff61b",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "0e2440b1696cd257014ebf283a2ffd8dc74f189b450aceabaa36a33645b8da85"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 106
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "hop-type2-udp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "d3d2e840a4498e69127b73a943d26981c30d2bdd218f73e3738f8612e2f88288",
+      "expected_forwarded_packet_sha256": "d3d2e840a4498e69127b73a943d26981c30d2bdd218f73e3738f8612e2f88288",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 118
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 118
+        },
+        "output_pcap_sha256": "613884a3dbb440dc5f520c97ef584f2b18ec1c25ab291cb4b9e1a03e78dba482",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "d3d2e840a4498e69127b73a943d26981c30d2bdd218f73e3738f8612e2f88288"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "hop-type2-udp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "3ba7707ca8122f821dabd6f3d9257100fd2f09322992320e5d3e1eb19a0ba253",
+      "expected_forwarded_packet_sha256": "3ba7707ca8122f821dabd6f3d9257100fd2f09322992320e5d3e1eb19a0ba253",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 118
+        },
+        "output_pcap_sha256": "c8f6e2158a0f6f14f6ff753e8561f26c2f30adf42efe56a5f7dbc963470fa8a5",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "3ba7707ca8122f821dabd6f3d9257100fd2f09322992320e5d3e1eb19a0ba253"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 118
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "hop-type2-icmp6-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "c8280b614754102fbab3b6822935d54dfe52b7c7c845a28351fd8d358ee2b9d4",
+      "expected_forwarded_packet_sha256": "c8280b614754102fbab3b6822935d54dfe52b7c7c845a28351fd8d358ee2b9d4",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 94
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 94
+        },
+        "output_pcap_sha256": "d896a41799f990d5fdd8b545ac8c918e692fc0f0ac1f862ba18d3f2bab147515",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "c8280b614754102fbab3b6822935d54dfe52b7c7c845a28351fd8d358ee2b9d4"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "hop-type2-icmp6-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "46696948b638197567933de4efdcd9d795c1bbde9b17513a9cd680b89ffe5daa",
+      "expected_forwarded_packet_sha256": "46696948b638197567933de4efdcd9d795c1bbde9b17513a9cd680b89ffe5daa",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 94
+        },
+        "output_pcap_sha256": "ab2c2250534700c44c2ac552cdd58474f50fc6f45469e2d4903a4cac3059b0ed",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "46696948b638197567933de4efdcd9d795c1bbde9b17513a9cd680b89ffe5daa"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 94
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "destination-type2-tcp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "3486ad2d6ada8e9c41e1a14bdf42b9af1dd8fa0326317295736429af395179a1",
+      "expected_forwarded_packet_sha256": "3486ad2d6ada8e9c41e1a14bdf42b9af1dd8fa0326317295736429af395179a1",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 106
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:292:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 106
+        },
+        "output_pcap_sha256": "c670014b678d9a00a4e6caa2928d3b027acd8dafa88cab6a83cb6bb7fe319540",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "3486ad2d6ada8e9c41e1a14bdf42b9af1dd8fa0326317295736429af395179a1"
+        ],
+        "events": [
+          {
+            "rule": "116:292:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "destination-type2-tcp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "5f7ff45f489084ba8d81dc3a83ccc13159aeb88ed745c90917ee16d28ea15b08",
+      "expected_forwarded_packet_sha256": "5f7ff45f489084ba8d81dc3a83ccc13159aeb88ed745c90917ee16d28ea15b08",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 106
+        },
+        "output_pcap_sha256": "17f97d6ce7368bc2dc92f19efcc68a6b890c4192e6d36c63b4a2651cbfccaeb0",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "5f7ff45f489084ba8d81dc3a83ccc13159aeb88ed745c90917ee16d28ea15b08"
+        ],
+        "events": [
+          {
+            "rule": "116:292:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 106
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:292:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "destination-type2-udp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "5ebbd7583c264018d4b14a2a01dc6e9830154aa343d0b7a4ace80cf59accf071",
+      "expected_forwarded_packet_sha256": "5ebbd7583c264018d4b14a2a01dc6e9830154aa343d0b7a4ace80cf59accf071",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 118
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:292:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 118
+        },
+        "output_pcap_sha256": "6d8828125aff233db73b464c9eadd207a417d9971e3a3ea9ce7ee03eb4af2118",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "5ebbd7583c264018d4b14a2a01dc6e9830154aa343d0b7a4ace80cf59accf071"
+        ],
+        "events": [
+          {
+            "rule": "116:292:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "destination-type2-udp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "b5e6ddfd2ceb4dba44024fe8e31d22b68d1e3cb5b8e0702dbd177fc744f93b39",
+      "expected_forwarded_packet_sha256": "b5e6ddfd2ceb4dba44024fe8e31d22b68d1e3cb5b8e0702dbd177fc744f93b39",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 118
+        },
+        "output_pcap_sha256": "cd0df3da92d56edf1a6bb48ea4bd56486196e27afba172ef9135c7f7bf9493cb",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "b5e6ddfd2ceb4dba44024fe8e31d22b68d1e3cb5b8e0702dbd177fc744f93b39"
+        ],
+        "events": [
+          {
+            "rule": "116:292:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 118
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:292:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "destination-type2-icmp6-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "98c377e54797e51398c0c7f2bf4e81ea269ae17c4b8a1122c8fae7702f25d0d5",
+      "expected_forwarded_packet_sha256": "98c377e54797e51398c0c7f2bf4e81ea269ae17c4b8a1122c8fae7702f25d0d5",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 94
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:292:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 94
+        },
+        "output_pcap_sha256": "7f1da503af9ad6ed44245035fbd69ec67f9aba9c739ef5941e82d830d7517c0d",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "98c377e54797e51398c0c7f2bf4e81ea269ae17c4b8a1122c8fae7702f25d0d5"
+        ],
+        "events": [
+          {
+            "rule": "116:292:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "destination-type2-icmp6-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "6ee10856e336efcddc6433fe4031f3872d215e269baa0ac3c7f5ce07b2d8432b",
+      "expected_forwarded_packet_sha256": "6ee10856e336efcddc6433fe4031f3872d215e269baa0ac3c7f5ce07b2d8432b",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 94
+        },
+        "output_pcap_sha256": "61050e84f343f55a41e97cd3960fc5af509fb5b89acae6623cd2b044d1488049",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "6ee10856e336efcddc6433fe4031f3872d215e269baa0ac3c7f5ce07b2d8432b"
+        ],
+        "events": [
+          {
+            "rule": "116:292:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 94
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:292:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-destination-tcp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "d1235cf436d2177e00d6bea315a2a71249b9e55a514fe688d463f524961650ac",
+      "expected_forwarded_packet_sha256": "d1235cf436d2177e00d6bea315a2a71249b9e55a514fe688d463f524961650ac",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 106
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 106
+        },
+        "output_pcap_sha256": "220b18312a7b43cbc73774a129fd5a1d5670f2dd81856bcf2f347b36e3b0c0a4",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "d1235cf436d2177e00d6bea315a2a71249b9e55a514fe688d463f524961650ac"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-destination-tcp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "dedcaec30a7a35cdc7ef199db8b3ef1a1fc34c8f9d659d8deb996bb3979aa483",
+      "expected_forwarded_packet_sha256": "dedcaec30a7a35cdc7ef199db8b3ef1a1fc34c8f9d659d8deb996bb3979aa483",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 106
+        },
+        "output_pcap_sha256": "ea3828e618994da3daa6b754f99e117a6687db44a4eff08cc74d5bbf8435cf2f",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "dedcaec30a7a35cdc7ef199db8b3ef1a1fc34c8f9d659d8deb996bb3979aa483"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 106
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-destination-udp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "d0b6d0bf45352f83cc73e6cafd0704921880d8b6e23a7b0c650d6ff7621d9194",
+      "expected_forwarded_packet_sha256": "d0b6d0bf45352f83cc73e6cafd0704921880d8b6e23a7b0c650d6ff7621d9194",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 118
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 118
+        },
+        "output_pcap_sha256": "437e54554c4072417778645479ed393d2e682ab638f61ef87d58e9e2682877f4",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "d0b6d0bf45352f83cc73e6cafd0704921880d8b6e23a7b0c650d6ff7621d9194"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-destination-udp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "de3f8aa687c1fd91438193dfe66f4d581f73faa7bb5fd58e767352f5e0123140",
+      "expected_forwarded_packet_sha256": "de3f8aa687c1fd91438193dfe66f4d581f73faa7bb5fd58e767352f5e0123140",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 118
+        },
+        "output_pcap_sha256": "6b92de81ca4ce0685e51f22496bd4f6c98af7b409a21b5e58a9521200a2fd6f8",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "de3f8aa687c1fd91438193dfe66f4d581f73faa7bb5fd58e767352f5e0123140"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 118
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-destination-icmp6-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "a4faa97cdfd8c69388dc8d144a0fcd0ab93ed4eafbd9b0fb23a37e445db451c2",
+      "expected_forwarded_packet_sha256": "a4faa97cdfd8c69388dc8d144a0fcd0ab93ed4eafbd9b0fb23a37e445db451c2",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 94
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 94
+        },
+        "output_pcap_sha256": "9d572072805cef94391b74fd71d3c34386d11ea1adbf865e1e31e0ccb6184d9d",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "a4faa97cdfd8c69388dc8d144a0fcd0ab93ed4eafbd9b0fb23a37e445db451c2"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-destination-icmp6-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "79ca0110c0352d85be8343e8ea7e7adc48a63fe71d78c9577df575f16b321c78",
+      "expected_forwarded_packet_sha256": "79ca0110c0352d85be8343e8ea7e7adc48a63fe71d78c9577df575f16b321c78",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 94
+        },
+        "output_pcap_sha256": "599f0c4abc30a653a08cce0ab6155693555b4dee08878519ec18071695fe4261",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "79ca0110c0352d85be8343e8ea7e7adc48a63fe71d78c9577df575f16b321c78"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 94
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "ah-type2-tcp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "730680ff36f2793619ac8d4a18b616063d8c69b5bc0152c49e52e7d20ed6eae7",
+      "expected_forwarded_packet_sha256": "730680ff36f2793619ac8d4a18b616063d8c69b5bc0152c49e52e7d20ed6eae7",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 114
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:281:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes an invalid value for the 'next header' field"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 114
+        },
+        "output_pcap_sha256": "031c6cb22b33a01ce56f66d931c2da819689d3bbaf95f4ccdf7a63829eaaf8de",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "730680ff36f2793619ac8d4a18b616063d8c69b5bc0152c49e52e7d20ed6eae7"
+        ],
+        "events": [
+          {
+            "rule": "116:281:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes an invalid value for the 'next header' field"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "ah-type2-tcp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "1b81f091eabc29c405c1b85a488b6d9da3941a6d2dc18cc1e113009e431c842c",
+      "expected_forwarded_packet_sha256": "1b81f091eabc29c405c1b85a488b6d9da3941a6d2dc18cc1e113009e431c842c",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 114
+        },
+        "output_pcap_sha256": "f29b1c45c75bbe24923260404f76ca6503a123d3fc268e2ae4459d8ada5ed2f0",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "1b81f091eabc29c405c1b85a488b6d9da3941a6d2dc18cc1e113009e431c842c"
+        ],
+        "events": [
+          {
+            "rule": "116:281:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes an invalid value for the 'next header' field"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 114
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:281:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes an invalid value for the 'next header' field"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "ah-type2-udp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "ec90808f0aa795c1261ec1b9879e653b1f4c06857b4e78f0a63afa61387be360",
+      "expected_forwarded_packet_sha256": "ec90808f0aa795c1261ec1b9879e653b1f4c06857b4e78f0a63afa61387be360",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 126
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:281:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes an invalid value for the 'next header' field"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 126
+        },
+        "output_pcap_sha256": "5a72ca31a81eedecb3bc33d502a1f362ff3daf44ba2ed1d3a37eabbe935eabdf",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "ec90808f0aa795c1261ec1b9879e653b1f4c06857b4e78f0a63afa61387be360"
+        ],
+        "events": [
+          {
+            "rule": "116:281:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes an invalid value for the 'next header' field"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "ah-type2-udp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "fdfb1e15a821f87fb87e0584d30f7f865bd0d7282b2605df1a1d491be2b2e9d6",
+      "expected_forwarded_packet_sha256": "fdfb1e15a821f87fb87e0584d30f7f865bd0d7282b2605df1a1d491be2b2e9d6",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 126
+        },
+        "output_pcap_sha256": "10ad7ba719119313b44b4d958ca5f08b3d6f70ef80b9125bfa8bab9c1a973bb0",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "fdfb1e15a821f87fb87e0584d30f7f865bd0d7282b2605df1a1d491be2b2e9d6"
+        ],
+        "events": [
+          {
+            "rule": "116:281:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes an invalid value for the 'next header' field"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 126
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:281:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes an invalid value for the 'next header' field"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "ah-type2-icmp6-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "ceb3852105b260b9b9e889a147c620e84948a4a40287629703960cdc16e6c0e5",
+      "expected_forwarded_packet_sha256": "ceb3852105b260b9b9e889a147c620e84948a4a40287629703960cdc16e6c0e5",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 102
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:281:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes an invalid value for the 'next header' field"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 102
+        },
+        "output_pcap_sha256": "ad14ef35d75ccec96d8be1e030fbbf7f88f6f6128fdc7c76215c815c7eb80cc6",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "ceb3852105b260b9b9e889a147c620e84948a4a40287629703960cdc16e6c0e5"
+        ],
+        "events": [
+          {
+            "rule": "116:281:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes an invalid value for the 'next header' field"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "ah-type2-icmp6-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "c83bc544380c560fe288a98f1506decded575470162753b3604af99e40da5dae",
+      "expected_forwarded_packet_sha256": "c83bc544380c560fe288a98f1506decded575470162753b3604af99e40da5dae",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 102
+        },
+        "output_pcap_sha256": "e5a3429e62467f3b4469704b1ae2477e54dcc1828e4e489e28ba1975ec1da7bd",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "c83bc544380c560fe288a98f1506decded575470162753b3604af99e40da5dae"
+        ],
+        "events": [
+          {
+            "rule": "116:281:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes an invalid value for the 'next header' field"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 102
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:281:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes an invalid value for the 'next header' field"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-ah-tcp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "9e2edcfbc6b7da8d3cea78abeb5f4004a47b2c5fc5efd3c6cc6b836c3b31cda9",
+      "expected_forwarded_packet_sha256": "9e2edcfbc6b7da8d3cea78abeb5f4004a47b2c5fc5efd3c6cc6b836c3b31cda9",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 114
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 114
+        },
+        "output_pcap_sha256": "3264ad57d4733ed8fefc0db33ca30954b878a18720475e0dd8f24022f0373d9f",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "9e2edcfbc6b7da8d3cea78abeb5f4004a47b2c5fc5efd3c6cc6b836c3b31cda9"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-ah-tcp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "590a2a505580a13973e5bd5437b93c1a9f09361e0544e8f8d8cbe09710dc1f7f",
+      "expected_forwarded_packet_sha256": "590a2a505580a13973e5bd5437b93c1a9f09361e0544e8f8d8cbe09710dc1f7f",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 114
+        },
+        "output_pcap_sha256": "7412afccf04be88c44dc4e8a0a5d7bcca4eaa8a4ee70e219897745a6b00a6b01",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "590a2a505580a13973e5bd5437b93c1a9f09361e0544e8f8d8cbe09710dc1f7f"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 114
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-ah-udp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "7d829c963b8ed2ac749f2f311bcae390907447c101da232084d7605da076fb5d",
+      "expected_forwarded_packet_sha256": "7d829c963b8ed2ac749f2f311bcae390907447c101da232084d7605da076fb5d",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 126
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 126
+        },
+        "output_pcap_sha256": "12b3aa0e7960f1b6fc291b32fcaff2776089b007c23fc829342398818573e650",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "7d829c963b8ed2ac749f2f311bcae390907447c101da232084d7605da076fb5d"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-ah-udp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "9fa83b3ef9c34e37c1258e7b64b683e74a34dfc7a053ddd2bc965084bc9b4f97",
+      "expected_forwarded_packet_sha256": "9fa83b3ef9c34e37c1258e7b64b683e74a34dfc7a053ddd2bc965084bc9b4f97",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 126
+        },
+        "output_pcap_sha256": "bd1a57762d5042308d408b91b184267696f346f480b0c130f080c90ccc498002",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "9fa83b3ef9c34e37c1258e7b64b683e74a34dfc7a053ddd2bc965084bc9b4f97"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 126
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-ah-icmp6-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "baa592afd0163ae32813bd14634549ca7d05a0a1bcb8c417122e1a51554be68d",
+      "expected_forwarded_packet_sha256": "baa592afd0163ae32813bd14634549ca7d05a0a1bcb8c417122e1a51554be68d",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 102
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 102
+        },
+        "output_pcap_sha256": "2521eed189a8d6e34608443359be24dcaffc806d135d1040b0730ba057977eb3",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "baa592afd0163ae32813bd14634549ca7d05a0a1bcb8c417122e1a51554be68d"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-ah-icmp6-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "c87ea48d8e47d2824598a38d3a05a277d45e3a6ffac18c27774a46421f279ffc",
+      "expected_forwarded_packet_sha256": "c87ea48d8e47d2824598a38d3a05a277d45e3a6ffac18c27774a46421f279ffc",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 102
+        },
+        "output_pcap_sha256": "8afcd37e5105338d6a9408557705e9b0aaf7526c3d9488d61bb891fe028ab609",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "c87ea48d8e47d2824598a38d3a05a277d45e3a6ffac18c27774a46421f279ffc"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 102
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "two-type2-tcp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "100edc37bd9725387022cf509b353d5c5f1c9f827f32947ea6a18b8d1388089e",
+      "expected_forwarded_packet_sha256": "100edc37bd9725387022cf509b353d5c5f1c9f827f32947ea6a18b8d1388089e",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 122
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 122
+        },
+        "output_pcap_sha256": "bc6e70036a1d684bf9b033b723b54e74fac498703d16228304a30432e103b23c",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "100edc37bd9725387022cf509b353d5c5f1c9f827f32947ea6a18b8d1388089e"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "two-type2-tcp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "bb733d2ff12fd927650b85a06c577d2abe34a385833604342a506e7010a8d4af",
+      "expected_forwarded_packet_sha256": "bb733d2ff12fd927650b85a06c577d2abe34a385833604342a506e7010a8d4af",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 122
+        },
+        "output_pcap_sha256": "21c6e44936625aaf2ec0682c41b61659b598ae02e218d2b6a9c97f7c3788ab2a",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "bb733d2ff12fd927650b85a06c577d2abe34a385833604342a506e7010a8d4af"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 122
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "two-type2-udp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "25f3a1cf5c6c14e99ca33b73e74f4eb452134717524d3fb1b9a160f8944f28fc",
+      "expected_forwarded_packet_sha256": "25f3a1cf5c6c14e99ca33b73e74f4eb452134717524d3fb1b9a160f8944f28fc",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 134
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 134
+        },
+        "output_pcap_sha256": "ab936051bb7c0e5a108c795466d4995eece10f9b04a66af47795ca5e5ccaae49",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "25f3a1cf5c6c14e99ca33b73e74f4eb452134717524d3fb1b9a160f8944f28fc"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "two-type2-udp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "a52f70e98ec4e983dd5c11624a2fd16e002fa0f618350f56136f9d1cbc2deb56",
+      "expected_forwarded_packet_sha256": "a52f70e98ec4e983dd5c11624a2fd16e002fa0f618350f56136f9d1cbc2deb56",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 134
+        },
+        "output_pcap_sha256": "8dc2cd3329f274dd3c6c35c80cd3d31b6d5cd8e32f0dea7f0c69386e7ee7ab71",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "a52f70e98ec4e983dd5c11624a2fd16e002fa0f618350f56136f9d1cbc2deb56"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 134
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "two-type2-icmp6-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "d0f69d956943c0577cf2ea035f8dafebc1419dccdf7b6d1c9e33f6f35d3e18fd",
+      "expected_forwarded_packet_sha256": "d0f69d956943c0577cf2ea035f8dafebc1419dccdf7b6d1c9e33f6f35d3e18fd",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 110
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 110
+        },
+        "output_pcap_sha256": "7fa2295257eb895c31a93064b9adea83dcbcaf9bb90baf70983805b596c9872a",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "d0f69d956943c0577cf2ea035f8dafebc1419dccdf7b6d1c9e33f6f35d3e18fd"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "two-type2-icmp6-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "11cfe5e0c21296131b32741aa4dfe54b797b1cf4d8a94111394bea9660aee81f",
+      "expected_forwarded_packet_sha256": "11cfe5e0c21296131b32741aa4dfe54b797b1cf4d8a94111394bea9660aee81f",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 110
+        },
+        "output_pcap_sha256": "55d77f8bdc4f356f1c67080c527bd68cb480bbdd7a7fa760263259e3b33e7299",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "11cfe5e0c21296131b32741aa4dfe54b797b1cf4d8a94111394bea9660aee81f"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 110
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "ignored-route-type2-tcp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "03afe1e972dd40660315958d098f3ea02c54b79122013b84f72764184a930aa7",
+      "expected_forwarded_packet_sha256": "03afe1e972dd40660315958d098f3ea02c54b79122013b84f72764184a930aa7",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 122
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 122
+        },
+        "output_pcap_sha256": "d985ac0e8464282f13031a4f91ad66d8048b9b02f46bb4d2bfe10653d5e06f66",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "03afe1e972dd40660315958d098f3ea02c54b79122013b84f72764184a930aa7"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "ignored-route-type2-tcp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "954af6768a4896ff32c77fd09dac286eeb04102f25ae0273e8912e432e46aae5",
+      "expected_forwarded_packet_sha256": "954af6768a4896ff32c77fd09dac286eeb04102f25ae0273e8912e432e46aae5",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 122
+        },
+        "output_pcap_sha256": "6c4f64a83b3fa9ef7f55739742b78b2fb86dc497a00ac189ab20d36c646ee806",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "954af6768a4896ff32c77fd09dac286eeb04102f25ae0273e8912e432e46aae5"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 122
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "ignored-route-type2-udp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "6e8864f34e43b8c1ed7bf3287109ae24369be67b9e8f6edc71e4874d951bb16e",
+      "expected_forwarded_packet_sha256": "6e8864f34e43b8c1ed7bf3287109ae24369be67b9e8f6edc71e4874d951bb16e",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 134
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 134
+        },
+        "output_pcap_sha256": "7b1f7c607d75739dfd5cb73034e56b5e6614c04ddde500f58c348c809bd301d3",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "6e8864f34e43b8c1ed7bf3287109ae24369be67b9e8f6edc71e4874d951bb16e"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "ignored-route-type2-udp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "ba43b62068529e5b48e3848145e2f12f419b4b529ed5eca60c1c4316b78544cf",
+      "expected_forwarded_packet_sha256": "ba43b62068529e5b48e3848145e2f12f419b4b529ed5eca60c1c4316b78544cf",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 134
+        },
+        "output_pcap_sha256": "24c372e3545a1756b895fe59d823f7f8d3e810fcc60d465a18d8b90ea01d21ea",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "ba43b62068529e5b48e3848145e2f12f419b4b529ed5eca60c1c4316b78544cf"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 134
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "ignored-route-type2-icmp6-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "99a2c4e2b5cec1cd2dfb8b78366c75e686c5cea01cd56c6aaf43071b3fe53c77",
+      "expected_forwarded_packet_sha256": "99a2c4e2b5cec1cd2dfb8b78366c75e686c5cea01cd56c6aaf43071b3fe53c77",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 110
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 110
+        },
+        "output_pcap_sha256": "a206d2efd5df40ec2f74ba38e391a17433d25bd35121109a7a5302eb80ac7713",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "99a2c4e2b5cec1cd2dfb8b78366c75e686c5cea01cd56c6aaf43071b3fe53c77"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "ignored-route-type2-icmp6-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "aa0d8db56cda39711da6467c1d6bba0b754f6ae0c5ca0ab8b905d2be97f65577",
+      "expected_forwarded_packet_sha256": "aa0d8db56cda39711da6467c1d6bba0b754f6ae0c5ca0ab8b905d2be97f65577",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 110
+        },
+        "output_pcap_sha256": "fb0a79ebc6083222b41b98297a07169017f60d3c81c6c25b4904b633ddc0439f",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "aa0d8db56cda39711da6467c1d6bba0b754f6ae0c5ca0ab8b905d2be97f65577"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 110
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-ignored-route-tcp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "a493a0823cfd94c07c3169f5ce2fc5173a6073a9c396b22541ceee8ab6a394ca",
+      "expected_forwarded_packet_sha256": "a493a0823cfd94c07c3169f5ce2fc5173a6073a9c396b22541ceee8ab6a394ca",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 146
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 146
+        },
+        "output_pcap_sha256": "814f53acae557fe919dda58d2b69af74b33ea069f2df5dc30030c7e67549c38d",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "a493a0823cfd94c07c3169f5ce2fc5173a6073a9c396b22541ceee8ab6a394ca"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-ignored-route-tcp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "fac68652197fef76d664944bcac57d5da5c549ed1c6141ed5b590ba833f64646",
+      "expected_forwarded_packet_sha256": "fac68652197fef76d664944bcac57d5da5c549ed1c6141ed5b590ba833f64646",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 146
+        },
+        "output_pcap_sha256": "b7814bac40ec8145512be9995ca6ddf2eb174eb9a9d3c72744a201ae52642d3b",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "fac68652197fef76d664944bcac57d5da5c549ed1c6141ed5b590ba833f64646"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 146
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-ignored-route-udp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "db28750f618800cfd838098c5a6be5312828fa3891e557097c45f564af79a9c5",
+      "expected_forwarded_packet_sha256": "db28750f618800cfd838098c5a6be5312828fa3891e557097c45f564af79a9c5",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 158
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 158
+        },
+        "output_pcap_sha256": "9f2a6b2eafc22d5d493f6d5a651d30e7fb3dca1cad03c5bf3d603e92b05c90f8",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "db28750f618800cfd838098c5a6be5312828fa3891e557097c45f564af79a9c5"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-ignored-route-udp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "1a5f5b601add70833c404308d083186920b73f9360f0e7a3c7336ffdec5979e5",
+      "expected_forwarded_packet_sha256": "1a5f5b601add70833c404308d083186920b73f9360f0e7a3c7336ffdec5979e5",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 158
+        },
+        "output_pcap_sha256": "a8077d16973a7c6918963bb21b36b4210404823c13ef7572f3a9366740e1a9c7",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "1a5f5b601add70833c404308d083186920b73f9360f0e7a3c7336ffdec5979e5"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 158
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-ignored-route-icmp6-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "6ff89d22ec65dccb894493fbb8f83b82c4a815d9ca8829f6e89c95e41105b67c",
+      "expected_forwarded_packet_sha256": "6ff89d22ec65dccb894493fbb8f83b82c4a815d9ca8829f6e89c95e41105b67c",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 134
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 134
+        },
+        "output_pcap_sha256": "540e85234d409564d9804f72a69e72394ebb1d9d36a31d866cc31a043a558052",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "6ff89d22ec65dccb894493fbb8f83b82c4a815d9ca8829f6e89c95e41105b67c"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "type2-ignored-route-icmp6-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "ef84725ddc39cb005c9f3a787a4bd59a06007312e9fd4918e0dad0fb0e72af85",
+      "expected_forwarded_packet_sha256": "ef84725ddc39cb005c9f3a787a4bd59a06007312e9fd4918e0dad0fb0e72af85",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 134
+        },
+        "output_pcap_sha256": "ce36aea31e4f6ca13d1cecdf07d9e3d81feb40b3c26aecf8748b130eae882eef",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "ef84725ddc39cb005c9f3a787a4bd59a06007312e9fd4918e0dad0fb0e72af85"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 134
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "active-outer-route-type2-tcp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "6eb2e8ea3b5f920d36aae4962cc14d02056611e123784ffe634073e7d4a45554",
+      "expected_forwarded_packet_sha256": "6eb2e8ea3b5f920d36aae4962cc14d02056611e123784ffe634073e7d4a45554",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 122
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 122
+        },
+        "output_pcap_sha256": "aeea5a906998fe158325a731c080ff9c04ea0bac0852e0d29a1bc1f55f50db86",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "6eb2e8ea3b5f920d36aae4962cc14d02056611e123784ffe634073e7d4a45554"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "active-outer-route-type2-tcp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "f2d476ccc3347a53327532c47d559f74d069a21616ef3022d443ef4139f2c6d1",
+      "expected_forwarded_packet_sha256": "f2d476ccc3347a53327532c47d559f74d069a21616ef3022d443ef4139f2c6d1",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 122
+        },
+        "output_pcap_sha256": "5911ca77d910ede0fe31404e44d726a38dd236c29b5dad963b5c30b23203125f",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "f2d476ccc3347a53327532c47d559f74d069a21616ef3022d443ef4139f2c6d1"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 122
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "active-outer-route-type2-udp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "27fc6d17bbb74e372c2d3ca4ce106a98a7b56ccfae4a996e1abbd68da3450d4f",
+      "expected_forwarded_packet_sha256": "27fc6d17bbb74e372c2d3ca4ce106a98a7b56ccfae4a996e1abbd68da3450d4f",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 134
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 134
+        },
+        "output_pcap_sha256": "804e16cc998683a00d61fe2d51ec89014912a0a28bd3abe88af21e906a416ac9",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "27fc6d17bbb74e372c2d3ca4ce106a98a7b56ccfae4a996e1abbd68da3450d4f"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "active-outer-route-type2-udp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "cc28a0847de3f30b5c138af434bdc3154138145063dfb55de83f081cab399b0a",
+      "expected_forwarded_packet_sha256": "cc28a0847de3f30b5c138af434bdc3154138145063dfb55de83f081cab399b0a",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 134
+        },
+        "output_pcap_sha256": "672dc8c24d3195914624da49fc7f02bc49c2ffd29dd0fdafeecc43d4dac72899",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "cc28a0847de3f30b5c138af434bdc3154138145063dfb55de83f081cab399b0a"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 134
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "active-outer-route-type2-icmp6-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "cff9326254cfd31a7243bd03ba19e1ec97ea89a9a2222de8d7182e456b1fb08e",
+      "expected_forwarded_packet_sha256": "cff9326254cfd31a7243bd03ba19e1ec97ea89a9a2222de8d7182e456b1fb08e",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 110
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 110
+        },
+        "output_pcap_sha256": "3f3e6c321500b0f6d934f8fa7e314e5c6d7e7991dcf2ebf3b1f1458b464e2327",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "cff9326254cfd31a7243bd03ba19e1ec97ea89a9a2222de8d7182e456b1fb08e"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "active-outer-route-type2-icmp6-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "ff9378b4261e38778a8003c959f3e5c3e96544cc6f363c9f980633a6ef8b7efd",
+      "expected_forwarded_packet_sha256": "ff9378b4261e38778a8003c959f3e5c3e96544cc6f363c9f980633a6ef8b7efd",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 110
+        },
+        "output_pcap_sha256": "0547553a1648c579523372aaee9563bd033a7af8d96f6ae585c650478bae80cb",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "ff9378b4261e38778a8003c959f3e5c3e96544cc6f363c9f980633a6ef8b7efd"
+        ],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 110
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:283:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header includes two routing extension headers"
+          },
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "eight-extensions-type2-last-tcp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "8c124baefae8e4f2c07a69ebf125ad4e720b0878823630cf6e5a68d8a3524b99",
+      "expected_forwarded_packet_sha256": "8c124baefae8e4f2c07a69ebf125ad4e720b0878823630cf6e5a68d8a3524b99",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 154
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          },
+          {
+            "rule": "116:292:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 154
+        },
+        "output_pcap_sha256": "254b1adcf7e2a54614e485587bdd13229e4b3e71e536e9537e44a38342a43b21",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "8c124baefae8e4f2c07a69ebf125ad4e720b0878823630cf6e5a68d8a3524b99"
+        ],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          },
+          {
+            "rule": "116:292:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "eight-extensions-type2-last-tcp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "e72237dcd97bedc55a2f99e944d54afc68c8d89b145fc581261efffa1e4bbfa6",
+      "expected_forwarded_packet_sha256": "e72237dcd97bedc55a2f99e944d54afc68c8d89b145fc581261efffa1e4bbfa6",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 154
+        },
+        "output_pcap_sha256": "f512ac89640f583cfdaac993fd8718297e42f55161a56981cf508532c4f61e44",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "e72237dcd97bedc55a2f99e944d54afc68c8d89b145fc581261efffa1e4bbfa6"
+        ],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          },
+          {
+            "rule": "116:292:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 154
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          },
+          {
+            "rule": "116:292:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "eight-extensions-type2-last-udp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "36c90172a0e2c2f3c6bfb15c8aa51ab4a743fdb34fadecd751f643747a845203",
+      "expected_forwarded_packet_sha256": "36c90172a0e2c2f3c6bfb15c8aa51ab4a743fdb34fadecd751f643747a845203",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 166
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          },
+          {
+            "rule": "116:292:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 166
+        },
+        "output_pcap_sha256": "c3ab2dc1a36f9c68c5a97c4cccb9d7da70716c99cf0da88518d5cad096f32e14",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "36c90172a0e2c2f3c6bfb15c8aa51ab4a743fdb34fadecd751f643747a845203"
+        ],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          },
+          {
+            "rule": "116:292:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "eight-extensions-type2-last-udp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "c399ab44cddc34f28bd2ca187a2b5f3c4c13d5276408b82ff9dd9b749c23d62f",
+      "expected_forwarded_packet_sha256": "c399ab44cddc34f28bd2ca187a2b5f3c4c13d5276408b82ff9dd9b749c23d62f",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 166
+        },
+        "output_pcap_sha256": "f9684d60ca02d5fabc6f5e099a03c03d187c2df85d8f98c631a1aa3192341273",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "c399ab44cddc34f28bd2ca187a2b5f3c4c13d5276408b82ff9dd9b749c23d62f"
+        ],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          },
+          {
+            "rule": "116:292:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 166
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          },
+          {
+            "rule": "116:292:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "eight-extensions-type2-last-icmp6-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "41b7f33a7967037dcac03ae4da5ded2e3589f3bca008d2c000075a8d94686fb3",
+      "expected_forwarded_packet_sha256": "41b7f33a7967037dcac03ae4da5ded2e3589f3bca008d2c000075a8d94686fb3",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 142
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          },
+          {
+            "rule": "116:292:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 142
+        },
+        "output_pcap_sha256": "68e49e51d57b07b55fe37b85859b4af58e41503300460ff6de89b27b773dc216",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "41b7f33a7967037dcac03ae4da5ded2e3589f3bca008d2c000075a8d94686fb3"
+        ],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          },
+          {
+            "rule": "116:292:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "eight-extensions-type2-last-icmp6-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "d553138e8188793bab7dcd1c344edc9f4a8b757f553c8fb8d522ab2c13f36e52",
+      "expected_forwarded_packet_sha256": "d553138e8188793bab7dcd1c344edc9f4a8b757f553c8fb8d522ab2c13f36e52",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 142
+        },
+        "output_pcap_sha256": "78d1f250e50cb1a2353a6f63c898176083d06eaa121361e76928df91452bb4e7",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "d553138e8188793bab7dcd1c344edc9f4a8b757f553c8fb8d522ab2c13f36e52"
+        ],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          },
+          {
+            "rule": "116:292:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 142
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          },
+          {
+            "rule": "116:292:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 header has destination options followed by a routing header"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "eight-extensions-type2-first-tcp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "f23dff7a9647127cdf49e04b0e95778dc1cdc9b2849a5e79bb5aa0cff4de72ce",
+      "expected_forwarded_packet_sha256": "f23dff7a9647127cdf49e04b0e95778dc1cdc9b2849a5e79bb5aa0cff4de72ce",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 154
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 154
+        },
+        "output_pcap_sha256": "c17bed836c3ead1f0e7d57de42726d7f31d909d927481be56a7903fce8b4fab0",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "f23dff7a9647127cdf49e04b0e95778dc1cdc9b2849a5e79bb5aa0cff4de72ce"
+        ],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "eight-extensions-type2-first-tcp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "00465b996af6087005569608ba99f3c49c8a80a03d184b6b80338c76de468717",
+      "expected_forwarded_packet_sha256": "00465b996af6087005569608ba99f3c49c8a80a03d184b6b80338c76de468717",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 154
+        },
+        "output_pcap_sha256": "3fd5dee10add6c3aad890a5f8c258538c3dbe5ef5f9eb4945c72aad4ec323a1b",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "00465b996af6087005569608ba99f3c49c8a80a03d184b6b80338c76de468717"
+        ],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 154
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "eight-extensions-type2-first-udp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "f98c7ae40dcb2e4481815c6a5388dfa798f2bb0b466bd0ca0bb89cf85f1e00ee",
+      "expected_forwarded_packet_sha256": "f98c7ae40dcb2e4481815c6a5388dfa798f2bb0b466bd0ca0bb89cf85f1e00ee",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 166
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 166
+        },
+        "output_pcap_sha256": "9ee88dc1f54747a2316b37cd0d87fbe4b2e3e5467e492dd7eddb86a2710cde91",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "f98c7ae40dcb2e4481815c6a5388dfa798f2bb0b466bd0ca0bb89cf85f1e00ee"
+        ],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "eight-extensions-type2-first-udp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "d28b95e135b01ae3a6aa68176eedc30e1bbc6e279d02022e39e8e3bde5888b6c",
+      "expected_forwarded_packet_sha256": "d28b95e135b01ae3a6aa68176eedc30e1bbc6e279d02022e39e8e3bde5888b6c",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 166
+        },
+        "output_pcap_sha256": "f46529db16534eded494b9ace3ccdc2b1cc8cf52cba2ee5bec83f2fe145024c8",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "d28b95e135b01ae3a6aa68176eedc30e1bbc6e279d02022e39e8e3bde5888b6c"
+        ],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 166
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "eight-extensions-type2-first-icmp6-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "0cbe103cd1134fab8dbbc2f6de9333d51013a3e61747a1987681dc81416fabaf",
+      "expected_forwarded_packet_sha256": "0cbe103cd1134fab8dbbc2f6de9333d51013a3e61747a1987681dc81416fabaf",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 142
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 142
+        },
+        "output_pcap_sha256": "ea84921552eeff53816d056ff21d392a3bb8f586d9edd62ff709f545f61931cb",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "0cbe103cd1134fab8dbbc2f6de9333d51013a3e61747a1987681dc81416fabaf"
+        ],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "eight-extensions-type2-first-icmp6-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": false,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "dc8393fef1bb4f48b898decae01541062d3c494aef3bcbb54d04faf46b65a696",
+      "expected_forwarded_packet_sha256": "dc8393fef1bb4f48b898decae01541062d3c494aef3bcbb54d04faf46b65a696",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "allow",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "allow": 1,
+          "rx_bytes": 142
+        },
+        "output_pcap_sha256": "5adddb89c7eae65d8bd975d76af96836dd51f79d051f65359e726522f08e9614",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "dc8393fef1bb4f48b898decae01541062d3c494aef3bcbb54d04faf46b65a696"
+        ],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "allow",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 142
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [
+          {
+            "rule": "116:296:1",
+            "action": "drop",
+            "msg": "(ipv6) IPv6 packet includes out-of-order extension headers"
+          }
+        ],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "normalizer-tcp-reserved-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": true,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "22e1f66020b0906dbc0dafda75fee24a24c0a0ca48f7e7ca97708180f1bf7f7f",
+      "expected_forwarded_packet_sha256": "f5d30807e2c9765143cbe2c40839529815f4c9f6e937a71ac93fcab7f3ff2a27",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 98
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "replace",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "replace": 1,
+          "rx_bytes": 98
+        },
+        "output_pcap_sha256": "59b00b13eedc993515cdf00c264dda1a90dd551f428575eb0897f41376de2d28",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "f5d30807e2c9765143cbe2c40839529815f4c9f6e937a71ac93fcab7f3ff2a27"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "normalizer-tcp-reserved-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": true,
+      "counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "input_packet_sha256": "8478112808ec81343a59c02032f236e87a985e7217c91e13c53135fec5f090d1",
+      "expected_forwarded_packet_sha256": "f5d30807e2c9765143cbe2c40839529815f4c9f6e937a71ac93fcab7f3ff2a27",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "replace",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "replace": 1,
+          "rx_bytes": 98
+        },
+        "output_pcap_sha256": "3516d4167af3d40fa6211281141b4e26f50947aef91b3adb7c2519a2c31ee4bb",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "9ba2b1e225ea3141bf818a31b1175a93a7f575682f57ba4b037cb3186dd5661b"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 98
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "normalizer-destination-udp-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": true,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "d0b6d0bf45352f83cc73e6cafd0704921880d8b6e23a7b0c650d6ff7621d9194",
+      "expected_forwarded_packet_sha256": "30abe29118e0e240b5e16dee76d017e805cb31e9385c515c7d11050455a36c32",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 118
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "replace",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "replace": 1,
+          "rx_bytes": 118
+        },
+        "output_pcap_sha256": "bb160725216b343a31661dbac5f820647623610558b0a290a75fa11d069ea808",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "30abe29118e0e240b5e16dee76d017e805cb31e9385c515c7d11050455a36c32"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "normalizer-destination-udp-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": true,
+      "counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "input_packet_sha256": "de3f8aa687c1fd91438193dfe66f4d581f73faa7bb5fd58e767352f5e0123140",
+      "expected_forwarded_packet_sha256": "30abe29118e0e240b5e16dee76d017e805cb31e9385c515c7d11050455a36c32",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "replace",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "replace": 1,
+          "rx_bytes": 118
+        },
+        "output_pcap_sha256": "fe6cbe5ebdfcd66ab58ad9ca9171ac4193f07681ab57ab88b92f25a53873bb8b",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "8ddc138ec2c70e4c9b2c74b4b98872ae33617db2bb29528265f049c747e30a8f"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 118
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "normalizer-destination-icmp6-correct",
+      "valid": true,
+      "routed": true,
+      "normalization": true,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "a4faa97cdfd8c69388dc8d144a0fcd0ab93ed4eafbd9b0fb23a37e445db451c2",
+      "expected_forwarded_packet_sha256": "b7086acef74a7f283874b08522cdc8b40ee99a2c1b2b9cc5030dca54c64f3fea",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 94
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": false,
+        "daq_verdict": "replace",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "replace": 1,
+          "rx_bytes": 94
+        },
+        "output_pcap_sha256": "41dd3ce145cfeb671e54e8a66f78f2620a921ce4f3d0189593b1c891296c65b5",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "b7086acef74a7f283874b08522cdc8b40ee99a2c1b2b9cc5030dca54c64f3fea"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      }
+    },
+    {
+      "name": "normalizer-destination-icmp6-incorrect",
+      "valid": false,
+      "routed": true,
+      "normalization": true,
+      "counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "input_packet_sha256": "79ca0110c0352d85be8343e8ea7e7adc48a63fe71d78c9577df575f16b321c78",
+      "expected_forwarded_packet_sha256": "b7086acef74a7f283874b08522cdc8b40ee99a2c1b2b9cc5030dca54c64f3fea",
+      "baseline_matches_oracle": true,
+      "repaired_matches_oracle": true,
+      "baseline": {
+        "blocked": false,
+        "daq_verdict": "replace",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "replace": 1,
+          "rx_bytes": 94
+        },
+        "output_pcap_sha256": "19fb14a6fd24b5d1c0b9b5aa3927e9c7d0170bd667080ff7e454bc93f3570032",
+        "output_packets": 1,
+        "output_packet_sha256": [
+          "f1880dc78973d917df06ae9a1d2727eaf65d3f8073e6a9e2f1721ee6379bc704"
+        ],
+        "events": [],
+        "checksum_errors": 0,
+        "checksum_bypassed": 0
+      },
+      "repaired": {
+        "blocked": true,
+        "daq_verdict": "block",
+        "daq_counters": {
+          "pcaps": 1,
+          "received": 1,
+          "analyzed": 1,
+          "block": 1,
+          "rx_bytes": 94
+        },
+        "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+        "output_packets": 0,
+        "output_packet_sha256": [],
+        "events": [],
+        "checksum_errors": 1,
+        "checksum_bypassed": 0
+      }
+    }
+  ]
+}

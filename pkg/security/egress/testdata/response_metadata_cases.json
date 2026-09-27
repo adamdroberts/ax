@@ -1,0 +1,1299 @@
+{
+  "version": 1,
+  "protected_connection_names": [
+    "accept-ranges",
+    "age",
+    "allow",
+    "authentication-info",
+    "authorization",
+    "cache-control",
+    "connection",
+    "content-disposition",
+    "content-encoding",
+    "content-language",
+    "content-length",
+    "content-location",
+    "content-range",
+    "content-transfer-encoding",
+    "content-type",
+    "cookie",
+    "date",
+    "etag",
+    "expect",
+    "expires",
+    "forwarded",
+    "host",
+    "http2-settings",
+    "if-match",
+    "if-modified-since",
+    "if-none-match",
+    "if-range",
+    "if-unmodified-since",
+    "last-modified",
+    "location",
+    "origin",
+    "proxy-authenticate",
+    "proxy-authentication-info",
+    "proxy-authorization",
+    "range",
+    "referer",
+    "retry-after",
+    "server",
+    "set-cookie",
+    "te",
+    "trailer",
+    "transfer-encoding",
+    "upgrade",
+    "vary",
+    "warning",
+    "www-authenticate",
+    "x-agent-id",
+    "x-approval-token",
+    "x-host",
+    "x-http-method",
+    "x-http-method-override",
+    "x-method-override",
+    "x-original-host",
+    "x-original-url",
+    "x-real-ip",
+    "x-rewrite-url"
+  ],
+  "protected_connection_prefixes": [
+    "proxy-",
+    "sec-",
+    "x-forwarded"
+  ],
+  "singletons": [
+    "content-encoding",
+    "content-length",
+    "content-location",
+    "content-range",
+    "content-type",
+    "date",
+    "etag",
+    "last-modified",
+    "location",
+    "retry-after",
+    "server",
+    "transfer-encoding"
+  ],
+  "max_parts": 128,
+  "cases": [
+    {
+      "name": "protected-connection-accept-ranges",
+      "headers": [
+        [
+          "Connection",
+          "accept-ranges"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-age",
+      "headers": [
+        [
+          "Connection",
+          "age"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-allow",
+      "headers": [
+        [
+          "Connection",
+          "allow"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-authentication-info",
+      "headers": [
+        [
+          "Connection",
+          "authentication-info"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-authorization",
+      "headers": [
+        [
+          "Connection",
+          "authorization"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-cache-control",
+      "headers": [
+        [
+          "Connection",
+          "cache-control"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-connection",
+      "headers": [
+        [
+          "Connection",
+          "connection"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-content-disposition",
+      "headers": [
+        [
+          "Connection",
+          "content-disposition"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-content-encoding",
+      "headers": [
+        [
+          "Connection",
+          "content-encoding"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-content-language",
+      "headers": [
+        [
+          "Connection",
+          "content-language"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-content-length",
+      "headers": [
+        [
+          "Connection",
+          "content-length"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-content-location",
+      "headers": [
+        [
+          "Connection",
+          "content-location"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-content-range",
+      "headers": [
+        [
+          "Connection",
+          "content-range"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-content-transfer-encoding",
+      "headers": [
+        [
+          "Connection",
+          "content-transfer-encoding"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-content-type",
+      "headers": [
+        [
+          "Connection",
+          "content-type"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-cookie",
+      "headers": [
+        [
+          "Connection",
+          "cookie"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-date",
+      "headers": [
+        [
+          "Connection",
+          "date"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-etag",
+      "headers": [
+        [
+          "Connection",
+          "etag"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-expect",
+      "headers": [
+        [
+          "Connection",
+          "expect"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-expires",
+      "headers": [
+        [
+          "Connection",
+          "expires"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-forwarded",
+      "headers": [
+        [
+          "Connection",
+          "forwarded"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-host",
+      "headers": [
+        [
+          "Connection",
+          "host"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-http2-settings",
+      "headers": [
+        [
+          "Connection",
+          "http2-settings"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-if-match",
+      "headers": [
+        [
+          "Connection",
+          "if-match"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-if-modified-since",
+      "headers": [
+        [
+          "Connection",
+          "if-modified-since"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-if-none-match",
+      "headers": [
+        [
+          "Connection",
+          "if-none-match"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-if-range",
+      "headers": [
+        [
+          "Connection",
+          "if-range"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-if-unmodified-since",
+      "headers": [
+        [
+          "Connection",
+          "if-unmodified-since"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-last-modified",
+      "headers": [
+        [
+          "Connection",
+          "last-modified"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-location",
+      "headers": [
+        [
+          "Connection",
+          "location"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-origin",
+      "headers": [
+        [
+          "Connection",
+          "origin"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-proxy-authenticate",
+      "headers": [
+        [
+          "Connection",
+          "proxy-authenticate"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-proxy-authentication-info",
+      "headers": [
+        [
+          "Connection",
+          "proxy-authentication-info"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-proxy-authorization",
+      "headers": [
+        [
+          "Connection",
+          "proxy-authorization"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-range",
+      "headers": [
+        [
+          "Connection",
+          "range"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-referer",
+      "headers": [
+        [
+          "Connection",
+          "referer"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-retry-after",
+      "headers": [
+        [
+          "Connection",
+          "retry-after"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-server",
+      "headers": [
+        [
+          "Connection",
+          "server"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-set-cookie",
+      "headers": [
+        [
+          "Connection",
+          "set-cookie"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-te",
+      "headers": [
+        [
+          "Connection",
+          "te"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-trailer",
+      "headers": [
+        [
+          "Connection",
+          "trailer"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-transfer-encoding",
+      "headers": [
+        [
+          "Connection",
+          "transfer-encoding"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-upgrade",
+      "headers": [
+        [
+          "Connection",
+          "upgrade"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-vary",
+      "headers": [
+        [
+          "Connection",
+          "vary"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-warning",
+      "headers": [
+        [
+          "Connection",
+          "warning"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-www-authenticate",
+      "headers": [
+        [
+          "Connection",
+          "www-authenticate"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-x-agent-id",
+      "headers": [
+        [
+          "Connection",
+          "x-agent-id"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-x-approval-token",
+      "headers": [
+        [
+          "Connection",
+          "x-approval-token"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-x-host",
+      "headers": [
+        [
+          "Connection",
+          "x-host"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-x-http-method",
+      "headers": [
+        [
+          "Connection",
+          "x-http-method"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-x-http-method-override",
+      "headers": [
+        [
+          "Connection",
+          "x-http-method-override"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-x-method-override",
+      "headers": [
+        [
+          "Connection",
+          "x-method-override"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-x-original-host",
+      "headers": [
+        [
+          "Connection",
+          "x-original-host"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-x-original-url",
+      "headers": [
+        [
+          "Connection",
+          "x-original-url"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-x-real-ip",
+      "headers": [
+        [
+          "Connection",
+          "x-real-ip"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "protected-connection-x-rewrite-url",
+      "headers": [
+        [
+          "Connection",
+          "x-rewrite-url"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "invalid-connection-Proxy-Anything",
+      "headers": [
+        [
+          "Connection",
+          "Proxy-Anything"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "invalid-connection-Sec-Unknown",
+      "headers": [
+        [
+          "Connection",
+          "Sec-Unknown"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "invalid-connection-X-Forwarded-Z",
+      "headers": [
+        [
+          "Connection",
+          "X-Forwarded-Z"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "invalid-connection-\"close\"",
+      "headers": [
+        [
+          "Connection",
+          "\"close\""
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "invalid-connection-close;bad",
+      "headers": [
+        [
+          "Connection",
+          "close;bad"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "invalid-connection-close=x",
+      "headers": [
+        [
+          "Connection",
+          "close=x"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "invalid-connection-not a token",
+      "headers": [
+        [
+          "Connection",
+          "not a token"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "valid-connection-63",
+      "headers": [
+        [
+          "Connection",
+          ""
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "valid-connection-64",
+      "headers": [
+        [
+          "Connection",
+          ","
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "valid-connection-65",
+      "headers": [
+        [
+          "Connection",
+          "close"
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "valid-connection-66",
+      "headers": [
+        [
+          "Connection",
+          "KEEP-ALIVE"
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "valid-connection-67",
+      "headers": [
+        [
+          "Connection",
+          "close,, x-extension"
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "valid-connection-68",
+      "headers": [
+        [
+          "Connection",
+          "x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x"
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "connection-over-limit",
+      "headers": [
+        [
+          "Connection",
+          "x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "connection-aggregate-limit",
+      "headers": [
+        [
+          "Connection",
+          "x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x"
+        ],
+        [
+          "Connection",
+          "y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "duplicate-content-encoding",
+      "headers": [
+        [
+          "content-encoding",
+          "value"
+        ],
+        [
+          "CONTENT-ENCODING",
+          "value"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "duplicate-content-length",
+      "headers": [
+        [
+          "content-length",
+          "value"
+        ],
+        [
+          "CONTENT-LENGTH",
+          "value"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "duplicate-content-location",
+      "headers": [
+        [
+          "content-location",
+          "value"
+        ],
+        [
+          "CONTENT-LOCATION",
+          "value"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "duplicate-content-range",
+      "headers": [
+        [
+          "content-range",
+          "value"
+        ],
+        [
+          "CONTENT-RANGE",
+          "value"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "duplicate-content-type",
+      "headers": [
+        [
+          "content-type",
+          "text/plain"
+        ],
+        [
+          "CONTENT-TYPE",
+          "text/plain"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "duplicate-date",
+      "headers": [
+        [
+          "date",
+          "value"
+        ],
+        [
+          "DATE",
+          "value"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "duplicate-etag",
+      "headers": [
+        [
+          "etag",
+          "value"
+        ],
+        [
+          "ETAG",
+          "value"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "duplicate-last-modified",
+      "headers": [
+        [
+          "last-modified",
+          "value"
+        ],
+        [
+          "LAST-MODIFIED",
+          "value"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "duplicate-location",
+      "headers": [
+        [
+          "location",
+          "value"
+        ],
+        [
+          "LOCATION",
+          "value"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "duplicate-retry-after",
+      "headers": [
+        [
+          "retry-after",
+          "value"
+        ],
+        [
+          "RETRY-AFTER",
+          "value"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "duplicate-server",
+      "headers": [
+        [
+          "server",
+          "value"
+        ],
+        [
+          "SERVER",
+          "value"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "duplicate-transfer-encoding",
+      "headers": [
+        [
+          "transfer-encoding",
+          "value"
+        ],
+        [
+          "TRANSFER-ENCODING",
+          "value"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "repeatable-WWW-Authenticate",
+      "headers": [
+        [
+          "WWW-Authenticate",
+          "one"
+        ],
+        [
+          "WWW-Authenticate",
+          "two"
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "repeatable-Authentication-Info",
+      "headers": [
+        [
+          "Authentication-Info",
+          "one"
+        ],
+        [
+          "Authentication-Info",
+          "two"
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "repeatable-Cache-Control",
+      "headers": [
+        [
+          "Cache-Control",
+          "one"
+        ],
+        [
+          "Cache-Control",
+          "two"
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "repeatable-Link",
+      "headers": [
+        [
+          "Link",
+          "one"
+        ],
+        [
+          "Link",
+          "two"
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "repeatable-Set-Cookie",
+      "headers": [
+        [
+          "Set-Cookie",
+          "one"
+        ],
+        [
+          "Set-Cookie",
+          "two"
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "repeatable-X-Extension",
+      "headers": [
+        [
+          "X-Extension",
+          "one"
+        ],
+        [
+          "X-Extension",
+          "two"
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "valid-media-0",
+      "headers": [
+        [
+          "Content-Type",
+          "text/plain"
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "valid-media-1",
+      "headers": [
+        [
+          "Content-Type",
+          "Text/HTML;Charset=\"UTF-8\""
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "valid-media-2",
+      "headers": [
+        [
+          "Content-Type",
+          "application/octet-stream"
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "valid-media-3",
+      "headers": [
+        [
+          "Content-Type",
+          "application/problem+json"
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "valid-media-4",
+      "headers": [
+        [
+          "Content-Type",
+          "text/plain; title=\"comma,semicolon;ok\""
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "valid-media-5",
+      "headers": [
+        [
+          "Content-Type",
+          "text/plain; title=\"escaped\\\"quote\""
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "valid-media-6",
+      "headers": [
+        [
+          "Content-Type",
+          "text/plain; charset=\"u\\tf-8\""
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "valid-media-7",
+      "headers": [
+        [
+          "Content-Type",
+          "text/plain; title=\"\""
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "valid-media-8",
+      "headers": [
+        [
+          "Content-Type",
+          "text/plain ; ; charset=utf-8;"
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "valid-media-9",
+      "headers": [
+        [
+          "Content-Type",
+          "text/plain;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;"
+        ]
+      ],
+      "accepted": true
+    },
+    {
+      "name": "invalid-media-0",
+      "headers": [
+        [
+          "Content-Type",
+          ""
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "invalid-media-1",
+      "headers": [
+        [
+          "Content-Type",
+          "text"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "invalid-media-2",
+      "headers": [
+        [
+          "Content-Type",
+          "text/plain,application/json"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "invalid-media-3",
+      "headers": [
+        [
+          "Content-Type",
+          "text/plain; charset=utf-16"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "invalid-media-4",
+      "headers": [
+        [
+          "Content-Type",
+          "text/plain; charset=\"\""
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "invalid-media-5",
+      "headers": [
+        [
+          "Content-Type",
+          "text/plain; charset=utf-8; CHARSET=utf-8"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "invalid-media-6",
+      "headers": [
+        [
+          "Content-Type",
+          "text/plain; charset*=utf-8''UTF-8"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "invalid-media-7",
+      "headers": [
+        [
+          "Content-Type",
+          "text/plain; charset*0=utf-8"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "invalid-media-8",
+      "headers": [
+        [
+          "Content-Type",
+          "text/plain; charset =utf-8"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "invalid-media-9",
+      "headers": [
+        [
+          "Content-Type",
+          "text/plain; charset= utf-8"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "invalid-media-10",
+      "headers": [
+        [
+          "Content-Type",
+          "text/plain; title=\"unterminated"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "invalid-media-11",
+      "headers": [
+        [
+          "Content-Type",
+          "text/plain; title=x junk"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "invalid-media-12",
+      "headers": [
+        [
+          "Content-Type",
+          "text/plain; title=\"ok\"junk"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "invalid-media-13",
+      "headers": [
+        [
+          "Content-Type",
+          "text/plain; title=x; title=x"
+        ]
+      ],
+      "accepted": false
+    },
+    {
+      "name": "invalid-media-14",
+      "headers": [
+        [
+          "Content-Type",
+          "text/plain;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;"
+        ]
+      ],
+      "accepted": false
+    }
+  ]
+}

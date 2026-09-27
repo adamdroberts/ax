@@ -1,0 +1,544 @@
+{
+  "snort_version": "3.12.2.0",
+  "snort_binary_sha256": "af84e9dfb21123422b9ed233c10a4dc2ccb1b810774733e5561dc096ac61f6d9",
+  "source_commit": "14aeb09f5a0856812dbe08ead3c21f99e8860aa0",
+  "scope": "Offline inline dump:pcap DAQ. Actual engine DAQ allow/block verdicts and emitted packet counts are checked; no network interfaces or deployed enforcement are tested.",
+  "configuration": {
+    "snort_version": "3.12.2.0",
+    "source_commit": "14aeb09f5a0856812dbe08ead3c21f99e8860aa0",
+    "scope": "Native configuration loading and effective rule states only; no traffic or live inline enforcement.",
+    "profiles": [
+      {
+        "profile": "protocol",
+        "loaded": 208,
+        "enabled": 208,
+        "actions": {
+          "drop": 164,
+          "block": 0,
+          "alert": 44
+        }
+      },
+      {
+        "profile": "perimeter",
+        "loaded": 215,
+        "enabled": 215,
+        "actions": {
+          "drop": 164,
+          "block": 5,
+          "alert": 46
+        }
+      },
+      {
+        "profile": "http",
+        "loaded": 271,
+        "enabled": 271,
+        "actions": {
+          "drop": 164,
+          "block": 19,
+          "alert": 88
+        }
+      },
+      {
+        "profile": "both",
+        "loaded": 278,
+        "enabled": 278,
+        "actions": {
+          "drop": 164,
+          "block": 24,
+          "alert": 90
+        }
+      }
+    ],
+    "rejected_invalid_configurations": 18,
+    "plugin_sha256": {
+      "ax_nd_options.so": "3dde09c3191beefd8ca35121762daa282631705cd7938d306f53732c1b83f6fb"
+    },
+    "sha256": {
+      "native-snort3/protocol-ips.lua": "000cace55518af574800693f3b671e3a07d491ff5e0ad3e9c87c19abc450712c",
+      "native-snort3/agent-guard-overlay.lua": "f6b900d70900f3e9d3a042d247590a501f622c5c7fa11fd791b75ea20e8fd91d",
+      "native-snort3/protocol.states": "444f3a106d5f018ebe429d262d5f8fc79436c8fd460aa6d48ed0f4795e6cc81f",
+      "native-snort3/protocol-builtins.rules": "58b92054c4d5d7f0cf68043a1fe7ab8a8ae125791491ecd6ce309e3354f7bc27",
+      "native-snort3/builtin-inventory.json": "a48a61274609c4dfb69824bd2e0b5f7bbb0da226a27c7faa08e95c6866a118a8",
+      "native-snort3/protocol-validation.rules": "ffd1f9e078a45f234c489408bb93edce6646d4f99f260d4e5877dcc5383330b3",
+      "native-snort3/generate_inventory.py": "4d461ea9cfbbb799592a644a651c71c872b1d430962f9cc4445e4e04eb246c0f",
+      "native-snort3/validate_profiles.py": "5a208668309dce2cc0503b8acf93ec7f36ba1a4fdd301233ec2f2e32f9e7a48f",
+      "native-snort3/plugins/README.md": "44f0b78823e63a06d725cd395a989ff8c46b3dddc26238833f9ce8bb3a163f21",
+      "native-snort3/plugins/build.py": "3ba291e364ef6cfc6b227cfcf45da3e037bdbe494a4d4be0958a216058f36e0b",
+      "native-snort3/plugins/ax_nd_options.cc": "5ac99c5b4568c15ee05d5a9bf76254f566c41e28c7a612f6f6fa521da56a9255",
+      "native-snort3/plugins/nd_validation.h": "4f88245b813db35205d73dbff849269e43f9bc4ace81e6fb3eccdf878eabc185",
+      "native-snort3/plugins/nd_validation_test.cc": "72358ad3aac6fd0a848ddc883ec8430012573cee71185758021b942e77008ad2",
+      "native-snort3/plugins/ip_validation.h": "cb67871c83dfcb059b4c126933366a06f60472060956bbdf6b3e4bebf9792010",
+      "native-snort3/plugins/ip_validation_test.cc": "f5e057023dfc380f08825cbcc1beb3d638a947bf503e271343715ebe630eb080",
+      "native-snort3/plugins/ip4_options.h": "643255e2b38d0b67c6db2297c6b03076b0d32853ec038f20b9508ab83b18e30d",
+      "native-snort3/plugins/ip4_options_test.cc": "29927fe74d788bb6d99fd811cd0dc88b87de30c54d44e45fcf07db9219e8120a",
+      "native-snort3/plugins/ip6_options.h": "e16e61d1471da2dca574fdd423bc27f8929b14d89acd7b806320708dbdce8357",
+      "native-snort3/plugins/ip6_options_test.cc": "7dbae601d883aa31a0a1fcd9c7dc5be8f267c7f1a5b890497958b6ac824117ef",
+      "native-snort3/plugins/esp_validation.h": "cf8ade954fcec4f1f09917798d1aa4fd748790f210adb265fe845e32d3f135fe",
+      "native-snort3/plugins/esp_validation_test.cc": "2094e98219defcb518985f3f3aa978ff08ca1c3f6e449afa0105ed071b3dc1c5",
+      "native-snort3/plugins/routing_validation.h": "825341ae93dbe5bb8cd8071cc245d5b3642d072a86291241084f03b3b2a36694",
+      "native-snort3/plugins/routing_validation_test.cc": "ed3924084f745164e72c5b5457ff5d307d1a852fe8eda9371f5199f007b58c07",
+      "native-snort3/plugins/home_address.h": "8540117639d519f6c5b51ccc8f893a506deb61bdb9ec181c968dcd7d35e0aa62",
+      "native-snort3/plugins/home_address_test.cc": "9a93efacfc92e91062b28c4bcd2c9c91c1ac71b0e3030e6bf99e07684b54e236",
+      "pkg/security/snort/imports/agent-guard-snort3/native-only.rules": "2451962b90016f8b520521a93837ddcdcce9064e704ebdc5e67c359e90fd9d9a"
+    }
+  },
+  "fixture_source_sha256": {
+    "native-snort3/tests/checksum_replay.py": "3194dc0fe4d21ba3a6e3d30b012d0b57e7027c44857d6c48b203447ab8e576d2",
+    "native-snort3/tests/generate_pcaps.py": "7a542d7f61633a4849c9147476f2dae810496247686d87c767f43a9e5470c5d1",
+    "native-snort3/tests/replay.py": "58d2cdd52c85c22cde82fc5ff2d6961b83d69588ce6c628345cce0b6dbefe76b",
+    "native-snort3/tests/next_header_policy.py": "82abd595a1639c4c33eae1b5adef4ca052842d443b6344de2586ced67a318017"
+  },
+  "summary": {
+    "cases": 16,
+    "passed": 16,
+    "allowed": 8,
+    "blocked": 8,
+    "failures": []
+  },
+  "cases": [
+    {
+      "name": "ipv4-header-correct",
+      "pair": "ipv4-header",
+      "expected_verdict": "allow",
+      "checksum_counter": [
+        "ipv4",
+        "bad_checksum"
+      ],
+      "expected_checksum_errors": 0,
+      "mutation": null,
+      "input_sha256": "1bf1e4b250a32723d735be1fff50d880d0319e0da882f07151b0b1acc106e972",
+      "input_packets": 1,
+      "daq": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "allow": 1,
+        "rx_bytes": 47
+      },
+      "output_packets": 1,
+      "observed_checksum_errors": 0,
+      "output_pcap_sha256": "1bf1e4b250a32723d735be1fff50d880d0319e0da882f07151b0b1acc106e972",
+      "output_packet_sha256": [
+        "38ca39f7c40b0d77fa6767dc733ec7ffab72e125ecedb04de659d269c2a90ae9"
+      ],
+      "alerts": [],
+      "passed": true
+    },
+    {
+      "name": "ipv4-header-one-bit-error",
+      "pair": "ipv4-header",
+      "expected_verdict": "block",
+      "checksum_counter": [
+        "ipv4",
+        "bad_checksum"
+      ],
+      "expected_checksum_errors": 1,
+      "mutation": "one checksum bit",
+      "input_sha256": "9fc3a9c2b7b54be42e9ac83a4d59b6f898629afa3368f521d972a501a5404cc9",
+      "input_packets": 1,
+      "daq": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "block": 1,
+        "rx_bytes": 47
+      },
+      "output_packets": 0,
+      "observed_checksum_errors": 1,
+      "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+      "output_packet_sha256": [],
+      "alerts": [],
+      "passed": true
+    },
+    {
+      "name": "tcpv4-correct",
+      "pair": "tcpv4",
+      "expected_verdict": "allow",
+      "checksum_counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "expected_checksum_errors": 0,
+      "mutation": null,
+      "input_sha256": "4eafed935e11f0ad0ea807f3666d797f3cd8a9e8281eec978c34bee7863ab23e",
+      "input_packets": 1,
+      "daq": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "allow": 1,
+        "rx_bytes": 54
+      },
+      "output_packets": 1,
+      "observed_checksum_errors": 0,
+      "output_pcap_sha256": "4eafed935e11f0ad0ea807f3666d797f3cd8a9e8281eec978c34bee7863ab23e",
+      "output_packet_sha256": [
+        "92fae64fb525c87e6c473ee685d897b7c8edfa4e87d3b6a4421d89a4c6e98cd0"
+      ],
+      "alerts": [],
+      "passed": true
+    },
+    {
+      "name": "tcpv4-one-bit-error",
+      "pair": "tcpv4",
+      "expected_verdict": "block",
+      "checksum_counter": [
+        "tcp",
+        "bad_tcp4_checksum"
+      ],
+      "expected_checksum_errors": 1,
+      "mutation": "one checksum bit",
+      "input_sha256": "0fb5f59398336b75e389f70ba322275324f04a7c73f2008550d64c74528bd8bb",
+      "input_packets": 1,
+      "daq": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "block": 1,
+        "rx_bytes": 54
+      },
+      "output_packets": 0,
+      "observed_checksum_errors": 1,
+      "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+      "output_packet_sha256": [],
+      "alerts": [],
+      "passed": true
+    },
+    {
+      "name": "icmpv4-correct",
+      "pair": "icmpv4",
+      "expected_verdict": "allow",
+      "checksum_counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "expected_checksum_errors": 0,
+      "mutation": null,
+      "input_sha256": "882a646cf87bde1685efc17cac6d7cd5c6a030b045c9e8d30c3f0321916ad9fd",
+      "input_packets": 1,
+      "daq": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "allow": 1,
+        "rx_bytes": 47
+      },
+      "output_packets": 1,
+      "observed_checksum_errors": 0,
+      "output_pcap_sha256": "882a646cf87bde1685efc17cac6d7cd5c6a030b045c9e8d30c3f0321916ad9fd",
+      "output_packet_sha256": [
+        "b4c47a44fb57f9c3d91829dbf0728908acc240ab919ee59c50c064a05f8b4cd6"
+      ],
+      "alerts": [],
+      "passed": true
+    },
+    {
+      "name": "icmpv4-one-bit-error",
+      "pair": "icmpv4",
+      "expected_verdict": "block",
+      "checksum_counter": [
+        "icmp4",
+        "bad_checksum"
+      ],
+      "expected_checksum_errors": 1,
+      "mutation": "one checksum bit",
+      "input_sha256": "26943d9e10ac056013871d9a9804a2069205492c765131bdedbbae7232eaeed3",
+      "input_packets": 1,
+      "daq": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "block": 1,
+        "rx_bytes": 47
+      },
+      "output_packets": 0,
+      "observed_checksum_errors": 1,
+      "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+      "output_packet_sha256": [],
+      "alerts": [],
+      "passed": true
+    },
+    {
+      "name": "udpv4-correct",
+      "pair": "udpv4",
+      "expected_verdict": "allow",
+      "checksum_counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "expected_checksum_errors": 0,
+      "mutation": null,
+      "input_sha256": "f060b90ae6c87ead88937bf2a402aea53a20fd77e0817a4dc754a1a640b671f3",
+      "input_packets": 1,
+      "daq": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "allow": 1,
+        "rx_bytes": 47
+      },
+      "output_packets": 1,
+      "observed_checksum_errors": 0,
+      "output_pcap_sha256": "f060b90ae6c87ead88937bf2a402aea53a20fd77e0817a4dc754a1a640b671f3",
+      "output_packet_sha256": [
+        "1ad429702835428fe5cc4b90e46cd8d90db852384f7cefe61691bdae5b7e10f4"
+      ],
+      "alerts": [],
+      "passed": true
+    },
+    {
+      "name": "udpv4-one-bit-error",
+      "pair": "udpv4",
+      "expected_verdict": "block",
+      "checksum_counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "expected_checksum_errors": 1,
+      "mutation": "one checksum bit",
+      "input_sha256": "a3c592a02d3982c603ffd5bc88787ce17717560ef2e5a1af2be4cd44c8b6d696",
+      "input_packets": 1,
+      "daq": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "block": 1,
+        "rx_bytes": 47
+      },
+      "output_packets": 0,
+      "observed_checksum_errors": 1,
+      "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+      "output_packet_sha256": [],
+      "alerts": [],
+      "passed": true
+    },
+    {
+      "name": "udpv6-correct",
+      "pair": "udpv6",
+      "expected_verdict": "allow",
+      "checksum_counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "expected_checksum_errors": 0,
+      "mutation": null,
+      "input_sha256": "8f4c9bedd1d57de4c2bab0d033297177927ba96519520d892da754d0bcf33314",
+      "input_packets": 1,
+      "daq": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "allow": 1,
+        "rx_bytes": 67
+      },
+      "output_packets": 1,
+      "observed_checksum_errors": 0,
+      "output_pcap_sha256": "8f4c9bedd1d57de4c2bab0d033297177927ba96519520d892da754d0bcf33314",
+      "output_packet_sha256": [
+        "2b0b69ee0555fde2e103296282bfebb94da138abea3464358c058d8ec5ef5dd9"
+      ],
+      "alerts": [],
+      "passed": true
+    },
+    {
+      "name": "udpv6-one-bit-error",
+      "pair": "udpv6",
+      "expected_verdict": "block",
+      "checksum_counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "expected_checksum_errors": 1,
+      "mutation": "one checksum bit",
+      "input_sha256": "baf62a479137a9b06f2b94cb57ea395c860fdb6ab731ef485a61e9511f380955",
+      "input_packets": 1,
+      "daq": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "block": 1,
+        "rx_bytes": 67
+      },
+      "output_packets": 0,
+      "observed_checksum_errors": 1,
+      "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+      "output_packet_sha256": [],
+      "alerts": [],
+      "passed": true
+    },
+    {
+      "name": "tcpv6-correct",
+      "pair": "tcpv6",
+      "expected_verdict": "allow",
+      "checksum_counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "expected_checksum_errors": 0,
+      "mutation": null,
+      "input_sha256": "65c672f4bbf094e4bf8f604a1c45e34f1cd4902f3fcb9fa754eba4649ac20b0d",
+      "input_packets": 1,
+      "daq": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "allow": 1,
+        "rx_bytes": 74
+      },
+      "output_packets": 1,
+      "observed_checksum_errors": 0,
+      "output_pcap_sha256": "65c672f4bbf094e4bf8f604a1c45e34f1cd4902f3fcb9fa754eba4649ac20b0d",
+      "output_packet_sha256": [
+        "0d48f4975cf074dd2caf92d9ef7151d92300deeac25c3d57387607a2a2ec9ee1"
+      ],
+      "alerts": [],
+      "passed": true
+    },
+    {
+      "name": "tcpv6-one-bit-error",
+      "pair": "tcpv6",
+      "expected_verdict": "block",
+      "checksum_counter": [
+        "tcp",
+        "bad_tcp6_checksum"
+      ],
+      "expected_checksum_errors": 1,
+      "mutation": "one checksum bit",
+      "input_sha256": "63aa5061afdb0c52909cdfe7fc4985c5dfe836a570d7606d12a16592d106a854",
+      "input_packets": 1,
+      "daq": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "block": 1,
+        "rx_bytes": 74
+      },
+      "output_packets": 0,
+      "observed_checksum_errors": 1,
+      "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+      "output_packet_sha256": [],
+      "alerts": [],
+      "passed": true
+    },
+    {
+      "name": "icmpv6-correct",
+      "pair": "icmpv6",
+      "expected_verdict": "allow",
+      "checksum_counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "expected_checksum_errors": 0,
+      "mutation": null,
+      "input_sha256": "0997a3234bfd0401e99342dad6ede1c20f6eafdcd000bb819c0f239ca617a824",
+      "input_packets": 1,
+      "daq": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "allow": 1,
+        "rx_bytes": 67
+      },
+      "output_packets": 1,
+      "observed_checksum_errors": 0,
+      "output_pcap_sha256": "0997a3234bfd0401e99342dad6ede1c20f6eafdcd000bb819c0f239ca617a824",
+      "output_packet_sha256": [
+        "5d5220af15c83aed0eed97811f514bb9b9727b7279102628907e244178470557"
+      ],
+      "alerts": [],
+      "passed": true
+    },
+    {
+      "name": "icmpv6-one-bit-error",
+      "pair": "icmpv6",
+      "expected_verdict": "block",
+      "checksum_counter": [
+        "icmp6",
+        "bad_icmp6_checksum"
+      ],
+      "expected_checksum_errors": 1,
+      "mutation": "one checksum bit",
+      "input_sha256": "b2dd053081d7fa9fe71419b6ec7df6dc3d05d4fce3d16ebb97b31da7e628da10",
+      "input_packets": 1,
+      "daq": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "block": 1,
+        "rx_bytes": 67
+      },
+      "output_packets": 0,
+      "observed_checksum_errors": 1,
+      "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+      "output_packet_sha256": [],
+      "alerts": [],
+      "passed": true
+    },
+    {
+      "name": "udpv4-zero-checksum",
+      "pair": null,
+      "expected_verdict": "allow",
+      "checksum_counter": [
+        "udp",
+        "bad_udp4_checksum"
+      ],
+      "expected_checksum_errors": 0,
+      "mutation": "checksum omitted (zero)",
+      "input_sha256": "1bf1e4b250a32723d735be1fff50d880d0319e0da882f07151b0b1acc106e972",
+      "input_packets": 1,
+      "daq": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "allow": 1,
+        "rx_bytes": 47
+      },
+      "output_packets": 1,
+      "observed_checksum_errors": 0,
+      "output_pcap_sha256": "1bf1e4b250a32723d735be1fff50d880d0319e0da882f07151b0b1acc106e972",
+      "output_packet_sha256": [
+        "38ca39f7c40b0d77fa6767dc733ec7ffab72e125ecedb04de659d269c2a90ae9"
+      ],
+      "alerts": [],
+      "passed": true
+    },
+    {
+      "name": "udpv6-zero-checksum",
+      "pair": null,
+      "expected_verdict": "block",
+      "checksum_counter": [
+        "udp",
+        "bad_udp6_checksum"
+      ],
+      "expected_checksum_errors": 1,
+      "mutation": "checksum omitted (zero)",
+      "input_sha256": "7e362314c7a5acc38a02486a679695b9618cb80ccfea868519c3e322b1ae174c",
+      "input_packets": 1,
+      "daq": {
+        "pcaps": 1,
+        "received": 1,
+        "analyzed": 1,
+        "block": 1,
+        "rx_bytes": 67
+      },
+      "output_packets": 0,
+      "observed_checksum_errors": 1,
+      "output_pcap_sha256": "acc530668c8bc60b2d229281130b1899bfc81d70fdada5c34b3236c628f739c8",
+      "output_packet_sha256": [],
+      "alerts": [
+        {
+          "rule": "116:406:1",
+          "action": "drop",
+          "msg": "(udp) invalid IPv6 UDP packet, checksum zero"
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "The fixtures cover seven checksum classes with correct/one-bit-corrupt pairs and the IPv4/IPv6 UDP-zero distinction; they do not exhaust packet layouts or fragmentation.",
+    "Checksum correctness is error detection, not authentication or protection against checksum-preserving malicious content.",
+    "File DAQ supplies no hardware checksum-offload metadata; live-interface offload behavior and deployment routing remain unverified.",
+    "IPv6 UDP zero is rejected for this ordinary datagram profile; specialized zero-checksum tunnel exceptions are not enabled."
+  ]
+}

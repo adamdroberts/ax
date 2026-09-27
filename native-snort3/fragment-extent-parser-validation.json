@@ -1,0 +1,33 @@
+{
+  "scope": "Pure final-length consistency and contiguous-coverage checks; not native allocation, worker scheduling or deployment.",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin27.0.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+  "command": [
+    "/usr/bin/clang++",
+    "-std=c++17",
+    "-O1",
+    "-g",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-fsanitize=address,undefined",
+    "-fno-omit-frame-pointer",
+    "/Users/adam/Dev/agent-security/ax/native-snort3/patches/fragment_extent_test.cc",
+    "-o",
+    "/private/tmp/ax-snort-fragment-extent-repair/fragment-extent-parser-test"
+  ],
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "binary_sha256": "4e62b921afd59bf860a105f7c2be68bdeab0df83b83f22583b2a2df5a9e989b1",
+  "summary": {
+    "assertions": 1351548,
+    "random_sequences": 100000,
+    "random_coverage_lists": 100000
+  },
+  "sha256": {
+    "native-snort3/patches/fragment_extent.h": "10cfe693d28044dccf58895f9ea1767062062fb8da4af3726ad31688e09e0f54",
+    "native-snort3/patches/fragment_extent_test.cc": "6f60f5f9b852b727915dad923b8ca198b5d4a9f1cf039293d7233f8340dc0472",
+    "native-snort3/patches/record_fragment_extent_build.py": "41ecd9b820989a1820d4333f27113b1e49537601ff2e663456a7d0970f7bf08d"
+  }
+}

@@ -1,0 +1,553 @@
+--- a/src/stream/ip/ip_session.h
++++ b/src/stream/ip/ip_session.h
+@@ -24,6 +24,7 @@
+ #include "ipv4_fragment_options.h"
+ 
+ struct Fragment;
++struct SavedIp6Prefix;
+ struct FragEngine;
+ 
+ extern THREAD_LOCAL IpStats ip_stats;
+@@ -64,6 +65,8 @@
+     uint8_t* ip_options_data; /* ip options from offset 0 packet */
+     ax_fragment::CopiedOptions copied_ip_options;
+     bool ip_options_first_seen;
++    SavedIp6Prefix* ip6_prefix;
++    uint8_t ip6_ecn_seen;
+     bool quarantine_only; // No fragment of this tracker was admitted.
+     int64_t fragment_last_seen; // Not refreshed by lookup of an expired flow.
+ 
+--- a/src/stream/ip/ip_defrag.cc
++++ b/src/stream/ip/ip_defrag.cc
+@@ -71,6 +71,7 @@
+ #include "ip_defrag.h"
+ #include "fragment_lifetime.h"
+ #include "fragment_pressure.h"
++#include "ipv6_fragment_prefix.h"
+ #include "time/packet_time.h"
+ 
+ #include "codecs/ip/ipv4_checksum_destination.h"
+@@ -105,6 +106,8 @@
+ #define FRAG_TIMED_OUT      0x00000040
+ #define FRAG_RESOURCE_DROP  0x00000080
+ #define FRAG_STATE_LOST     0x00000100
++#define FRAG_PREFIX_BAD     0x00000200
++#define FRAG_ECN_BAD        0x00000400
+ 
+ /* return values for insert() */
+ #define FRAG_INSERT_OK          0
+@@ -116,6 +119,7 @@
+ #define FRAG_INSERT_TTL         6
+ #define FRAG_INSERT_OVERLAP_LIMIT  7
+ #define FRAG_INSERT_RESOURCE_LIMIT 8
++#define FRAG_INSERT_PREFIX_INVALID 9
+ 
+ /* return values for FragCheckFirstLast() */
+ #define FRAG_FIRSTLAST_OK       0
+@@ -180,6 +184,8 @@
+         ip_stats.nodes_created++;
+     }
+ };
++
++#include "ipv6_fragment_prefix.inc"
+ 
+ /*  G L O B A L S  **************************************************/
+ 
+@@ -548,7 +554,12 @@
+     size_t offset = 0;
+ 
+     Packet* dpkt = DetectionEngine::set_next_packet(p);
+-    PacketManager::encode_format(ENC_FLAG_DEF|ENC_FLAG_FWD, p, dpkt, PSEUDO_PKT_IP, nullptr, p->pkth->opaque);
++    if (PacketManager::encode_format(ENC_FLAG_DEF|ENC_FLAG_FWD, p, dpkt, PSEUDO_PKT_IP, nullptr, p->pkth->opaque) < 0 ||
++        (p->is_ip6() && !RestoreIp6Prefix(ft, dpkt)))
++    {
++        RejectIp6Rebuild(ft, p);
++        return;
++    }
+ 
+     // the encoder ensures enough space for a maximum datagram
+     uint8_t* rebuild_ptr = const_cast<uint8_t*>(dpkt->data);
+@@ -777,6 +788,9 @@
+     ft->fraglist_count = 0;
+     ft->frag_bytes = 0;
+     ft->calculated_size = 0;
++    delete ft->ip6_prefix;
++    ft->ip6_prefix = nullptr;
++    ft->ip6_ecn_seen = 0;
+     ft->ip_options_len = 0;
+     if (ft->ip_options_data)
+     {
+@@ -792,7 +806,17 @@
+     DetectionEngine::disable_content(p);
+     p->active->daq_drop_packet(p);
+     ip_stats.drops++;
+-    if (ft->frag_flags & FRAG_RESOURCE_DROP)
++    if (ft->frag_flags & FRAG_ECN_BAD)
++    {
++        p->active->set_drop_reason("ip6_reassembly_ecn");
++        ip_stats.ecn_drops++;
++    }
++    else if (ft->frag_flags & FRAG_PREFIX_BAD)
++    {
++        p->active->set_drop_reason("ip_reassembly_headers");
++        ip_stats.prefix_drops++;
++    }
++    else if (ft->frag_flags & FRAG_RESOURCE_DROP)
+     {
+         p->active->set_drop_reason("ip_reassembly_resources");
+         ip_stats.resource_drops++;
+@@ -950,6 +974,12 @@
+          */
+         switch (insert_return)
+         {
++        case FRAG_INSERT_PREFIX_INVALID:
++            delete_tracker(ft);
++            DropTrackedFragment(p, ft);
++            ip_stats.discards++;
++            return;
++
+         case FRAG_INSERT_RESOURCE_LIMIT:
+             delete_tracker(ft);
+             ft->frag_flags |= FRAG_BAD | FRAG_DROP_FRAGMENTS | FRAG_RESOURCE_DROP;
+@@ -1055,10 +1085,10 @@
+     uint16_t orig_offset;   /* offset specified in this fragment header */
+     uint16_t frag_offset;   /* calculated offset for this fragment */
+     uint16_t frag_end;      /* calculated end point for this fragment */
+-    int16_t trunc = 0;      /* we truncate off the tail */
++    int32_t trunc = 0;      /* we truncate off the tail */
+     int32_t overlap;        /* we overlap on either end of the frag */
+-    int16_t len = 0;        /* calculated size of the fragment */
+-    int16_t slide = 0;      /* slide up the front of the current frag */
++    int32_t len = 0;        /* calculated size of the fragment */
++    int32_t slide = 0;      /* slide up the front of the current frag */
+     int done = 0;           /* flag for right-side overlap handling loop */
+     int addthis = 1;        /* flag for right-side overlap handling loop */
+     int i = 0;              /* counter */
+@@ -1072,19 +1102,15 @@
+     Fragment* idx = nullptr;        /* indexing fragment pointer for loops */
+     Fragment* dump_me = nullptr;    /* frag ptr for complete overlaps to dump */
+     const uint8_t* fragStart;
+-    int16_t fragLength;
++    int32_t fragLength;
+     const uint16_t net_frag_offset = p->ptrs.ip_api.off();
+ 
+     // Validate before changing reassembly geometry or storing fragment data.
+     if (p->is_ip4() && !FragHandleIPOptions(ft, p, net_frag_offset))
+         return FRAG_INSERT_ANOMALY;
+ 
+-    if (p->is_ip6() && (net_frag_offset == 0))
+-    {
+-        const ip::IP6Frag* const fragHdr = layer::get_inner_ip6_frag();
+-        if (fragHdr)
+-            ft->ip_proto = fragHdr->ip6f_nxt;
+-    }
++    if (p->is_ip6() && !CaptureIp6Prefix(ft, p, net_frag_offset))
++        return FRAG_INSERT_PREFIX_INVALID;
+ 
+     /*
+      * Check to see if this fragment is the first or last one and
+@@ -1279,8 +1305,8 @@
+             case FRAG_POLICY_WINDOWS:
+             case FRAG_POLICY_SOLARIS:
+             case FRAG_POLICY_BSD:
+-                frag_offset += (int16_t)overlap;
+-                slide = (int16_t)overlap;
++                frag_offset += (int32_t)overlap;
++                slide = (int32_t)overlap;
+ 
+                 debug_logf(stream_ip_trace, p, "left overlap, new frag moves: %d bytes, slide: %d\n",
+                     overlap, slide);
+@@ -1313,8 +1339,8 @@
+                      * lower/equal offset, EXCEPT when the existing
+                      * fragment ends with at a higher/equal offset.
+                      */
+-                    frag_offset += (int16_t)overlap;
+-                    slide = (int16_t)overlap;
++                    frag_offset += (int32_t)overlap;
++                    slide = (int32_t)overlap;
+                     goto left_overlap_last;
+                 }
+             /* fall through */
+@@ -1337,8 +1363,8 @@
+                          * no, its done in add_frag_node */
+                         return ret;
+                     }
+-                    left->size -= (int16_t)overlap;
+-                    ft->frag_bytes -= (int16_t)overlap;
++                    left->size -= (int32_t)overlap;
++                    ft->frag_bytes -= (int32_t)overlap;
+ 
+                     right->offset = frag_offset + len;
+                     right->size -= (frag_offset + len - left->offset);
+@@ -1347,8 +1373,8 @@
+                 }
+                 else
+                 {
+-                    left->size -= (int16_t)overlap;
+-                    ft->frag_bytes -= (int16_t)overlap;
++                    left->size -= (int32_t)overlap;
++                    ft->frag_bytes -= (int32_t)overlap;
+                 }
+ 
+ left_overlap_last:
+@@ -1453,15 +1479,15 @@
+                 if ((ft->frag_policy == FRAG_POLICY_BSD) &&
+                     (right->offset == frag_offset))
+                 {
+-                    slide = (int16_t)(right->offset + right->size - frag_offset);
+-                    frag_offset += (int16_t)slide;
++                    slide = (int32_t)(right->offset + right->size - frag_offset);
++                    frag_offset += (int32_t)slide;
+                 }
+                 else
+                 {
+-                    right->offset += (int16_t)overlap;
+-                    right->data += (int16_t)overlap;
+-                    right->size -= (int16_t)overlap;
+-                    ft->frag_bytes -= (int16_t)overlap;
++                    right->offset += (int32_t)overlap;
++                    right->data += (int32_t)overlap;
++                    right->size -= (int32_t)overlap;
++                    ft->frag_bytes -= (int32_t)overlap;
+                 }
+                 debug_logf(stream_ip_trace, p, "[!!] right overlap, "
+                     "truncating old frag (offset: %d, "
+@@ -1487,7 +1513,7 @@
+             case FRAG_POLICY_WINDOWS:
+             case FRAG_POLICY_SOLARIS:
+             case FRAG_POLICY_BSD_RIGHT:
+-                trunc = (int16_t)overlap;
++                trunc = (int32_t)overlap;
+                 debug_logf(stream_ip_trace, p, "[!!] right overlap, "
+                     "truncating new frag (offset: %d overlap: %d)\n", right->offset, overlap);
+                 debug_log(stream_ip_trace, p, "Exiting right overlap loop...\n");
+@@ -1575,14 +1601,14 @@
+                 /* fix for bug 17823 */
+                 if (right->offset == frag_offset)
+                 {
+-                    slide = (int16_t)(right->offset + right->size - frag_offset);
+-                    frag_offset += (int16_t)slide;
++                    slide = (int32_t)(right->offset + right->size - frag_offset);
++                    frag_offset += (int32_t)slide;
+                     left = right;
+                     right = right->next;
+                 }
+                 else
+                 {
+-                    trunc = (int16_t)overlap;
++                    trunc = (int32_t)overlap;
+                 }
+ 
+                 debug_logf(stream_ip_trace, p, "right overlap, rejecting new overlap data (overlap: %d, "
+@@ -1807,6 +1833,12 @@
+         return 1;
+     }
+ 
++    if (p->is_ip6() && !CaptureIp6Prefix(ft, p, frag_off))
++    {
++        ip_stats.discards++;
++        return 1;
++    }
++
+     /* initialize the fragment list */
+     ft->fraglist = nullptr;
+ 
+@@ -1883,9 +1915,9 @@
+     FragTracker* ft,
+     FragEngine* fe,
+     const uint8_t* fragStart,
+-    int16_t fragLength,
++    int32_t fragLength,
+     char lastfrag,
+-    int16_t len,
++    int32_t len,
+     uint16_t slide,
+     uint16_t trunc,
+     uint16_t frag_offset,
+@@ -1893,7 +1925,7 @@
+     Fragment** retFrag)
+ {
+     Fragment* newfrag = nullptr;  /* new frag container */
+-    int16_t newSize = len - slide - trunc;
++    int32_t newSize = len - slide - trunc;
+ 
+     if (newSize <= 0)
+     {
+--- a/src/stream/ip/ip_session.cc
++++ b/src/stream/ip/ip_session.cc
+@@ -69,6 +69,8 @@
+     { CountType::SUM, "resource_drops", "fragments rejected because reassembly resources are unavailable" },
+     { CountType::SUM, "state_lost_drops", "new fragment trackers rejected during loss-of-state quarantine" },
+     { CountType::SUM, "premature_state_losses", "fragment trackers discarded before retention elapsed" },
++    { CountType::SUM, "prefix_drops", "fragments rejected because reconstruction headers or size are invalid" },
++    { CountType::SUM, "ecn_drops", "fragments rejected because CE and Not-ECT conflict" },
+     { CountType::END, nullptr, nullptr }
+ };
+ 
+--- a/src/stream/ip/ip_module.h
++++ b/src/stream/ip/ip_module.h
+@@ -85,6 +85,8 @@
+     PegCount resource_drops;
+     PegCount state_lost_drops;
+     PegCount premature_state_losses;
++    PegCount prefix_drops;
++    PegCount ecn_drops;
+ };
+ 
+ extern const PegInfo ip_pegs[];
+--- a/src/stream/ip/ip_defrag.h
++++ b/src/stream/ip/ip_defrag.h
+@@ -53,8 +53,8 @@
+ 
+     int add_frag_node(  // FIXIT-L too many args
+         FragTracker* ft, FragEngine*,
+-        const uint8_t* fragStart, int16_t fragLength,
+-        char lastfrag, int16_t len,
++        const uint8_t* fragStart, int32_t fragLength,
++        char lastfrag, int32_t len,
+         uint16_t slide, uint16_t trunc, uint16_t frag_offset,
+         Fragment* left, Fragment** retFrag);
+ 
+--- a/src/protocols/packet_manager.cc
++++ b/src/protocols/packet_manager.cc
+@@ -768,7 +768,7 @@
+     else
+         num_layers = p->num_layers;
+ 
+-    if ( num_layers == 0 )
++    if ( num_layers == 0 || num_layers > p->num_layers )
+         return -1;
+ 
+     init_daq_pkthdr(p, c, phdr, opaque);
+@@ -776,6 +776,9 @@
+     // copy raw packet data to clone
+     Layer* lyr = &p->layers[num_layers - 1];
+     int len = lyr->start - p->pkt + lyr->length;
++    if (len < 0 || static_cast<unsigned>(len) > p->pktlen ||
++        static_cast<unsigned>(len) > Codec::PKT_MAX)
++        return -1;
+     memcpy((void*)c->pkt, p->pkt, len);
+ 
+     const bool reverse = !(f & ENC_FLAG_FWD);
+@@ -810,8 +813,9 @@
+     c->data = lyr->start + lyr->length;
+     len = c->data - c->pkt;
+ 
+-    // len < ETHERNET_HEADER_LEN + VLAN_HEADER + ETHERNET_MTU
+-    assert((unsigned)len < Codec::PKT_MAX - c->max_dsize);
++    // Long IPv6 extension prefixes are valid. The caller bounds the
++    // resulting payload against both its IP length and actual capacity.
++    assert((unsigned)len <= Codec::PKT_MAX);
+ 
+     c->proto_bits = p->proto_bits;
+     c->ip_proto_next = p->ip_proto_next;
+--- /dev/null
++++ b/src/stream/ip/ipv6_fragment_prefix.h
+@@ -0,0 +1,81 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#ifndef AX_IPV6_FRAGMENT_PREFIX_H
++#define AX_IPV6_FRAGMENT_PREFIX_H
++#include <cstddef>
++#include <cstdint>
++
++namespace ax_fragment
++{
++struct Ip6Prefix
++{
++    bool valid = false;
++    std::size_t length = 0;       // Base IPv6 header plus headers before Fragment.
++    std::size_t next_offset = 0;  // Byte that currently names Fragment.
++    std::uint16_t fragment_offset = 0;
++    std::uint8_t next = 0;        // Offset-zero Fragment header's Next Header.
++    std::uint8_t ecn = 0;
++    unsigned extensions = 0;
++};
++
++// Capture-bounded walk of the selected IPv6 layer, never of fragment payload.
++// Header semantics and endpoint processing remain separate responsibilities.
++inline Ip6Prefix ip6_prefix(const std::uint8_t* ip, std::size_t size,
++    unsigned max_extensions = 255)
++{
++    Ip6Prefix result;
++    if (!ip || size < 40 || ip[0] >> 4 != 6)
++        return result;
++    const std::size_t declared = (static_cast<unsigned>(ip[4]) << 8) | ip[5];
++    if (!declared || declared > size - 40)
++        return result; // Fragmented jumbograms are not permitted.
++    const auto end = 40 + declared;
++    std::size_t offset = 40, next_offset = 6;
++    auto next = ip[6];
++    for (unsigned extensions = 0; extensions < max_extensions; ++extensions)
++    {
++        if (end - offset < 8)
++            return result;
++        if (next == 44)
++        {
++            result.valid = true;
++            result.length = offset;
++            result.next_offset = next_offset;
++            result.next = ip[offset];
++            result.fragment_offset = ((static_cast<unsigned>(ip[offset + 2]) << 8) |
++                ip[offset + 3]) & 0xfff8;
++            result.ecn = (ip[1] >> 4) & 3;
++            result.extensions = extensions + 1;
++            return result;
++        }
++        if (next != 0 && next != 43 && next != 60 && next != 51)
++            return result;
++        const std::size_t length = next == 51 ?
++            (static_cast<std::size_t>(ip[offset + 1]) + 2) * 4 :
++            (static_cast<std::size_t>(ip[offset + 1]) + 1) * 8;
++        if (length > end - offset || (next == 51 && (length < 16 || length % 8)))
++            return result;
++        next = ip[offset];
++        next_offset = offset;
++        offset += length;
++    }
++    return result;
++}
++
++// Subtraction-based bounds also handle adversarial size_t metadata safely.
++inline bool ip6_rebuilt_fits(std::size_t prefix, std::size_t payload,
++    std::size_t outer, std::size_t capacity)
++{
++    return prefix >= 40 && prefix - 40 <= 65535 && payload <= 65535 - (prefix - 40) &&
++        outer <= capacity && prefix <= capacity - outer && payload <= capacity - outer - prefix;
++}
++
++// RFC 3168 section 5.3: preserve CE, but never combine CE with Not-ECT.
++// For the unspecified mixtures without CE, retain offset-zero's codepoint.
++inline std::uint8_t ip6_rebuilt_ecn(std::uint8_t seen, std::uint8_t first)
++{
++    if (!seen || seen > 15 || first > 3 || !(seen & (1u << first)) || (seen & 9) == 9)
++        return 0xff;
++    return seen & 8 ? 3 : first;
++}
++}
++#endif
+--- /dev/null
++++ b/src/stream/ip/ipv6_fragment_prefix.inc
+@@ -0,0 +1,123 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// Included by the pinned ip_defrag.cc after its native declarations.
++struct SavedIp6Prefix
++{
++    uint8_t* bytes = nullptr;
++    Layer* layers = nullptr;
++    size_t length = 0;
++    unsigned layer_count = 0;
++    ~SavedIp6Prefix()
++    {
++        delete[] bytes;
++        delete[] layers;
++    }
++};
++
++static inline void delete_tracker(FragTracker*);
++static void DropTrackedFragment(Packet*, const FragTracker*);
++
++static bool CaptureIp6Prefix(FragTracker* ft, const Packet* p, uint16_t fragment_offset)
++{
++    const auto start = reinterpret_cast<uintptr_t>(p->pkt);
++    const auto selected = reinterpret_cast<uintptr_t>(p->ptrs.ip_api.get_ip6h());
++    if (selected < start || selected - start > p->pktlen)
++    {
++        ft->frag_flags |= FRAG_BAD | FRAG_DROP_FRAGMENTS | FRAG_PREFIX_BAD;
++        return false;
++    }
++    const auto* ip = reinterpret_cast<const uint8_t*>(selected);
++    const auto parsed = ax_fragment::ip6_prefix(ip, p->pktlen - (selected - start),
++        PacketManager::get_max_layers());
++    if (!parsed.valid || parsed.fragment_offset != fragment_offset)
++    {
++        ft->frag_flags |= FRAG_BAD | FRAG_DROP_FRAGMENTS | FRAG_PREFIX_BAD;
++        return false;
++    }
++    // Check before any legacy 16-bit first/last-fragment geometry can wrap.
++    const uint32_t end = static_cast<uint32_t>(fragment_offset) + p->dsize;
++    const uint32_t known_end = end > ft->calculated_size ? end : ft->calculated_size;
++    const size_t known_prefix = ft->ip6_prefix ? ft->ip6_prefix->length :
++        fragment_offset ? 40 : parsed.length;
++    if (!ax_fragment::ip6_rebuilt_fits(known_prefix, known_end, 0, Codec::PKT_MAX))
++    {
++        ft->frag_flags |= FRAG_BAD | FRAG_DROP_FRAGMENTS | FRAG_PREFIX_BAD;
++        return false;
++    }
++    ft->ip6_ecn_seen |= 1u << parsed.ecn;
++    if ((ft->ip6_ecn_seen & 9) == 9)
++    {
++        ft->frag_flags |= FRAG_BAD | FRAG_DROP_FRAGMENTS | FRAG_ECN_BAD;
++        return false;
++    }
++    if (fragment_offset || ft->ip6_prefix)
++        return true;
++
++    const int first = layer::get_inner_ip_lyr_index(p);
++    const int fragment = layer::get_inner_ip6_frag_index(p);
++    bool valid = first >= 0 && fragment > first && fragment < p->num_layers &&
++        p->layers[first].start == ip && p->layers[fragment].start == ip + parsed.length;
++    size_t position = 0;
++    for (int i = first; valid && i < fragment; ++i)
++    {
++        const auto& l = p->layers[i];
++        valid = l.start == ip + position && l.length && l.length <= parsed.length - position;
++        if (valid)
++            position += l.length;
++    }
++    if (!valid || position != parsed.length)
++    {
++        ft->frag_flags |= FRAG_BAD | FRAG_DROP_FRAGMENTS | FRAG_PREFIX_BAD;
++        return false;
++    }
++    auto* saved = new SavedIp6Prefix;
++    saved->length = parsed.length;
++    saved->layer_count = fragment - first;
++    saved->bytes = new uint8_t[saved->length];
++    saved->layers = new Layer[saved->layer_count];
++    memcpy(saved->bytes, ip, saved->length);
++    saved->bytes[parsed.next_offset] = parsed.next; // Remove Fragment on reconstruction.
++    for (unsigned i = 0; i < saved->layer_count; ++i)
++    {
++        saved->layers[i] = p->layers[first + i];
++        saved->layers[i].start = saved->bytes + (p->layers[first + i].start - ip);
++    }
++    ft->ip6_prefix = saved;
++    ft->ip_proto = static_cast<IpProtocol>(parsed.next);
++    return true;
++}
++
++static bool RestoreIp6Prefix(FragTracker* ft, Packet* rebuilt)
++{
++    const auto* saved = ft->ip6_prefix;
++    const int first = layer::get_inner_ip_lyr_index(rebuilt);
++    const auto start = reinterpret_cast<uintptr_t>(rebuilt->pkt);
++    const auto selected = reinterpret_cast<uintptr_t>(rebuilt->ptrs.ip_api.get_ip6h());
++    if (!saved || first < 0 || selected < start || selected - start > Codec::PKT_MAX ||
++        first + saved->layer_count > PacketManager::get_max_layers() ||
++        !ax_fragment::ip6_rebuilt_fits(saved->length, ft->calculated_size,
++            selected - start, Codec::PKT_MAX))
++        return false;
++    const auto ecn = ax_fragment::ip6_rebuilt_ecn(ft->ip6_ecn_seen, (saved->bytes[1] >> 4) & 3);
++    if (ecn == 0xff)
++        return false;
++    auto* ip = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(selected));
++    memcpy(ip, saved->bytes, saved->length);
++    ip[1] = (ip[1] & 0xcf) | (ecn << 4);
++    for (unsigned i = 0; i < saved->layer_count; ++i)
++    {
++        rebuilt->layers[first + i] = saved->layers[i];
++        rebuilt->layers[first + i].start = ip + (saved->layers[i].start - saved->bytes);
++    }
++    rebuilt->num_layers = first + saved->layer_count;
++    rebuilt->ptrs.ip_api.set(reinterpret_cast<const ip::IP6Hdr*>(ip));
++    rebuilt->data = ip + saved->length;
++    rebuilt->ip_proto_next = ft->ip_proto;
++    return true;
++}
++
++static void RejectIp6Rebuild(FragTracker* ft, Packet* p)
++{
++    ft->frag_flags |= FRAG_BAD | FRAG_DROP_FRAGMENTS | FRAG_PREFIX_BAD;
++    delete_tracker(ft);
++    DropTrackedFragment(p, ft);
++}

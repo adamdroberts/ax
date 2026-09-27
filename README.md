@@ -101,6 +101,9 @@ Want to see the whole lifecycle end to end? Run [`./demo.sh`](demo.sh). It appli
 | [Manifests](docs/manifests.md) | Write your own YAML, with an annotated example of every kind. |
 | [Sandbox](docs/sandbox.md) | See what the runner does on boot and what your command can rely on: metadata server, guest services, environment. |
 | [Runners](docs/runner.md) | Understand the contract between the control plane and the task container, and build your own runner image to replace the default. |
+| [Agent HTTP security rules](docs/security-rules.md) | Configure default/strict intrusion prevention profiles, custom rules, and enforcement boundaries. |
+| [Protocol and egress security](docs/protocol-security.md) | Required allowed origins, strict request validation, DNS pinning, resource limits, and remaining boundaries. |
+| [Native Snort packet profile](native-snort3/README.md) | Separately deploy version-pinned packet/stream checks and the original native-only rules; reproduce configuration and offline packet validation. |
 | [Networking](docs/networking.md) | Reach a running task through the atenet router from the cluster, your laptop, or a gRPC client. |
 | [Architecture](DESIGN.md) | Understand how the control plane fits together, plus the [API reference](DESIGN.md#api-reference). |
 | [Development](docs/development.md) | Build, test, and ship changes to AX itself. |

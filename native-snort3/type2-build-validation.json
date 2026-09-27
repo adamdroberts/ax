@@ -1,0 +1,1193 @@
+{
+  "scope": "Local matched source builds on macOS arm64, not a hermetic reproducible-build or deployment attestation. No network interfaces used.",
+  "upstream_commit": "14aeb09f5a0856812dbe08ead3c21f99e8860aa0",
+  "binary_sha256": {
+    "baseline": "6c03749e19465eac65a09e083ff0165ef78d041549dc448327f08acc8e9d1549",
+    "repaired": "4a7fb05fefe6f3144de17613244d590fe287913b339f87c5da7bfd9d60b34c44"
+  },
+  "comparison": {
+    "same_configuration": true,
+    "baseline_matches_clean_upstream": true,
+    "only_checksum_repair_source_changes": true,
+    "source_changes": {
+      "ax-type2-checksum.patch": {
+        "before": null,
+        "after": "1ece45a6152198b6fb922fe72895123ae54c8ea00f7037aea4639f4e8703e1a4"
+      },
+      "ax-type2-source-validation.json": {
+        "before": null,
+        "after": "92bb5b942bdca9bb13ad52099ab0671f1a95ca72484b9b78768ed2be244c810b"
+      },
+      "src/codecs/ip/cd_icmp6.cc": {
+        "before": "ddd09b10002106312e2231864f7f24e03bb2f5beadeacb71dc2020709e56d054",
+        "after": "9f43dedb61d03e575c9313ae5c682896a8c3af8942283b23f7fa7dbb6f4edad5"
+      },
+      "src/codecs/ip/cd_tcp.cc": {
+        "before": "d4675b2d591857d0d5773c834b90002261c247cd3551b47c3600d5a95857e4be",
+        "after": "70fa85c573fb6a7c4d2350563110f6d67c51af71b3245efba219c514a544cac9"
+      },
+      "src/codecs/ip/cd_udp.cc": {
+        "before": "ff606e3ddbfb5c7b7a1ce1d19d8f49dd8d28fdef0a702a58f54abe01f253fca4",
+        "after": "a4aebd7e853d8dd85e91faf52da711ac4c0f6135549f696e8b3b1830c1da8a05"
+      },
+      "src/codecs/ip/ipv6_checksum_destination.h": {
+        "before": null,
+        "after": "3afe940ef6f3a47ae27d8dc3054a1bb58f96a79d8c4305c00c3fa13f8516e743"
+      }
+    }
+  },
+  "configuration": {
+    "upstream_commit": "14aeb09f5a0856812dbe08ead3c21f99e8860aa0",
+    "command": [
+      "/private/tmp/ax-snort-repaired/tools/opt/cmake/bin/cmake",
+      "-S",
+      "/private/tmp/ax-snort-repaired/source",
+      "-B",
+      "/private/tmp/ax-snort-repaired/build",
+      "-G",
+      "Ninja",
+      "-DCMAKE_MAKE_PROGRAM=/private/tmp/ax-snort-repaired/tools/opt/ninja/bin/ninja",
+      "-DCMAKE_C_COMPILER=/usr/bin/clang",
+      "-DCMAKE_CXX_COMPILER=/usr/bin/clang++",
+      "-DCMAKE_CXX_FLAGS=-I/private/tmp/ax-snort-native/runtime/opt/xz/include",
+      "-DCMAKE_C_FLAGS=-I/private/tmp/ax-snort-native/runtime/opt/xz/include",
+      "-DCMAKE_INSTALL_PREFIX=/private/tmp/ax-snort-repaired/install",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+      "-DOPENSSL_ROOT_DIR=/private/tmp/ax-snort-repaired/tools/opt/openssl@3",
+      "-DOPENSSL_INCLUDE_DIR=/private/tmp/ax-snort-repaired/tools/opt/openssl@3/include",
+      "-DOPENSSL_CRYPTO_LIBRARY=/private/tmp/ax-snort-repaired/tools/opt/openssl@3/lib/libcrypto.dylib",
+      "-DOPENSSL_SSL_LIBRARY=/private/tmp/ax-snort-repaired/tools/opt/openssl@3/lib/libssl.dylib",
+      "-DCMAKE_PREFIX_PATH=/private/tmp/ax-snort-repaired/tools/opt/openssl@3;/private/tmp/ax-snort-native/runtime/opt/hwloc;/private/tmp/ax-snort-native/runtime/opt/jemalloc;/private/tmp/ax-snort-native/runtime/opt/xz;/private/tmp/ax-snort-native/runtime/opt/vectorscan;/private/tmp/ax-snort-native/runtime/opt/pcre2;/private/tmp/ax-snort-native/runtime/opt/daq;/private/tmp/ax-snort-native/runtime/opt/luajit;/private/tmp/ax-snort-native/runtime/opt/libdnet;/private/tmp/ax-snort-native/runtime/opt/libpcap",
+      "-DPKG_CONFIG_EXECUTABLE=/private/tmp/ax-snort-repaired/tools/opt/pkgconf/bin/pkgconf",
+      "-DFLEX_EXECUTABLE=/usr/bin/flex",
+      "-DFLEX_INCLUDES=/Library/Developer/CommandLineTools/usr/include",
+      "-DENABLE_GDB=OFF",
+      "-DENABLE_STATIC_DAQ=ON",
+      "-DENABLE_UNIT_TESTS=OFF",
+      "-DENABLE_SAFEC=OFF",
+      "-DMAKE_DOC=OFF",
+      "-DMAKE_HTML_DOC=OFF",
+      "-DMAKE_PDF_DOC=OFF",
+      "-DMAKE_TEXT_DOC=OFF"
+    ],
+    "environment": {
+      "PATH": "/private/tmp/ax-snort-repaired/tools/opt/cmake/bin:/private/tmp/ax-snort-repaired/tools/opt/ninja/bin:/private/tmp/ax-snort-repaired/tools/opt/pkgconf/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "PKG_CONFIG_LIBDIR": "/private/tmp/ax-snort-repaired/pkgconfig",
+      "PKG_CONFIG_PATH": "/private/tmp/ax-snort-repaired/pkgconfig"
+    },
+    "pkgconfig": [
+      {
+        "source": "Apple Command Line Tools SDK xml2-config --version and system libxml2.tbd",
+        "version": "2.9.13",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libxml-2.0.pc",
+        "relocated_sha256": "c2c7a369bff33392e0f9691caf96de10ab2b024af376e66ff117d834b2ceded4"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/libpcap/1.11.0/lib/pkgconfig/libpcap.pc",
+        "source_sha256": "51cb0f9fe9ec94c628f1a10b2ca566db50b1053c7af5632a7c09454332a16833",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libpcap.pc",
+        "relocated_sha256": "7f7138fd169c363558ee3f2af7c19f88652d29fa8353a53e9aa0bf4792129f36"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/luajit/2.1.1788856981/lib/pkgconfig/luajit.pc",
+        "source_sha256": "a1fe95e921e3afc852b979af3eb5dab6d49de4979309908751db1354bebd88b3",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/luajit.pc",
+        "relocated_sha256": "aba02d72f7470bb3d4d0c76fe8fe216d6a74960aea80d44f8b814c0d8a216166"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/daq/3.0.27/lib/pkgconfig/libdaq_static_trace.pc",
+        "source_sha256": "60f75caec5739b6577f41ca29e9e959e7f6ea0bfb525c1419abeb9609bc45754",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libdaq_static_trace.pc",
+        "relocated_sha256": "96c2cfdc79278a7d09f3b7cc99c3e27f3ab45b2add70c0dfca073b4d64f0f9b1"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/daq/3.0.27/lib/pkgconfig/libdaq_static_savefile.pc",
+        "source_sha256": "889b3a0b235563c2bd9e3972aab591ecd1f379e34f7a1fbec5ea5e34fb9bcfef",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libdaq_static_savefile.pc",
+        "relocated_sha256": "d00459afeabf50911897c9392cb7016dd272f6fb8c1ae08939d484502008c119"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/daq/3.0.27/lib/pkgconfig/libdaq_static_fst.pc",
+        "source_sha256": "a96b5d1086da137ecdace4785b21d28a374479114f75fab5eaed4fb5c25173e6",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libdaq_static_fst.pc",
+        "relocated_sha256": "1fee006ea48c240b9e2af8db4b70cdc7a24206ec717ac3ed9028ab7c6e87f920"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/daq/3.0.27/lib/pkgconfig/libdaq_static_pcap.pc",
+        "source_sha256": "cdb15560413f9c0fb9f4522fb8432432f8fe3ab82184d4ecbf2fd630dbb43046",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libdaq_static_pcap.pc",
+        "relocated_sha256": "0ee0057fe5a652072656cbb56d612d4aa28a88d2c928702150d1267adfb613ad"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/daq/3.0.27/lib/pkgconfig/libdaq.pc",
+        "source_sha256": "5d6d506509606486ccd1d4fe9afb509f6fe17773a703eed49e07ac5401b6dd61",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libdaq.pc",
+        "relocated_sha256": "51b9cabf9cb77fbd32a92094a3eccb52a4827e441f8d2c3cdab0d176bac07d7e"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/daq/3.0.27/lib/pkgconfig/libdaq_static_bpf.pc",
+        "source_sha256": "fdbc8010b624e60c160b982cc6c2e885f2ef511b58e65f33cadaabbb6569503a",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libdaq_static_bpf.pc",
+        "relocated_sha256": "289cbf837b518d1859e611cc09f9a52f2928972bc81c30fa269b3bd42968597b"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/daq/3.0.27/lib/pkgconfig/libdaq_static_dump.pc",
+        "source_sha256": "98ae056c7e1fc51d91f8c610549325b6abfbba8a86b3cfb4d7d2983372c4c798",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libdaq_static_dump.pc",
+        "relocated_sha256": "fbaafceaf11373b25f02bcaf0aafd984d1f8c2ac7c91298f770093e6f9910a10"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/daq/3.0.27/lib/pkgconfig/libdaq_static_divert.pc",
+        "source_sha256": "0b9c2afea77d84d75b6a5024ab0b0934d57eadb6de399b39ff53d1156bf283bd",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libdaq_static_divert.pc",
+        "relocated_sha256": "9e40177e4c0766061f571a5e0627eb6bb7f3fd69f6acb12419c4820cbf230876"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/pcre2/10.48/lib/pkgconfig/libpcre2-posix.pc",
+        "source_sha256": "51961e4582bafba3c874eab31a6371c329a864979477e97ab0d24b22531a20dc",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libpcre2-posix.pc",
+        "relocated_sha256": "36c92191e4ad6792127ecc8e19871bb68072244c461bd63074cd2d00b8e259b8"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/pcre2/10.48/lib/pkgconfig/libpcre2-8.pc",
+        "source_sha256": "f72eb206caa7a2b4c9bf61fe1dbd09f4a4aca8f5ea75ac3c48a3953c185c12a6",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libpcre2-8.pc",
+        "relocated_sha256": "484b872ae9f6c42d0957aa279f014b6bebb3ee1e00a48044763dc0eb158a9484"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/pcre2/10.48/lib/pkgconfig/libpcre2-16.pc",
+        "source_sha256": "56a1a65138626123040add6d4c629c6d86e06ff40f3f17807a22e728f7dec738",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libpcre2-16.pc",
+        "relocated_sha256": "d5a4aa0066adfff34675c09fb43eccf01a8cf4e0ff772a91fd6820c25b727fcd"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/pcre2/10.48/lib/pkgconfig/libpcre2-32.pc",
+        "source_sha256": "b422f6b672394488f775a5f647701b8459ee433c21906c3671e863997ffa3a78",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libpcre2-32.pc",
+        "relocated_sha256": "2dc47a91a71509e3fdb98278c54af4b12720be9f267d1118fe77b692e2ba3413"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/vectorscan/5.4.13/lib/pkgconfig/libhs.pc",
+        "source_sha256": "c7cfe147f5fcadf85be5172e3820688fcb350e4b64dfa3072601e90741d09903",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libhs.pc",
+        "relocated_sha256": "8b11918c64c999c4d6655084bd53218bcfd86804015f45a4935123df2db1f600"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/xz/5.8.4/lib/pkgconfig/liblzma.pc",
+        "source_sha256": "5b3fd6132ea79154c8f2a4b9fff026f38e65716d5272740ddb266a681fc4bcc1",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/liblzma.pc",
+        "relocated_sha256": "17f2aaba70bb65566fc35d88db5e284d60ba17cab05dde09000c1a3c1f66bcd5"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/jemalloc/5.4.0/lib/pkgconfig/jemalloc.pc",
+        "source_sha256": "9d92aaa464b53fec2d5e2e55d39d0d9cbfd2461c4ea7791a89c04ae93ddaf136",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/jemalloc.pc",
+        "relocated_sha256": "0c3459591bf115928261c9ef5c90523fbe9f186434e30fb7b7dbbf5df0c70cac"
+      },
+      {
+        "source": "/private/tmp/ax-snort-native/runtime/Cellar/hwloc/2.15.0/lib/pkgconfig/hwloc.pc",
+        "source_sha256": "1ad5ee4ff48fb9deda51cd639e4d4d998bc255b82ad576e3a65c7fdc13de4d77",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/hwloc.pc",
+        "relocated_sha256": "ca486d20c40e0ea44072f92fc34f3c851c68ea2e6d9c8c10a3355a6873fae24f"
+      },
+      {
+        "source": "/private/tmp/ax-snort-repaired/tools/opt/openssl@3/lib/pkgconfig/openssl.pc",
+        "source_sha256": "97009955e4ab8e8f0a8a01532be36ce6d1dc6d6d986c88757e39d7eef7eefcb0",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/openssl.pc",
+        "relocated_sha256": "1768d83908536a64241bd06d6df2379b7a1bdf156975b5c2865801d7ed213c23"
+      },
+      {
+        "source": "/private/tmp/ax-snort-repaired/tools/opt/openssl@3/lib/pkgconfig/libssl.pc",
+        "source_sha256": "bcabbe9884a1b4f0087e2896ee4c0895469e32ec38cc0ed6e6a9db0ae41a9f43",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libssl.pc",
+        "relocated_sha256": "85a4371343a6a92dbb3d55712f35701c0bc8f5f4b206a6b9c2455156d32b7ec9"
+      },
+      {
+        "source": "/private/tmp/ax-snort-repaired/tools/opt/openssl@3/lib/pkgconfig/libcrypto.pc",
+        "source_sha256": "9b7bcb16a7000bb8a123d58df837f7ba2a70e29091f1962fa103a2ec5c2c9b9e",
+        "relocated": "/private/tmp/ax-snort-repaired/pkgconfig/libcrypto.pc",
+        "relocated_sha256": "4d375223eaab6e08c234dc624f641ed38ebe2168f76434918a68d7075061ad90"
+      }
+    ],
+    "returncode": 0
+  },
+  "builds": {
+    "baseline": {
+      "stage": "baseline",
+      "command": [
+        "/private/tmp/ax-snort-repaired/tools/opt/cmake/bin/cmake",
+        "--build",
+        "/private/tmp/ax-snort-repaired/build",
+        "--target",
+        "snort",
+        "--parallel",
+        "6"
+      ],
+      "environment": {
+        "PATH": "/private/tmp/ax-snort-repaired/tools/opt/cmake/bin:/private/tmp/ax-snort-repaired/tools/opt/ninja/bin:/private/tmp/ax-snort-repaired/tools/opt/pkgconf/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+        "PKG_CONFIG_LIBDIR": "/private/tmp/ax-snort-repaired/pkgconfig",
+        "PKG_CONFIG_PATH": "/private/tmp/ax-snort-repaired/pkgconfig"
+      },
+      "upstream_commit": "14aeb09f5a0856812dbe08ead3c21f99e8860aa0",
+      "returncode": 0,
+      "elapsed_seconds": 58.698,
+      "files": {
+        "CMakeCache.txt": "955a5064ed81e4e3c6800bd8378236954690445965c5a1c560281df6fcf23368",
+        "build-tools-formulas.json": "d430b031577139dff29b436c1d60eb4b8a8e9ea4431d9dd0c679b4444bf8d02c",
+        "build.log": "b5902d39a53637ca1d6522e80e3ee22cd5553e7461f2cd4065d596d0339d9608",
+        "build.ninja": "4c89c02adf770085681517d2897966e1b0858588e41b8a809f1bf8c5d318a7cf",
+        "build_engine.py": "cd5c76cbc8782867e350fd41cb36b304153a6f56e762f03aaa8e6bdeb9ba6ed0",
+        "compile_commands.json": "2c8f8fb8524a0d7511c4745d32ae1146fb85dc537adbdb2c23d3ab09bca9b2b7",
+        "config.h": "793837b545e54daf894e25d2a4c8ad7bde16757aa079dfbbc23e6f352893757b",
+        "configure-manifest.json": "d337bfe5bec3aef0c8c690e64e1caeebe87968fd4d7015c8fa3e434eeda755f4",
+        "configure_build.py": "0383dd6ff5c6a4e76912cd8d8e97043c01430a0eae5238dee53ec2d3f43bced7",
+        "prepare_build_tools.py": "30a43df63857d708ef9d3b3dba1a508cfffb69b487dd10eb2b5de1318b8c4ccd",
+        "snort": "6c03749e19465eac65a09e083ff0165ef78d041549dc448327f08acc8e9d1549",
+        "source-hashes.json": "843d6c14f550ed6958409b669fb72cdbbc59925af45e20b27fed998935b14ff7"
+      },
+      "raw_binary_sha256": "8ebaee2c8163c0be4fe35f848edc1c9f723cb864faeb17aa046f6745f2b2751b",
+      "relocation_command": [
+        "/usr/bin/install_name_tool",
+        "-change",
+        "@@HOMEBREW_PREFIX@@/opt/luajit/lib/libluajit-5.1.2.dylib",
+        "/private/tmp/ax-snort-native/runtime/opt/luajit/lib/libluajit-5.1.2.dylib",
+        "-change",
+        "@@HOMEBREW_PREFIX@@/opt/daq/lib/libdaq.3.dylib",
+        "/private/tmp/ax-snort-native/runtime/opt/daq/lib/libdaq.3.dylib",
+        "-change",
+        "@@HOMEBREW_PREFIX@@/opt/libdnet/lib/libdnet.1.dylib",
+        "/private/tmp/ax-snort-native/runtime/opt/libdnet/lib/libdnet.1.dylib",
+        "-change",
+        "@@HOMEBREW_PREFIX@@/opt/hwloc/lib/libhwloc.15.dylib",
+        "/private/tmp/ax-snort-native/runtime/opt/hwloc/lib/libhwloc.15.dylib",
+        "-change",
+        "@@HOMEBREW_PREFIX@@/opt/openssl@3/lib/libcrypto.3.dylib",
+        "/private/tmp/ax-snort-repaired/tools/opt/openssl@3/lib/libcrypto.3.dylib",
+        "-change",
+        "@@HOMEBREW_PREFIX@@/opt/libpcap/lib/libpcap.A.dylib",
+        "/private/tmp/ax-snort-native/runtime/opt/libpcap/lib/libpcap.A.dylib",
+        "-change",
+        "@@HOMEBREW_PREFIX@@/opt/pcre2/lib/libpcre2-8.0.dylib",
+        "/private/tmp/ax-snort-native/runtime/opt/pcre2/lib/libpcre2-8.0.dylib",
+        "-change",
+        "@@HOMEBREW_PREFIX@@/opt/vectorscan/lib/libhs.5.dylib",
+        "/private/tmp/ax-snort-native/runtime/opt/vectorscan/lib/libhs.5.dylib",
+        "-change",
+        "@@HOMEBREW_PREFIX@@/opt/xz/lib/liblzma.5.dylib",
+        "/private/tmp/ax-snort-native/runtime/opt/xz/lib/liblzma.5.dylib",
+        "/private/tmp/ax-snort-repaired/baseline/snort"
+      ],
+      "version_returncode": 0,
+      "version_stdout": "\n   ,,_     -*> Snort++ <*-\n  o\"  )~   Version 3.12.2.0\n   ''''    By Martin Roesch & The Snort Team\n           http://snort.org/contact#team\n           Copyright (C) 2014-2026 Cisco and/or its affiliates. All rights reserved.\n           Copyright (C) 1998-2013 Sourcefire, Inc., et al.\n           Using DAQ version 3.0.27\n           Using Hyperscan version 5.4.13 2026-08-23\n           Using libpcap version 1.11.0 (64-bit time_t)\n           Using LuaJIT version 2.1.1788856981\n           Using LZMA version 5.8.4\n           Using OpenSSL 3.6.4 25 Aug 2026\n           Using PCRE2 version 10.48 2026-08-31\n           Using ZLIB version 1.2.12\n\n",
+      "version_stderr": "",
+      "binary_sha256": "6c03749e19465eac65a09e083ff0165ef78d041549dc448327f08acc8e9d1549"
+    },
+    "repaired": {
+      "stage": "repaired",
+      "command": [
+        "/private/tmp/ax-snort-repaired/tools/opt/cmake/bin/cmake",
+        "--build",
+        "/private/tmp/ax-snort-repaired/build",
+        "--target",
+        "snort",
+        "--parallel",
+        "6"
+      ],
+      "environment": {
+        "PATH": "/private/tmp/ax-snort-repaired/tools/opt/cmake/bin:/private/tmp/ax-snort-repaired/tools/opt/ninja/bin:/private/tmp/ax-snort-repaired/tools/opt/pkgconf/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+        "PKG_CONFIG_LIBDIR": "/private/tmp/ax-snort-repaired/pkgconfig",
+        "PKG_CONFIG_PATH": "/private/tmp/ax-snort-repaired/pkgconfig"
+      },
+      "upstream_commit": "14aeb09f5a0856812dbe08ead3c21f99e8860aa0",
+      "returncode": 0,
+      "elapsed_seconds": 0.546,
+      "files": {
+        "CMakeCache.txt": "955a5064ed81e4e3c6800bd8378236954690445965c5a1c560281df6fcf23368",
+        "build-tools-formulas.json": "d430b031577139dff29b436c1d60eb4b8a8e9ea4431d9dd0c679b4444bf8d02c",
+        "build.log": "1777bd477646451558ef01c0debc90a426736237c72bb4467b8a167dd5515215",
+        "build.ninja": "4c89c02adf770085681517d2897966e1b0858588e41b8a809f1bf8c5d318a7cf",
+        "build_engine.py": "cd5c76cbc8782867e350fd41cb36b304153a6f56e762f03aaa8e6bdeb9ba6ed0",
+        "compile_commands.json": "2c8f8fb8524a0d7511c4745d32ae1146fb85dc537adbdb2c23d3ab09bca9b2b7",
+        "config.h": "793837b545e54daf894e25d2a4c8ad7bde16757aa079dfbbc23e6f352893757b",
+        "configure-manifest.json": "d337bfe5bec3aef0c8c690e64e1caeebe87968fd4d7015c8fa3e434eeda755f4",
+        "configure_build.py": "0383dd6ff5c6a4e76912cd8d8e97043c01430a0eae5238dee53ec2d3f43bced7",
+        "prepare_build_tools.py": "30a43df63857d708ef9d3b3dba1a508cfffb69b487dd10eb2b5de1318b8c4ccd",
+        "snort": "4a7fb05fefe6f3144de17613244d590fe287913b339f87c5da7bfd9d60b34c44",
+        "source-hashes.json": "32e0102911d6cef9e6501db8910386c66c27411fc6e646c7772d1c7b8f826f7e"
+      },
+      "raw_binary_sha256": "8ef835859a067ce72ed6bb263ed4f21c50f925516a28a0b0e4abfed4c2b1195a",
+      "relocation_command": [
+        "/usr/bin/install_name_tool",
+        "-change",
+        "@@HOMEBREW_PREFIX@@/opt/luajit/lib/libluajit-5.1.2.dylib",
+        "/private/tmp/ax-snort-native/runtime/opt/luajit/lib/libluajit-5.1.2.dylib",
+        "-change",
+        "@@HOMEBREW_PREFIX@@/opt/daq/lib/libdaq.3.dylib",
+        "/private/tmp/ax-snort-native/runtime/opt/daq/lib/libdaq.3.dylib",
+        "-change",
+        "@@HOMEBREW_PREFIX@@/opt/libdnet/lib/libdnet.1.dylib",
+        "/private/tmp/ax-snort-native/runtime/opt/libdnet/lib/libdnet.1.dylib",
+        "-change",
+        "@@HOMEBREW_PREFIX@@/opt/hwloc/lib/libhwloc.15.dylib",
+        "/private/tmp/ax-snort-native/runtime/opt/hwloc/lib/libhwloc.15.dylib",
+        "-change",
+        "@@HOMEBREW_PREFIX@@/opt/openssl@3/lib/libcrypto.3.dylib",
+        "/private/tmp/ax-snort-repaired/tools/opt/openssl@3/lib/libcrypto.3.dylib",
+        "-change",
+        "@@HOMEBREW_PREFIX@@/opt/libpcap/lib/libpcap.A.dylib",
+        "/private/tmp/ax-snort-native/runtime/opt/libpcap/lib/libpcap.A.dylib",
+        "-change",
+        "@@HOMEBREW_PREFIX@@/opt/pcre2/lib/libpcre2-8.0.dylib",
+        "/private/tmp/ax-snort-native/runtime/opt/pcre2/lib/libpcre2-8.0.dylib",
+        "-change",
+        "@@HOMEBREW_PREFIX@@/opt/vectorscan/lib/libhs.5.dylib",
+        "/private/tmp/ax-snort-native/runtime/opt/vectorscan/lib/libhs.5.dylib",
+        "-change",
+        "@@HOMEBREW_PREFIX@@/opt/xz/lib/liblzma.5.dylib",
+        "/private/tmp/ax-snort-native/runtime/opt/xz/lib/liblzma.5.dylib",
+        "/private/tmp/ax-snort-repaired/repaired/snort"
+      ],
+      "version_returncode": 0,
+      "version_stdout": "\n   ,,_     -*> Snort++ <*-\n  o\"  )~   Version 3.12.2.0\n   ''''    By Martin Roesch & The Snort Team\n           http://snort.org/contact#team\n           Copyright (C) 2014-2026 Cisco and/or its affiliates. All rights reserved.\n           Copyright (C) 1998-2013 Sourcefire, Inc., et al.\n           Using DAQ version 3.0.27\n           Using Hyperscan version 5.4.13 2026-08-23\n           Using libpcap version 1.11.0 (64-bit time_t)\n           Using LuaJIT version 2.1.1788856981\n           Using LZMA version 5.8.4\n           Using OpenSSL 3.6.4 25 Aug 2026\n           Using PCRE2 version 10.48 2026-08-31\n           Using ZLIB version 1.2.12\n\n",
+      "version_stderr": "",
+      "binary_sha256": "4a7fb05fefe6f3144de17613244d590fe287913b339f87c5da7bfd9d60b34c44"
+    }
+  },
+  "build_tools": {
+    "cmake": {
+      "name": "cmake",
+      "full_name": "cmake",
+      "tap": "homebrew/core",
+      "oldnames": [],
+      "aliases": [],
+      "versioned_formulae": [],
+      "desc": "Cross-platform make",
+      "license": "BSD-3-Clause",
+      "homepage": "https://www.cmake.org/",
+      "versions": {
+        "stable": "4.4.3",
+        "head": "HEAD",
+        "bottle": true
+      },
+      "urls": {
+        "stable": {
+          "url": "https://github.com/Kitware/CMake/releases/download/v4.4.3/cmake-4.4.3.tar.gz",
+          "tag": null,
+          "revision": null,
+          "using": null,
+          "checksum": "c46400618b4f1f2b43507f24fb22f3ae830c3416cf23b776e16e1d413aa892f0"
+        },
+        "head": {
+          "url": "https://gitlab.kitware.com/cmake/cmake.git",
+          "branch": "master",
+          "using": null
+        }
+      },
+      "patches": [],
+      "revision": 0,
+      "version_scheme": 0,
+      "compatibility_version": 1,
+      "autobump": true,
+      "no_autobump_message": null,
+      "skip_livecheck": false,
+      "bottle": {
+        "stable": {
+          "rebuild": 0,
+          "root_url": "https://ghcr.io/v2/homebrew/core",
+          "files": {
+            "arm64_golden_gate": {
+              "cellar": ":any_skip_relocation",
+              "url": "https://ghcr.io/v2/homebrew/core/cmake/blobs/sha256:f0687dd7fc33beea223f96946fb64b2dc1345990048b145bc160f9db218b3975",
+              "sha256": "f0687dd7fc33beea223f96946fb64b2dc1345990048b145bc160f9db218b3975"
+            },
+            "arm64_tahoe": {
+              "cellar": ":any_skip_relocation",
+              "url": "https://ghcr.io/v2/homebrew/core/cmake/blobs/sha256:0a53d2312ce16641029e616591e15dd256258401b401f5663d9560fddf78fc25",
+              "sha256": "0a53d2312ce16641029e616591e15dd256258401b401f5663d9560fddf78fc25"
+            },
+            "arm64_sequoia": {
+              "cellar": ":any_skip_relocation",
+              "url": "https://ghcr.io/v2/homebrew/core/cmake/blobs/sha256:49b8b85daec411080b7cfaaaed84846d1e08c366ddb27b199e61ff21cf881646",
+              "sha256": "49b8b85daec411080b7cfaaaed84846d1e08c366ddb27b199e61ff21cf881646"
+            },
+            "arm64_sonoma": {
+              "cellar": ":any_skip_relocation",
+              "url": "https://ghcr.io/v2/homebrew/core/cmake/blobs/sha256:d50416765d0be66fba64b845e9198c9185a9b26a4baea54a50996c3a68b56238",
+              "sha256": "d50416765d0be66fba64b845e9198c9185a9b26a4baea54a50996c3a68b56238"
+            },
+            "tahoe": {
+              "cellar": ":any_skip_relocation",
+              "url": "https://ghcr.io/v2/homebrew/core/cmake/blobs/sha256:9e321dc7e2f284ece5f048949ad98caeabc9c5fd853c90a1d2c930a33e0bf44e",
+              "sha256": "9e321dc7e2f284ece5f048949ad98caeabc9c5fd853c90a1d2c930a33e0bf44e"
+            },
+            "sequoia": {
+              "cellar": ":any_skip_relocation",
+              "url": "https://ghcr.io/v2/homebrew/core/cmake/blobs/sha256:0422f40c02b98e088ffe0a8f37c6b7efb24ed4f8832cb9efe0e53f97225e586f",
+              "sha256": "0422f40c02b98e088ffe0a8f37c6b7efb24ed4f8832cb9efe0e53f97225e586f"
+            },
+            "sonoma": {
+              "cellar": ":any_skip_relocation",
+              "url": "https://ghcr.io/v2/homebrew/core/cmake/blobs/sha256:f4176e173808ea4a59acb6182ec5bbb0be6fe3e452dbdfd0f8303a6377b13fee",
+              "sha256": "f4176e173808ea4a59acb6182ec5bbb0be6fe3e452dbdfd0f8303a6377b13fee"
+            },
+            "arm64_linux": {
+              "cellar": ":any",
+              "url": "https://ghcr.io/v2/homebrew/core/cmake/blobs/sha256:bc56c4bb2c45965103d613f962e9d0ec14989fc9355a908686cfe17532317bef",
+              "sha256": "bc56c4bb2c45965103d613f962e9d0ec14989fc9355a908686cfe17532317bef"
+            },
+            "x86_64_linux": {
+              "cellar": ":any",
+              "url": "https://ghcr.io/v2/homebrew/core/cmake/blobs/sha256:b37d85310c00b84eaaa62fa96d51251f6f59fba39e36495eab224f0b76909043",
+              "sha256": "b37d85310c00b84eaaa62fa96d51251f6f59fba39e36495eab224f0b76909043"
+            }
+          }
+        }
+      },
+      "pour_bottle_only_if": null,
+      "keg_only": false,
+      "keg_only_reason": null,
+      "options": [],
+      "build_dependencies": [],
+      "dependencies": [],
+      "test_dependencies": [],
+      "recommended_dependencies": [],
+      "optional_dependencies": [],
+      "uses_from_macos": [
+        "ncurses"
+      ],
+      "uses_from_macos_bounds": [
+        {}
+      ],
+      "requirements": [],
+      "conflicts_with": [],
+      "conflicts_with_reasons": [],
+      "link_overwrite": [],
+      "caveats": "To install the CMake documentation, run:\n  brew install cmake-docs\n",
+      "installed": [],
+      "linked_keg": null,
+      "pinned": false,
+      "outdated": false,
+      "deprecated": false,
+      "deprecation_date": null,
+      "deprecation_reason": null,
+      "deprecation_replacement_formula": null,
+      "deprecation_replacement_cask": null,
+      "deprecate_args": null,
+      "disabled": false,
+      "disable_date": null,
+      "disable_reason": null,
+      "disable_replacement_formula": null,
+      "disable_replacement_cask": null,
+      "disable_args": null,
+      "post_install_steps": [],
+      "post_install_defined": false,
+      "service": null,
+      "tap_git_head": "59bca3968ea78ef0162fdaf23b69df402f19d107",
+      "ruby_source_path": "Formula/c/cmake.rb",
+      "ruby_source_checksum": {
+        "sha256": "b6640b40b96c513cfe79cb15f43c4b6de9b08386104bb9096c965ad02fd1f87f"
+      },
+      "variations": {
+        "x86_64_linux": {
+          "dependencies": [
+            "openssl@3"
+          ]
+        },
+        "arm64_linux": {
+          "dependencies": [
+            "openssl@3"
+          ]
+        }
+      },
+      "executables": [
+        "ccmake",
+        "cmake",
+        "cpack",
+        "ctest"
+      ],
+      "analytics": {
+        "install": {
+          "30d": {
+            "cmake": 114515,
+            "cmake --HEAD": 85
+          },
+          "90d": {
+            "cmake": 439580,
+            "cmake --HEAD": 403
+          },
+          "365d": {
+            "cmake": 1769604,
+            "cmake --HEAD": 1936
+          }
+        },
+        "install_on_request": {
+          "30d": {
+            "cmake": 74643,
+            "cmake --HEAD": 85
+          },
+          "90d": {
+            "cmake": 305280,
+            "cmake --HEAD": 403
+          },
+          "365d": {
+            "cmake": 1264111,
+            "cmake --HEAD": 1914
+          }
+        },
+        "build_error": {
+          "30d": {
+            "cmake": 688,
+            "cmake --HEAD": 1
+          }
+        }
+      },
+      "generated_date": "2026-09-26"
+    },
+    "pkgconf": {
+      "name": "pkgconf",
+      "full_name": "pkgconf",
+      "tap": "homebrew/core",
+      "oldnames": [],
+      "aliases": [
+        "pkg-config",
+        "pkgconfig"
+      ],
+      "versioned_formulae": [],
+      "desc": "Package compiler and linker metadata toolkit",
+      "license": "ISC",
+      "homepage": "https://github.com/pkgconf/pkgconf",
+      "versions": {
+        "stable": "3.0.7",
+        "head": "HEAD",
+        "bottle": true
+      },
+      "urls": {
+        "stable": {
+          "url": "https://distfiles.ariadne.space/pkgconf/pkgconf-3.0.7.tar.xz",
+          "tag": null,
+          "revision": null,
+          "using": null,
+          "checksum": "c926ff491cbd9a331a589160811bd97ab1749b4d5198a519338f2cdfabe6940a"
+        },
+        "head": {
+          "url": "https://github.com/pkgconf/pkgconf.git",
+          "branch": "main",
+          "using": null
+        }
+      },
+      "patches": [],
+      "revision": 0,
+      "version_scheme": 0,
+      "compatibility_version": 2,
+      "autobump": true,
+      "no_autobump_message": null,
+      "skip_livecheck": false,
+      "bottle": {
+        "stable": {
+          "rebuild": 0,
+          "root_url": "https://ghcr.io/v2/homebrew/core",
+          "files": {
+            "arm64_golden_gate": {
+              "cellar": "/opt/homebrew/Cellar",
+              "url": "https://ghcr.io/v2/homebrew/core/pkgconf/blobs/sha256:3e42e1d7b73409b21ae8397794f50c640049730f771db4cd35b22e73dd9c0835",
+              "sha256": "3e42e1d7b73409b21ae8397794f50c640049730f771db4cd35b22e73dd9c0835"
+            },
+            "arm64_tahoe": {
+              "cellar": "/opt/homebrew/Cellar",
+              "url": "https://ghcr.io/v2/homebrew/core/pkgconf/blobs/sha256:338c66b0d559ed78c2f77c038e141cd7b0060d6fcdf80affd1034509e8ab180c",
+              "sha256": "338c66b0d559ed78c2f77c038e141cd7b0060d6fcdf80affd1034509e8ab180c"
+            },
+            "arm64_sequoia": {
+              "cellar": "/opt/homebrew/Cellar",
+              "url": "https://ghcr.io/v2/homebrew/core/pkgconf/blobs/sha256:3394224fbc510e07acb45f3ad41d62857cfefe2394e8f71ca2e976b59864d5e6",
+              "sha256": "3394224fbc510e07acb45f3ad41d62857cfefe2394e8f71ca2e976b59864d5e6"
+            },
+            "arm64_sonoma": {
+              "cellar": "/opt/homebrew/Cellar",
+              "url": "https://ghcr.io/v2/homebrew/core/pkgconf/blobs/sha256:e066c26946cd5f27212a6e03e1745d27feba8aa0d0d0547ce36c793abb55d8ff",
+              "sha256": "e066c26946cd5f27212a6e03e1745d27feba8aa0d0d0547ce36c793abb55d8ff"
+            },
+            "arm64_linux": {
+              "cellar": "/home/linuxbrew/.linuxbrew/Cellar",
+              "url": "https://ghcr.io/v2/homebrew/core/pkgconf/blobs/sha256:801bdc18fd03a143979e2cc987730019307966420604aea19d46d6020ae7c81d",
+              "sha256": "801bdc18fd03a143979e2cc987730019307966420604aea19d46d6020ae7c81d"
+            },
+            "x86_64_linux": {
+              "cellar": "/home/linuxbrew/.linuxbrew/Cellar",
+              "url": "https://ghcr.io/v2/homebrew/core/pkgconf/blobs/sha256:8aacaf8f20d4c277d425163f3c8e9e5df6611f05cb0c32a8ec1069917efd5ffe",
+              "sha256": "8aacaf8f20d4c277d425163f3c8e9e5df6611f05cb0c32a8ec1069917efd5ffe"
+            }
+          }
+        }
+      },
+      "pour_bottle_only_if": null,
+      "keg_only": false,
+      "keg_only_reason": null,
+      "options": [],
+      "build_dependencies": [],
+      "dependencies": [],
+      "test_dependencies": [],
+      "recommended_dependencies": [],
+      "optional_dependencies": [],
+      "uses_from_macos": [],
+      "uses_from_macos_bounds": [],
+      "requirements": [],
+      "conflicts_with": [],
+      "conflicts_with_reasons": [],
+      "link_overwrite": [],
+      "caveats": null,
+      "installed": [],
+      "linked_keg": null,
+      "pinned": false,
+      "outdated": false,
+      "deprecated": false,
+      "deprecation_date": null,
+      "deprecation_reason": null,
+      "deprecation_replacement_formula": null,
+      "deprecation_replacement_cask": null,
+      "deprecate_args": null,
+      "disabled": false,
+      "disable_date": null,
+      "disable_reason": null,
+      "disable_replacement_formula": null,
+      "disable_replacement_cask": null,
+      "disable_args": null,
+      "post_install_steps": [],
+      "post_install_defined": false,
+      "service": null,
+      "tap_git_head": "59bca3968ea78ef0162fdaf23b69df402f19d107",
+      "ruby_source_path": "Formula/p/pkgconf.rb",
+      "ruby_source_checksum": {
+        "sha256": "aa4787b4c8af3925054fb55ae38c9ce16cea5325ce5788e2d1c6cec514f30f5c"
+      },
+      "variations": {},
+      "executables": [
+        "bomtool",
+        "pccritic",
+        "pkg-config",
+        "pkgconf",
+        "spdxtool"
+      ],
+      "analytics": {
+        "install": {
+          "30d": {
+            "pkgconf": 110963,
+            "pkgconf --HEAD": 112
+          },
+          "90d": {
+            "pkgconf": 505496,
+            "pkgconf --HEAD": 679
+          },
+          "365d": {
+            "pkgconf": 1836556,
+            "pkgconf --HEAD": 1963
+          }
+        },
+        "install_on_request": {
+          "30d": {
+            "pkgconf": 46672,
+            "pkgconf --HEAD": 78
+          },
+          "90d": {
+            "pkgconf": 226510,
+            "pkgconf --HEAD": 378
+          },
+          "365d": {
+            "pkgconf": 856241,
+            "pkgconf --HEAD": 1348
+          }
+        },
+        "build_error": {
+          "30d": {
+            "pkgconf": 1461
+          }
+        }
+      },
+      "generated_date": "2026-09-26"
+    },
+    "ninja": {
+      "name": "ninja",
+      "full_name": "ninja",
+      "tap": "homebrew/core",
+      "oldnames": [],
+      "aliases": [],
+      "versioned_formulae": [],
+      "desc": "Small build system for use with gyp or CMake",
+      "license": "Apache-2.0",
+      "homepage": "https://ninja-build.org/",
+      "versions": {
+        "stable": "1.13.2",
+        "head": "HEAD",
+        "bottle": true
+      },
+      "urls": {
+        "stable": {
+          "url": "https://github.com/ninja-build/ninja/archive/refs/tags/v1.13.2.tar.gz",
+          "tag": null,
+          "revision": null,
+          "using": null,
+          "checksum": "974d6b2f4eeefa25625d34da3cb36bdcebe7fbce40f4c16ac0835fd1c0cbae17"
+        },
+        "head": {
+          "url": "https://github.com/ninja-build/ninja.git",
+          "branch": "master",
+          "using": null
+        }
+      },
+      "patches": [],
+      "revision": 0,
+      "version_scheme": 0,
+      "compatibility_version": 1,
+      "autobump": true,
+      "no_autobump_message": null,
+      "skip_livecheck": false,
+      "bottle": {
+        "stable": {
+          "rebuild": 1,
+          "root_url": "https://ghcr.io/v2/homebrew/core",
+          "files": {
+            "arm64_golden_gate": {
+              "cellar": ":any_skip_relocation",
+              "url": "https://ghcr.io/v2/homebrew/core/ninja/blobs/sha256:efc5badad160831eb4bbdfd252a9cc9184e0fa901968b72e6e4f93f67a4c2057",
+              "sha256": "efc5badad160831eb4bbdfd252a9cc9184e0fa901968b72e6e4f93f67a4c2057"
+            },
+            "arm64_tahoe": {
+              "cellar": ":any_skip_relocation",
+              "url": "https://ghcr.io/v2/homebrew/core/ninja/blobs/sha256:7bb261a70d9337d765956329580e10f16a0d1ea4eef5a106db39c9e1f8917f00",
+              "sha256": "7bb261a70d9337d765956329580e10f16a0d1ea4eef5a106db39c9e1f8917f00"
+            },
+            "arm64_sequoia": {
+              "cellar": ":any_skip_relocation",
+              "url": "https://ghcr.io/v2/homebrew/core/ninja/blobs/sha256:2c07378c1ccb6cfde4bc2e12877c9f365b31c62ddc4ec631421cb80e3a7e1f11",
+              "sha256": "2c07378c1ccb6cfde4bc2e12877c9f365b31c62ddc4ec631421cb80e3a7e1f11"
+            },
+            "arm64_linux": {
+              "cellar": ":any",
+              "url": "https://ghcr.io/v2/homebrew/core/ninja/blobs/sha256:eff57ad5bb5055d8a76e10950ae9440203b3d902e17f6c5aa0a41d4ffaa15d52",
+              "sha256": "eff57ad5bb5055d8a76e10950ae9440203b3d902e17f6c5aa0a41d4ffaa15d52"
+            },
+            "x86_64_linux": {
+              "cellar": ":any",
+              "url": "https://ghcr.io/v2/homebrew/core/ninja/blobs/sha256:e924537f9c4efbf55741478c15af88fd38b6a014cc6d124f0dbdabd52611f482",
+              "sha256": "e924537f9c4efbf55741478c15af88fd38b6a014cc6d124f0dbdabd52611f482"
+            }
+          }
+        }
+      },
+      "pour_bottle_only_if": null,
+      "keg_only": false,
+      "keg_only_reason": null,
+      "options": [],
+      "build_dependencies": [],
+      "dependencies": [],
+      "test_dependencies": [],
+      "recommended_dependencies": [],
+      "optional_dependencies": [],
+      "uses_from_macos": [
+        {
+          "python": [
+            "build",
+            "test"
+          ]
+        }
+      ],
+      "uses_from_macos_bounds": [
+        {}
+      ],
+      "requirements": [],
+      "conflicts_with": [],
+      "conflicts_with_reasons": [],
+      "link_overwrite": [],
+      "caveats": null,
+      "installed": [],
+      "linked_keg": null,
+      "pinned": false,
+      "outdated": false,
+      "deprecated": false,
+      "deprecation_date": null,
+      "deprecation_reason": null,
+      "deprecation_replacement_formula": null,
+      "deprecation_replacement_cask": null,
+      "deprecate_args": null,
+      "disabled": false,
+      "disable_date": null,
+      "disable_reason": null,
+      "disable_replacement_formula": null,
+      "disable_replacement_cask": null,
+      "disable_args": null,
+      "post_install_steps": [],
+      "post_install_defined": false,
+      "service": null,
+      "tap_git_head": "59bca3968ea78ef0162fdaf23b69df402f19d107",
+      "ruby_source_path": "Formula/n/ninja.rb",
+      "ruby_source_checksum": {
+        "sha256": "19a71f92bab02b8e827338fe891a3b80da8df244942554a524a6b18b2c9152d9"
+      },
+      "variations": {},
+      "executables": [
+        "ninja"
+      ],
+      "analytics": {
+        "install": {
+          "30d": {
+            "ninja": 38482,
+            "ninja --HEAD": 7
+          },
+          "90d": {
+            "ninja": 133924,
+            "ninja --HEAD": 50
+          },
+          "365d": {
+            "ninja": 550959,
+            "ninja --HEAD": 328
+          }
+        },
+        "install_on_request": {
+          "30d": {
+            "ninja": 23283,
+            "ninja --HEAD": 7
+          },
+          "90d": {
+            "ninja": 87674,
+            "ninja --HEAD": 50
+          },
+          "365d": {
+            "ninja": 353672,
+            "ninja --HEAD": 323
+          }
+        },
+        "build_error": {
+          "30d": {
+            "ninja": 1397
+          }
+        }
+      },
+      "generated_date": "2026-09-26"
+    },
+    "openssl@3": {
+      "name": "openssl@3",
+      "full_name": "openssl@3",
+      "tap": "homebrew/core",
+      "oldnames": [],
+      "aliases": [
+        "openssl",
+        "openssl@3.6"
+      ],
+      "versioned_formulae": [
+        "openssl@4",
+        "openssl@3.5",
+        "openssl@3.0"
+      ],
+      "desc": "Cryptography and SSL/TLS Toolkit",
+      "license": "Apache-2.0",
+      "homepage": "https://openssl-library.org",
+      "versions": {
+        "stable": "3.6.4",
+        "head": null,
+        "bottle": true
+      },
+      "urls": {
+        "stable": {
+          "url": "https://github.com/openssl/openssl/releases/download/openssl-3.6.4/openssl-3.6.4.tar.gz",
+          "tag": null,
+          "revision": null,
+          "using": null,
+          "checksum": "9bffaa1ad1e07b354c21bd3324ec02fa15579f45a7d0494b3e74bc449b7333ef"
+        }
+      },
+      "patches": [],
+      "revision": 0,
+      "version_scheme": 0,
+      "compatibility_version": 1,
+      "autobump": true,
+      "no_autobump_message": null,
+      "skip_livecheck": false,
+      "bottle": {
+        "stable": {
+          "rebuild": 0,
+          "root_url": "https://ghcr.io/v2/homebrew/core",
+          "files": {
+            "arm64_golden_gate": {
+              "cellar": "/opt/homebrew/Cellar",
+              "url": "https://ghcr.io/v2/homebrew/core/openssl/3/blobs/sha256:51eb22ee51d7b6e678ef5dc2be234adb46f9f541ac1d98e5ed08c9a7535789dc",
+              "sha256": "51eb22ee51d7b6e678ef5dc2be234adb46f9f541ac1d98e5ed08c9a7535789dc"
+            },
+            "arm64_tahoe": {
+              "cellar": "/opt/homebrew/Cellar",
+              "url": "https://ghcr.io/v2/homebrew/core/openssl/3/blobs/sha256:8c7dab98311d025fda379dba80eaf985af1ceca26c403c66318b3c7d43a028b9",
+              "sha256": "8c7dab98311d025fda379dba80eaf985af1ceca26c403c66318b3c7d43a028b9"
+            },
+            "arm64_sequoia": {
+              "cellar": "/opt/homebrew/Cellar",
+              "url": "https://ghcr.io/v2/homebrew/core/openssl/3/blobs/sha256:b7139450ed389be82f807daaadffa778d9c4753a3b2d8f784da1cf7383994ee2",
+              "sha256": "b7139450ed389be82f807daaadffa778d9c4753a3b2d8f784da1cf7383994ee2"
+            },
+            "arm64_sonoma": {
+              "cellar": "/opt/homebrew/Cellar",
+              "url": "https://ghcr.io/v2/homebrew/core/openssl/3/blobs/sha256:01887accd1964e9940ba516509e948eed9850d58d55cc02ca52c503435750685",
+              "sha256": "01887accd1964e9940ba516509e948eed9850d58d55cc02ca52c503435750685"
+            },
+            "arm64_linux": {
+              "cellar": "/home/linuxbrew/.linuxbrew/Cellar",
+              "url": "https://ghcr.io/v2/homebrew/core/openssl/3/blobs/sha256:e0f84cb8ab776813a17750423a6ce1b75b870df3ab2c21c54df9ce02646c1e1c",
+              "sha256": "e0f84cb8ab776813a17750423a6ce1b75b870df3ab2c21c54df9ce02646c1e1c"
+            },
+            "x86_64_linux": {
+              "cellar": "/home/linuxbrew/.linuxbrew/Cellar",
+              "url": "https://ghcr.io/v2/homebrew/core/openssl/3/blobs/sha256:73c4159878b98d82e6f4e343ef34a79b74ca2224927d38c0956ce3ea781d6d20",
+              "sha256": "73c4159878b98d82e6f4e343ef34a79b74ca2224927d38c0956ce3ea781d6d20"
+            }
+          }
+        }
+      },
+      "pour_bottle_only_if": null,
+      "keg_only": false,
+      "keg_only_reason": null,
+      "options": [],
+      "build_dependencies": [],
+      "dependencies": [
+        "ca-certificates"
+      ],
+      "test_dependencies": [],
+      "recommended_dependencies": [],
+      "optional_dependencies": [],
+      "uses_from_macos": [],
+      "uses_from_macos_bounds": [],
+      "requirements": [],
+      "conflicts_with": [],
+      "conflicts_with_reasons": [],
+      "link_overwrite": [
+        "bin/c_rehash",
+        "bin/openssl",
+        "include/openssl/*",
+        "lib/libcrypto*",
+        "lib/libssl*",
+        "lib/pkgconfig/libcrypto.pc",
+        "lib/pkgconfig/libssl.pc",
+        "lib/pkgconfig/openssl.pc",
+        "share/doc/openssl/*",
+        "share/man/man*/*ssl"
+      ],
+      "caveats": "To add additional certificates, place .pem files in\n  $HOMEBREW_PREFIX/etc/openssl@3/certs\n\nand run\n  $HOMEBREW_PREFIX/opt/openssl@3/bin/c_rehash\n\nOpenSSL 3.6 is only supported until 2026-11-01 so the `openssl@3`\nformula will be downgraded to OpenSSL 3.5 (LTS) in a future update.\n",
+      "installed": [],
+      "linked_keg": null,
+      "pinned": false,
+      "outdated": false,
+      "deprecated": false,
+      "deprecation_date": null,
+      "deprecation_reason": null,
+      "deprecation_replacement_formula": null,
+      "deprecation_replacement_cask": null,
+      "deprecate_args": null,
+      "disabled": false,
+      "disable_date": null,
+      "disable_reason": null,
+      "disable_replacement_formula": null,
+      "disable_replacement_cask": null,
+      "disable_args": null,
+      "post_install_steps": [
+        {
+          "source": {
+            "path": "{{etc}}/ca-certificates/cert.pem"
+          },
+          "target": {
+            "path": "{{pkgetc}}/cert.pem"
+          },
+          "force": true,
+          "type": "symlink"
+        }
+      ],
+      "post_install_defined": false,
+      "service": null,
+      "tap_git_head": "59bca3968ea78ef0162fdaf23b69df402f19d107",
+      "ruby_source_path": "Formula/o/openssl@3.rb",
+      "ruby_source_checksum": {
+        "sha256": "08b5adf4226fa7dba27fe00efeabb58a3af500e72f1f2b265604993659bf28e1"
+      },
+      "variations": {},
+      "executables": [
+        "c_rehash",
+        "openssl"
+      ],
+      "analytics": {
+        "install": {
+          "30d": {
+            "openssl@3": 306633,
+            "openssl@3 --HEAD": 62
+          },
+          "90d": {
+            "openssl@3": 1382774,
+            "openssl@3 --HEAD": 235
+          },
+          "365d": {
+            "openssl@3": 5541858,
+            "openssl@3 --HEAD": 1142
+          }
+        },
+        "install_on_request": {
+          "30d": {
+            "openssl@3": 41592,
+            "openssl@3 --HEAD": 62
+          },
+          "90d": {
+            "openssl@3": 184813,
+            "openssl@3 --HEAD": 224
+          },
+          "365d": {
+            "openssl@3": 757578,
+            "openssl@3 --HEAD": 1091
+          }
+        },
+        "build_error": {
+          "30d": {
+            "openssl@3": 11389
+          }
+        }
+      },
+      "generated_date": "2026-09-26"
+    },
+    "ca-certificates": {
+      "name": "ca-certificates",
+      "full_name": "ca-certificates",
+      "tap": "homebrew/core",
+      "oldnames": [],
+      "aliases": [],
+      "versioned_formulae": [],
+      "desc": "Mozilla CA certificate store",
+      "license": "MPL-2.0",
+      "homepage": "https://curl.se/docs/caextract.html",
+      "versions": {
+        "stable": "2026-09-25",
+        "head": null,
+        "bottle": true
+      },
+      "urls": {
+        "stable": {
+          "url": "https://curl.se/ca/cacert-2026-09-25.pem",
+          "tag": null,
+          "revision": null,
+          "using": null,
+          "checksum": "a41b5d356aea97a529fe27e0f7316d2f9d946d75927476cf9cf1b90637d00505"
+        }
+      },
+      "patches": [],
+      "revision": 0,
+      "version_scheme": 0,
+      "compatibility_version": 1,
+      "autobump": true,
+      "no_autobump_message": null,
+      "skip_livecheck": false,
+      "bottle": {
+        "stable": {
+          "rebuild": 0,
+          "root_url": "https://ghcr.io/v2/homebrew/core",
+          "files": {
+            "all": {
+              "cellar": ":any_skip_relocation",
+              "url": "https://ghcr.io/v2/homebrew/core/ca-certificates/blobs/sha256:81804ad8a70a7a8d2a0a964d106765ff88716b310decaeffb4b4895a3252186a",
+              "sha256": "81804ad8a70a7a8d2a0a964d106765ff88716b310decaeffb4b4895a3252186a"
+            }
+          }
+        }
+      },
+      "pour_bottle_only_if": null,
+      "keg_only": false,
+      "keg_only_reason": null,
+      "options": [],
+      "build_dependencies": [],
+      "dependencies": [],
+      "test_dependencies": [],
+      "recommended_dependencies": [],
+      "optional_dependencies": [],
+      "uses_from_macos": [],
+      "uses_from_macos_bounds": [],
+      "requirements": [],
+      "conflicts_with": [],
+      "conflicts_with_reasons": [],
+      "link_overwrite": [],
+      "caveats": null,
+      "installed": [],
+      "linked_keg": null,
+      "pinned": false,
+      "outdated": false,
+      "deprecated": false,
+      "deprecation_date": null,
+      "deprecation_reason": null,
+      "deprecation_replacement_formula": null,
+      "deprecation_replacement_cask": null,
+      "deprecate_args": null,
+      "disabled": false,
+      "disable_date": null,
+      "disable_reason": null,
+      "disable_replacement_formula": null,
+      "disable_replacement_cask": null,
+      "disable_args": null,
+      "post_install_steps": [
+        {
+          "command": {
+            "base": "libexec",
+            "path": "post-install"
+          },
+          "type": "run",
+          "args": [
+            "{{pkgshare}}/cacert.pem",
+            "{{pkgetc}}/cert.pem"
+          ]
+        }
+      ],
+      "post_install_defined": false,
+      "service": null,
+      "tap_git_head": "59bca3968ea78ef0162fdaf23b69df402f19d107",
+      "ruby_source_path": "Formula/c/ca-certificates.rb",
+      "ruby_source_checksum": {
+        "sha256": "e7807634f02d41cfad036cdebb546daacd45e118fcb463acc6c6e4f6e07dcf3f"
+      },
+      "variations": {
+        "x86_64_linux": {
+          "caveats": "CA certificates have been bootstrapped from both the Mozilla CA store and the system CA store at\none of the following locations, depending on your distro:\n\n  /etc/ssl/certs/ca-certificates.crt                 # Debian/Ubuntu, Alpine Linux, Arch Linux\n  /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem  # RHEL/CentOS/Fedora, Amazon Linux\n  /etc/ssl/ca-bundle.pem                             # SUSE/openSUSE\n\n"
+        },
+        "arm64_linux": {
+          "caveats": "CA certificates have been bootstrapped from both the Mozilla CA store and the system CA store at\none of the following locations, depending on your distro:\n\n  /etc/ssl/certs/ca-certificates.crt                 # Debian/Ubuntu, Alpine Linux, Arch Linux\n  /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem  # RHEL/CentOS/Fedora, Amazon Linux\n  /etc/ssl/ca-bundle.pem                             # SUSE/openSUSE\n\n"
+        }
+      },
+      "executables": [],
+      "analytics": {
+        "install": {
+          "30d": {
+            "ca-certificates": 278678,
+            "ca-certificates --HEAD": 16
+          },
+          "90d": {
+            "ca-certificates": 1267516,
+            "ca-certificates --HEAD": 67
+          },
+          "365d": {
+            "ca-certificates": 5102864,
+            "ca-certificates --HEAD": 221
+          }
+        },
+        "install_on_request": {
+          "30d": {
+            "ca-certificates": 12251,
+            "ca-certificates --HEAD": 16
+          },
+          "90d": {
+            "ca-certificates": 50746,
+            "ca-certificates --HEAD": 57
+          },
+          "365d": {
+            "ca-certificates": 149083,
+            "ca-certificates --HEAD": 179
+          }
+        },
+        "build_error": {
+          "30d": {
+            "ca-certificates": 0
+          }
+        }
+      },
+      "generated_date": "2026-09-26"
+    }
+  }
+}

@@ -34,11 +34,13 @@ const (
 type TargetModifier string
 
 const (
-	TargetAll        TargetModifier = "all"
-	TargetHTTPURI    TargetModifier = "http_uri"
-	TargetHTTPHeader TargetModifier = "http_header"
-	TargetHTTPBody   TargetModifier = "http_client_body"
-	TargetHTTPMethod TargetModifier = "http_method"
+	TargetAll         TargetModifier = "all"
+	TargetHTTPURI     TargetModifier = "http_uri"
+	TargetHTTPRawURI  TargetModifier = "http_raw_uri"
+	TargetHTTPHeader  TargetModifier = "http_header"
+	TargetHTTPBody    TargetModifier = "http_client_body"
+	TargetHTTPRawBody TargetModifier = "http_raw_body"
+	TargetHTTPMethod  TargetModifier = "http_method"
 )
 
 // ContentOption represents a `content` keyword in a Snort rule.
@@ -90,6 +92,7 @@ type HTTPInspectionTarget struct {
 	Path       string
 	Query      string
 	FullURI    string
+	Host       string
 	Headers    map[string][]string
 	HeadersRaw string
 	Body       string

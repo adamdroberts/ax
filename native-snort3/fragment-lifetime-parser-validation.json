@@ -1,0 +1,32 @@
+{
+  "scope": "Pure fixed deadline and retention arithmetic; not native scheduling, reassembly or deployment.",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin27.0.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+  "command": [
+    "/usr/bin/clang++",
+    "-std=c++17",
+    "-O1",
+    "-g",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-fsanitize=address,undefined",
+    "-fno-omit-frame-pointer",
+    "/Users/adam/Dev/agent-security/ax/native-snort3/patches/fragment_lifetime_test.cc",
+    "-o",
+    "/private/tmp/ax-snort-fragment-lifetime-repair/fragment-lifetime-parser-test"
+  ],
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "binary_sha256": "09cc197cb86348cb07e5cfce9a563f29800acdd676996d53f7c4d83673fba8ad",
+  "sha256": {
+    "native-snort3/patches/fragment_lifetime.h": "46775d5b9a8f80551498cb90c3e1dbeb9fa90aec74e4eef5c5215a8012e977ff",
+    "native-snort3/patches/fragment_lifetime_test.cc": "12de96c29594983d5923421fcf9dc33a0a39b503f96e477c3939a590da62ef52",
+    "native-snort3/patches/record_fragment_lifetime_build.py": "4afceefe9380353ce60a37c7de4730cb67df56d854299323af09233d0732567e"
+  },
+  "summary": {
+    "assertions": 100844,
+    "random_timestamps": 100000
+  }
+}
