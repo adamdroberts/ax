@@ -69,6 +69,9 @@ func (r *pinnedResolver) lookup(ctx context.Context, name string, kind dnsmessag
 		if err != nil {
 			return nil, 0, err
 		}
+		if !exactEnvelope(data) {
+			return nil, 0, fmt.Errorf("upstream DNS framing is invalid")
+		}
 		var response dnsmessage.Message
 		if err := response.Unpack(data); err != nil {
 			return nil, 0, fmt.Errorf("malformed upstream response")
@@ -107,12 +110,13 @@ func (r *pinnedResolver) exchange(ctx context.Context, network string, query []b
 		if _, err := conn.Write(query); err != nil {
 			return nil, err
 		}
-		buf := make([]byte, 4097)
+		// No EDNS was advertised; RFC 1035's 512-byte UDP limit applies.
+		buf := make([]byte, 513)
 		n, err := conn.Read(buf)
 		if err != nil {
 			return nil, err
 		}
-		if n > 4096 {
+		if n > 512 {
 			return nil, fmt.Errorf("upstream DNS response exceeds budget")
 		}
 		return buf[:n], nil
@@ -154,6 +158,10 @@ func extractAddresses(message dnsmessage.Message, name string, kind dnsmessage.T
 				return nil, 0, fmt.Errorf("unexpected upstream DNS class")
 			}
 			recordTTL := time.Duration(rr.Header.TTL) * time.Second
+			// RFC 2181 section 8: a received TTL with its high bit set is zero.
+			if rr.Header.TTL&0x80000000 != 0 {
+				recordTTL = 0
+			}
 			switch body := rr.Body.(type) {
 			case *dnsmessage.CNAMEResource:
 				target, err := canonicalName(body.CNAME.String())
@@ -183,4 +191,58 @@ func extractAddresses(message dnsmessage.Message, name string, kind dnsmessage.T
 		current = next
 	}
 	return nil, 0, fmt.Errorf("upstream CNAME chain exceeds budget")
+}
+
+// dnsmessage parses resource content but permits trailing bytes. Check the
+// complete outer envelope separately before accepting a parsed answer.
+func exactEnvelope(data []byte) bool {
+	if len(data) < 12 || len(data) > 4096 || data[3]&0x40 != 0 {
+		return false
+	}
+	pos := 12
+	skipName := func() bool {
+		for pos < len(data) {
+			start := pos
+			n := int(data[pos])
+			pos++
+			if n == 0 {
+				return true
+			}
+			if n&0xc0 == 0xc0 {
+				if pos >= len(data) {
+					return false
+				}
+				target := ((n & 0x3f) << 8) | int(data[pos])
+				pos++
+				// Compression references a prior occurrence. dnsmessage also
+				// validates name content and bounds pointer traversal.
+				return target >= 12 && target < start
+			}
+			if n > 63 || pos+n > len(data) {
+				return false
+			}
+			pos += n
+		}
+		return false
+	}
+	for section := 0; section < 4; section++ {
+		count := int(binary.BigEndian.Uint16(data[4+2*section:]))
+		for i := 0; i < count; i++ {
+			if !skipName() {
+				return false
+			}
+			if section == 0 {
+				pos += 4
+			} else {
+				if pos+10 > len(data) {
+					return false
+				}
+				pos += 10 + int(binary.BigEndian.Uint16(data[pos+8:]))
+			}
+			if pos > len(data) {
+				return false
+			}
+		}
+	}
+	return pos == len(data)
 }

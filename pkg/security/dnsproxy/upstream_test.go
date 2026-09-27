@@ -165,6 +165,7 @@ func TestUnmatchedUpstreamResponsesAreNotCached(t *testing.T) {
 		"servfail":          func(m *dnsmessage.Message) { m.RCode = dnsmessage.RCodeServerFailure },
 		"cname-cycle":       func(m *dnsmessage.Message) { m.Answers[0].Body = &dnsmessage.CNAMEResource{CNAME: m.Questions[0].Name} },
 		"ttl-zero":          func(m *dnsmessage.Message) { m.Answers[0].Header.TTL = 0 },
+		"ttl-high-bit":      func(m *dnsmessage.Message) { m.Answers[0].Header.TTL = 0x80000001 },
 		"unrelated-address": func(m *dnsmessage.Message) { m.Answers[1].Header.Name, _ = dnsmessage.NewName("other.test.") },
 		"mixed-private-address": func(m *dnsmessage.Message) {
 			if m.Questions[0].Type == 1 {
@@ -209,4 +210,41 @@ func TestConcurrentRefreshAndClientQueries(t *testing.T) {
 		}
 	})
 	wg.Wait()
+}
+
+func TestExactUpstreamEnvelope(t *testing.T) {
+	wire := query(t, "api.example.test.", 1)
+	if !exactEnvelope(wire) {
+		t.Fatal("valid envelope rejected")
+	}
+	if exactEnvelope(append(append([]byte(nil), wire...), 1)) {
+		t.Fatal("trailing bytes accepted")
+	}
+	for i := 0; i < len(wire); i++ {
+		if exactEnvelope(wire[:i]) {
+			t.Fatal("truncation accepted", i)
+		}
+	}
+	wire[3] |= 0x40
+	if exactEnvelope(wire) {
+		t.Fatal("reserved header bit accepted")
+	}
+	wire[3] = 0
+	wire[12] = 0xc0
+	wire[13] = 12
+	if exactEnvelope(wire) {
+		t.Fatal("self pointer accepted")
+	}
+}
+
+func FuzzUpstreamEnvelope(f *testing.F) {
+	f.Add(query(f, "api.example.test.", 1))
+	f.Fuzz(func(t *testing.T, data []byte) {
+		if exactEnvelope(data) {
+			var m dnsmessage.Message
+			if m.Unpack(data) == nil {
+				_, _, _ = extractAddresses(m, "api.example.test.", 1)
+			}
+		}
+	})
 }

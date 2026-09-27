@@ -1,0 +1,177 @@
+{
+  "scope": "Local build, synthetic fixtures, loopback integration and finite fuzzing. No public DNS queries, firewall changes, cluster apply or production deployment.",
+  "checks": {
+    "go_race": {
+      "result": "passed",
+      "packages": [
+        "./pkg/security/dnsproxy",
+        "./cmd/ax-dns-proxy",
+        "./pkg/security/egress",
+        "./pkg/security/httpguard",
+        "./pkg/security/snort",
+        "./pkg/mcp/proxy"
+      ]
+    },
+    "python_unittest_discover": {
+      "result": "passed",
+      "tests": 97
+    },
+    "shared_signature_fixtures": {
+      "cases": 2618,
+      "runtimes": [
+        "Go",
+        "Python"
+      ],
+      "result": "passed"
+    },
+    "http_dns_before_dispatch": {
+      "cases": 24,
+      "runtimes": [
+        "Go",
+        "Python"
+      ],
+      "result": "passed"
+    },
+    "client_wire_fuzz": {
+      "result": "passed",
+      "executions": 953177,
+      "seconds_requested": 15,
+      "workers": 2
+    },
+    "upstream_envelope_fuzz": {
+      "result": "passed",
+      "executions": 58484,
+      "seconds_requested": 10,
+      "workers": 2
+    },
+    "go_vet": "passed",
+    "go_build": "passed",
+    "import_reproducibility_and_deduplication": "passed",
+    "kubernetes_yaml": {
+      "documents": 4,
+      "parsing": "passed",
+      "cluster_schema_validation": false,
+      "applied": false
+    },
+    "git_diff_check": "passed"
+  },
+  "http_profiles": {
+    "default": {
+      "rules": 894,
+      "blocking": 156,
+      "advisory": 738
+    },
+    "strict": {
+      "rules": 922,
+      "blocking": 746,
+      "advisory": 176
+    }
+  },
+  "native_configuration": {
+    "snort_version": "3.12.2.0",
+    "source_commit": "14aeb09f5a0856812dbe08ead3c21f99e8860aa0",
+    "scope": "Native configuration loading and effective rule states only; no traffic or live inline enforcement.",
+    "profiles": [
+      {
+        "profile": "protocol",
+        "loaded": 208,
+        "enabled": 208,
+        "actions": {
+          "drop": 164,
+          "block": 0,
+          "alert": 44
+        }
+      },
+      {
+        "profile": "perimeter",
+        "loaded": 215,
+        "enabled": 215,
+        "actions": {
+          "drop": 164,
+          "block": 5,
+          "alert": 46
+        }
+      },
+      {
+        "profile": "http",
+        "loaded": 271,
+        "enabled": 271,
+        "actions": {
+          "drop": 164,
+          "block": 19,
+          "alert": 88
+        }
+      },
+      {
+        "profile": "both",
+        "loaded": 278,
+        "enabled": 278,
+        "actions": {
+          "drop": 164,
+          "block": 24,
+          "alert": 90
+        }
+      }
+    ],
+    "rejected_invalid_configurations": 18,
+    "plugin_sha256": {
+      "ax_nd_options.so": "3dde09c3191beefd8ca35121762daa282631705cd7938d306f53732c1b83f6fb"
+    },
+    "sha256": {
+      "native-snort3/protocol-ips.lua": "000cace55518af574800693f3b671e3a07d491ff5e0ad3e9c87c19abc450712c",
+      "native-snort3/agent-guard-overlay.lua": "f6b900d70900f3e9d3a042d247590a501f622c5c7fa11fd791b75ea20e8fd91d",
+      "native-snort3/protocol.states": "444f3a106d5f018ebe429d262d5f8fc79436c8fd460aa6d48ed0f4795e6cc81f",
+      "native-snort3/protocol-builtins.rules": "58b92054c4d5d7f0cf68043a1fe7ab8a8ae125791491ecd6ce309e3354f7bc27",
+      "native-snort3/builtin-inventory.json": "a48a61274609c4dfb69824bd2e0b5f7bbb0da226a27c7faa08e95c6866a118a8",
+      "native-snort3/protocol-validation.rules": "ffd1f9e078a45f234c489408bb93edce6646d4f99f260d4e5877dcc5383330b3",
+      "native-snort3/generate_inventory.py": "4d461ea9cfbbb799592a644a651c71c872b1d430962f9cc4445e4e04eb246c0f",
+      "native-snort3/validate_profiles.py": "5a208668309dce2cc0503b8acf93ec7f36ba1a4fdd301233ec2f2e32f9e7a48f",
+      "native-snort3/plugins/README.md": "44f0b78823e63a06d725cd395a989ff8c46b3dddc26238833f9ce8bb3a163f21",
+      "native-snort3/plugins/build.py": "3ba291e364ef6cfc6b227cfcf45da3e037bdbe494a4d4be0958a216058f36e0b",
+      "native-snort3/plugins/ax_nd_options.cc": "5ac99c5b4568c15ee05d5a9bf76254f566c41e28c7a612f6f6fa521da56a9255",
+      "native-snort3/plugins/nd_validation.h": "4f88245b813db35205d73dbff849269e43f9bc4ace81e6fb3eccdf878eabc185",
+      "native-snort3/plugins/nd_validation_test.cc": "72358ad3aac6fd0a848ddc883ec8430012573cee71185758021b942e77008ad2",
+      "native-snort3/plugins/ip_validation.h": "cb67871c83dfcb059b4c126933366a06f60472060956bbdf6b3e4bebf9792010",
+      "native-snort3/plugins/ip_validation_test.cc": "f5e057023dfc380f08825cbcc1beb3d638a947bf503e271343715ebe630eb080",
+      "native-snort3/plugins/ip4_options.h": "643255e2b38d0b67c6db2297c6b03076b0d32853ec038f20b9508ab83b18e30d",
+      "native-snort3/plugins/ip4_options_test.cc": "29927fe74d788bb6d99fd811cd0dc88b87de30c54d44e45fcf07db9219e8120a",
+      "native-snort3/plugins/ip6_options.h": "e16e61d1471da2dca574fdd423bc27f8929b14d89acd7b806320708dbdce8357",
+      "native-snort3/plugins/ip6_options_test.cc": "7dbae601d883aa31a0a1fcd9c7dc5be8f267c7f1a5b890497958b6ac824117ef",
+      "native-snort3/plugins/esp_validation.h": "cf8ade954fcec4f1f09917798d1aa4fd748790f210adb265fe845e32d3f135fe",
+      "native-snort3/plugins/esp_validation_test.cc": "2094e98219defcb518985f3f3aa978ff08ca1c3f6e449afa0105ed071b3dc1c5",
+      "native-snort3/plugins/routing_validation.h": "825341ae93dbe5bb8cd8071cc245d5b3642d072a86291241084f03b3b2a36694",
+      "native-snort3/plugins/routing_validation_test.cc": "ed3924084f745164e72c5b5457ff5d307d1a852fe8eda9371f5199f007b58c07",
+      "native-snort3/plugins/home_address.h": "8540117639d519f6c5b51ccc8f893a506deb61bdb9ec181c968dcd7d35e0aa62",
+      "native-snort3/plugins/home_address_test.cc": "9a93efacfc92e91062b28c4bcd2c9c91c1ac71b0e3030e6bf99e07684b54e236",
+      "pkg/security/snort/imports/agent-guard-snort3/native-only.rules": "2451962b90016f8b520521a93837ddcdcce9064e704ebdc5e67c359e90fd9d9a"
+    }
+  },
+  "combined_strict_and_all_native_definitions": 1200,
+  "binary": {
+    "path": "/private/tmp/ax-dns-proxy-verified",
+    "sha256": "c410f930f70c01ad6121ac93c32bb77f2adc7a1ae6df421e7484bf5bb85ff3f2"
+  },
+  "source_sha256_at_recording": {
+    "cmd/ax-dns-proxy/main.go": "916e7ce708d1c27a849ac8c7af08617c3c3e899c230d70de0196eadcfe8ffb1d",
+    "examples/dns-proxy/kubernetes.yaml": "c467d522f965f44546bbc0bfdf8db30534e90e899fafa32c6e79578e1db68900",
+    "pkg/mcp/proxy/protocol_test.go": "6f3639a095b2bd743e11a0b63cf590925d1ac0937895ed61ff13891a9b4ef179",
+    "pkg/security/dnsproxy/policy.go": "3782d7f9a11f540c881704838e8c29f15a0b97fbddc40cfb59ea43e8f0defba1",
+    "pkg/security/dnsproxy/proxy_test.go": "cf60d23e72b62e116cc212dc49da11f92bad80665969589e4fb1d8de5c877e4d",
+    "pkg/security/dnsproxy/server.go": "fd77e6dcd8d09866bb5038d65af020a47f75641dd8890a9afa23648b6bf6de18",
+    "pkg/security/dnsproxy/upstream.go": "2069654cc89162bf54582d08984ad1cc54fabfb0816e4d5b73805926db533e01",
+    "pkg/security/dnsproxy/upstream_test.go": "bec6447f641ec6cbf5508e6fc8f658128c0b290883c73f03258337387cd61de6",
+    "pkg/security/dnsproxy/wire.go": "c3617d200077bf61bc5394a8fe85c510e80137bdcd392fe4911f706a28a5f865",
+    "pkg/security/egress/policy.go": "4019e3b343dbaaf5dcc4c177ff51638aa91e1335c54a82aa1b74735820bf7f58",
+    "pkg/security/snort/rules/default.rules": "5efac33ba8c61c708b4446496a0273ed3c99d7820e1909102fe1816ecf3a6217",
+    "pkg/security/snort/rules/strict-actions.json": "e8b7b2dac5a86e102a9dcbc27d2c94b3a6e7e59899fc85927ff8659d7685d93f",
+    "pkg/security/snort/rules/strict.rules": "df347a127c102385412693ede49ab1d5f8c907ffcce7405aa5750bf754ce89b3",
+    "pkg/security/snort/testdata/rule_cases.json": "6c26757f83a996dd165085b081591f097564279ad1f410376d61330586194e04",
+    "tests/test_http_protocol.py": "6378eccf029ed37bdd759eae2ef439fad28c8de8317bdd31970497093ca550af",
+    "tools/import_agent_guard.py": "85e4c801015e3d844d20465115b8a5c2b7aebeb17b9d06b565a17ebe37971626"
+  },
+  "limits": [
+    "Does not decrypt arbitrary traffic or prove absence of all DNS covert channels.",
+    "Sandbox routing, CNI behavior, service translation and Substrate port-aware enforcement remain unverified.",
+    "Native broker-only perimeter denies UDP DNS; a DNS-aware sandbox boundary is required."
+  ]
+}

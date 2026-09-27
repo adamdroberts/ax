@@ -90,6 +90,28 @@ class TestHTTPProtocol(unittest.TestCase):
                     accepted = False
                 self.assertEqual(accepted, case["accepted"])
 
+    def test_dns_over_http_never_reaches_approved_origin_transport(self):
+        cases = json.loads((ROOT / "pkg/security/snort/testdata/rule_cases.json").read_text())["cases"]
+        checked = 0
+        for case in cases:
+            if not case["match"] or not case["name"].startswith("DNS escape "):
+                continue
+            with self.subTest(name=case["name"]):
+                opener = FakeOpener()
+                server, captured = self.server([
+                    "https://service.example", "https://service.example:853",
+                    "https://[2606:4700:4700::1111]:853"], opener)
+                server.engine = proxy.SnortEngine()
+                proxy.load_profile(server.engine, case["profile"])
+                args = {key: case[key] for key in ("method", "url", "headers", "body")}
+                with patch.object(proxy.socket, "getaddrinfo") as resolver:
+                    server._execute_http_request(1, args)
+                    self.assertTrue(self.result(captured)["isError"])
+                    self.assertEqual(opener.calls, [])
+                    resolver.assert_not_called()
+            checked += 1
+        self.assertGreaterEqual(checked, 24)
+
     def test_shared_cross_runtime_response_metadata_cases(self):
         corpus = json.loads((ROOT / "pkg/security/egress/testdata/response_metadata_cases.json").read_text())
         self.assertEqual(corpus["version"], 1)

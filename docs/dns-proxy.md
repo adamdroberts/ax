@@ -62,6 +62,8 @@ create a new agent-controlled network event. Upstream aliases, TXT records,
 additional data and response flags are discarded. Only address records and a
 locally constructed empty OPT response are emitted. The proxy does not assert
 DNSSEC validation or the AD bit.
+Received TTLs with the high bit set are treated as zero, following
+[RFC 2181 section 8](https://www.rfc-editor.org/rfc/rfc2181.html#section-8).
 
 ## Sandbox routing contract
 
@@ -175,3 +177,9 @@ The shared HTTP corpus has 2,618 fixtures, each evaluated independently in Go an
 Python, including encoded parameter names and JSON escapes. Import checks reject
 duplicate SIDs and detection predicates. Local results do not establish that a
 production sandbox routes every packet through these controls.
+
+The [local validation record](dns-proxy-validation.json) records passing Go race
+checks, 97 Python tests, 24 DNS-before-dispatch cases in each runtime, 953,177
+client fuzz executions and 58,484 upstream-envelope fuzz executions. It includes
+source and binary hashes. The Kubernetes template was parsed, not applied or
+tested against a cluster.

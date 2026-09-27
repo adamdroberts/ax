@@ -62,6 +62,61 @@ func TestMalformedRequestMediaParameterNeverDispatches(t *testing.T) {
 	}
 }
 
+func TestDNSOverHTTPNeverReachesApprovedOriginTransport(t *testing.T) {
+	data, err := os.ReadFile("../../security/snort/testdata/rule_cases.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var corpus struct {
+		Cases []struct {
+			Name, Method, URL, Body, Profile string
+			Headers                          map[string]string
+			Match                            bool
+		}
+	}
+	if err := json.Unmarshal(data, &corpus); err != nil {
+		t.Fatal(err)
+	}
+	checked := 0
+	for _, c := range corpus.Cases {
+		if !c.Match || !strings.HasPrefix(c.Name, "DNS escape ") {
+			continue
+		}
+		t.Run(c.Name, func(t *testing.T) {
+			s, calls := protocolTestServer(t, "https://service.example", "https://service.example:853", "https://[2606:4700:4700::1111]:853")
+			s.engine, err = snort.NewProfileEngine(c.Profile)
+			if err != nil {
+				t.Fatal(err)
+			}
+			headers := map[string]any{}
+			for key, value := range c.Headers {
+				headers[key] = value
+			}
+			args := map[string]any{"method": c.Method, "url": c.URL, "body": c.Body, "headers": headers}
+			result, _ := s.executeHTTPRequest(context.Background(), args)
+			if !result.IsError || *calls != 0 {
+				t.Fatalf("DNS escape reached transport: %+v calls=%d", result, *calls)
+			}
+			if got := diagnosticResult(t, s, args); got["blocked"] != true {
+				t.Fatal("diagnostic disagrees with dispatch", got)
+			}
+		})
+		checked++
+	}
+	if checked < 24 {
+		t.Fatal("missing DNS escape fixtures", checked)
+	}
+	s, calls := protocolTestServer(t, "https://service.example")
+	s.engine, err = snort.NewProfileEngine("strict")
+	if err != nil {
+		t.Fatal(err)
+	}
+	result, _ := s.executeHTTPRequest(context.Background(), map[string]any{"url": "https://service.example/v1/status"})
+	if result.IsError || *calls != 1 {
+		t.Fatal("ordinary approved request failed", result, *calls)
+	}
+}
+
 func protocolTestServer(t *testing.T, origins ...string) (*Server, *int) {
 	t.Helper()
 	calls := new(int)
