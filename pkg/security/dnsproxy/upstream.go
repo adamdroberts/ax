@@ -150,6 +150,7 @@ func extractAddresses(message dnsmessage.Message, name string, kind dnsmessage.T
 		seen[current] = true
 		var next string
 		var addresses []netip.Addr
+		var otherData bool
 		for _, rr := range message.Answers {
 			if !strings.EqualFold(rr.Header.Name.String(), current) {
 				continue
@@ -171,78 +172,33 @@ func extractAddresses(message dnsmessage.Message, name string, kind dnsmessage.T
 				next = target
 				ttl = min(ttl, recordTTL)
 			case *dnsmessage.AResource:
+				otherData = true
 				if kind == dnsmessage.TypeA {
 					addresses = append(addresses, netip.AddrFrom4(body.A))
 					ttl = min(ttl, recordTTL)
 				}
 			case *dnsmessage.AAAAResource:
+				otherData = true
 				if kind == dnsmessage.TypeAAAA {
 					addresses = append(addresses, netip.AddrFrom16(body.AAAA))
 					ttl = min(ttl, recordTTL)
+				}
+			default:
+				// RFC 4035 section 2.5 permits only KEY, RRSIG and NSEC
+				// alongside CNAME. Check all other data independently of
+				// the requested address family and record order.
+				if rr.Header.Type != 25 && rr.Header.Type != 46 && rr.Header.Type != 47 {
+					otherData = true
 				}
 			}
 		}
 		if next == "" {
 			return addresses, ttl, nil
 		}
-		if len(addresses) != 0 {
-			return nil, 0, fmt.Errorf("upstream name has both alias and address")
+		if otherData {
+			return nil, 0, fmt.Errorf("upstream CNAME owner has conflicting data")
 		}
 		current = next
 	}
 	return nil, 0, fmt.Errorf("upstream CNAME chain exceeds budget")
-}
-
-// dnsmessage parses resource content but permits trailing bytes. Check the
-// complete outer envelope separately before accepting a parsed answer.
-func exactEnvelope(data []byte) bool {
-	if len(data) < 12 || len(data) > 4096 || data[3]&0x40 != 0 {
-		return false
-	}
-	pos := 12
-	skipName := func() bool {
-		for pos < len(data) {
-			start := pos
-			n := int(data[pos])
-			pos++
-			if n == 0 {
-				return true
-			}
-			if n&0xc0 == 0xc0 {
-				if pos >= len(data) {
-					return false
-				}
-				target := ((n & 0x3f) << 8) | int(data[pos])
-				pos++
-				// Compression references a prior occurrence. dnsmessage also
-				// validates name content and bounds pointer traversal.
-				return target >= 12 && target < start
-			}
-			if n > 63 || pos+n > len(data) {
-				return false
-			}
-			pos += n
-		}
-		return false
-	}
-	for section := 0; section < 4; section++ {
-		count := int(binary.BigEndian.Uint16(data[4+2*section:]))
-		for i := 0; i < count; i++ {
-			if !skipName() {
-				return false
-			}
-			if section == 0 {
-				pos += 4
-			} else {
-				if pos+10 > len(data) {
-					return false
-				}
-				pos += 10 + int(binary.BigEndian.Uint16(data[pos+8:]))
-			}
-			if pos > len(data) {
-				return false
-			}
-		}
-	}
-	return pos == len(data)
 }

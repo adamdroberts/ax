@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "note": "Fixed clocks verify HTTP RFC 850 century selection and calendar grammar; leap-second forms do not establish an actual historical leap-second announcement.",
+  "cases": [
+    {
+      "name": "exact-future-50-years",
+      "now": "2026-09-27T12:34:56Z",
+      "value": "Sunday, 27-Sep-76 12:34:56 GMT",
+      "accepted": true
+    },
+    {
+      "name": "future-one-second-over",
+      "now": "2026-09-27T12:34:56Z",
+      "value": "Sunday, 27-Sep-76 12:34:57 GMT",
+      "accepted": false
+    },
+    {
+      "name": "past-one-second-over",
+      "now": "2026-09-27T12:34:56Z",
+      "value": "Monday, 27-Sep-76 12:34:57 GMT",
+      "accepted": true
+    },
+    {
+      "name": "past-wrong-at-exact-boundary",
+      "now": "2026-09-27T12:34:56Z",
+      "value": "Monday, 27-Sep-76 12:34:56 GMT",
+      "accepted": false
+    },
+    {
+      "name": "future-before-boundary",
+      "now": "2026-09-27T12:34:56Z",
+      "value": "Sunday, 27-Sep-76 12:34:55 GMT",
+      "accepted": true
+    },
+    {
+      "name": "past-after-boundary-day",
+      "now": "2026-09-27T12:34:56Z",
+      "value": "Tuesday, 28-Sep-76 00:00:00 GMT",
+      "accepted": true
+    },
+    {
+      "name": "future-within-window",
+      "now": "2026-09-27T12:34:56Z",
+      "value": "Wednesday, 01-Jan-70 00:00:00 GMT",
+      "accepted": true
+    },
+    {
+      "name": "past-outside-window",
+      "now": "2026-09-27T12:34:56Z",
+      "value": "Thursday, 01-Jan-70 00:00:00 GMT",
+      "accepted": false
+    },
+    {
+      "name": "previous-century-now",
+      "now": "1999-01-01T00:00:00Z",
+      "value": "Thursday, 01-Jan-04 00:00:00 GMT",
+      "accepted": true
+    },
+    {
+      "name": "next-century-now",
+      "now": "2099-01-01T00:00:00Z",
+      "value": "Tuesday, 01-Jan-04 00:00:00 GMT",
+      "accepted": true
+    },
+    {
+      "name": "leap-reference-exact",
+      "now": "2024-02-29T00:00:00Z",
+      "value": "Thursday, 01-Mar-74 00:00:00 GMT",
+      "accepted": true
+    },
+    {
+      "name": "leap-reference-future-over",
+      "now": "2024-02-29T00:00:00Z",
+      "value": "Thursday, 01-Mar-74 00:00:01 GMT",
+      "accepted": false
+    },
+    {
+      "name": "leap-reference-past-over",
+      "now": "2024-02-29T00:00:00Z",
+      "value": "Friday, 01-Mar-74 00:00:01 GMT",
+      "accepted": true
+    },
+    {
+      "name": "past-leap-day",
+      "now": "2026-09-27T12:34:56Z",
+      "value": "Tuesday, 29-Feb-00 00:00:00 GMT",
+      "accepted": true
+    },
+    {
+      "name": "future-leap-second-over",
+      "now": "2016-12-31T23:59:59Z",
+      "value": "Friday, 31-Dec-66 23:59:60 GMT",
+      "accepted": false
+    },
+    {
+      "name": "past-leap-second-form",
+      "now": "2016-12-31T23:59:59Z",
+      "value": "Saturday, 31-Dec-66 23:59:60 GMT",
+      "accepted": true
+    }
+  ]
+}

@@ -21,6 +21,8 @@ const (
 	// This independent ceiling also bounds direct users of this client.
 	RequestTimeout = 120 * time.Second
 	ConnectTimeout = 10 * time.Second
+	// A local work bound, including duplicate resolver entries; not a DNS limit.
+	MaxResolvedAddresses = 64
 )
 
 type resolver interface {
@@ -135,7 +137,7 @@ func (p *Policy) pinnedDialer(dns resolver, dial dialFunc) dialFunc {
 				return nil, fmt.Errorf("outbound DNS lookup failed: %w", err)
 			}
 		}
-		if len(ips) == 0 || len(ips) > 64 {
+		if len(ips) == 0 || len(ips) > MaxResolvedAddresses {
 			return nil, fmt.Errorf("outbound DNS result count is invalid")
 		}
 		for _, ip := range ips {
@@ -189,7 +191,25 @@ func (t *guardedTransport) RoundTrip(req *http.Request) (*http.Response, error) 
 	if err := checkRequestHeaders(req.Header); err != nil {
 		return deny(err)
 	}
+	if err := httpguard.ValidateRangeRequest(req.Method, req.Header); err != nil {
+		return deny(err)
+	}
+	if err := httpguard.ValidateConditionalRequest(req.Method, req.Header); err != nil {
+		return deny(err)
+	}
+	bodyLength := req.ContentLength
+	if req.Body == nil || req.Body == http.NoBody {
+		bodyLength = 0
+	}
+	if err := httpguard.ValidateContentRangeRequest(req.Method, req.Header, bodyLength); err != nil {
+		return deny(err)
+	}
 	cloned := req.Clone(context.WithValue(req.Context(), requestMethodKey{}, req.Method))
+	// This takes ownership of the original body, including closing it on error.
+	// No resolver or socket is reached until the exact outgoing bytes are bound.
+	if err := prepareRequestDigest(cloned); err != nil {
+		return nil, err
+	}
 	cloned.URL.Scheme = strings.ToLower(cloned.URL.Scheme)
 	cloned.Host = cloned.URL.Host
 	cloned.Header.Set("Accept-Encoding", "identity")
@@ -201,11 +221,30 @@ func (t *guardedTransport) RoundTrip(req *http.Request) (*http.Response, error) 
 	if resp.Request == nil {
 		resp.Request = cloned
 	}
-	if err := CheckResponse(resp); err != nil {
+	partial, err := checkResponse(resp)
+	if err != nil {
 		resp.Body.Close()
 		return nil, err
 	}
-	resp.Body = &guardedBody{ReadCloser: resp.Body, response: resp, remaining: MaxResponseBodyBytes}
+	digests, err := responseDigests(resp.Header)
+	if err != nil {
+		resp.Body.Close()
+		return nil, err
+	}
+	representation, err := httpguard.ParseRepresentationDigests(resp.Header)
+	if err != nil {
+		resp.Body.Close()
+		return nil, err
+	}
+	var representationChecker contentDigestChecker
+	if representation.Present() {
+		if partial != nil && partial.boundary != "" {
+			partial.representation = representation
+		} else {
+			representationChecker = representation.Checker()
+		}
+	}
+	resp.Body = &guardedBody{ReadCloser: resp.Body, response: resp, remaining: MaxResponseBodyBytes, partial: partial, digest: digests.Checker(), representation: representationChecker}
 	return resp, nil
 }
 
@@ -244,5 +283,8 @@ func checkRequestHeaders(headers http.Header) error {
 	if count > MaxResponseHeaders || size > MaxResponseHeaderBytes {
 		return fmt.Errorf("outbound headers exceed limits")
 	}
-	return nil
+	if err := httpguard.ValidateDigestPreferences(headers); err != nil {
+		return err
+	}
+	return httpguard.ValidateLocationHeaders(headers, false)
 }

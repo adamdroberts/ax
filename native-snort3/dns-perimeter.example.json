@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "agent_networks": ["10.20.0.0/24", "fd00:20::/64"],
+  "dns_proxy_addresses": ["10.30.0.53", "fd00:30::53"],
+  "dns_port": 53,
+  "broker_addresses": ["10.30.0.10", "fd00:30::10"],
+  "broker_ports": [443]
+}

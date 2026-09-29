@@ -55,12 +55,12 @@ def main():
     if sys.platform == "darwin":
         compile_plugin.append("-Wl,-undefined,dynamic_lookup")
     compile_plugin += ["-isystem", str(headers), "-isystem", str(daq),
-                       str(HERE / "ax_nd_options.cc"), "-o", str(library)]
+                       str(HERE / "ax_nd_options.cc"), str(HERE / "tcp_sack_option.cc"), "-o", str(library)]
     subprocess.run(compile_plugin, check=True)
     commands = [compile_plugin]
     checked = []
     for name in ("nd_validation_test", "ip_validation_test", "ip4_options_test",
-                 "ip6_options_test", "esp_validation_test", "routing_validation_test", "home_address_test"):
+                 "ip6_options_test", "esp_validation_test", "routing_validation_test", "home_address_test", "tcp_options_test", "tcp_sack_state_test"):
         test = output / name
         compile_test = [args.cxx, "-std=c++17", "-O1", "-g", "-Wall", "-Wextra"]
         if args.sanitize_tests:
@@ -83,7 +83,10 @@ def main():
                                        HERE / "ip6_options_test.cc", HERE / "esp_validation.h",
                                        HERE / "esp_validation_test.cc", HERE / "routing_validation.h",
                                        HERE / "routing_validation_test.cc", HERE / "home_address.h",
-                                       HERE / "home_address_test.cc", HERE / "build.py")},
+                                       HERE / "home_address_test.cc", HERE / "tcp_options.h",
+                                       HERE / "tcp_options_test.cc", HERE / "tcp_sack_state.h",
+                                       HERE / "tcp_sack_state_test.cc", HERE / "tcp_sack_option.h",
+                                       HERE / "tcp_sack_option.cc", HERE / "build.py")},
         "commands": commands,
         "sanitizers": args.sanitize_tests,
         "unit_tests": "\n".join(checked),

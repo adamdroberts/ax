@@ -1,0 +1,433 @@
+--- a/src/stream/tcp/CMakeLists.txt
++++ b/src/stream/tcp/CMakeLists.txt
+@@ -37,6 +37,8 @@
+     tcp_segment_node.cc
+     tcp_segment_node.h
+     tcp_session.cc
++    tcp_timestamp_admission.cc
++    tcp_timestamp_admission.h
+     tcp_session.h
+     tcp_state_closed.cc
+     tcp_state_closed.h
+--- a/src/stream/tcp/stream_tcp.cc
++++ b/src/stream/tcp/stream_tcp.cc
+@@ -30,6 +30,7 @@
+ #include "tcp_module.h"
+ #include "tcp_overlap_resolver.h"
+ #include "tcp_session.h"
++#include "tcp_timestamp_admission.h"
+ #include "tcp_state_machine.h"
+ 
+ using namespace snort;
+@@ -67,6 +68,7 @@
+ 
+ bool StreamTcp::configure(SnortConfig* sc)
+ {
++    tcp_timestamp_admission_configure(sc);
+     sc->max_pdu = config->paf_max;
+ 
+     if ( Snort::is_reloading() )
+@@ -128,6 +130,7 @@
+ 
+ static void stream_tcp_pinit()
+ {
++    tcp_timestamp_admission_init();
+     TcpStateMachine::initialize();
+     TcpOverlapResolverFactory::initialize();
+     TcpNormalizerFactory::initialize();
+--- a/src/stream/tcp/tcp_session.cc
++++ b/src/stream/tcp/tcp_session.cc
+@@ -47,6 +47,7 @@
+ #endif
+ 
+ #include "tcp_session.h"
++#include "tcp_timestamp_admission.h"
+ 
+ #include "detection/detection_engine.h"
+ #include "detection/rules.h"
+@@ -1086,6 +1087,7 @@
+     if ( ignore_this_packet(p) )
+         return ACTION_NOTHING;
+ 
++    TcpTimestampAdmission timestamp_admission(client, server, p);
+     TcpSegmentDescriptor tsd(flow, p, tel);
+     init_tcp_packet_analysis(tsd);
+ 
+--- a/src/stream/tcp/tcp_stream_tracker.h
++++ b/src/stream/tcp/tcp_stream_tracker.h
+@@ -27,6 +27,7 @@
+ 
+ #include "tcp_alerts.h"
+ #include "tcp_defs.h"
++#include "tcp_timestamp_admission.h"
+ #include "tcp_module.h"
+ #include "tcp_normalizers.h"
+ #include "tcp_reassembler.h"
+@@ -203,10 +204,10 @@
+     { return fin_seq_set; }
+ 
+     uint32_t get_ts_last_packet() const
+-    { return ts_last_packet; }
++    { return timestamp_state->value.packet_time; }
+ 
+     void set_ts_last_packet(uint32_t ts_last_packet)
+-    { this->ts_last_packet = ts_last_packet; }
++    { timestamp_state->value.packet_time = ts_last_packet; }
+ 
+     bool is_ack_valid(uint32_t cur)
+     {
+@@ -221,19 +222,28 @@
+     }
+ 
+     uint32_t get_ts_last() const
+-    { return ts_last; }
++    { return timestamp_state->value.last; }
+ 
+     void set_ts_last(uint32_t ts_last)
+-    { this->ts_last = ts_last; }
++    { timestamp_state->value.last = ts_last; }
+ 
+     uint16_t get_tf_flags() const
+-    { return tf_flags; }
++    { return tf_flags | timestamp_state->value.flags; }
+ 
+     void set_tf_flags(uint16_t flags)
+-    { this->tf_flags |= flags; }
++    {
++        tf_flags |= flags & ~(TF_TSTAMP | TF_TSTAMP_ZERO);
++        timestamp_state->value.flags |= flags & (TF_TSTAMP | TF_TSTAMP_ZERO);
++    }
+ 
+     void clear_tf_flags(uint16_t flags)
+-    { this->tf_flags &= ~flags; }
++    {
++        tf_flags &= ~flags;
++        timestamp_state->value.flags &= ~flags;
++    }
++
++    std::shared_ptr<TcpTimestampState> get_timestamp_state() const
++    { return timestamp_state; }
+ 
+     uint16_t get_wscale() const
+     { return wscale; }
+@@ -345,8 +355,7 @@
+ 
+     snort::StreamSplitter* splitter = nullptr;
+     std::list<HeldPacket>::const_iterator held_packet;
+-    uint32_t ts_last_packet = 0;
+-    uint32_t ts_last = 0;       // last timestamp (for PAWS)
++    std::shared_ptr<TcpTimestampState> timestamp_state = std::make_shared<TcpTimestampState>();
+     uint32_t fin_final_seq = 0;
+     uint32_t fin_i_seq = 0;
+     uint32_t fin_seq_adjust = 0;
+--- a/src/stream/tcp/tcp_stream_tracker.cc
++++ b/src/stream/tcp/tcp_stream_tracker.cc
+@@ -278,7 +278,7 @@
+ 
+     snd_una = snd_nxt = snd_wnd = 0;
+     rcv_nxt = r_win_base = iss = irs = 0;
+-    ts_last = ts_last_packet = 0;
++    timestamp_state->reset();
+     small_seg_count = 0;
+     wscale = 0;
+     mss = 0;
+@@ -502,11 +502,11 @@
+     snd_nxt = tsd.get_end_seq();
+     snd_wnd =  tsd.get_wnd();
+ 
+-    ts_last_packet = tsd.get_packet_timestamp();
+-    tf_flags |= normalizer.get_tcp_timestamp(tsd, false);
+-    ts_last = tsd.get_timestamp();
+-    if (ts_last == 0)
+-        tf_flags |= TF_TSTAMP_ZERO;
++    timestamp_state->value.packet_time = tsd.get_packet_timestamp();
++    set_tf_flags(normalizer.get_tcp_timestamp(tsd, false));
++    timestamp_state->value.last = tsd.get_timestamp();
++    if (timestamp_state->value.last == 0)
++        set_tf_flags(TF_TSTAMP_ZERO);
+     tf_flags |= tsd.init_mss(&mss);
+     tf_flags |= tsd.init_wscale(&wscale);
+ 
+@@ -542,11 +542,11 @@
+     rcv_nxt = tsd.get_ack();
+     seglist.set_seglist_base_seq(tsd.get_ack() );
+ 
+-    ts_last_packet = tsd.get_packet_timestamp();
+-    tf_flags |= normalizer.get_tcp_timestamp(tsd, false);
+-    ts_last = tsd.get_timestamp();
+-    if ( ts_last == 0 )
+-        tf_flags |= TF_TSTAMP_ZERO;
++    timestamp_state->value.packet_time = tsd.get_packet_timestamp();
++    set_tf_flags(normalizer.get_tcp_timestamp(tsd, false));
++    timestamp_state->value.last = tsd.get_timestamp();
++    if ( timestamp_state->value.last == 0 )
++        set_tf_flags(TF_TSTAMP_ZERO);
+     tf_flags |= tsd.init_mss(&mss);
+     tf_flags |= tsd.init_wscale(&wscale);
+ 
+@@ -585,11 +585,11 @@
+     rcv_nxt = tsd.get_ack();
+     seglist.set_seglist_base_seq(tsd.get_ack());
+ 
+-    ts_last_packet = tsd.get_packet_timestamp();
+-    tf_flags |= normalizer.get_tcp_timestamp(tsd, false);
+-    ts_last = tsd.get_timestamp();
+-    if (ts_last == 0)
+-        tf_flags |= TF_TSTAMP_ZERO;
++    timestamp_state->value.packet_time = tsd.get_packet_timestamp();
++    set_tf_flags(normalizer.get_tcp_timestamp(tsd, false));
++    timestamp_state->value.last = tsd.get_timestamp();
++    if (timestamp_state->value.last == 0)
++        set_tf_flags(TF_TSTAMP_ZERO);
+     tf_flags |= tsd.init_wscale(&wscale);
+ 
+     cache_mac_address(tsd, tsd.get_direction() );
+@@ -624,12 +624,12 @@
+     //if ( tcph->is_fin() )
+     //    server->set_snd_nxt(server->get_snd_nxt() - 1);
+ 
+-    tf_flags |= normalizer.get_tcp_timestamp(tsd, false);
+-    ts_last = tsd.get_timestamp();
+-    if ( ts_last != 0 )
+-        ts_last_packet = tsd.get_packet_timestamp();
+-    else
+-        tf_flags |= TF_TSTAMP_ZERO;
++    set_tf_flags(normalizer.get_tcp_timestamp(tsd, false));
++    timestamp_state->value.last = tsd.get_timestamp();
++    if ( timestamp_state->value.last != 0 )
++        timestamp_state->value.packet_time = tsd.get_packet_timestamp();
++    else
++        set_tf_flags(TF_TSTAMP_ZERO);
+ 
+     tf_flags |= ( tsd.init_mss(&mss) | tsd.init_wscale(&wscale) );
+ }
+--- /dev/null
++++ b/src/stream/tcp/tcp_timestamp_admission.h
+@@ -0,0 +1,53 @@
++// Local cumulative Snort repair: timestamp state follows final admission.
++#ifndef AX_TCP_TIMESTAMP_ADMISSION_H
++#define AX_TCP_TIMESTAMP_ADMISSION_H
++
++#include <cstdint>
++#include <memory>
++
++namespace snort { struct Packet; struct SnortConfig; }
++class TcpStreamTracker;
++
++struct TcpTimestampValue
++{
++    std::uint32_t last = 0;
++    std::uint32_t packet_time = 0;
++    std::uint16_t flags = 0;
++
++    bool operator==(const TcpTimestampValue& rhs) const
++    { return last == rhs.last && packet_time == rhs.packet_time && flags == rhs.flags; }
++};
++
++struct TcpTimestampState
++{
++    TcpTimestampValue value;
++    std::uint64_t revision = 0;
++
++    void reset()
++    { value = {}; ++revision; }
++};
++
++void tcp_timestamp_admission_init();
++void tcp_timestamp_admission_configure(snort::SnortConfig*);
++
++// Native processing may use provisional values within this scope. Before it
++// returns to detection, restore the admitted values and stage the candidate on
++// the original wire context. Shared cells outlive a deleted/reused flow safely.
++class TcpTimestampAdmission
++{
++public:
++    TcpTimestampAdmission(TcpStreamTracker&, TcpStreamTracker&, snort::Packet*);
++    ~TcpTimestampAdmission();
++    TcpTimestampAdmission(const TcpTimestampAdmission&) = delete;
++    TcpTimestampAdmission& operator=(const TcpTimestampAdmission&) = delete;
++
++private:
++    struct Snapshot
++    {
++        std::shared_ptr<TcpTimestampState> state;
++        TcpTimestampValue value;
++        std::uint64_t revision = 0;
++    } snapshots[2];
++    snort::Packet* packet;
++};
++#endif
+--- /dev/null
++++ b/src/stream/tcp/tcp_timestamp_admission.cc
+@@ -0,0 +1,171 @@
++#ifdef HAVE_CONFIG_H
++#include "config.h"
++#endif
++
++#include "tcp_timestamp_admission.h"
++#include "tcp_stream_tracker.h"
++
++#include "detection/ips_context.h"
++#include "detection/ips_context_data.h"
++#include "flow/flow.h"
++#include "framework/data_bus.h"
++#include "packet_io/active.h"
++#include "protocols/packet.h"
++#include "pub_sub/finalize_packet_event.h"
++
++#include <array>
++
++namespace
++{
++unsigned context_id = 0;
++constexpr const char* name = "tcp_timestamp_admission";
++
++class PendingTimestamps final : public snort::IpsContextData
++{
++public:
++    bool stage(const std::shared_ptr<TcpTimestampState>& state,
++               const TcpTimestampValue& value, std::uint64_t revision,
++               const snort::Packet* original)
++    {
++        if (conflict || (wire && wire != original))
++            return conflict = true, false;
++        wire = original;
++        packet_number = wire->context->packet_number;
++        for (unsigned i = 0; i < count; ++i)
++        {
++            if (entries[i].state != state)
++                continue;
++            if (entries[i].revision != revision || !(entries[i].value == value))
++                return conflict = true, false;
++            return true;
++        }
++        // Bound nested/repeated TCP processing on one wire packet. Exceeding
++        // this local budget rejects that packet and grants no new state.
++        if (count == entries.size())
++            return conflict = true, false;
++        entries[count++] = {state, value, revision};
++        return true;
++    }
++
++    void finish(bool admitted)
++    {
++        if (admitted && !conflict)
++            for (unsigned i = 0; i < count; ++i)
++            {
++                auto& entry = entries[i];
++                // A stale callback cannot overwrite a newer admitted update
++                // or a tracker reset performed outside this packet's scope.
++                if (entry.state->revision == entry.revision)
++                {
++                    entry.state->value = entry.value;
++                    ++entry.state->revision;
++                }
++            }
++        for (unsigned i = 0; i < count; ++i)
++            entries[i].state.reset();
++        count = 0;
++        conflict = false;
++        wire = nullptr;
++    }
++
++    void clear() override
++    {
++        // Completed IP reassembly can remove the original flow before the
++        // flow-gated finalization event. The pinned engine clears pkth only
++        // after choosing a final DAQ verdict and clears this context later.
++        // These exclusions leave only PASS/REPLACE in that flowless path.
++        const bool admitted = wire && wire->context &&
++            wire->context->packet_number == packet_number && !wire->flow &&
++            !wire->pkth && wire->active && wire->active->session_was_allowed() &&
++            !wire->active->session_was_trusted() &&
++            !(wire->packet_flags & (PKT_IGNORE | PKT_RESIZED)) &&
++            !(wire->ptrs.decode_flags & DECODE_PKT_TRUST);
++        finish(admitted);
++    }
++
++private:
++    struct Entry
++    {
++        std::shared_ptr<TcpTimestampState> state;
++        TcpTimestampValue value;
++        std::uint64_t revision = 0;
++    };
++    std::array<Entry, 8> entries;
++    const snort::Packet* wire = nullptr;
++    std::uint64_t packet_number = 0;
++    unsigned count = 0;
++    bool conflict = false;
++};
++
++class FinalizeTimestamps final : public snort::DataHandler
++{
++public:
++    FinalizeTimestamps() : DataHandler(name) { }
++
++    void handle(snort::DataEvent& event, snort::Flow*) override
++    {
++        auto& final = static_cast<snort::FinalizePacketEvent&>(event);
++        const auto* packet = final.get_packet();
++        if (!packet || !packet->context)
++            return;
++        auto* pending = static_cast<PendingTimestamps*>(packet->context->get_context_data(context_id));
++        if (pending)
++            pending->finish(final.get_verdict() == DAQ_VERDICT_PASS ||
++                            final.get_verdict() == DAQ_VERDICT_REPLACE);
++    }
++};
++}
++
++void tcp_timestamp_admission_init()
++{ context_id = snort::IpsContextData::get_ips_id(); }
++
++void tcp_timestamp_admission_configure(snort::SnortConfig* config)
++{
++    snort::DataBus::subscribe_global(snort::intrinsic_pub_key,
++        snort::IntrinsicEventIds::FINALIZE_PACKET, new FinalizeTimestamps, *config);
++}
++
++TcpTimestampAdmission::TcpTimestampAdmission(
++    TcpStreamTracker& client, TcpStreamTracker& server, snort::Packet* p) : packet(p)
++{
++    snapshots[0].state = client.get_timestamp_state();
++    snapshots[1].state = server.get_timestamp_state();
++    for (auto& snapshot : snapshots)
++    {
++        snapshot.value = snapshot.state->value;
++        snapshot.revision = snapshot.state->revision;
++    }
++}
++
++TcpTimestampAdmission::~TcpTimestampAdmission()
++{
++    auto* wire = packet && packet->context ? packet->context->wire_packet : nullptr;
++    for (auto& snapshot : snapshots)
++    {
++        const auto candidate = snapshot.state->value;
++        const bool changed = !(candidate == snapshot.value) ||
++                             snapshot.state->revision != snapshot.revision;
++        snapshot.state->value = snapshot.value;
++        snapshot.state->revision = snapshot.revision;
++        if (!changed)
++            continue;
++        if (!wire || !wire->context || !wire->flow)
++        {
++            if (packet && packet->active)
++                packet->active->drop_packet(packet, true);
++            continue;
++        }
++        auto* pending = static_cast<PendingTimestamps*>(wire->context->get_context_data(context_id));
++        if (!pending)
++        {
++            pending = new PendingTimestamps;
++            wire->context->set_context_data(context_id, pending);
++        }
++        wire->flow->flags.trigger_finalize_event = true;
++        if (!pending->stage(snapshot.state, candidate, snapshot.revision, wire))
++        {
++            wire->active->drop_packet(wire, true);
++            packet->active->drop_packet(packet, true);
++        }
++    }
++}

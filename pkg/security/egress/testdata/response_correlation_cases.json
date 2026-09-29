@@ -1,0 +1,2004 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "name": "unsolicited-304-GET",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {},
+      "wire": "HTTP/1.1 304 Test\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "unsolicited-304-HEAD",
+      "accepted": false,
+      "method": "HEAD",
+      "request_headers": {},
+      "wire": "HTTP/1.1 304 Test\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "unsolicited-304-POST",
+      "accepted": false,
+      "method": "POST",
+      "request_headers": {},
+      "wire": "HTTP/1.1 304 Test\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "invalid-method-conditional-304-POST",
+      "accepted": false,
+      "method": "POST",
+      "request_headers": {
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "unsolicited-304-PUT",
+      "accepted": false,
+      "method": "PUT",
+      "request_headers": {},
+      "wire": "HTTP/1.1 304 Test\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "invalid-method-conditional-304-PUT",
+      "accepted": false,
+      "method": "PUT",
+      "request_headers": {
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "unsolicited-304-PATCH",
+      "accepted": false,
+      "method": "PATCH",
+      "request_headers": {},
+      "wire": "HTTP/1.1 304 Test\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "invalid-method-conditional-304-PATCH",
+      "accepted": false,
+      "method": "PATCH",
+      "request_headers": {
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "unsolicited-304-DELETE",
+      "accepted": false,
+      "method": "DELETE",
+      "request_headers": {},
+      "wire": "HTTP/1.1 304 Test\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "invalid-method-conditional-304-DELETE",
+      "accepted": false,
+      "method": "DELETE",
+      "request_headers": {
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "unsolicited-304-OPTIONS",
+      "accepted": false,
+      "method": "OPTIONS",
+      "request_headers": {},
+      "wire": "HTTP/1.1 304 Test\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "invalid-method-conditional-304-OPTIONS",
+      "accepted": false,
+      "method": "OPTIONS",
+      "request_headers": {
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "if-match-only-304",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "if-unmodified-only-304",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:37 GMT"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "if-range-only-304",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1",
+        "If-Range": "\"a\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-GET-200-strong",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-200-weak-response",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: W/\"a\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-200-weak-request",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "W/\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-200-weak-both",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "W/\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: W/\"a\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-200-different",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-200-different-weak",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: W/\"b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-200-comma",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a,b\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"a,b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-200-backslash",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\\b\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"a\\b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-200-backslash-literal",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\\b\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"ab\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-200-case-sensitive",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"A\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-200-list",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"x\", W/\"a\","
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-200-wildcard",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 200 Test\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-200-absent-validator",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-206-strong",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"a\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-206-weak-response",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: W/\"a\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-206-weak-request",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "W/\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"a\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-206-weak-both",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "W/\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: W/\"a\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-206-different",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"b\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-206-different-weak",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: W/\"b\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-206-comma",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a,b\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"a,b\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-206-backslash",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\\b\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"a\\b\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-206-backslash-literal",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\\b\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"ab\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-206-case-sensitive",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"A\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"a\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-206-list",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"x\", W/\"a\",",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"a\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-206-wildcard",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "*",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-206-absent-validator",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "none-match-GET-304-strong",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-GET-304-weak-response",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: W/\"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-GET-304-weak-request",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "W/\"a\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-GET-304-weak-both",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "W/\"a\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: W/\"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-GET-304-different",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-GET-304-different-weak",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: W/\"b\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-GET-304-comma",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a,b\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a,b\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-GET-304-backslash",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\\b\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a\\b\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-GET-304-backslash-literal",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\\b\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"ab\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-GET-304-case-sensitive",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"A\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-GET-304-list",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"x\", W/\"a\","
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-GET-304-wildcard",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-GET-304-absent-validator",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-200-strong",
+      "accepted": false,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-200-weak-response",
+      "accepted": false,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: W/\"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-200-weak-request",
+      "accepted": false,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "W/\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-200-weak-both",
+      "accepted": false,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "W/\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: W/\"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-200-different",
+      "accepted": true,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-200-different-weak",
+      "accepted": true,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: W/\"b\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-200-comma",
+      "accepted": false,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "\"a,b\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"a,b\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-200-backslash",
+      "accepted": false,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "\"a\\b\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"a\\b\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-200-backslash-literal",
+      "accepted": true,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "\"a\\b\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"ab\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-200-case-sensitive",
+      "accepted": true,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "\"A\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-200-list",
+      "accepted": false,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "\"x\", W/\"a\","
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-200-wildcard",
+      "accepted": false,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 200 Test\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-200-absent-validator",
+      "accepted": true,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-304-strong",
+      "accepted": true,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-304-weak-response",
+      "accepted": true,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: W/\"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-304-weak-request",
+      "accepted": true,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "W/\"a\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-304-weak-both",
+      "accepted": true,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "W/\"a\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: W/\"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-304-different",
+      "accepted": false,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-304-different-weak",
+      "accepted": false,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: W/\"b\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-304-comma",
+      "accepted": true,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "\"a,b\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a,b\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-304-backslash",
+      "accepted": true,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "\"a\\b\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a\\b\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-304-backslash-literal",
+      "accepted": false,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "\"a\\b\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"ab\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-304-case-sensitive",
+      "accepted": false,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "\"A\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-304-list",
+      "accepted": true,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "\"x\", W/\"a\","
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-304-wildcard",
+      "accepted": true,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-HEAD-304-absent-validator",
+      "accepted": true,
+      "method": "HEAD",
+      "request_headers": {
+        "If-None-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "match-200-strong",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-200-weak-response",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: W/\"a\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-200-weak-request",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "W/\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-200-weak-both",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "W/\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: W/\"a\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-200-different",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-200-different-weak",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: W/\"b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-200-comma",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a,b\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"a,b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-200-backslash",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\\b\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"a\\b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-200-backslash-literal",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\\b\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"ab\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-200-case-sensitive",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"A\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-200-list",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"x\", W/\"a\","
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-200-wildcard",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "*"
+      },
+      "wire": "HTTP/1.1 200 Test\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-200-absent-validator",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-206-strong",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"a\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-206-weak-response",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: W/\"a\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-206-weak-request",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "W/\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"a\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-206-weak-both",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "W/\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: W/\"a\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-206-different",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"b\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-206-different-weak",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: W/\"b\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-206-comma",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a,b\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"a,b\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-206-backslash",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\\b\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"a\\b\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-206-backslash-literal",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\\b\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"ab\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-206-case-sensitive",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"A\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"a\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-206-list",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"x\", W/\"a\",",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"a\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-206-wildcard",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "*",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-206-absent-validator",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-304-strong",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\"",
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "match-304-weak-response",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\"",
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: W/\"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "match-304-weak-request",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "W/\"a\"",
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "match-304-weak-both",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "W/\"a\"",
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: W/\"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "match-304-different",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\"",
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "match-304-different-weak",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\"",
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: W/\"b\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "match-304-comma",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a,b\"",
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a,b\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "match-304-backslash",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\\b\"",
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a\\b\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "match-304-backslash-literal",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\\b\"",
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"ab\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "match-304-case-sensitive",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"A\"",
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "match-304-list",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"x\", W/\"a\",",
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "match-304-wildcard",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "*",
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "match-304-absent-validator",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\"",
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "unmodified-200-older",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:37 GMT"
+      },
+      "wire": "HTTP/1.1 200 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:36 GMT\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "modified-200-older",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Modified-Since": "Sun, 06 Nov 1994 08:49:37 GMT"
+      },
+      "wire": "HTTP/1.1 200 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:36 GMT\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "unmodified-200-equal",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:37 GMT"
+      },
+      "wire": "HTTP/1.1 200 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "modified-200-equal",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Modified-Since": "Sun, 06 Nov 1994 08:49:37 GMT"
+      },
+      "wire": "HTTP/1.1 200 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "unmodified-200-newer",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:37 GMT"
+      },
+      "wire": "HTTP/1.1 200 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:38 GMT\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "modified-200-newer",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Modified-Since": "Sun, 06 Nov 1994 08:49:37 GMT"
+      },
+      "wire": "HTTP/1.1 200 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:38 GMT\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "unmodified-206-older",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:37 GMT",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:36 GMT\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "modified-206-older",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Modified-Since": "Sun, 06 Nov 1994 08:49:37 GMT",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:36 GMT\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "unmodified-206-equal",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:37 GMT",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:37 GMT\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "modified-206-equal",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Modified-Since": "Sun, 06 Nov 1994 08:49:37 GMT",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:37 GMT\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "unmodified-206-newer",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:37 GMT",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:38 GMT\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "modified-206-newer",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Modified-Since": "Sun, 06 Nov 1994 08:49:37 GMT",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:38 GMT\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "unmodified-304-older",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:37 GMT",
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:36 GMT\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "modified-304-older",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Modified-Since": "Sun, 06 Nov 1994 08:49:37 GMT"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:36 GMT\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "unmodified-304-equal",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:37 GMT",
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:37 GMT\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "modified-304-equal",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Modified-Since": "Sun, 06 Nov 1994 08:49:37 GMT"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:37 GMT\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "unmodified-304-newer",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:37 GMT",
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:38 GMT\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "modified-304-newer",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Modified-Since": "Sun, 06 Nov 1994 08:49:37 GMT"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:38 GMT\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "match-suppresses-unmodified",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\"",
+        "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:36 GMT"
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"a\"\r\nLast-Modified: Sun, 06 Nov 1994 08:49:38 GMT\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "unknown-match-suppresses-unmodified",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\"",
+        "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:36 GMT"
+      },
+      "wire": "HTTP/1.1 200 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:38 GMT\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "match-failure-precedes-none-match",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\"",
+        "If-None-Match": "\"b\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "unmodified-failure-precedes-none-match",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:36 GMT",
+        "If-None-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a\"\r\nLast-Modified: Sun, 06 Nov 1994 08:49:38 GMT\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-suppresses-modified-304",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\"",
+        "If-Modified-Since": "Sun, 06 Nov 1994 08:49:36 GMT"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"a\"\r\nLast-Modified: Sun, 06 Nov 1994 08:49:38 GMT\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-difference-precedes-modified",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\"",
+        "If-Modified-Since": "Sun, 06 Nov 1994 08:49:38 GMT"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nETag: \"b\"\r\nLast-Modified: Sun, 06 Nov 1994 08:49:36 GMT\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "none-match-suppresses-modified-200",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\"",
+        "If-Modified-Since": "Sun, 06 Nov 1994 08:49:38 GMT"
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"b\"\r\nLast-Modified: Sun, 06 Nov 1994 08:49:36 GMT\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "unknown-none-match-suppresses-modified",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-None-Match": "\"a\"",
+        "If-Modified-Since": "Sun, 06 Nov 1994 08:49:36 GMT"
+      },
+      "wire": "HTTP/1.1 304 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:38 GMT\r\nContent-Length: 2\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "if-range-length-same",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Range": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"a\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "if-range-length-different",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Range": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"b\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "if-range-length-weak",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Range": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: W/\"a\"\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "if-range-length-absent",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Range": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "if-range-chunked-same",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Range": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"a\"\r\nContent-Range: bytes 0-1/8\r\nTransfer-Encoding: chunked\r\n\r\n2\r\nab\r\n0\r\n\r\n",
+      "body": "ab"
+    },
+    {
+      "name": "if-range-chunked-different",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Range": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"b\"\r\nContent-Range: bytes 0-1/8\r\nTransfer-Encoding: chunked\r\n\r\n2\r\nab\r\n0\r\n\r\n",
+      "body": "ab"
+    },
+    {
+      "name": "if-range-chunked-weak",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Range": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: W/\"a\"\r\nContent-Range: bytes 0-1/8\r\nTransfer-Encoding: chunked\r\n\r\n2\r\nab\r\n0\r\n\r\n",
+      "body": "ab"
+    },
+    {
+      "name": "if-range-chunked-absent",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Range": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/8\r\nTransfer-Encoding: chunked\r\n\r\n2\r\nab\r\n0\r\n\r\n",
+      "body": "ab"
+    },
+    {
+      "name": "if-range-close-same",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Range": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"a\"\r\nContent-Range: bytes 0-1/8\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "if-range-close-different",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Range": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: \"b\"\r\nContent-Range: bytes 0-1/8\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "if-range-close-weak",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Range": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nETag: W/\"a\"\r\nContent-Range: bytes 0-1/8\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "if-range-close-absent",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Range": "\"a\"",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/8\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "if-range-date-same",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Range": "Sun, 06 Nov 1994 08:49:37 GMT",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:37 GMT\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "if-range-date-older",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Range": "Sun, 06 Nov 1994 08:49:37 GMT",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:36 GMT\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "if-range-date-newer",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Range": "Sun, 06 Nov 1994 08:49:37 GMT",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:38 GMT\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "if-range-date-legacy",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Range": "Sun, 06 Nov 1994 08:49:37 GMT",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nLast-Modified: Sunday, 06-Nov-94 08:49:37 GMT\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "if-range-date-asctime",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Range": "Sun, 06 Nov 1994 08:49:37 GMT",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nLast-Modified: Sun Nov  6 08:49:37 1994\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "if-range-date-absent",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Range": "Sun, 06 Nov 1994 08:49:37 GMT",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "if-range-date-leap-distinct",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "If-Range": "Sat, 31 Dec 2016 23:59:60 GMT",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nLast-Modified: Sun, 01 Jan 2017 00:00:00 GMT\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "if-range-date-leap-same",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Range": "Sat, 31 Dec 2016 23:59:60 GMT",
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nLast-Modified: Sat, 31 Dec 2016 23:59:60 GMT\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "if-range-full-new-version",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1",
+        "If-Range": "\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "if-range-full-even-unchanged",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1",
+        "If-Range": "\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"a\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "write-new-validator-POST",
+      "accepted": true,
+      "method": "POST",
+      "request_headers": {
+        "If-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "write-create-only-POST",
+      "accepted": true,
+      "method": "POST",
+      "request_headers": {
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 201 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "write-new-modification-POST",
+      "accepted": true,
+      "method": "POST",
+      "request_headers": {
+        "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:36 GMT"
+      },
+      "wire": "HTTP/1.1 200 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:38 GMT\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "write-new-validator-PUT",
+      "accepted": true,
+      "method": "PUT",
+      "request_headers": {
+        "If-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "write-create-only-PUT",
+      "accepted": true,
+      "method": "PUT",
+      "request_headers": {
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 201 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "write-new-modification-PUT",
+      "accepted": true,
+      "method": "PUT",
+      "request_headers": {
+        "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:36 GMT"
+      },
+      "wire": "HTTP/1.1 200 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:38 GMT\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "write-new-validator-PATCH",
+      "accepted": true,
+      "method": "PATCH",
+      "request_headers": {
+        "If-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "write-create-only-PATCH",
+      "accepted": true,
+      "method": "PATCH",
+      "request_headers": {
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 201 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "write-new-modification-PATCH",
+      "accepted": true,
+      "method": "PATCH",
+      "request_headers": {
+        "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:36 GMT"
+      },
+      "wire": "HTTP/1.1 200 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:38 GMT\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "write-new-validator-DELETE",
+      "accepted": true,
+      "method": "DELETE",
+      "request_headers": {
+        "If-Match": "\"a\""
+      },
+      "wire": "HTTP/1.1 200 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "write-create-only-DELETE",
+      "accepted": true,
+      "method": "DELETE",
+      "request_headers": {
+        "If-None-Match": "*"
+      },
+      "wire": "HTTP/1.1 201 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "write-new-modification-DELETE",
+      "accepted": true,
+      "method": "DELETE",
+      "request_headers": {
+        "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:36 GMT"
+      },
+      "wire": "HTTP/1.1 200 Test\r\nLast-Modified: Sun, 06 Nov 1994 08:49:38 GMT\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "other-status-precedes-condition-301",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\"",
+        "If-None-Match": "\"b\""
+      },
+      "wire": "HTTP/1.1 301 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "other-status-precedes-condition-302",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\"",
+        "If-None-Match": "\"b\""
+      },
+      "wire": "HTTP/1.1 302 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "other-status-precedes-condition-307",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\"",
+        "If-None-Match": "\"b\""
+      },
+      "wire": "HTTP/1.1 307 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "other-status-precedes-condition-401",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\"",
+        "If-None-Match": "\"b\""
+      },
+      "wire": "HTTP/1.1 401 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "other-status-precedes-condition-403",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\"",
+        "If-None-Match": "\"b\""
+      },
+      "wire": "HTTP/1.1 403 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "other-status-precedes-condition-404",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\"",
+        "If-None-Match": "\"b\""
+      },
+      "wire": "HTTP/1.1 404 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "other-status-precedes-condition-412",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\"",
+        "If-None-Match": "\"b\""
+      },
+      "wire": "HTTP/1.1 412 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "other-status-precedes-condition-500",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "If-Match": "\"a\"",
+        "If-None-Match": "\"b\""
+      },
+      "wire": "HTTP/1.1 500 Test\r\nETag: \"b\"\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "date-last-modified-older",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {},
+      "wire": "HTTP/1.1 200 Test\r\nDate: Sun, 06 Nov 1994 08:49:37 GMT\r\nLast-Modified: Sun, 06 Nov 1994 08:49:36 GMT\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "date-last-modified-equal",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {},
+      "wire": "HTTP/1.1 200 Test\r\nDate: Sun, 06 Nov 1994 08:49:37 GMT\r\nLast-Modified: Sun, 06 Nov 1994 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "date-last-modified-newer",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {},
+      "wire": "HTTP/1.1 200 Test\r\nDate: Sun, 06 Nov 1994 08:49:37 GMT\r\nLast-Modified: Sun, 06 Nov 1994 08:49:38 GMT\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "date-last-modified-legacy-equal",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {},
+      "wire": "HTTP/1.1 200 Test\r\nDate: Sun, 06 Nov 1994 08:49:37 GMT\r\nLast-Modified: Sunday, 06-Nov-94 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "date-last-modified-asctime-equal",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {},
+      "wire": "HTTP/1.1 200 Test\r\nDate: Sun, 06 Nov 1994 08:49:37 GMT\r\nLast-Modified: Sun Nov  6 08:49:37 1994\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "date-leap-before-midnight",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {},
+      "wire": "HTTP/1.1 200 Test\r\nDate: Sun, 01 Jan 2017 00:00:00 GMT\r\nLast-Modified: Sat, 31 Dec 2016 23:59:60 GMT\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "date-midnight-after-leap",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {},
+      "wire": "HTTP/1.1 200 Test\r\nDate: Sat, 31 Dec 2016 23:59:60 GMT\r\nLast-Modified: Sun, 01 Jan 2017 00:00:00 GMT\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    }
+  ]
+}

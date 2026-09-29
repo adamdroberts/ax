@@ -1,0 +1,2926 @@
+{
+  "version": 1,
+  "request_cases": [
+    {
+      "name": "if-match-strong",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "\"v1\""
+        }
+      }
+    },
+    {
+      "name": "if-match-weak",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "W/\"v1\""
+        }
+      }
+    },
+    {
+      "name": "if-match-empty-tag",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "\"\""
+        }
+      }
+    },
+    {
+      "name": "if-match-comma-tag",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "\"a,b\""
+        }
+      }
+    },
+    {
+      "name": "if-match-backslash-literal",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "\"a\\b\""
+        }
+      }
+    },
+    {
+      "name": "if-match-star-tag",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "\"*\""
+        }
+      }
+    },
+    {
+      "name": "if-match-punctuation",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "\"!#$%&()*+,-./:;<=>?@[]^_`{|}~\""
+        }
+      }
+    },
+    {
+      "name": "if-match-empty-field",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": ""
+        }
+      }
+    },
+    {
+      "name": "if-match-unquoted",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "v1"
+        }
+      }
+    },
+    {
+      "name": "if-match-lowercase-weak",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "w/\"v1\""
+        }
+      }
+    },
+    {
+      "name": "if-match-weak-space",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "W/ \"v1\""
+        }
+      }
+    },
+    {
+      "name": "if-match-inside-space",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "\"v 1\""
+        }
+      }
+    },
+    {
+      "name": "if-match-missing-close",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "\"v1"
+        }
+      }
+    },
+    {
+      "name": "if-match-extra-close",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "\"v1\"\""
+        }
+      }
+    },
+    {
+      "name": "if-match-quoted-pair-confusion",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "\"a\\\"b\""
+        }
+      }
+    },
+    {
+      "name": "if-match-weak-double",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "W/W/\"v1\""
+        }
+      }
+    },
+    {
+      "name": "if-match-trailing-junk",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "\"v1\"junk"
+        }
+      }
+    },
+    {
+      "name": "if-match-comment",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "\"v1\" (tag)"
+        }
+      }
+    },
+    {
+      "name": "if-match-wildcard",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "*"
+        }
+      }
+    },
+    {
+      "name": "if-match-list",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "\"a\", W/\"b\",\"c,d\""
+        }
+      }
+    },
+    {
+      "name": "if-match-empty-slots",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": ",\"a\",, \"b\","
+        }
+      }
+    },
+    {
+      "name": "if-match-duplicate-tags",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "\"a\",\"a\""
+        }
+      }
+    },
+    {
+      "name": "if-match-empty-only",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": ",,,"
+        }
+      }
+    },
+    {
+      "name": "if-match-mixed-wildcard",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "*,\"a\""
+        }
+      }
+    },
+    {
+      "name": "if-match-wildcard-last",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "\"a\",*"
+        }
+      }
+    },
+    {
+      "name": "if-match-wildcard-twice",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "*,*"
+        }
+      }
+    },
+    {
+      "name": "if-match-wildcard-empty-slots",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": ",*,"
+        }
+      }
+    },
+    {
+      "name": "if-match-missing-comma",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "\"a\" \"b\""
+        }
+      }
+    },
+    {
+      "name": "if-match-semicolon",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "\"a\";\"b\""
+        }
+      }
+    },
+    {
+      "name": "if-match-128-tags",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\""
+        }
+      }
+    },
+    {
+      "name": "if-match-129-tags",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\""
+        }
+      }
+    },
+    {
+      "name": "if-match-128-slots",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\"v\""
+        }
+      }
+    },
+    {
+      "name": "if-match-129-slots",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\"v\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-strong",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "\"v1\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-weak",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "W/\"v1\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-empty-tag",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "\"\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-comma-tag",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "\"a,b\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-backslash-literal",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "\"a\\b\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-star-tag",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "\"*\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-punctuation",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "\"!#$%&()*+,-./:;<=>?@[]^_`{|}~\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-empty-field",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": ""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-unquoted",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "v1"
+        }
+      }
+    },
+    {
+      "name": "if-none-match-lowercase-weak",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "w/\"v1\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-weak-space",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "W/ \"v1\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-inside-space",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "\"v 1\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-missing-close",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "\"v1"
+        }
+      }
+    },
+    {
+      "name": "if-none-match-extra-close",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "\"v1\"\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-quoted-pair-confusion",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "\"a\\\"b\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-weak-double",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "W/W/\"v1\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-trailing-junk",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "\"v1\"junk"
+        }
+      }
+    },
+    {
+      "name": "if-none-match-comment",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "\"v1\" (tag)"
+        }
+      }
+    },
+    {
+      "name": "if-none-match-wildcard",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "*"
+        }
+      }
+    },
+    {
+      "name": "if-none-match-list",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "\"a\", W/\"b\",\"c,d\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-empty-slots",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": ",\"a\",, \"b\","
+        }
+      }
+    },
+    {
+      "name": "if-none-match-duplicate-tags",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "\"a\",\"a\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-empty-only",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": ",,,"
+        }
+      }
+    },
+    {
+      "name": "if-none-match-mixed-wildcard",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "*,\"a\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-wildcard-last",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "\"a\",*"
+        }
+      }
+    },
+    {
+      "name": "if-none-match-wildcard-twice",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "*,*"
+        }
+      }
+    },
+    {
+      "name": "if-none-match-wildcard-empty-slots",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": ",*,"
+        }
+      }
+    },
+    {
+      "name": "if-none-match-missing-comma",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "\"a\" \"b\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-semicolon",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "\"a\";\"b\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-128-tags",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-129-tags",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\",\"v\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-128-slots",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\"v\""
+        }
+      }
+    },
+    {
+      "name": "if-none-match-129-slots",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\"v\""
+        }
+      }
+    },
+    {
+      "name": "if-range-strong",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "\"v1\"",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-range-weak",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "W/\"v1\"",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-range-empty-tag",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "\"\"",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-range-comma-tag",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "\"a,b\"",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-range-backslash-literal",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "\"a\\b\"",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-range-star-tag",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "\"*\"",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-range-punctuation",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "\"!#$%&()*+,-./:;<=>?@[]^_`{|}~\"",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-range-empty-field",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-range-unquoted",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "v1",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-range-lowercase-weak",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "w/\"v1\"",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-range-weak-space",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "W/ \"v1\"",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-range-inside-space",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "\"v 1\"",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-range-missing-close",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "\"v1",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-range-extra-close",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "\"v1\"\"",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-range-quoted-pair-confusion",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "\"a\\\"b\"",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-range-weak-double",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "W/W/\"v1\"",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-range-trailing-junk",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "\"v1\"junk",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-range-comment",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "\"v1\" (tag)",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-range-wildcard",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "*",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-range-list",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "\"a\", \"b\"",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-range-leading-slot",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": ",\"a\"",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-range-without-range",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "\"v1\""
+        }
+      }
+    },
+    {
+      "name": "if-range-invalid-range",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "\"v1\"",
+          "Range": "bytes=1-0"
+        }
+      }
+    },
+    {
+      "name": "if-range-head",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "HEAD",
+        "headers": {
+          "If-Range": "\"v1\"",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "duplicate-if-range",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "\"v1\"",
+          "Range": "bytes=0-1",
+          "if-range": "\"v2\""
+        }
+      }
+    },
+    {
+      "name": "both-entity-preconditions",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "\"v1\"",
+          "If-None-Match": "\"v2\""
+        }
+      }
+    },
+    {
+      "name": "conditional-put",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "headers": {
+          "If-Match": "\"v1\""
+        }
+      }
+    },
+    {
+      "name": "create-only-put",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "headers": {
+          "If-None-Match": "*"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-imf",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Sun, 06 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-imf",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-imf",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Sun, 06 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-imf",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Sun, 06 Nov 1994 08:49:37 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-leap-day",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Tue, 29 Feb 2000 00:00:00 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-leap-day",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Tue, 29 Feb 2000 00:00:00 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-leap-day",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Tue, 29 Feb 2000 00:00:00 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-leap-day",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Tue, 29 Feb 2000 00:00:00 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-leap-second",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Sat, 31 Dec 2016 23:59:60 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-leap-second",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Sat, 31 Dec 2016 23:59:60 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-leap-second",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Sat, 31 Dec 2016 23:59:60 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-leap-second",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Sat, 31 Dec 2016 23:59:60 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-rfc850",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Sunday, 06-Nov-94 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-rfc850",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Sunday, 06-Nov-94 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-rfc850",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Sunday, 06-Nov-94 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-rfc850",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Sunday, 06-Nov-94 08:49:37 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-asctime",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Sun Nov  6 08:49:37 1994"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-asctime",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Sun Nov  6 08:49:37 1994"
+        }
+      }
+    },
+    {
+      "name": "date-asctime",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Sun Nov  6 08:49:37 1994"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-asctime",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Sun Nov  6 08:49:37 1994",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-asctime-padded",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Sun Nov 06 08:49:37 1994"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-asctime-padded",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Sun Nov 06 08:49:37 1994"
+        }
+      }
+    },
+    {
+      "name": "date-asctime-padded",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Sun Nov 06 08:49:37 1994"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-asctime-padded",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Sun Nov 06 08:49:37 1994",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-asctime-two-digit",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Wed Nov 16 08:49:37 1994"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-asctime-two-digit",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Wed Nov 16 08:49:37 1994"
+        }
+      }
+    },
+    {
+      "name": "date-asctime-two-digit",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Wed Nov 16 08:49:37 1994"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-asctime-two-digit",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Wed Nov 16 08:49:37 1994",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-minimum-year",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Mon, 01 Jan 1900 00:00:00 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-minimum-year",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Mon, 01 Jan 1900 00:00:00 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-minimum-year",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Mon, 01 Jan 1900 00:00:00 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-minimum-year",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Mon, 01 Jan 1900 00:00:00 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-empty",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": ""
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-empty",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": ""
+        }
+      }
+    },
+    {
+      "name": "date-empty",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": ""
+        }
+      }
+    },
+    {
+      "name": "if-range-date-empty",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-weekday",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Mon, 06 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-weekday",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Mon, 06 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-weekday",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Mon, 06 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-weekday",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Mon, 06 Nov 1994 08:49:37 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-non-leap-day",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Thu, 29 Feb 2001 00:00:00 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-non-leap-day",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Thu, 29 Feb 2001 00:00:00 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-non-leap-day",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Thu, 29 Feb 2001 00:00:00 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-non-leap-day",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Thu, 29 Feb 2001 00:00:00 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-century-non-leap",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Thu, 29 Feb 1900 00:00:00 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-century-non-leap",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Thu, 29 Feb 1900 00:00:00 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-century-non-leap",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Thu, 29 Feb 1900 00:00:00 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-century-non-leap",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Thu, 29 Feb 1900 00:00:00 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-day-zero",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Sun, 00 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-day-zero",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Sun, 00 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-day-zero",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Sun, 00 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-day-zero",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Sun, 00 Nov 1994 08:49:37 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-day-over",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Sun, 31 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-day-over",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Sun, 31 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-day-over",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Sun, 31 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-day-over",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Sun, 31 Nov 1994 08:49:37 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-year-zero",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Sat, 01 Jan 0000 00:00:00 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-year-zero",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Sat, 01 Jan 0000 00:00:00 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-year-zero",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Sat, 01 Jan 0000 00:00:00 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-year-zero",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Sat, 01 Jan 0000 00:00:00 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-before-minimum",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Wed, 01 Jan 1800 00:00:00 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-before-minimum",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Wed, 01 Jan 1800 00:00:00 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-before-minimum",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Wed, 01 Jan 1800 00:00:00 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-before-minimum",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Wed, 01 Jan 1800 00:00:00 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-hour",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Sun, 06 Nov 1994 24:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-hour",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Sun, 06 Nov 1994 24:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-hour",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Sun, 06 Nov 1994 24:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-hour",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Sun, 06 Nov 1994 24:49:37 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-minute",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Sun, 06 Nov 1994 08:60:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-minute",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Sun, 06 Nov 1994 08:60:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-minute",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Sun, 06 Nov 1994 08:60:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-minute",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Sun, 06 Nov 1994 08:60:37 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-second",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Sun, 06 Nov 1994 08:49:61 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-second",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:61 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-second",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Sun, 06 Nov 1994 08:49:61 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-second",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Sun, 06 Nov 1994 08:49:61 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-misplaced-leap-second",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Sun, 06 Nov 1994 08:49:60 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-misplaced-leap-second",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:60 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-misplaced-leap-second",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Sun, 06 Nov 1994 08:49:60 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-misplaced-leap-second",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Sun, 06 Nov 1994 08:49:60 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-zone",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Sun, 06 Nov 1994 08:49:37 UTC"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-zone",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:37 UTC"
+        }
+      }
+    },
+    {
+      "name": "date-zone",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Sun, 06 Nov 1994 08:49:37 UTC"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-zone",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Sun, 06 Nov 1994 08:49:37 UTC",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-numeric-zone",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Sun, 06 Nov 1994 08:49:37 +0000"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-numeric-zone",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:37 +0000"
+        }
+      }
+    },
+    {
+      "name": "date-numeric-zone",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Sun, 06 Nov 1994 08:49:37 +0000"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-numeric-zone",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Sun, 06 Nov 1994 08:49:37 +0000",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-extra-space",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Sun,  06 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-extra-space",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Sun,  06 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-extra-space",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Sun,  06 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-extra-space",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Sun,  06 Nov 1994 08:49:37 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-short-day",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Sun, 6 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-short-day",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Sun, 6 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-short-day",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Sun, 6 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-short-day",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Sun, 6 Nov 1994 08:49:37 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-long-year",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Sun, 06 Nov 01994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-long-year",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Sun, 06 Nov 01994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-long-year",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Sun, 06 Nov 01994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-long-year",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Sun, 06 Nov 01994 08:49:37 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-short-year",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Sun, 06 Nov 94 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-short-year",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Sun, 06 Nov 94 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-short-year",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Sun, 06 Nov 94 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-short-year",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Sun, 06 Nov 94 08:49:37 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-lowercase",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "sun, 06 nov 1994 08:49:37 gmt"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-lowercase",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "sun, 06 nov 1994 08:49:37 gmt"
+        }
+      }
+    },
+    {
+      "name": "date-lowercase",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "sun, 06 nov 1994 08:49:37 gmt"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-lowercase",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "sun, 06 nov 1994 08:49:37 gmt",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-two-dates",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Sun, 06 Nov 1994 08:49:37 GMT, Sun, 06 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-two-dates",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:37 GMT, Sun, 06 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-two-dates",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Sun, 06 Nov 1994 08:49:37 GMT, Sun, 06 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-two-dates",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Sun, 06 Nov 1994 08:49:37 GMT, Sun, 06 Nov 1994 08:49:37 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-iso",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "1994-11-06T08:49:37Z"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-iso",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "1994-11-06T08:49:37Z"
+        }
+      }
+    },
+    {
+      "name": "date-iso",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "1994-11-06T08:49:37Z"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-iso",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "1994-11-06T08:49:37Z",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-bad-obsolete-weekday",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Monday, 06-Nov-94 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-bad-obsolete-weekday",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Monday, 06-Nov-94 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-bad-obsolete-weekday",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Monday, 06-Nov-94 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-bad-obsolete-weekday",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Monday, 06-Nov-94 08:49:37 GMT",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "if-modified-since-asctime-one-space",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Modified-Since": "Sun Nov 6 08:49:37 1994"
+        }
+      }
+    },
+    {
+      "name": "if-unmodified-since-asctime-one-space",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Unmodified-Since": "Sun Nov 6 08:49:37 1994"
+        }
+      }
+    },
+    {
+      "name": "date-asctime-one-space",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "Date": "Sun Nov 6 08:49:37 1994"
+        }
+      }
+    },
+    {
+      "name": "if-range-date-asctime-one-space",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Range": "Sun Nov 6 08:49:37 1994",
+          "Range": "bytes=0-1"
+        }
+      }
+    },
+    {
+      "name": "date-and-entity-preconditions",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-Match": "\"v1\"",
+          "If-Unmodified-Since": "Sun, 06 Nov 1994 08:49:37 GMT"
+        }
+      }
+    },
+    {
+      "name": "date-and-none-match",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "headers": {
+          "If-None-Match": "\"v1\"",
+          "If-Modified-Since": "Sun, 06 Nov 1994 08:49:37 GMT"
+        }
+      }
+    }
+  ],
+  "response_cases": [
+    {
+      "name": "etag-strong",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nETag: \"v1\"\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "etag-weak",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nETag: W/\"v1\"\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "etag-empty-tag",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nETag: \"\"\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "etag-comma-tag",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nETag: \"a,b\"\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "etag-backslash-literal",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nETag: \"a\\b\"\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "etag-star-tag",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nETag: \"*\"\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "etag-punctuation",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nETag: \"!#$%&()*+,-./:;<=>?@[]^_`{|}~\"\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "etag-empty-field",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nETag: \r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "etag-unquoted",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nETag: v1\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "etag-lowercase-weak",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nETag: w/\"v1\"\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "etag-weak-space",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nETag: W/ \"v1\"\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "etag-inside-space",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nETag: \"v 1\"\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "etag-missing-close",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nETag: \"v1\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "etag-extra-close",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nETag: \"v1\"\"\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "etag-quoted-pair-confusion",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nETag: \"a\\\"b\"\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "etag-weak-double",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nETag: W/W/\"v1\"\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "etag-trailing-junk",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nETag: \"v1\"junk\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "etag-comment",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nETag: \"v1\" (tag)\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "etag-wildcard",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nETag: *\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "etag-list",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nETag: \"a\", \"b\"\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "etag-leading-slot",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nETag: ,\"a\"\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-imf",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Sun, 06 Nov 1994 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-imf",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Sun, 06 Nov 1994 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-leap-day",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Tue, 29 Feb 2000 00:00:00 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-leap-day",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Tue, 29 Feb 2000 00:00:00 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-leap-second",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Sat, 31 Dec 2016 23:59:60 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-leap-second",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Sat, 31 Dec 2016 23:59:60 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-rfc850",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Sunday, 06-Nov-94 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-rfc850",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Sunday, 06-Nov-94 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-asctime",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Sun Nov  6 08:49:37 1994\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-asctime",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Sun Nov  6 08:49:37 1994\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-asctime-padded",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Sun Nov 06 08:49:37 1994\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-asctime-padded",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Sun Nov 06 08:49:37 1994\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-asctime-two-digit",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Wed Nov 16 08:49:37 1994\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-asctime-two-digit",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Wed Nov 16 08:49:37 1994\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-minimum-year",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Mon, 01 Jan 1900 00:00:00 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-minimum-year",
+      "accepted": true,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Mon, 01 Jan 1900 00:00:00 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-empty",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: \r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-empty",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: \r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-weekday",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Mon, 06 Nov 1994 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-weekday",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Mon, 06 Nov 1994 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-non-leap-day",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Thu, 29 Feb 2001 00:00:00 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-non-leap-day",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Thu, 29 Feb 2001 00:00:00 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-century-non-leap",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Thu, 29 Feb 1900 00:00:00 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-century-non-leap",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Thu, 29 Feb 1900 00:00:00 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-day-zero",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Sun, 00 Nov 1994 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-day-zero",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Sun, 00 Nov 1994 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-day-over",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Sun, 31 Nov 1994 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-day-over",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Sun, 31 Nov 1994 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-year-zero",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Sat, 01 Jan 0000 00:00:00 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-year-zero",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Sat, 01 Jan 0000 00:00:00 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-before-minimum",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Wed, 01 Jan 1800 00:00:00 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-before-minimum",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Wed, 01 Jan 1800 00:00:00 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-hour",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Sun, 06 Nov 1994 24:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-hour",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Sun, 06 Nov 1994 24:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-minute",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Sun, 06 Nov 1994 08:60:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-minute",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Sun, 06 Nov 1994 08:60:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-second",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Sun, 06 Nov 1994 08:49:61 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-second",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Sun, 06 Nov 1994 08:49:61 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-misplaced-leap-second",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Sun, 06 Nov 1994 08:49:60 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-misplaced-leap-second",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Sun, 06 Nov 1994 08:49:60 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-zone",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Sun, 06 Nov 1994 08:49:37 UTC\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-zone",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Sun, 06 Nov 1994 08:49:37 UTC\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-numeric-zone",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Sun, 06 Nov 1994 08:49:37 +0000\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-numeric-zone",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Sun, 06 Nov 1994 08:49:37 +0000\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-extra-space",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Sun,  06 Nov 1994 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-extra-space",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Sun,  06 Nov 1994 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-short-day",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Sun, 6 Nov 1994 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-short-day",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Sun, 6 Nov 1994 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-long-year",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Sun, 06 Nov 01994 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-long-year",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Sun, 06 Nov 01994 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-short-year",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Sun, 06 Nov 94 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-short-year",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Sun, 06 Nov 94 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-lowercase",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: sun, 06 nov 1994 08:49:37 gmt\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-lowercase",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: sun, 06 nov 1994 08:49:37 gmt\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-two-dates",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Sun, 06 Nov 1994 08:49:37 GMT, Sun, 06 Nov 1994 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-two-dates",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Sun, 06 Nov 1994 08:49:37 GMT, Sun, 06 Nov 1994 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-iso",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: 1994-11-06T08:49:37Z\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-iso",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: 1994-11-06T08:49:37Z\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-bad-obsolete-weekday",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Monday, 06-Nov-94 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-bad-obsolete-weekday",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Monday, 06-Nov-94 08:49:37 GMT\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "date-asctime-one-space",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nDate: Sun Nov 6 08:49:37 1994\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "last-modified-asctime-one-space",
+      "accepted": false,
+      "wire": "HTTP/1.1 200 OK\r\nLast-Modified: Sun Nov 6 08:49:37 1994\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "interim-etag",
+      "accepted": false,
+      "wire": "HTTP/1.1 103 Early Hints\r\nETag: unquoted\r\n\r\nHTTP/1.1 200 OK\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "interim-date",
+      "accepted": false,
+      "wire": "HTTP/1.1 103 Early Hints\r\nDate: Sun, 31 Nov 1994 08:49:37 GMT\r\n\r\nHTTP/1.1 200 OK\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "interim-last-modified",
+      "accepted": false,
+      "wire": "HTTP/1.1 103 Early Hints\r\nLast-Modified: junk\r\n\r\nHTTP/1.1 200 OK\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "valid-interim-etag",
+      "accepted": true,
+      "wire": "HTTP/1.1 103 Early Hints\r\nETag: W/\"v1\"\r\n\r\nHTTP/1.1 200 OK\r\nContent-Length: 2\r\n\r\nok"
+    },
+    {
+      "name": "valid-interim-date",
+      "accepted": true,
+      "wire": "HTTP/1.1 103 Early Hints\r\nDate: Sunday, 06-Nov-94 08:49:37 GMT\r\n\r\nHTTP/1.1 200 OK\r\nContent-Length: 2\r\n\r\nok"
+    }
+  ]
+}

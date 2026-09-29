@@ -1,0 +1,241 @@
+{
+  "as_of": "2026-09-27",
+  "scope": "Python inspection and HTTP transport deadline propagation and result admission. One real local POSIX alarm, otherwise controlled clock/handler tests; no remote attack timing or deployment claim.",
+  "changes": [
+    "Use a private BaseException cancellation signal within each budget and translate it to the existing public policy error only after timer cleanup.",
+    "Latch delivered expiry so an embedding callback that catches BaseException cannot return a successful expired result.",
+    "Check an absolute monotonic deadline before arming the timer and before accepting successful completion; preserve ordinary exception identity and restore the previous signal handler."
+  ],
+  "baseline": {
+    "passing_cases": 6,
+    "failing_cases": 14,
+    "failures_by_method": {
+      "test_absolute_deadline_checked_without_signal_delivery": 4,
+      "test_budget_signal_escapes_ordinary_handlers": 4,
+      "test_expiry_before_timer_arming_rejects_body": 2,
+      "test_kernel_alarm_during_dns_literal_parse_stops_lookup": 1,
+      "test_resolver_alarm_blocks_mcp_delivery": 1,
+      "test_swallowed_signal_cannot_return_success": 2
+    },
+    "source_sha256": {
+      "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "e397b71a31ca4ecce22c5787e7e3a1f095846a413454b1bf70ced625e84bd366",
+      "tests/test_deadline_budget.py": "e2eafc9e7fdcbf0fa05480944f38e9ea380f6b16fc09e9b50fd979ecc58984d1"
+    },
+    "reproduction": "The transport alarm previously raised ProtocolPolicyError, a ValueError, which _resolve_once could catch while parsing an IP literal. The real-alarm test continued into the fake DNS lookup; the controlled MCP case delivered a successful tool result after simulated expiry.",
+    "inspection_scope": "Both budget contexts use the hardened helper. The existing _json_strings function already re-raised InspectionBudgetError; these checks do not establish that it swallowed inspection expiry."
+  },
+  "regressions": {
+    "path": "tests/test_deadline_budget.py",
+    "methods": 7,
+    "cases": 20,
+    "passing_cases": [
+      {
+        "test": "test_deadline_budget.TestDeadlineBudget.test_absolute_deadline_checked_without_signal_delivery",
+        "parameters": {
+          "budget": "inspection",
+          "completion": "before"
+        }
+      },
+      {
+        "test": "test_deadline_budget.TestDeadlineBudget.test_absolute_deadline_checked_without_signal_delivery",
+        "parameters": {
+          "budget": "inspection",
+          "completion": "at"
+        }
+      },
+      {
+        "test": "test_deadline_budget.TestDeadlineBudget.test_absolute_deadline_checked_without_signal_delivery",
+        "parameters": {
+          "budget": "inspection",
+          "completion": "after"
+        }
+      },
+      {
+        "test": "test_deadline_budget.TestDeadlineBudget.test_absolute_deadline_checked_without_signal_delivery",
+        "parameters": {
+          "budget": "transport",
+          "completion": "before"
+        }
+      },
+      {
+        "test": "test_deadline_budget.TestDeadlineBudget.test_absolute_deadline_checked_without_signal_delivery",
+        "parameters": {
+          "budget": "transport",
+          "completion": "at"
+        }
+      },
+      {
+        "test": "test_deadline_budget.TestDeadlineBudget.test_absolute_deadline_checked_without_signal_delivery",
+        "parameters": {
+          "budget": "transport",
+          "completion": "after"
+        }
+      },
+      {
+        "test": "test_deadline_budget.TestDeadlineBudget.test_budget_signal_escapes_ordinary_handlers",
+        "parameters": {
+          "budget": "inspection",
+          "handler": "ValueError"
+        }
+      },
+      {
+        "test": "test_deadline_budget.TestDeadlineBudget.test_budget_signal_escapes_ordinary_handlers",
+        "parameters": {
+          "budget": "inspection",
+          "handler": "Exception"
+        }
+      },
+      {
+        "test": "test_deadline_budget.TestDeadlineBudget.test_budget_signal_escapes_ordinary_handlers",
+        "parameters": {
+          "budget": "inspection",
+          "handler": "OSError"
+        }
+      },
+      {
+        "test": "test_deadline_budget.TestDeadlineBudget.test_budget_signal_escapes_ordinary_handlers",
+        "parameters": {
+          "budget": "transport",
+          "handler": "ValueError"
+        }
+      },
+      {
+        "test": "test_deadline_budget.TestDeadlineBudget.test_budget_signal_escapes_ordinary_handlers",
+        "parameters": {
+          "budget": "transport",
+          "handler": "Exception"
+        }
+      },
+      {
+        "test": "test_deadline_budget.TestDeadlineBudget.test_budget_signal_escapes_ordinary_handlers",
+        "parameters": {
+          "budget": "transport",
+          "handler": "OSError"
+        }
+      },
+      {
+        "test": "test_deadline_budget.TestDeadlineBudget.test_expiry_before_timer_arming_rejects_body",
+        "parameters": {
+          "budget": "inspection"
+        }
+      },
+      {
+        "test": "test_deadline_budget.TestDeadlineBudget.test_expiry_before_timer_arming_rejects_body",
+        "parameters": {
+          "budget": "transport"
+        }
+      },
+      {
+        "test": "test_deadline_budget.TestDeadlineBudget.test_kernel_alarm_during_dns_literal_parse_stops_lookup",
+        "parameters": {
+          "case": "kernel-alarm-in-dns-parser"
+        }
+      },
+      {
+        "test": "test_deadline_budget.TestDeadlineBudget.test_ordinary_errors_keep_their_identity",
+        "parameters": {
+          "budget": "inspection"
+        }
+      },
+      {
+        "test": "test_deadline_budget.TestDeadlineBudget.test_ordinary_errors_keep_their_identity",
+        "parameters": {
+          "budget": "transport"
+        }
+      },
+      {
+        "test": "test_deadline_budget.TestDeadlineBudget.test_resolver_alarm_blocks_mcp_delivery",
+        "parameters": {
+          "case": "mcp-delivery-after-dns-parser-alarm"
+        }
+      },
+      {
+        "test": "test_deadline_budget.TestDeadlineBudget.test_swallowed_signal_cannot_return_success",
+        "parameters": {
+          "budget": "inspection"
+        }
+      },
+      {
+        "test": "test_deadline_budget.TestDeadlineBudget.test_swallowed_signal_cannot_return_success",
+        "parameters": {
+          "budget": "transport"
+        }
+      }
+    ],
+    "checks": [
+      "Inspection and transport expiry escape ValueError, Exception and OSError handlers.",
+      "Explicitly suppressed BaseException expiry cannot yield success.",
+      "Completion before, at and after the deadline is checked even without signal delivery; expiry before arming prevents body entry.",
+      "A real 20 ms kernel alarm during delayed IP-literal parsing prevents a subsequent fake getaddrinfo call.",
+      "Controlled alarm delivery during MCP dispatch produces a policy error, no lookup and zero delivered body bytes.",
+      "Ordinary errors retain identity; the original handler and idle timer are restored."
+    ],
+    "counting": "Count 20 subtest cases once. The seven test methods, assertions, baseline comparisons and full-suite rerun are not additional cases."
+  },
+  "verification": {
+    "focused_after": {
+      "exit_code": 0,
+      "passing_cases": 20,
+      "methods": 7
+    },
+    "python_security_suite": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests",
+      "exit_code": 0,
+      "methods": 120,
+      "elapsed_seconds": 4.146
+    },
+    "syntax": "AST parsing passed for the implementation and new test file.",
+    "go": "No Go source changed or Go tests rerun for this validation."
+  },
+  "primary_sources": [
+    {
+      "url": "https://docs.python.org/3/library/signal.html#execution-of-python-signal-handlers",
+      "use": "Python signal handlers run in the main interpreter thread, and native computations may delay their execution."
+    },
+    {
+      "url": "https://docs.python.org/3/library/signal.html#note-on-signal-handlers-and-exceptions",
+      "use": "A signal-handler exception can appear at an arbitrary main-thread execution point."
+    },
+    {
+      "url": "https://docs.python.org/3/library/exceptions.html#BaseException",
+      "use": "BaseException is outside ordinary Exception handling, allowing private cancellation before translation at the budget boundary."
+    }
+  ],
+  "limitations": [
+    "This validates rejection of expired results, not hard real-time preemption of arbitrary native code or callbacks that never return; external process supervision remains necessary.",
+    "Asynchronous interruption can affect resource handoff. These tests do not establish complete resolver-thread or semaphore lifecycle safety.",
+    "Most cases simulate clock or handler behavior; the real local alarm uses a delayed parser and a fake resolver rather than a live hostile destination.",
+    "No new Snort SID or universal RFC, W3C, zero-day or hostile-agent prevention claim follows from these checks."
+  ],
+  "source_sha256": {
+    "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "6ace543cb04ce4da24708f3967a0306a70e0a27799baecd1940e58951d79183e",
+    "docs/protocol-security.md": "14d046fa28e7b8950bae6087914cfc246e9d1abb69b641643e20003b7a628062",
+    "tests/test_agent_guard_import.py": "cff06b4319ab982a87f5896fec991135465426f7c5168cc6ffa06e1e889e6bdf",
+    "tests/test_ax_mcp_proxy.py": "4d75f6b7259be2f97611104174aca1b08c1510adcf283723f1b8381eb3c96938",
+    "tests/test_deadline_budget.py": "e2eafc9e7fdcbf0fa05480944f38e9ea380f6b16fc09e9b50fd979ecc58984d1",
+    "tests/test_http_protocol.py": "d231da87a15a30133afb3d67a2f47dcf64320744c564a103b269c6d954e09cb7",
+    "tests/test_snort_rules.py": "d65104037664c173248fc48512aec0f3b23fc730dd2592c250089b2c916611a6"
+  },
+  "logs": {
+    "focused_before": {
+      "path": "/private/tmp/ax-deadline-budget-python-before.json",
+      "sha256": "9cd254b1546e08a3535f1a47490cdde521d49631ac01f644e2fe00e0f1cdc6b3"
+    },
+    "focused_after": {
+      "path": "/private/tmp/ax-deadline-budget-python-after.json",
+      "sha256": "6a2e7f459818142ab10a877e19ce67fd18c13cf64de8b187e84cfbc143e1c217"
+    },
+    "python_security_suite": {
+      "path": "/private/tmp/ax-deadline-budget-python-full.txt",
+      "sha256": "717af1c3f5b7f09c4e7d7f5a188f791244c6fb3d55f6b2575b674ab8a61e4640"
+    },
+    "focused_runner": {
+      "path": "/private/tmp/ax-deadline-budget-runner.py",
+      "sha256": "9c4fa4cc26e9854602580ec31af462d8a6b9cc6db99c0047a9e1d831937d79f4"
+    },
+    "baseline_sources": {
+      "path": "/private/tmp/ax-deadline-budget-baseline-source.json",
+      "sha256": "6ab7e689a7625f54229281b3693121b06e16780d979f1a64f34c264f61728cf3"
+    }
+  }
+}

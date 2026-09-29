@@ -122,7 +122,10 @@ def validate(snort, plugin_path=None):
                                      "plugins/ip6_options.h", "plugins/ip6_options_test.cc",
                                      "plugins/esp_validation.h", "plugins/esp_validation_test.cc",
                                      "plugins/routing_validation.h", "plugins/routing_validation_test.cc",
-                                     "plugins/home_address.h", "plugins/home_address_test.cc")] + [NATIVE]
+                                     "plugins/home_address.h", "plugins/home_address_test.cc",
+                                     "plugins/tcp_options.h", "plugins/tcp_options_test.cc",
+                                     "plugins/tcp_sack_state.h", "plugins/tcp_sack_state_test.cc",
+                                     "plugins/tcp_sack_option.h", "plugins/tcp_sack_option.cc")] + [NATIVE]
     plugin_files = []
     if plugin_path is not None:
         plugin_files = [plugin_path] if plugin_path.is_file() else sorted(

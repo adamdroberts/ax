@@ -6,18 +6,20 @@ package egress
 import (
 	"fmt"
 	"strings"
+
+	"github.com/google/ax/pkg/security/httpguard"
 )
 
 const MaxResponseMetadataParts = 128
 
 var responseSingletons = headerSet(`content-length transfer-encoding content-encoding content-type
-content-location content-range date etag last-modified location retry-after server`)
+content-location content-range content-disposition date etag last-modified location retry-after server`)
 
 var protectedConnectionNames = headerSet(`host content-length transfer-encoding connection upgrade trailer te
 expect http2-settings forwarded x-original-url x-rewrite-url x-http-method-override x-method-override
 x-http-method x-host origin referer content-transfer-encoding x-original-host x-real-ip x-agent-id
 x-approval-token content-type content-encoding content-language content-location content-range
-content-disposition authorization proxy-authorization www-authenticate proxy-authenticate authentication-info
+content-disposition content-digest repr-digest want-content-digest want-repr-digest authorization proxy-authorization www-authenticate proxy-authenticate authentication-info
 proxy-authentication-info cookie set-cookie location date age expires retry-after server etag last-modified
 cache-control vary warning allow accept-ranges range if-match if-none-match if-modified-since
 if-unmodified-since if-range`)
@@ -35,12 +37,51 @@ func headerSet(names string) map[string]bool {
 // responseMetadata validates one header block. This is an explicit field
 // contract, not a claim that all registered or extension fields are singletons.
 type responseMetadata struct {
-	seen            map[string]bool
-	connectionParts int
+	mimePart                 bool
+	seen                     map[string]bool
+	connectionParts          int
+	contentRange             *httpguard.ContentRange
+	mediaType                string
+	mediaParameters          map[string]string
+	etag                     string
+	date                     string
+	lastModified             string
+	contentDigest            contentDigests
+	representationDigest     contentDigests
+	emptyRepresentation      bool
+	wantContentDigest        httpguard.DigestPreferences
+	wantRepresentationDigest httpguard.DigestPreferences
 }
 
 func (m *responseMetadata) add(name, value string) error {
 	name = strings.ToLower(name)
+	if name == "want-content-digest" || name == "want-repr-digest" {
+		if m.mimePart {
+			return nil
+		}
+		if name == "want-content-digest" {
+			return m.wantContentDigest.Add(value)
+		}
+		return m.wantRepresentationDigest.Add(value)
+	}
+	if name == "content-digest" {
+		if m.mimePart {
+			return nil
+		} // HTTP message integrity is separate from MIME part metadata.
+		return m.contentDigest.Add(value)
+	}
+	if name == "repr-digest" {
+		if m.mimePart {
+			return nil
+		}
+		return m.representationDigest.Add(value)
+	}
+	if name == "content-length" {
+		m.emptyRepresentation = value == "0"
+	}
+	if name == "content-disposition" && m.mimePart {
+		return nil // RFC 6266 does not govern fields inside MIME payloads.
+	}
 	if responseSingletons[name] {
 		if m.seen[name] {
 			return fmt.Errorf("duplicate singleton response field")
@@ -50,8 +91,43 @@ func (m *responseMetadata) add(name, value string) error {
 		}
 		m.seen[name] = true
 	}
+	if name == "content-disposition" {
+		return checkResponseDisposition(value)
+	}
+	if (name == "location" || name == "content-location") && !m.mimePart {
+		return httpguard.ValidateURIReference(value, name == "location")
+	}
 	if name == "content-type" {
-		return checkResponseContentType(value)
+		var err error
+		m.mediaType, m.mediaParameters, err = parseResponseContentType(value)
+		return err
+	}
+	if name == "content-range" {
+		var err error
+		m.contentRange, err = httpguard.ParseContentRange(value)
+		return err
+	}
+	if name == "etag" {
+		_, err := httpguard.ValidateEntityTag(value)
+		if err == nil {
+			m.etag = value
+		}
+		return err
+	}
+	if name == "date" || name == "last-modified" {
+		key, err := httpguard.HTTPDateOrderKey(value, true)
+		if err != nil {
+			return err
+		}
+		if name == "date" {
+			m.date = key
+		} else {
+			m.lastModified = key
+		}
+		if m.date != "" && m.lastModified > m.date {
+			return fmt.Errorf("Last-Modified is later than response Date")
+		}
+		return nil
 	}
 	if name != "connection" {
 		return nil
@@ -83,16 +159,34 @@ func (m *responseMetadata) add(name, value string) error {
 	}
 }
 
+func (m *responseMetadata) finish(status int, method string) error {
+	if err := m.finishRepresentation(status, method); err != nil {
+		return err
+	}
+	if err := m.contentDigest.Ready(); err != nil {
+		return err
+	}
+	if status < 200 || method == "HEAD" || status == 204 || status == 205 || status == 304 {
+		return m.contentDigest.CheckBody(nil)
+	}
+	return nil
+}
+
 // Parse the original field before a MIME library can merge duplicate parameters
 // or apply RFC 2231/8187 continuations. Only an explicitly named UTF-8 charset
 // is supported; media types and other ordinary parameters remain extensible.
 func checkResponseContentType(value string) error {
+	_, _, err := parseResponseContentType(value)
+	return err
+}
+
+func parseResponseContentType(value string) (string, map[string]string, error) {
 	if len(value) > 8192 {
-		return fmt.Errorf("response media type exceeds field limit")
+		return "", nil, fmt.Errorf("response media type exceeds field limit")
 	}
 	for _, c := range []byte(value) {
 		if c < 32 || c > 126 {
-			return fmt.Errorf("invalid response media type bytes")
+			return "", nil, fmt.Errorf("invalid response media type bytes")
 		}
 	}
 	value = strings.Trim(value, " ")
@@ -105,12 +199,14 @@ func checkResponseContentType(value string) error {
 		return value[start:i]
 	}
 	if readToken() == "" || i == len(value) || value[i] != '/' {
-		return fmt.Errorf("invalid response media type")
+		return "", nil, fmt.Errorf("invalid response media type")
 	}
 	i++
 	if readToken() == "" {
-		return fmt.Errorf("invalid response media subtype")
+		return "", nil, fmt.Errorf("invalid response media subtype")
 	}
+	kind := strings.ToLower(value[:i])
+	parameters := map[string]string{}
 	seen := map[string]bool{}
 	parts := 0
 	for i < len(value) {
@@ -121,12 +217,12 @@ func checkResponseContentType(value string) error {
 			break
 		}
 		if value[i] != ';' {
-			return fmt.Errorf("invalid response media parameter separator")
+			return "", nil, fmt.Errorf("invalid response media parameter separator")
 		}
 		i++
 		parts++
 		if parts > MaxResponseMetadataParts {
-			return fmt.Errorf("too many response media parameters")
+			return "", nil, fmt.Errorf("too many response media parameters")
 		}
 		for i < len(value) && value[i] == ' ' {
 			i++
@@ -136,7 +232,7 @@ func checkResponseContentType(value string) error {
 		}
 		name := strings.ToLower(readToken())
 		if name == "" || strings.Contains(name, "*") || seen[name] || i == len(value) || value[i] != '=' {
-			return fmt.Errorf("invalid or duplicate response media parameter")
+			return "", nil, fmt.Errorf("invalid or duplicate response media parameter")
 		}
 		seen[name] = true
 		i++
@@ -154,7 +250,7 @@ func checkResponseContentType(value string) error {
 				}
 				if c == '\\' {
 					if i == len(value) {
-						return fmt.Errorf("truncated response media escape")
+						return "", nil, fmt.Errorf("truncated response media escape")
 					}
 					c = value[i]
 					i++
@@ -162,18 +258,19 @@ func checkResponseContentType(value string) error {
 				decoded.WriteByte(c)
 			}
 			if !closed {
-				return fmt.Errorf("unterminated response media string")
+				return "", nil, fmt.Errorf("unterminated response media string")
 			}
 			parameter = decoded.String()
 		} else {
 			parameter = readToken()
 			if parameter == "" {
-				return fmt.Errorf("empty response media parameter")
+				return "", nil, fmt.Errorf("empty response media parameter")
 			}
 		}
 		if name == "charset" && !strings.EqualFold(parameter, "utf-8") {
-			return fmt.Errorf("unsupported response charset")
+			return "", nil, fmt.Errorf("unsupported response charset")
 		}
+		parameters[name] = parameter
 	}
-	return nil
+	return kind, parameters, nil
 }

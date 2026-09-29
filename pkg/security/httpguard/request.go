@@ -12,6 +12,7 @@ import (
 )
 
 const MaxFormFields = 100000
+const MaxRequestBodyBytes = 1 << 20
 
 // Requests use a subset of RFC 9110 section 5.6.6: one optional UTF-8 charset,
 // with SP allowed around the semicolon but never '='. Quoted pairs follow
@@ -152,13 +153,23 @@ func ValidateHeader(name, value string) error {
 		if !strings.EqualFold(value, "identity") {
 			return fmt.Errorf("only identity content encoding is supported")
 		}
+	case "range":
+		return validateByteRange(value)
+	case "content-range":
+		_, err := ParseContentRange(value)
+		return err
+	case "content-location":
+		return ValidateURIReference(value, false)
 	}
-	return nil
+	return validateConditionalField(key, value)
 }
 
 // Prepare validates the exact request representation before signature matching.
 // The transport only adds framing/connection headers, never cookies or redirects.
 func Prepare(req *http.Request, body string) error {
+	if len(body) > MaxRequestBodyBytes {
+		return fmt.Errorf("request body exceeds the inspection limit")
+	}
 	switch req.Method {
 	case "GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS":
 	default:
@@ -167,8 +178,26 @@ func Prepare(req *http.Request, body string) error {
 	if (req.Method == "GET" || req.Method == "HEAD") && body != "" {
 		return fmt.Errorf("GET and HEAD bodies are not supported")
 	}
+	if err := ValidateDigestPreferences(req.Header); err != nil {
+		return err
+	}
+	if err := ValidateLocationHeaders(req.Header, false); err != nil {
+		return err
+	}
+	if err := ValidateRangeRequest(req.Method, req.Header); err != nil {
+		return err
+	}
+	if err := ValidateConditionalRequest(req.Method, req.Header); err != nil {
+		return err
+	}
+	if err := ValidateContentRangeRequest(req.Method, req.Header, int64(len(body))); err != nil {
+		return err
+	}
 	if !utf8.ValidString(body) {
 		return fmt.Errorf("request body must be UTF-8")
+	}
+	if err := CheckRequestDigests(req.Header, []byte(body)); err != nil {
+		return err
 	}
 	ct := req.Header.Get("Content-Type")
 	if _, exists := req.Header["Content-Type"]; exists && ct == "" {

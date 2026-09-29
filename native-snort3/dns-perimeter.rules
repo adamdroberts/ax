@@ -1,0 +1,23 @@
+# Alternative agent perimeter: load instead of the original broker-only rules.
+# Exact DNS/broker endpoints come from generate_dns_perimeter.py. No pass rules.
+block ip $AGENT_NET any -> !$AX_TRUSTED_ENDPOINTS any (msg:"AX Agent destination is outside DNS proxy and HTTP broker endpoints"; sid:9202001; rev:1;)
+block ip $AGENT_NET any -> $BROKER_NET any (msg:"AX HTTP broker transport must be TCP"; ip_proto:!6; sid:9202002; rev:1;)
+block ip $AGENT_NET any -> $AX_DNS_PROXIES any (msg:"AX DNS proxy transport must be TCP or UDP"; ip_proto:!6; ip_proto:!17; sid:9202003; rev:1;)
+block tcp $AGENT_NET any -> $BROKER_NET !$BROKER_PORTS (msg:"AX HTTP broker destination port is not admitted"; sid:9202004; rev:1;)
+block tcp $AGENT_NET any -> $AX_DNS_PROXIES !$AX_DNS_PORT (msg:"AX DNS proxy TCP destination port is not admitted"; sid:9202005; rev:1;)
+block udp $AGENT_NET any -> $AX_DNS_PROXIES !$AX_DNS_PORT (msg:"AX DNS proxy UDP destination port is not admitted"; sid:9202006; rev:1;)
+block tcp !$AX_TRUSTED_ENDPOINTS any -> $AGENT_NET any (msg:"AX Agent TCP peer is outside trusted endpoints"; sid:9202007; rev:1;)
+block tcp $BROKER_NET !$BROKER_PORTS -> $AGENT_NET any (msg:"AX HTTP broker TCP source port is not admitted"; sid:9202008; rev:1;)
+block tcp $AX_DNS_PROXIES !$AX_DNS_PORT -> $AGENT_NET any (msg:"AX DNS proxy TCP source port is not admitted"; sid:9202009; rev:1;)
+block udp !$AX_DNS_PROXIES any -> $AGENT_NET any (msg:"AX Agent UDP peer is not the DNS proxy"; sid:9202010; rev:1;)
+block udp $AX_DNS_PROXIES !$AX_DNS_PORT -> $AGENT_NET any (msg:"AX DNS proxy UDP source port is not admitted"; sid:9202011; rev:1;)
+# ICMP errors/ND still require trusted router state at the host boundary. Keep
+# the existing distinction between packet validation and router authorization.
+alert ip any any -> $AGENT_NET any (msg:"AX Non-TCP and non-UDP inbound traffic requires router validation"; ip_proto:!6; ip_proto:!17; sid:9202012; rev:1;)
+# An allowed first-hop address must not become a source-routing relay.
+# These reject otherwise valid routing features as explicit endpoint policy.
+block ip $AGENT_NET any -> any any (msg:"AX IPv6 routing header bypasses exact endpoint policy"; ax_ip6_route_present; sid:9202013; rev:1;)
+block ip $AGENT_NET any -> any any (msg:"AX IPv4 loose source route bypasses exact endpoint policy"; ipopts:lsrr; sid:9202014; rev:1;)
+block ip $AGENT_NET any -> any any (msg:"AX IPv4 strict source route bypasses exact endpoint policy"; ipopts:ssrr; sid:9202015; rev:1;)
+# Do not let host mobility processing change either peer behind address rules.
+block ip $AGENT_NET any <> any any (msg:"AX IPv6 Home Address option changes fixed agent peer identity"; ax_ip6_home_present; sid:9202016; rev:1;)

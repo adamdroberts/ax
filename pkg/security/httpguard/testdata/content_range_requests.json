@@ -1,0 +1,462 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "name": "known-total",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes 0-1/4"
+        }
+      }
+    },
+    {
+      "name": "unknown-total",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes 2-3/*"
+        }
+      }
+    },
+    {
+      "name": "unicode-octets",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "\u20ac",
+        "headers": {
+          "Content-Range": "bytes 0-2/8"
+        }
+      }
+    },
+    {
+      "name": "case-and-zeros",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "BYTES 000-001/004"
+        }
+      }
+    },
+    {
+      "name": "last-byte",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "x",
+        "headers": {
+          "Content-Range": "bytes 3-3/4"
+        }
+      }
+    },
+    {
+      "name": "large-offset-small-body",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "x",
+        "headers": {
+          "Content-Range": "bytes 9223372036854775806-9223372036854775806/9223372036854775807"
+        }
+      }
+    },
+    {
+      "name": "empty",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": ""
+        }
+      }
+    },
+    {
+      "name": "wrong-unit",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "items 0-1/4"
+        }
+      }
+    },
+    {
+      "name": "missing-space",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes0-1/4"
+        }
+      }
+    },
+    {
+      "name": "extra-space",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes  0-1/4"
+        }
+      }
+    },
+    {
+      "name": "missing-length",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes 0-1"
+        }
+      }
+    },
+    {
+      "name": "missing-last",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes 0-/4"
+        }
+      }
+    },
+    {
+      "name": "missing-first",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes -1/4"
+        }
+      }
+    },
+    {
+      "name": "reversed",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes 2-1/4"
+        }
+      }
+    },
+    {
+      "name": "equal-total",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes 0-1/1"
+        }
+      }
+    },
+    {
+      "name": "smaller-total",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes 2-3/2"
+        }
+      }
+    },
+    {
+      "name": "zero-total",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes 0-1/0"
+        }
+      }
+    },
+    {
+      "name": "unknown-unsatisfied",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes */*"
+        }
+      }
+    },
+    {
+      "name": "unsatisfied",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes */4"
+        }
+      }
+    },
+    {
+      "name": "negative-offset",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes -1-1/4"
+        }
+      }
+    },
+    {
+      "name": "plus-offset",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes +0-1/4"
+        }
+      }
+    },
+    {
+      "name": "hex-offset",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes 0x0-1/4"
+        }
+      }
+    },
+    {
+      "name": "float-offset",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes 0-1.0/4"
+        }
+      }
+    },
+    {
+      "name": "multi-range",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes 0-1/4,2-3/4"
+        }
+      }
+    },
+    {
+      "name": "overflow-total",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes 0-1/9223372036854775808"
+        }
+      }
+    },
+    {
+      "name": "overflow-span",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes 0-9223372036854775807/*"
+        }
+      }
+    },
+    {
+      "name": "huge-offset",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999-1/*"
+        }
+      }
+    },
+    {
+      "name": "short-body",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes 0-2/4"
+        }
+      }
+    },
+    {
+      "name": "long-body",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes 0-0/4"
+        }
+      }
+    },
+    {
+      "name": "unicode-character-count",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "\u20ac",
+        "headers": {
+          "Content-Range": "bytes 0-0/4"
+        }
+      }
+    },
+    {
+      "name": "empty-body",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "",
+        "headers": {
+          "Content-Range": "bytes 0-0/4"
+        }
+      }
+    },
+    {
+      "name": "method-get",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "GET",
+        "body": "",
+        "headers": {
+          "Content-Range": "bytes 0-1/4"
+        }
+      }
+    },
+    {
+      "name": "method-head",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "HEAD",
+        "body": "",
+        "headers": {
+          "Content-Range": "bytes 0-1/4"
+        }
+      }
+    },
+    {
+      "name": "method-post",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "POST",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes 0-1/4"
+        }
+      }
+    },
+    {
+      "name": "method-patch",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PATCH",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes 0-1/4"
+        }
+      }
+    },
+    {
+      "name": "method-delete",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "DELETE",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes 0-1/4"
+        }
+      }
+    },
+    {
+      "name": "method-options",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "OPTIONS",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes 0-1/4"
+        }
+      }
+    },
+    {
+      "name": "duplicate-case",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/v1",
+        "method": "PUT",
+        "body": "ab",
+        "headers": {
+          "Content-Range": "bytes 0-1/4",
+          "content-range": "bytes 0-1/4"
+        }
+      }
+    }
+  ]
+}

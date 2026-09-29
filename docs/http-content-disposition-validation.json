@@ -1,0 +1,241 @@
+{
+  "as_of": "2026-09-27",
+  "scope": "HTTP response Content-Disposition syntax and conservative filename admission in Go and Python. Parsed and raw final/informational blocks; Python MCP delivery. Simulated peers and resolvers, not a deployment or real filesystem-write test.",
+  "changes": [
+    "Treat HTTP Content-Disposition as a singleton field and reject duplicate case-insensitive parameter names before generic MIME recovery can merge them.",
+    "Parse token/quoted parameter grammar with its permitted spaces around equals; retain unknown disposition types and ordinary extension parameters, with at most 128 parameters.",
+    "Validate unquoted extended values, percent triplets, UTF-8 or legacy ISO-8859-1 decoding, and optional well-formed RFC 5646 language tags including all fixed grandfathered forms.",
+    "Check both filename and filename* independently while preserving the valid fallback pair. Reject selected path, control/format, noncharacter, whitespace, quoted-pair and residual-percent ambiguities without rewriting the header.",
+    "Keep MIME body-part Content-Disposition metadata separate because RFC 6266 explicitly excludes payload fields. No new Snort SID."
+  ],
+  "baseline": {
+    "shared_cases": 190,
+    "accepted_controls": 70,
+    "unexpectedly_accepted_rejections_per_runtime": 119,
+    "already_rejected_cases": [
+      "field-bytes-8193"
+    ],
+    "go_parsed_unexpected_acceptances": 119,
+    "go_final_and_interim_wire_unexpected_acceptances": 238,
+    "python_parsed_unexpected_acceptances": 119,
+    "python_final_and_interim_mcp_unexpected_acceptances": 238,
+    "source_sha256": {
+      "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "d8011b9bf1345f36e521e9e11c85e43a43b8ed83a10c91fcd7585f140d6b0164",
+      "pkg/security/egress/metadata.go": "adb89d29e455c72594ca8f63ee5378e2c70d28e93241058653b033eb50d84017",
+      "pkg/security/egress/content_range.go": "085cc1eba0d256e278b5eced2d42e01de495157b2c392f9cd62ec66a36ca2f9e",
+      "pkg/security/egress/disposition_test.go": "fe6161e6d7d3ca102bdb1faf96e91467bf7927d958bdc8fccb6036b834e7a08c",
+      "tests/test_response_disposition.py": "d9f4026eabf3edbee972a7395af96204e3d4b48e18dc5ab45017d40221c1862c",
+      "pkg/security/egress/testdata/content_disposition_cases.json": "e316b67a62fcfe79e5ab4f8421c4d25326f48a9c01b77a59be51adf50cadc70b",
+      "pkg/security/egress/testdata/generate_disposition_cases.py": "8f94fc17e795a6a9d8e167e6052f555ec5afc6d075cc735116d009a1560fe27e"
+    }
+  },
+  "corpus": {
+    "path": "pkg/security/egress/testdata/content_disposition_cases.json",
+    "generator": "pkg/security/egress/testdata/generate_disposition_cases.py",
+    "cases": 190,
+    "accepted": 70,
+    "rejected": 120,
+    "categories": {
+      "syntax": 57,
+      "encoding": 6,
+      "language": 64,
+      "local-policy": 59,
+      "limits": 4
+    },
+    "generation": "Explicit independent acceptance/rejection tables; generator does not import or call production validators. Exact corpus reproduction verified.",
+    "additional_mime_context_controls": 2,
+    "counting": "Count 190 shared fixtures once across languages, parsed/wire stages and reruns. The two additional MIME-context checks, named methods, Unicode classification audit and assertions are not added to the combined lower bound.",
+    "existing_contract_update": "Added content-disposition to response_metadata_cases.json singleton declaration only; its 114 existing cases are unchanged."
+  },
+  "verification": {
+    "go_focused": {
+      "exit_code": 0,
+      "parsed_checks": 190,
+      "final_and_interim_wire_checks": 380,
+      "mime_context_controls": 2
+    },
+    "python_focused": {
+      "exit_code": 0,
+      "methods": 3,
+      "passing_subtests": 572
+    },
+    "go_security_race": {
+      "exit_code": 0,
+      "output": [
+        "ok  \tgithub.com/google/ax/pkg/security/dnsproxy\t1.496s",
+        "?   \tgithub.com/google/ax/cmd/ax-dns-proxy\t[no test files]",
+        "ok  \tgithub.com/google/ax/pkg/security/egress\t17.487s",
+        "ok  \tgithub.com/google/ax/pkg/security/httpguard\t(cached)",
+        "ok  \tgithub.com/google/ax/pkg/security/snort\t(cached)",
+        "ok  \tgithub.com/google/ax/pkg/mcp/proxy\t3.278s"
+      ],
+      "fresh_packages": [
+        "pkg/security/dnsproxy",
+        "pkg/security/egress",
+        "pkg/mcp/proxy"
+      ],
+      "cached_packages": [
+        "pkg/security/httpguard",
+        "pkg/security/snort"
+      ],
+      "packages_without_tests": [
+        "cmd/ax-dns-proxy"
+      ]
+    },
+    "python_security_suite": {
+      "exit_code": 0,
+      "methods": 132,
+      "elapsed_seconds": 4.358
+    },
+    "vet": {
+      "exit_code": 0,
+      "packages": [
+        "pkg/security/egress",
+        "pkg/mcp/proxy",
+        "cmd/ax-mcp-proxy"
+      ]
+    },
+    "build": {
+      "exit_code": 0,
+      "path": "/private/tmp/ax-mcp-proxy-disposition-verified",
+      "sha256": "cb5396400df99cb58720102d856dd00aa74a23e7af5b1ebc4bec47583ab81150"
+    },
+    "unicode_classification_audit": {
+      "python_unicode_version": "16.0.0",
+      "go_unicode_version": "17.0.0",
+      "matching_control_and_format_code_points": 235,
+      "matching_effective_control_format_and_outer_whitespace_exclusions": 254,
+      "note": "Compared classifications across every code point through U+10FFFF. Python additionally treats U+001C through U+001F as whitespace; both runtimes already reject these as controls. This is a current-runtime classification audit, not an added fuzz execution count."
+    }
+  },
+  "primary_sources": [
+    {
+      "url": "https://datatracker.ietf.org/doc/html/rfc6266#section-4.1",
+      "use": "Content-Disposition grammar, case-insensitive names, permitted whitespace and invalid duplicate parameter names."
+    },
+    {
+      "url": "https://datatracker.ietf.org/doc/html/rfc6266#section-4.3",
+      "use": "Filenames are advisory; path, control, whitespace and percent-unescaping risks require recipient care. The broker rejects selected forms rather than sanitizing them."
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc8187.html#section-3.2.1",
+      "use": "Extended-value charset/language/value syntax and percent encoding; quoted extended values are invalid. Legacy Latin-1 recipient support is described in section 3.2.2."
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1",
+      "use": "Well-formed language-tag syntax and fixed grandfathered forms; variant and singleton uniqueness are checked without registry validity claims."
+    }
+  ],
+  "limitations": [
+    "Filename exclusions, rejection rather than recovery, continuation rejection and work limits are explicit broker policy; not every rejected value is forbidden by RFC syntax.",
+    "Language well-formedness does not prove IANA registration, valid subtag prefixes or extension-specific semantics.",
+    "Admitted filenames remain untrusted metadata. This does not establish filesystem/shell safety, safe file extensions, executable-content safety or authorization to write a file.",
+    "RFC 6266 does not apply to MIME payload fields; their existing opaque Content-Disposition behavior remains separate and is not sanitized by this change.",
+    "Unicode property agreement is verified for the current Python and Go runtimes, not promised for every future runtime version.",
+    "No universal RFC/W3C conformance, deployed blocking, real-world detection rate or unknown-attack prevention guarantee follows from these checks."
+  ],
+  "source_sha256": {
+    "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "954be3633147ce684cff83fa42556fc306cf5ff204c4a70c87ebffa241233085",
+    "cmd/ax-mcp-proxy/main.go": "bc9258e886bb23ccea04ade07610cbf2cf8d51e6504ab5b1da53a95c36e7ccc8",
+    "docs/protocol-security.md": "15f8d5239e7f68e213fbc122bfc5df102fad9c663eb8bc718c1bf8aeabb280ed",
+    "go.mod": "0a18e611f01f74fa16151ffd8530c3a98763db0ee4bbc4e7e61e5d54ad651f7b",
+    "go.sum": "34e86b388cfa07abe61c863cd088738147856963c2aeed94cf3436b47bdf34be",
+    "pkg/mcp/proxy/server.go": "296f873338358cf2f09e48df41df5cb69a654eb887c90191f88288f8339539fb",
+    "pkg/security/egress/address_admission_test.go": "4e8f33483d19308cd537cb2f803bc9aaadea40081f0fc66ae74da83cf105c48a",
+    "pkg/security/egress/chunk.go": "f04fe64114a104cdc2d7c184150ae2f03a5f0c63c903bda492289cebf0992f15",
+    "pkg/security/egress/chunk_test.go": "322169a402bb36f1c66d0d4be542560f742ac55a1196bd99fea55ab6b0854dbc",
+    "pkg/security/egress/client.go": "b3996a6f7e07a1c34e82c07b0f32a48269dd1763d545e6a8835422ac10c9e1b2",
+    "pkg/security/egress/client_test.go": "a221c2c4ee87368662e81b2402d4741cfd1e6120610a4534fd6146954c708e70",
+    "pkg/security/egress/complete_range_json_test.go": "bec29f0b8f569983184b364ad3a4419082f08608fab90ff8122b843d28d03492",
+    "pkg/security/egress/conditional_test.go": "144b111768189a779a41091cd5088a8bbeb4e71cec0d14f09a9f169e9adab3c7",
+    "pkg/security/egress/content_range.go": "689fc45737f295880ca359cc1622acfd36fce777fa21faceabfe0f632901e6fa",
+    "pkg/security/egress/content_range_test.go": "0404effbed17f69b15e7569ccc88db8b2bd1eacd9052ad1cd7e06d65915399d3",
+    "pkg/security/egress/disposition.go": "89fc23ad2f13eabb58d25be7006bcbcedf049a256394695870ae2970d4da9742",
+    "pkg/security/egress/disposition_test.go": "fe6161e6d7d3ca102bdb1faf96e91467bf7927d958bdc8fccb6036b834e7a08c",
+    "pkg/security/egress/metadata.go": "b983b492c81aefa25a93a901134cc29f229eddc944a6abbb44dc0f362a68f2b6",
+    "pkg/security/egress/metadata_test.go": "4859a6b3bef7ef53e52ed56cf165ad64d3fe0cdfde7432f03c7199b7fa6610ed",
+    "pkg/security/egress/multipart_consistency_test.go": "9678b3e8333abd01ab9d1e45867894bdec532f66dba39cb7e4afea9d6ca76035",
+    "pkg/security/egress/policy.go": "4019e3b343dbaaf5dcc4c177ff51638aa91e1335c54a82aa1b74735820bf7f58",
+    "pkg/security/egress/policy_test.go": "5dc165a0fd789e1afc278ed3bd6dae5eafe0c8f8f0eee1c38f110bda25ef2447",
+    "pkg/security/egress/range_test.go": "b02684faf4de94d3e43a4079ccb38b8edc7675789d2210f426c8b6c0a19a719e",
+    "pkg/security/egress/response.go": "29b3f3b06cb8afa52e633d160e654b4ec76db716b8eff5b45086b31a067b3298",
+    "pkg/security/egress/response_conditions.go": "26790f8cd1f230ab1644688e64d730317af524f22d39547de060b8260ca90f68",
+    "pkg/security/egress/response_content.go": "8ea0c2f777eaec5f77a15b03040de5975114f6a20293633fbd40850c0efa9061",
+    "pkg/security/egress/response_correlation_test.go": "c3e61977f95988df00fd54f530eba2eaa0318c5777e15f8c1bcd5bb003244420",
+    "pkg/security/egress/response_range_correlation_test.go": "1d53c13a6424d8562f4985c68a99f04721cb65647dc1bdf5cf3d83b371c08864",
+    "pkg/security/egress/response_test.go": "bfd263d81b5f4a3f57d5bb44c8eabc5a85cd15b74c48eb72966b8d691452ca91",
+    "pkg/security/egress/testdata/content_disposition_cases.json": "e316b67a62fcfe79e5ab4f8421c4d25326f48a9c01b77a59be51adf50cadc70b",
+    "pkg/security/egress/testdata/generate_disposition_cases.py": "8f94fc17e795a6a9d8e167e6052f555ec5afc6d075cc735116d009a1560fe27e",
+    "pkg/security/egress/testdata/response_metadata_cases.json": "47ed9f72836f2b794c2cd5c7e8ddb882aae65631b1d3093f2b0b97b3c36da9e7",
+    "pkg/security/egress/wire.go": "c8b684e4ec032fbe10e0e8fb67c259aa2d952ab634f545a56b0918fdf1ba9b99",
+    "pkg/security/egress/wire_test.go": "fa62123eb01feef632446981d5acd663d7767be1fd0ccbe2f0836763711cac0d",
+    "pkg/security/httpguard/conditional.go": "5829166dd441b13b2351a56340c59cf8095fa514f8167be8de1957c941e0c1dd",
+    "pkg/security/httpguard/conditional_test.go": "34c178e40104fb3c35bac89081dccbe118068216529994aaddf73dc910447e1d",
+    "pkg/security/httpguard/content_range.go": "f1ad7c4946afc226f1ed0487a55f842dcb35cd2042979b2f4cdb3344aabb5616",
+    "pkg/security/httpguard/guard_test.go": "15c3112f5338d51e005bce376071ee1d390f5452e1a00e76933a49ed1e5f3dc8",
+    "pkg/security/httpguard/json.go": "70d992b91e4abbbfc7a3f591ea8e71c63c88e4b5708c86dd51a088b59229d1d0",
+    "pkg/security/httpguard/range.go": "28f6c4a4bc5811311ef7dcfc818365f2b18f584cae59bdb074d300782ea47023",
+    "pkg/security/httpguard/request.go": "341df651d58c81ede93cbad2027cb4c95a4c42148185847615ab2f3ca727a837",
+    "tests/test_agent_guard_import.py": "cff06b4319ab982a87f5896fec991135465426f7c5168cc6ffa06e1e889e6bdf",
+    "tests/test_ax_mcp_proxy.py": "4d75f6b7259be2f97611104174aca1b08c1510adcf283723f1b8381eb3c96938",
+    "tests/test_deadline_budget.py": "e2eafc9e7fdcbf0fa05480944f38e9ea380f6b16fc09e9b50fd979ecc58984d1",
+    "tests/test_dns_worker_lifecycle.py": "79ce1f76e6bb09ebaec11829428335dde56feb088b96ca4e5c6707fba370da9e",
+    "tests/test_http_protocol.py": "d231da87a15a30133afb3d67a2f47dcf64320744c564a103b269c6d954e09cb7",
+    "tests/test_response_disposition.py": "d9f4026eabf3edbee972a7395af96204e3d4b48e18dc5ab45017d40221c1862c",
+    "tests/test_snort_rules.py": "d65104037664c173248fc48512aec0f3b23fc730dd2592c250089b2c916611a6"
+  },
+  "logs": {
+    "go_focused_before": {
+      "path": "/private/tmp/ax-disposition-go-before.jsonl",
+      "sha256": "73710f623b2379c1d06921cad1d36645dc65bbaa920e2b4cc176fd906f822dc2"
+    },
+    "go_focused_after": {
+      "path": "/private/tmp/ax-disposition-go-after.jsonl",
+      "sha256": "f3379777396d0a67230c233dc58b889b4d22f08ae608d8d2bdd72fbdf3a5b5ff"
+    },
+    "python_focused_before": {
+      "path": "/private/tmp/ax-disposition-python-before.json",
+      "sha256": "cae2d7abe6869c626fd71c0f9b0aaa5d7f9962a22fb6d0288e8c226c4684bedc"
+    },
+    "python_focused_after": {
+      "path": "/private/tmp/ax-disposition-python-after.json",
+      "sha256": "39e98e5a9aed2596ff78fcf6ba0b1e8e7840dfd805034b8ded9c9a4659769198"
+    },
+    "go_security_race": {
+      "path": "/private/tmp/ax-disposition-go-full.txt",
+      "sha256": "14c398bcdd49fa048675a7aa5bc743f22802eae9c8e11a4994a68e68f72de53c"
+    },
+    "python_security_suite": {
+      "path": "/private/tmp/ax-disposition-python-full.txt",
+      "sha256": "65611dc0367a1df73d7e4147a430c46a36dc60e479d528293652d6a190d995b2"
+    },
+    "vet": {
+      "path": "/private/tmp/ax-disposition-go-vet.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "build": {
+      "path": "/private/tmp/ax-disposition-go-build.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "python_focused_runner": {
+      "path": "/private/tmp/ax-disposition-runner.py",
+      "sha256": "29d98c9ef665b640ce36cc1bcee0e2b14d91a155a8777b3d3940df747d03f208"
+    },
+    "baseline_sources": {
+      "path": "/private/tmp/ax-disposition-baseline-source.json",
+      "sha256": "007409c6d2efb4b34e462e72f77486e91bec08daff0f76edc8a946018c04e221"
+    },
+    "unicode_python": {
+      "path": "/private/tmp/ax-disposition-unicode-python.json",
+      "sha256": "75fe82b6825f3becb75d7ce04438952b628e4d5cb67d3ddca1633c1930a353a5"
+    },
+    "unicode_go": {
+      "path": "/private/tmp/ax-disposition-unicode-go.json",
+      "sha256": "7c0607ebcc49712f9a775b36910a62c30098ecc79ca1dcb93e55cc0a30b68be1"
+    },
+    "unicode_go_probe": {
+      "path": "/private/tmp/ax-disposition-unicode.go",
+      "sha256": "639a9740b530d08e173f7ba71312b34fe559d951fa804f544bf3788e80a04f44"
+    }
+  }
+}

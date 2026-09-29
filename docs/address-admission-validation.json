@@ -1,0 +1,527 @@
+{
+  "as_of": "2026-09-27",
+  "scope": "Public destination-address policy and whole resolver-result admission in the Go/Python HTTP brokers. Resolver answers and sockets are simulated; no live destination or DNS attack is exercised.",
+  "changes": {
+    "python": "Reject more than 64 resolver addresses before validating/connecting, counting duplicate entries. Reject IPv6 values carrying scope identifiers in the public-address predicate.",
+    "go": "Existing rejection behavior retained; replace the literal 64 with the named MaxResolvedAddresses constant. No prefix exclusions changed in either runtime."
+  },
+  "shared_fixture": {
+    "path": "pkg/security/egress/testdata/address_admission_cases.json",
+    "sha256": "d017fc1052e5a4978197aa0d52051ef525200c40f07ec008bef8057cf63a492e",
+    "generator": "pkg/security/egress/testdata/generate_address_admission.py",
+    "generator_sha256": "488caa17fb4ce01269c0d5a2eac790b1c02b32ebde55f7a1995ab50b540e22e5",
+    "generator_reproducibility": "passed; checked against saved CSV snapshots with output in a separate temporary file",
+    "cases": 291,
+    "address_cases": {
+      "cases": 254,
+      "accepted_controls": 52,
+      "denied": 202
+    },
+    "resolver_cases": {
+      "cases": 37,
+      "accepted_controls": 13,
+      "denied": 24
+    },
+    "runtimes": [
+      "Go",
+      "Python"
+    ],
+    "result": "passed",
+    "counting": "Count each generated boundary/answer-set case once across runtimes and reruns. Addresses are deduplicated across registry rows; resolver answer vectors are also unique."
+  },
+  "baseline": {
+    "go_cases_passed": 291,
+    "python_unexpected_acceptances": 18,
+    "python_address_predicate_acceptances": 4,
+    "python_resolver_acceptances": {
+      "oversized": 11,
+      "scoped": 3
+    },
+    "reproduced_cases": [
+      "v4-65",
+      "v4-128",
+      "v4-1024",
+      "v6-65",
+      "v6-128",
+      "v6-1024",
+      "mixed-65",
+      "mixed-128",
+      "mixed-1024",
+      "v4-duplicates-65",
+      "v6-duplicates-65",
+      "scoped-v6-at-0",
+      "scoped-v6-at-31",
+      "scoped-v6-at-63",
+      "address-190",
+      "address-191",
+      "address-192",
+      "address-193"
+    ],
+    "source_sha256": {
+      "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "5a0dce04c2792b206fe056eb63e47c8858833ad0a294361fe1c668e9a73720ee",
+      "pkg/security/egress/policy.go": "4019e3b343dbaaf5dcc4c177ff51638aa91e1335c54a82aa1b74735820bf7f58",
+      "pkg/security/egress/client.go": "8be57ecc9879e98c576797d565bfdc0bcf442b19a0516446cd6840bfd72a4a0c",
+      "pkg/security/egress/address_admission_test.go": "4e8f33483d19308cd537cb2f803bc9aaadea40081f0fc66ae74da83cf105c48a",
+      "pkg/security/egress/testdata/address_admission_cases.json": "d017fc1052e5a4978197aa0d52051ef525200c40f07ec008bef8057cf63a492e",
+      "pkg/security/egress/testdata/generate_address_admission.py": "6a9d984b5b6c9e6fdb87496f33fc0f497bac24198b465a6087c9ee367771027c",
+      "tests/test_http_protocol.py": "7f2a894ffc98a664e720872c3d18316221e4aa179454c7098be52c90579b4379"
+    }
+  },
+  "registry_audit": {
+    "snapshots": [
+      {
+        "path": "pkg/security/egress/testdata/iana-ipv4-special-registry.csv",
+        "url": "https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry-1.csv",
+        "sha256": "e3e39e76d00b1677335db8e9a805c7b9480ea2f4dc9e33f0b93cd3a905128d73",
+        "rows": 25,
+        "prefixes": [
+          "0.0.0.0/8",
+          "0.0.0.0/32",
+          "10.0.0.0/8",
+          "100.64.0.0/10",
+          "127.0.0.0/8",
+          "169.254.0.0/16",
+          "172.16.0.0/12",
+          "192.0.0.0/24",
+          "192.0.0.0/29",
+          "192.0.0.8/32",
+          "192.0.0.9/32",
+          "192.0.0.10/32",
+          "192.0.0.170/32",
+          "192.0.0.171/32",
+          "192.0.2.0/24",
+          "192.31.196.0/24",
+          "192.52.193.0/24",
+          "192.88.99.0/24",
+          "192.88.99.2/32",
+          "192.168.0.0/16",
+          "192.175.48.0/24",
+          "198.18.0.0/15",
+          "198.51.100.0/24",
+          "203.0.113.0/24",
+          "240.0.0.0/4",
+          "255.255.255.255/32"
+        ],
+        "registry_last_updated": "2025-10-09",
+        "retrieved": "2026-09-27"
+      },
+      {
+        "path": "pkg/security/egress/testdata/iana-ipv6-special-registry.csv",
+        "url": "https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry-1.csv",
+        "sha256": "775feea0621dec8735a44fbf30f762e721e8f0a1b3ab7eb341961a88cfce2139",
+        "rows": 25,
+        "prefixes": [
+          "::1/128",
+          "::/128",
+          "::ffff:0.0.0.0/96",
+          "64:ff9b::/96",
+          "64:ff9b:1::/48",
+          "100::/64",
+          "100:0:0:1::/64",
+          "2001::/23",
+          "2001::/32",
+          "2001:1::1/128",
+          "2001:1::2/128",
+          "2001:1::3/128",
+          "2001:2::/48",
+          "2001:3::/32",
+          "2001:4:112::/48",
+          "2001:10::/28",
+          "2001:20::/28",
+          "2001:30::/28",
+          "2001:db8::/32",
+          "2002::/16",
+          "2620:4f:8000::/48",
+          "3fff::/20",
+          "5f00::/16",
+          "fc00::/7",
+          "fe80::/10"
+        ],
+        "registry_last_updated": "2025-10-09",
+        "retrieved": "2026-09-27"
+      }
+    ],
+    "registered_prefixes": 51,
+    "result": "both tables cover every full registered prefix",
+    "method": "For each prefix, prove it is contained in an explicit same-family exclusion, or is an IPv6 prefix wholly outside the eligible 2000::/3 range. Review both predicate implementations and additionally execute boundary cases.",
+    "coverage": [
+      {
+        "prefix": "0.0.0.0/8",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "0.0.0.0/32",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "10.0.0.0/8",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "100.64.0.0/10",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "127.0.0.0/8",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "169.254.0.0/16",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "172.16.0.0/12",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "192.0.0.0/24",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "192.0.0.0/29",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "192.0.0.8/32",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "192.0.0.9/32",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "192.0.0.10/32",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "192.0.0.170/32",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "192.0.0.171/32",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "192.0.2.0/24",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "192.31.196.0/24",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "192.52.193.0/24",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "192.88.99.0/24",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "192.88.99.2/32",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "192.168.0.0/16",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "192.175.48.0/24",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "198.18.0.0/15",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "198.51.100.0/24",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "203.0.113.0/24",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "240.0.0.0/4",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "255.255.255.255/32",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "::1/128",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "::/128",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "::ffff:0.0.0.0/96",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "64:ff9b::/96",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "64:ff9b:1::/48",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "100::/64",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "100:0:0:1::/64",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "2001::/23",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "2001::/32",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "2001:1::1/128",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "2001:1::2/128",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "2001:1::3/128",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "2001:2::/48",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "2001:3::/32",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "2001:4:112::/48",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "2001:10::/28",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "2001:20::/28",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "2001:30::/28",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "2001:db8::/32",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "2002::/16",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "2620:4f:8000::/48",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "3fff::/20",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "5f00::/16",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "fc00::/7",
+        "go_covered": true,
+        "python_covered": true
+      },
+      {
+        "prefix": "fe80::/10",
+        "go_covered": true,
+        "python_covered": true
+      }
+    ]
+  },
+  "policy": {
+    "answer_count": "One through 64 resolver entries, including duplicates. Reject empty/oversized sets before any destination socket is created; do not silently truncate.",
+    "address_set": "Validate the entire set before the first dial; private, special-purpose, mapped, multicast and scoped values deny the set. Numeric addresses and the approved port remain pinned.",
+    "registry": "Exclude every listed IANA special-purpose assignment, even globally reachable ones, plus multicast and the Azure platform address. IPv6 eligibility is additionally limited to 2000::/3.",
+    "compatibility": "Retain IPv4, IPv6 and mixed-family sets at the count boundary and ordinary public neighbors of excluded ranges. Validated sets preserve the selected numeric destination and requested port.",
+    "interpretation": "The 64-entry ceiling and public/unscoped-only policy are local restrictions; valid DNS responses and IP scopes can exist outside this broker profile."
+  },
+  "checks": {
+    "go_race": {
+      "result": "passed",
+      "command": "go test -race ./pkg/security/dnsproxy ./cmd/ax-dns-proxy ./pkg/security/egress ./pkg/security/httpguard ./pkg/security/snort ./pkg/mcp/proxy",
+      "fresh_packages": [
+        "./pkg/security/egress",
+        "./pkg/mcp/proxy"
+      ],
+      "cached_packages": [
+        "./pkg/security/dnsproxy",
+        "./pkg/security/httpguard",
+        "./pkg/security/snort"
+      ],
+      "no_test_files": [
+        "./cmd/ax-dns-proxy"
+      ]
+    },
+    "python_security_suite": {
+      "result": "passed",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests",
+      "test_methods": 111,
+      "python_version": "3.14.7"
+    },
+    "go_vet": {
+      "result": "passed",
+      "packages": [
+        "./pkg/security/dnsproxy",
+        "./cmd/ax-dns-proxy",
+        "./pkg/security/egress",
+        "./pkg/security/httpguard",
+        "./pkg/security/snort",
+        "./pkg/mcp/proxy"
+      ]
+    },
+    "go_build": {
+      "result": "passed",
+      "package": "./cmd/ax-mcp-proxy",
+      "artifact": "/private/tmp/ax-mcp-proxy-address-admission-verified",
+      "sha256": "c72e7f1c38dd5d6d5ed471f77de933a892efe567fd30ed9ec8dcd96adc9ce027"
+    },
+    "format_and_diff": {
+      "gofmt": "passed",
+      "git_diff_check": "passed"
+    }
+  },
+  "source_sha256": {
+    "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "6f032250af4da942d456dc2a9cb6b611a1874ffcc77ebe03c3eda79fa65e0920",
+    "docs/protocol-security.md": "dc1e8a912b799e430f401b3e0679b72a32f1b801b07858b4449c509e64745d37",
+    "pkg/mcp/proxy/conditional_test.go": "89b5ba5e25ace389c973c70e823e3a5efb15f1ddc433a7d33f0b7dcf9ca4405f",
+    "pkg/mcp/proxy/content_range_test.go": "50d368f816ed76ba8bc60d3ce89678875d68e0ef0650f108664f67dd42da1a4d",
+    "pkg/mcp/proxy/protocol.go": "09e39b66f31f289d6b08e46c61a84a3a609fe5976da916dc9c0d329c849928c8",
+    "pkg/mcp/proxy/protocol_test.go": "6f3639a095b2bd743e11a0b63cf590925d1ac0937895ed61ff13891a9b4ef179",
+    "pkg/mcp/proxy/range_test.go": "a8317dfb30d9dda210de9f97eb8cf17eeb2d325931c250e41658d1969e1a0af9",
+    "pkg/mcp/proxy/response_json_test.go": "e98876e4b68f2d7584cf02930cca5a3d18b316783aff9a4cd314eca269c637c9",
+    "pkg/mcp/proxy/server.go": "296f873338358cf2f09e48df41df5cb69a654eb887c90191f88288f8339539fb",
+    "pkg/mcp/proxy/server_test.go": "058079b9fabb3789ecc2d5ac43fc6ebb18a538ee81713c561690172641d31111",
+    "pkg/security/egress/address_admission_test.go": "4e8f33483d19308cd537cb2f803bc9aaadea40081f0fc66ae74da83cf105c48a",
+    "pkg/security/egress/chunk.go": "f04fe64114a104cdc2d7c184150ae2f03a5f0c63c903bda492289cebf0992f15",
+    "pkg/security/egress/chunk_test.go": "322169a402bb36f1c66d0d4be542560f742ac55a1196bd99fea55ab6b0854dbc",
+    "pkg/security/egress/client.go": "b3996a6f7e07a1c34e82c07b0f32a48269dd1763d545e6a8835422ac10c9e1b2",
+    "pkg/security/egress/client_test.go": "a221c2c4ee87368662e81b2402d4741cfd1e6120610a4534fd6146954c708e70",
+    "pkg/security/egress/conditional_test.go": "144b111768189a779a41091cd5088a8bbeb4e71cec0d14f09a9f169e9adab3c7",
+    "pkg/security/egress/content_range.go": "3b89a27e364490df13c59a8cdb3a80d55054b1be82ed7fa64570a74a69032b04",
+    "pkg/security/egress/content_range_test.go": "0404effbed17f69b15e7569ccc88db8b2bd1eacd9052ad1cd7e06d65915399d3",
+    "pkg/security/egress/metadata.go": "adb89d29e455c72594ca8f63ee5378e2c70d28e93241058653b033eb50d84017",
+    "pkg/security/egress/metadata_test.go": "4859a6b3bef7ef53e52ed56cf165ad64d3fe0cdfde7432f03c7199b7fa6610ed",
+    "pkg/security/egress/multipart_consistency_test.go": "9678b3e8333abd01ab9d1e45867894bdec532f66dba39cb7e4afea9d6ca76035",
+    "pkg/security/egress/policy.go": "4019e3b343dbaaf5dcc4c177ff51638aa91e1335c54a82aa1b74735820bf7f58",
+    "pkg/security/egress/policy_test.go": "5dc165a0fd789e1afc278ed3bd6dae5eafe0c8f8f0eee1c38f110bda25ef2447",
+    "pkg/security/egress/range_test.go": "b02684faf4de94d3e43a4079ccb38b8edc7675789d2210f426c8b6c0a19a719e",
+    "pkg/security/egress/response.go": "29b3f3b06cb8afa52e633d160e654b4ec76db716b8eff5b45086b31a067b3298",
+    "pkg/security/egress/response_conditions.go": "26790f8cd1f230ab1644688e64d730317af524f22d39547de060b8260ca90f68",
+    "pkg/security/egress/response_content.go": "7fc2f3bc4569d9834ab96158abe05417c37d255dc16c4eefd177c5b4a5786806",
+    "pkg/security/egress/response_correlation_test.go": "c3e61977f95988df00fd54f530eba2eaa0318c5777e15f8c1bcd5bb003244420",
+    "pkg/security/egress/response_range_correlation_test.go": "1d53c13a6424d8562f4985c68a99f04721cb65647dc1bdf5cf3d83b371c08864",
+    "pkg/security/egress/response_test.go": "bfd263d81b5f4a3f57d5bb44c8eabc5a85cd15b74c48eb72966b8d691452ca91",
+    "pkg/security/egress/testdata/address_admission_cases.json": "d017fc1052e5a4978197aa0d52051ef525200c40f07ec008bef8057cf63a492e",
+    "pkg/security/egress/testdata/content_range_responses.json": "09dacea1db4133ab5bc2ccf0517472ad7b4378a99b78feb4ab4ac4ceabb81a95",
+    "pkg/security/egress/testdata/generate_address_admission.py": "488caa17fb4ce01269c0d5a2eac790b1c02b32ebde55f7a1995ab50b540e22e5",
+    "pkg/security/egress/testdata/generate_multipart_consistency.py": "9ae0040527668b81dac52d76ba2b15a7d03e9c1c85ff402bbe37bb013e51e780",
+    "pkg/security/egress/testdata/iana-ipv4-special-registry.csv": "e3e39e76d00b1677335db8e9a805c7b9480ea2f4dc9e33f0b93cd3a905128d73",
+    "pkg/security/egress/testdata/iana-ipv6-special-registry.csv": "775feea0621dec8735a44fbf30f762e721e8f0a1b3ab7eb341961a88cfce2139",
+    "pkg/security/egress/testdata/multipart_consistency_cases.json": "d0dddb7490d6f743d7601fc4feb0af46d95a9c487f1a4596d18dc0a5ae638375",
+    "pkg/security/egress/testdata/response_range_correlation_cases.json": "4ec098f63c74876abc74403812bcd33b00a1c1bdd789577488f09453b546c475",
+    "pkg/security/egress/wire.go": "c8b684e4ec032fbe10e0e8fb67c259aa2d952ab634f545a56b0918fdf1ba9b99",
+    "pkg/security/egress/wire_test.go": "fa62123eb01feef632446981d5acd663d7767be1fd0ccbe2f0836763711cac0d",
+    "pkg/security/httpguard/conditional.go": "5829166dd441b13b2351a56340c59cf8095fa514f8167be8de1957c941e0c1dd",
+    "pkg/security/httpguard/conditional_test.go": "34c178e40104fb3c35bac89081dccbe118068216529994aaddf73dc910447e1d",
+    "pkg/security/httpguard/content_range.go": "f1ad7c4946afc226f1ed0487a55f842dcb35cd2042979b2f4cdb3344aabb5616",
+    "pkg/security/httpguard/guard_test.go": "15c3112f5338d51e005bce376071ee1d390f5452e1a00e76933a49ed1e5f3dc8",
+    "pkg/security/httpguard/json.go": "70d992b91e4abbbfc7a3f591ea8e71c63c88e4b5708c86dd51a088b59229d1d0",
+    "pkg/security/httpguard/range.go": "28f6c4a4bc5811311ef7dcfc818365f2b18f584cae59bdb074d300782ea47023",
+    "pkg/security/httpguard/request.go": "341df651d58c81ede93cbad2027cb4c95a4c42148185847615ab2f3ca727a837",
+    "tests/test_http_protocol.py": "7f2a894ffc98a664e720872c3d18316221e4aa179454c7098be52c90579b4379"
+  },
+  "local_log_sha256": {
+    "/private/tmp/ax-address-admission-go-before.jsonl": "c7691f1cc7f6a2d5fff5a60c8b5814516ec6223cfef5250daf88fcd466ef0d63",
+    "/private/tmp/ax-address-admission-python-before.txt": "50d335e6e5d166bd700235e8c54624c4bb059aaa1aa8ec1ddd91b762c932d232",
+    "/private/tmp/ax-address-admission-go-after.jsonl": "aca8a14e9b8c39944f32131681f0d91fdbdd150400e4cac2bded6fc5c0af914f",
+    "/private/tmp/ax-address-admission-python-after.txt": "279538fe812d165bb22f5a84ab94b40efa9072957816601b6c80f1ba281fa35e",
+    "/private/tmp/ax-address-admission-go-full.txt": "bc85f5cfa359fc749a7c1a92e68dbb905b32a31a03f3bf706ab8fcd1d773004f",
+    "/private/tmp/ax-address-admission-python-full.txt": "1978be5607bd26affe22fbc4207f6b8f1a8a62d76b8791dd9767736b10a1db9d"
+  },
+  "references": [
+    "https://www.iana.org/assignments/iana-ipv4-special-registry/",
+    "https://www.iana.org/assignments/iana-ipv6-special-registry/",
+    "https://docs.python.org/3/library/socket.html#socket.getaddrinfo"
+  ],
+  "limits": [
+    "Scope strings are tested at the resolver/library interface. They are not a field that can be inserted into raw DNS AAAA RDATA; this is a consistency check, not proof of a remote DNS scope-injection exploit.",
+    "The count check occurs after the system resolver returns. It cannot bound allocations or all work inside libc/NSS or the Go resolver; existing deadline/concurrency controls remain separate.",
+    "The registry snapshots were fetched on 2026-09-27 and are not automatically refreshed. Local routing, custom NAT64 prefixes, service ownership and reachability are not determined by registry membership.",
+    "No Snort SID was added. The DNS wire fuzz and native packet suites remain historical and were not rerun for this change.",
+    "Full RFC/W3C compliance, universal unknown-attack prevention and deployed route enforcement remain unproved."
+  ]
+}

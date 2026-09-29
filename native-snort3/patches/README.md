@@ -108,3 +108,9 @@ Remaining limitations are explicit:
   the packet they actually emit.
 - These local tests cannot prove live deployment enforcement, full Mobile
   IPv6 compliance, or prevention of unknown attacks.
+
+The latest cumulative build applies the [TCP timestamp and SYN-data repair](tcp-timestamps.md)
+after the [fragment identity repair](fragment-identity.md). It preserves all
+preceding source repairs and corrects timestamp negotiation, zero/wrapping clock
+handling and opening-data sequence tracking. Its build and replay evidence are
+linked from that document; this original Type 2 record remains historical.

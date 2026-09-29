@@ -1,0 +1,108 @@
+--- a/src/stream/tcp/tcp_normalizer.cc
++++ b/src/stream/tcp/tcp_normalizer.cc
+@@ -39,6 +39,12 @@
+ TcpNormalizer::NormStatus TcpNormalizer::apply_normalizations(
+     TcpNormalizerState& tns, TcpSegmentDescriptor& tsd, uint32_t seq, bool stream_is_inorder)
+ {
++    // The opening SYN precedes any advertised peer receive window.
++    // Configured SYN-payload trimming already runs before this path;
++    // queue permitted data without inventing a zero peer window.
++    if ( tsd.get_tcph()->is_syn_only() )
++        return NORM_OK;
++
+     // drop packet if sequence num is invalid
+     ValidSeqStatus invalid_seq = tns.tracker->is_segment_seq_valid(tsd);
+     if (invalid_seq)
+@@ -466,7 +472,9 @@
+     TcpNormalizerState& tns, TcpSegmentDescriptor& tsd)
+ {
+     const uint32_t peer_ts_last = tns.peer_tracker->get_ts_last();
+-    if ( peer_ts_last && ( ( (int)( ( tsd.get_timestamp() - peer_ts_last ) + tns.paws_ts_fudge ) ) < 0 ) )
++    // RFC 7323 serial arithmetic: zero is a real clock value, and a
++    // one-tick backward step is still older. Do not apply OS tolerances.
++    if ( ( (tsd.get_timestamp() - peer_ts_last) & 0x80000000u ) != 0 )
+     {
+         if ( tsd.get_pkt()->is_retry() )
+         {
+@@ -509,12 +517,9 @@
+     tns.tcp_ts_flags = get_tcp_timestamp(tns, tsd, false);
+     if ( tns.tcp_ts_flags )
+     {
+-        bool check_ts = is_paws_ts_checked_required(tns, tsd);
+-
+-        if ( check_ts )
+-            return validate_paws_timestamp(tns, tsd);
+-        else
+-            return ACTION_NOTHING;
++        // Negotiation depends on option presence, not its clock value.
++        // Historical OS zero-value quirks must not revoke protection.
++        return validate_paws_timestamp(tns, tsd);
+     }
+     else
+     {
+@@ -535,6 +540,16 @@
+ int TcpNormalizer::handle_paws_no_timestamps(
+     TcpNormalizerState& tns, TcpSegmentDescriptor& tsd)
+ {
++    // RFC 7323 section 3.2: an option outside a negotiated handshake
++    // is ignored. In particular it cannot enable late PAWS tracking,
++    // trigger zero-value rejection, or rewrite the packet options.
++    if ( !tsd.get_tcph()->is_syn() )
++    {
++        tns.tcp_ts_flags = TF_NONE;
++        tsd.set_timestamp(0);
++        return ACTION_NOTHING;
++    }
++
+     tns.tcp_ts_flags = get_tcp_timestamp(tns, tsd, true);
+     if (tns.tcp_ts_flags)
+     {
+--- a/src/stream/tcp/tcp_session.cc
++++ b/src/stream/tcp/tcp_session.cc
+@@ -1012,7 +1012,11 @@
+             else
+                 flow->set_session_flags(SSNFLAG_SEEN_SERVER);
+ 
+-            check_flow_missed_3whs();
++            // Data on the opening SYN (for example TCP Fast Open)
++            // is not evidence of a missed handshake. Downgrading
++            // here would disable PAWS for the whole connection.
++            if ( !tsd.get_tcph()->is_syn_only() )
++                check_flow_missed_3whs();
+             set_no_ack(tcp_config->no_ack);
+         }
+ 
+--- a/src/stream/tcp/tcp_stream_tracker.cc
++++ b/src/stream/tcp/tcp_stream_tracker.cc
+@@ -637,7 +637,9 @@
+ void TcpStreamTracker::finish_client_init(const TcpSegmentDescriptor& tsd)
+ {
+     Flow* flow = tsd.get_flow();
+-    rcv_nxt = tsd.get_end_seq();
++    // SYN data is validated and queued after handshake state setup.
++    // Advancing over it here misclassifies that data as a duplicate.
++    rcv_nxt = tsd.get_tcph()->is_syn() ? tsd.get_seq() + 1 : tsd.get_end_seq();
+ 
+     if ( seglist.data_was_queued() )
+         return;  // we already have state, don't mess it up
+@@ -649,7 +651,7 @@
+         else
+             seglist.set_seglist_base_seq(tsd.get_seq());
+ 
+-        r_win_base = tsd.get_end_seq();
++        r_win_base = rcv_nxt;
+     }
+     else
+     {
+--- a/src/stream/tcp/tcp_state_syn_recv.cc
++++ b/src/stream/tcp/tcp_state_syn_recv.cc
+@@ -87,6 +87,9 @@
+ {
+     trk.finish_server_init(tsd);
+     trk.normalizer.ecn_tracker(tsd.get_tcph());
++    // Account for the SYN-ACK acknowledgement of opening data.
++    // PAWS updates use this last-ACK boundary on later segments.
++    trk.update_tracker_ack_sent(tsd);
+ 
+     return true;
+ }

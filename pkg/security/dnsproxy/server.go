@@ -35,8 +35,9 @@ func (p *Proxy) ListenAndServe(ctx context.Context, address string) error {
 	return p.Serve(ctx, udp, tcp)
 }
 
-// Serve owns its listeners. Both transports share a bounded worker pool, source
-// admission and rate budget. TCP uses RFC 1035 length framing and supports
+// Serve owns its listeners. Each transport has reserved worker capacity within
+// the aggregate limit, with shared source admission and rate budget.
+// TCP uses RFC 1035 length framing and supports
 // sequential/pipelined queries with bounded idle and total connection lifetimes.
 func (p *Proxy) Serve(ctx context.Context, udp net.PacketConn, tcp net.Listener) error {
 	ctx, cancel := context.WithCancel(ctx)
@@ -46,7 +47,8 @@ func (p *Proxy) Serve(ctx context.Context, udp net.PacketConn, tcp net.Listener)
 	defer stop()
 	stopContext := context.AfterFunc(ctx, stop)
 	defer stopContext()
-	workers := make(chan struct{}, MaxWorkers)
+	udpWorkers := make(chan struct{}, MaxUDPWorkers)
+	tcpWorkers := make(chan struct{}, MaxTCPConnections)
 	var active sync.WaitGroup
 	errorsCh := make(chan error, 2)
 	active.Go(func() {
@@ -62,14 +64,14 @@ func (p *Proxy) Serve(ctx context.Context, udp net.PacketConn, tcp net.Listener)
 				continue
 			}
 			select {
-			case workers <- struct{}{}:
+			case udpWorkers <- struct{}{}:
 			default:
 				p.denied.Add(1)
 				continue
 			}
 			data := append([]byte(nil), buf[:n]...)
 			active.Go(func() {
-				defer func() { <-workers }()
+				defer func() { <-udpWorkers }()
 				if response := p.Answer(data, false); response != nil {
 					_, _ = udp.WriteTo(response, addr)
 				}
@@ -89,14 +91,14 @@ func (p *Proxy) Serve(ctx context.Context, udp net.PacketConn, tcp net.Listener)
 				continue
 			}
 			select {
-			case workers <- struct{}{}:
+			case tcpWorkers <- struct{}{}:
 			default:
 				p.denied.Add(1)
 				conn.Close()
 				continue
 			}
 			active.Go(func() {
-				defer func() { <-workers }()
+				defer func() { <-tcpWorkers }()
 				defer conn.Close()
 				cancelConn := context.AfterFunc(ctx, func() { conn.Close() })
 				defer cancelConn()

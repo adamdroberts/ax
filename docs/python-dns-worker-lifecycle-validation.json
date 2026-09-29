@@ -1,0 +1,247 @@
+{
+  "as_of": "2026-09-27",
+  "scope": "Python DNS worker capacity ownership across object construction, slot acquisition, worker startup, caller cancellation and worker completion. Two local kernel alarms and otherwise controlled handler/error injection with fake DNS resolution; no live remote exploit or deployment test.",
+  "changes": [
+    "Construct the completion event, result container and thread object before reserving resolver capacity.",
+    "Record deadline expiry immediately but defer its exception on the main thread during slot acquisition and worker startup, so ownership reaches either a failed-start cleanup or the running worker before cancellation propagates.",
+    "A running worker retains its slot until name resolution finishes; caller timeout never releases an in-flight worker slot. Capture the same semaphore instance for acquisition and release.",
+    "Preserve public deadline errors, startup failure cleanup, four-slot capacity, main-thread-only timer ownership and literal-address behavior."
+  ],
+  "baseline": {
+    "passing_cases": 11,
+    "failing_cases": 9,
+    "failures_by_method": {
+      "test_alarm_during_unstarted_setup_releases_capacity": 4,
+      "test_ordinary_setup_failure_releases_capacity": 1,
+      "test_real_alarm_during_slot_acquire_releases_capacity": 1,
+      "test_real_alarm_during_thread_construction_releases_capacity": 1,
+      "test_repeated_setup_interruptions_do_not_exhaust_dns_capacity": 1,
+      "test_start_failure_with_pending_alarm_releases_capacity": 1
+    },
+    "source_sha256": {
+      "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "6ace543cb04ce4da24708f3967a0306a70e0a27799baecd1940e58951d79183e",
+      "tests/test_dns_worker_lifecycle.py": "79ce1f76e6bb09ebaec11829428335dde56feb088b96ca4e5c6707fba370da9e"
+    },
+    "reproduction": "Cancellation after a slot was consumed but before a worker could release it stranded capacity. Four repeated interrupted constructors consumed all four slots; the next four attempts failed with capacity exhaustion instead of the injected deadline. Event construction failure also leaked a slot."
+  },
+  "regressions": {
+    "path": "tests/test_dns_worker_lifecycle.py",
+    "methods": 9,
+    "cases": 20,
+    "passing_cases": [
+      {
+        "test": "test_dns_worker_lifecycle.TestDNSWorkerLifecycle.test_alarm_after_start_retains_capacity_until_worker_finishes",
+        "parameters": {
+          "resolver_fails": false
+        }
+      },
+      {
+        "test": "test_dns_worker_lifecycle.TestDNSWorkerLifecycle.test_alarm_after_start_retains_capacity_until_worker_finishes",
+        "parameters": {
+          "resolver_fails": true
+        }
+      },
+      {
+        "test": "test_dns_worker_lifecycle.TestDNSWorkerLifecycle.test_alarm_during_completion_wait_retains_worker_capacity",
+        "parameters": {
+          "resolver_fails": false
+        }
+      },
+      {
+        "test": "test_dns_worker_lifecycle.TestDNSWorkerLifecycle.test_alarm_during_completion_wait_retains_worker_capacity",
+        "parameters": {
+          "resolver_fails": true
+        }
+      },
+      {
+        "test": "test_dns_worker_lifecycle.TestDNSWorkerLifecycle.test_alarm_during_unstarted_setup_releases_capacity",
+        "parameters": {
+          "stage": "event-construction"
+        }
+      },
+      {
+        "test": "test_dns_worker_lifecycle.TestDNSWorkerLifecycle.test_alarm_during_unstarted_setup_releases_capacity",
+        "parameters": {
+          "stage": "thread-construction"
+        }
+      },
+      {
+        "test": "test_dns_worker_lifecycle.TestDNSWorkerLifecycle.test_alarm_during_unstarted_setup_releases_capacity",
+        "parameters": {
+          "stage": "after-slot-acquire"
+        }
+      },
+      {
+        "test": "test_dns_worker_lifecycle.TestDNSWorkerLifecycle.test_alarm_during_unstarted_setup_releases_capacity",
+        "parameters": {
+          "stage": "before-thread-start"
+        }
+      },
+      {
+        "test": "test_dns_worker_lifecycle.TestDNSWorkerLifecycle.test_capacity_bound_and_recovery",
+        "parameters": {
+          "case": "ipv4-literal"
+        }
+      },
+      {
+        "test": "test_dns_worker_lifecycle.TestDNSWorkerLifecycle.test_capacity_bound_and_recovery",
+        "parameters": {
+          "case": "ipv6-literal"
+        }
+      },
+      {
+        "test": "test_dns_worker_lifecycle.TestDNSWorkerLifecycle.test_capacity_bound_and_recovery",
+        "parameters": {
+          "case": "capacity-exhausted"
+        }
+      },
+      {
+        "test": "test_dns_worker_lifecycle.TestDNSWorkerLifecycle.test_capacity_bound_and_recovery",
+        "parameters": {
+          "case": "lookup-error"
+        }
+      },
+      {
+        "test": "test_dns_worker_lifecycle.TestDNSWorkerLifecycle.test_capacity_bound_and_recovery",
+        "parameters": {
+          "case": "lookup-success"
+        }
+      },
+      {
+        "test": "test_dns_worker_lifecycle.TestDNSWorkerLifecycle.test_ordinary_setup_failure_releases_capacity",
+        "parameters": {
+          "stage": "event-construction"
+        }
+      },
+      {
+        "test": "test_dns_worker_lifecycle.TestDNSWorkerLifecycle.test_ordinary_setup_failure_releases_capacity",
+        "parameters": {
+          "stage": "thread-construction"
+        }
+      },
+      {
+        "test": "test_dns_worker_lifecycle.TestDNSWorkerLifecycle.test_ordinary_setup_failure_releases_capacity",
+        "parameters": {
+          "stage": "thread-start"
+        }
+      },
+      {
+        "test": "test_dns_worker_lifecycle.TestDNSWorkerLifecycle.test_real_alarm_during_slot_acquire_releases_capacity",
+        "parameters": {
+          "stage": "kernel-alarm-after-slot-consumption"
+        }
+      },
+      {
+        "test": "test_dns_worker_lifecycle.TestDNSWorkerLifecycle.test_real_alarm_during_thread_construction_releases_capacity",
+        "parameters": {
+          "stage": "kernel-alarm-in-thread-construction"
+        }
+      },
+      {
+        "test": "test_dns_worker_lifecycle.TestDNSWorkerLifecycle.test_repeated_setup_interruptions_do_not_exhaust_dns_capacity",
+        "parameters": {
+          "case": "eight-interruptions-four-slots"
+        }
+      },
+      {
+        "test": "test_dns_worker_lifecycle.TestDNSWorkerLifecycle.test_start_failure_with_pending_alarm_releases_capacity",
+        "parameters": {
+          "stage": "alarm-and-start-failure"
+        }
+      }
+    ],
+    "checks": [
+      "Deadline injection during event/thread construction, after semaphore consumption, and before worker handoff preserves capacity.",
+      "Ordinary event/thread construction and startup failures leave capacity available.",
+      "Real 20 ms SIGALRM timers interrupt delayed thread construction and expire during delayed slot acquisition without stranding capacity.",
+      "Expiry after startup or during completion waiting retains the occupied slot until the fake resolver returns successfully or with OSError.",
+      "A pending deadline combined with startup failure returns the slot once.",
+      "Eight interrupted setups preserve all four slots, and a subsequent lookup succeeds.",
+      "IPv4/IPv6 literals bypass DNS; full capacity rejects another lookup; normal resolution and resolver failure release capacity.",
+      "Workers finish without cleanup exceptions; the previous signal handler and idle timer are restored."
+    ],
+    "counting": "Count 20 table/subtest cases once. Nine named methods, eight iterations within the repeated-interruption case, assertions, before/after runs, the existing 20 deadline checks and the full-suite rerun are not additional cases."
+  },
+  "verification": {
+    "runtime": {
+      "python": "3.14.7",
+      "system": "Darwin"
+    },
+    "focused_after": {
+      "exit_code": 0,
+      "passing_cases": 20,
+      "methods": 9
+    },
+    "existing_deadline_regressions": {
+      "exit_code": 0,
+      "passing_cases": 20,
+      "methods": 7,
+      "new_cases_added_to_inventory": 0
+    },
+    "python_security_suite": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests",
+      "exit_code": 0,
+      "methods": 129,
+      "elapsed_seconds": 4.279
+    },
+    "syntax": "AST parsing passed for the implementation and new test file.",
+    "go": "No Go source changed or Go tests rerun for this validation."
+  },
+  "primary_sources": [
+    {
+      "url": "https://docs.python.org/3/library/signal.html#execution-of-python-signal-handlers",
+      "use": "Signal handlers run later in the main interpreter thread; native computation can delay their execution."
+    },
+    {
+      "url": "https://docs.python.org/3/library/signal.html#note-on-signal-handlers-and-exceptions",
+      "use": "Exceptions from signal handlers can appear at arbitrary execution points, including resource-management code."
+    },
+    {
+      "url": "https://docs.python.org/3/library/threading.html#threading.Thread.start",
+      "use": "Thread.start arranges execution in a separate thread and may raise RuntimeError; capacity needs a defined owner across this handoff."
+    }
+  ],
+  "limitations": [
+    "Only the proxy-owned deadline exception is deferred. This is not a guarantee of cleanup under every asynchronous exception, interpreter failure or process termination.",
+    "Exception delivery waits for the resource handoff to finish. The controlled delayed-acquire case deliberately outlasts its 20 ms timer before rejection; this is not hard real-time preemption of OS thread startup.",
+    "A resolver that never returns retains its slot, keeping abandoned resolution bounded at four. Process supervision is still needed for recovery from a permanently stuck libc resolver.",
+    "A worker admitted during the handoff may finish resolution after caller expiry, but it cannot open a destination connection or deliver an expired HTTP result.",
+    "No new Snort SID, live denial-of-service resistance, universal RFC/W3C compliance or unknown-attack prevention guarantee follows from these checks."
+  ],
+  "source_sha256": {
+    "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "d8011b9bf1345f36e521e9e11c85e43a43b8ed83a10c91fcd7585f140d6b0164",
+    "docs/protocol-security.md": "85dde31c6f9e8f17b6345bb77367c5aaadc2fe88bf8c1f0b14cf57b42b976b32",
+    "tests/test_agent_guard_import.py": "cff06b4319ab982a87f5896fec991135465426f7c5168cc6ffa06e1e889e6bdf",
+    "tests/test_ax_mcp_proxy.py": "4d75f6b7259be2f97611104174aca1b08c1510adcf283723f1b8381eb3c96938",
+    "tests/test_deadline_budget.py": "e2eafc9e7fdcbf0fa05480944f38e9ea380f6b16fc09e9b50fd979ecc58984d1",
+    "tests/test_dns_worker_lifecycle.py": "79ce1f76e6bb09ebaec11829428335dde56feb088b96ca4e5c6707fba370da9e",
+    "tests/test_http_protocol.py": "d231da87a15a30133afb3d67a2f47dcf64320744c564a103b269c6d954e09cb7",
+    "tests/test_snort_rules.py": "d65104037664c173248fc48512aec0f3b23fc730dd2592c250089b2c916611a6"
+  },
+  "logs": {
+    "focused_before": {
+      "path": "/private/tmp/ax-dns-worker-lifecycle-python-before.json",
+      "sha256": "9ae38cbaa65193a51d15239489cf95cd00b79d6d8854723abcc5902563f87e1d"
+    },
+    "focused_after": {
+      "path": "/private/tmp/ax-dns-worker-lifecycle-python-after.json",
+      "sha256": "d1e24b3899ce2a13ff9840398596c822d903519e260de4170d5a623477bb6b14"
+    },
+    "existing_deadline_regressions": {
+      "path": "/private/tmp/ax-dns-worker-lifecycle-deadline-regression.json",
+      "sha256": "b66e0ec7152e3a3fcbb123b1a8c84d608fbe80d76cff0dc0721777ae4eedd7bf"
+    },
+    "python_security_suite": {
+      "path": "/private/tmp/ax-dns-worker-lifecycle-python-full.txt",
+      "sha256": "f2cf8ecd3230ce3486453763af8b3d242fc75b8754bbd9de21de7705aa7a5eed"
+    },
+    "focused_runner": {
+      "path": "/private/tmp/ax-dns-worker-lifecycle-runner.py",
+      "sha256": "0268ab7887de0c13ab2aedeab91628a3729b3e9c6f66a936378567dd9a932279"
+    },
+    "baseline_sources": {
+      "path": "/private/tmp/ax-dns-worker-lifecycle-baseline-source.json",
+      "sha256": "5d10ca16d52ecff33fc916c7ef2839240058d22a2b684d5138f5c9d6f077e210"
+    }
+  }
+}

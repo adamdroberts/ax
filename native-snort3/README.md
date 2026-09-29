@@ -11,10 +11,12 @@ The official source is pinned to
 tag `3.12.2.0`. No user-archive programs or deployment instructions are executed.
 
 The latest locally verified cumulative engine is the
-[fragment identity repair](patches/fragment-identity.md), including all preceding engine
-repairs. Loading the rules alone does not apply those source changes. The
-document links the final build, native replays and memory-safety records;
-these local artifacts have not been installed or deployed.
+[TCP timestamp and SYN-data repair](patches/tcp-timestamps.md), including all
+preceding repairs through fragment identity. Loading the rules alone does not
+apply those source changes. Its [build record](tcp-timestamp-build-validation.json)
+and [replay record](tcp-timestamp-validation.json) bind the current source and
+binaries to 3,120 timestamp cases and 3,884 existing regression cases. These
+local artifacts have not been installed or deployed.
 
 ## Files and effective policy
 
@@ -37,10 +39,18 @@ these local artifacts have not been installed or deployed.
   Three further plugin checks cover IPv4 options/padding, IPv6 Router Alert/Jumbo
   options, and visible ESP framing. A final rule rejects nonzero ICMPv6 Echo codes.
   A further original-wire Routing Type 2 check supplies known length, segment
-  and stateless address requirements. The ten structured checks require the native plugin in `plugins/`;
+  and stateless address requirements. TCP option validation adds original
+  padding, length, SACK block geometry and SYN-only MSS/SACK-Permitted checks.
+  A separate connection guard requires admitted peer permission before SACK,
+  including fragmented handshakes and rejected-offer isolation.
+  The eleven stateless guards and SACK connection guard require the native plugin in `plugins/`;
   omitting it is a configuration error, not a reduced-protection fallback.
 - `agent-guard-overlay.lua` optionally loads the archive's 70 native signatures
   from their existing single canonical file, with their original IDs and actions.
+- `generate_dns_perimeter.py` generates an alternative exact-endpoint perimeter
+  for the DNS proxy and HTTP broker. See [DNS perimeter setup](perimeter/README.md).
+  Its 16 new rules require the routing/Home Address options in `perimeter/`;
+  the original SYN telemetry is reused once. Do not stack the original perimeter.
 - `generate_inventory.py` checks official source against the installed runtime.
 - `validate_profiles.py` verifies effective actions and scope selection, rather
   than merely accepting a successful parse. `profile-validation.json` is its
@@ -49,10 +59,19 @@ these local artifacts have not been installed or deployed.
 
 | Profile | Enabled signatures | Drop | Block | Alert |
 | --- | ---: | ---: | ---: | ---: |
-| Packet protocol profile | 208 | 164 | 0 | 44 |
-| Protocol + perimeter overlay | 215 | 164 | 5 | 46 |
-| Protocol + plaintext HTTP overlay | 271 | 164 | 19 | 88 |
-| Protocol + both overlays | 278 | 164 | 24 | 90 |
+| Packet protocol profile | 210 | 166 | 0 | 44 |
+| Protocol + perimeter overlay | 217 | 166 | 5 | 46 |
+| Protocol + plaintext HTTP overlay | 273 | 166 | 19 | 88 |
+| Protocol + both overlays | 280 | 166 | 24 | 90 |
+| Protocol + DNS-aware perimeter | 227 | 166 | 15 | 46 |
+| Protocol + DNS-aware perimeter + plaintext HTTP | 290 | 166 | 34 | 90 |
+
+These current counts include TCP option SID 9201017 and SACK negotiation SID
+9201018. The [timestamp validation record](tcp-timestamp-validation.json) repeats
+the loaded-action checks with the latest engine; its repair uses existing
+events 129:4 and 129:14 and adds no signature. The [SACK record](tcp-sack-validation.json),
+[option record](tcp-options-validation.json) and older profile records retain
+their original source and build snapshots.
 
 The 192 builtin entries include every registered decoder event in GID 116,
 all 11 `stream_ip` events in GID 123 and all 21 `stream_tcp` events in GID 129
@@ -231,6 +250,10 @@ ICMP/PMTU feedback. This is an explicit closed-agent-network policy, not a
 generally valid IP firewall. Supply necessary network control through the
 trusted network architecture or review that policy before deploying it. The
 standalone protocol profile does not enable this perimeter restriction.
+Use the [DNS-aware alternative](perimeter/README.md) when an agent must also
+reach the restricted DNS proxy. Its exact-address/port rules and source-route
+rejections replace the seven-rule broker-only perimeter; they are not exceptions
+implemented with `pass` rules.
 
 ## Inline deployment boundaries
 

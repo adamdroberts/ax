@@ -1,0 +1,204 @@
+{
+  "as_of": "2026-09-27",
+  "scope": "Local complete JSON-response validation before MCP tool delivery in Go and Python. Go uses a test transport with the standard HTTP wire decoder and the parsed egress guard; Python uses its production wire response reader with a test opener. No public origin or deployment.",
+  "shared_fixture": {
+    "path": "pkg/mcp/proxy/testdata/response_json_cases.json",
+    "sha256": "4f5e7aca9f85e1ea351efba4653082ef0e021be2629d6efb42ebf4c7e04e6e82",
+    "cases": 123,
+    "accepted_controls": 57,
+    "rejected_cases": 66,
+    "runtimes": [
+      "Go",
+      "Python"
+    ],
+    "result": "passed",
+    "counting": "Count each case once across runtimes and reruns. Wire and expected body use base64 to retain invalid UTF-8 bytes."
+  },
+  "baseline": {
+    "unexpected_acceptances_per_runtime": 63,
+    "already_rejected_utf8_cases_per_runtime": 3,
+    "reproduced_cases": [
+      "invalid-empty",
+      "invalid-whitespace",
+      "invalid-trailing-text",
+      "invalid-two-documents",
+      "invalid-two-values",
+      "invalid-line-comment",
+      "invalid-block-comment",
+      "invalid-jsonp",
+      "invalid-single-quotes",
+      "invalid-object-trailing-comma",
+      "invalid-array-trailing-comma",
+      "invalid-unquoted-key",
+      "invalid-missing-colon",
+      "invalid-missing-comma",
+      "invalid-wrong-close",
+      "invalid-truncated-string",
+      "invalid-truncated-object",
+      "invalid-invalid-escape",
+      "invalid-raw-newline",
+      "invalid-raw-tab",
+      "invalid-raw-null",
+      "invalid-plus-number",
+      "invalid-leading-zero",
+      "invalid-negative-leading-zero",
+      "invalid-leading-dot",
+      "invalid-trailing-dot",
+      "invalid-empty-exponent",
+      "invalid-signed-empty-exponent",
+      "invalid-nan",
+      "invalid-positive-infinity",
+      "invalid-negative-infinity",
+      "invalid-overflow",
+      "invalid-unsafe-positive",
+      "invalid-unsafe-negative",
+      "invalid-unsafe-exponent",
+      "invalid-duplicate-key",
+      "invalid-duplicate-escaped-key",
+      "invalid-nested-duplicate",
+      "invalid-unpaired-high",
+      "invalid-unpaired-low",
+      "invalid-wrong-surrogate-pair",
+      "invalid-escaped-noncharacter",
+      "invalid-escaped-ffff",
+      "invalid-supplementary-noncharacter",
+      "invalid-raw-noncharacter",
+      "invalid-bom",
+      "invalid-depth-over-limit",
+      "media-mixed-case-invalid",
+      "media-utf8-parameter-invalid",
+      "media-escaped-parameter-invalid",
+      "media-profile-parameter-invalid",
+      "media-problem-invalid",
+      "media-vendor-invalid",
+      "media-model-invalid",
+      "media-extension-invalid",
+      "framing-chunked-duplicate",
+      "framing-chunked-syntax",
+      "framing-close-duplicate",
+      "framing-close-syntax",
+      "status-201-invalid",
+      "status-400-invalid",
+      "status-500-invalid",
+      "tokens-over-limit"
+    ],
+    "source_sha256": {
+      "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "7d7d14d532d9083551a670b9555e40c3ae5644f91ffca85589fd740e136188ca",
+      "pkg/mcp/proxy/server.go": "bb0f7ab4de40877773bc81805434c4365e49f14d1f062756f12749a2a3f5129a",
+      "pkg/security/httpguard/json.go": "70d992b91e4abbbfc7a3f591ea8e71c63c88e4b5708c86dd51a088b59229d1d0",
+      "pkg/security/egress/metadata.go": "adb89d29e455c72594ca8f63ee5378e2c70d28e93241058653b033eb50d84017",
+      "pkg/mcp/proxy/response_json_test.go": "e98876e4b68f2d7584cf02930cca5a3d18b316783aff9a4cd314eca269c637c9",
+      "tests/test_http_protocol.py": "37c518dacb1da7c0d3fcc01de7c14d6fd2e1be9595d32a79f62b7c245da7bc2c",
+      "pkg/mcp/proxy/testdata/response_json_cases.json": "4f5e7aca9f85e1ea351efba4653082ef0e021be2629d6efb42ebf4c7e04e6e82"
+    }
+  },
+  "policy": {
+    "media": "Complete application/json and any subtype ending in +json, case-insensitive, with the existing response media parameter and UTF-8 policy. Includes structured suffixes outside application, such as model/gltf+json.",
+    "json": "Use the same JSON validator as outgoing requests: grammar, unique decoded names, Unicode scalar values excluding noncharacters, finite supported numbers and safe integral numeric values.",
+    "limits": "At most 64 nested containers and 100000 JSON tokens, within the existing 10 MiB response body limit. These are local limits, not universal JSON grammar restrictions.",
+    "preservation": "Accepted body bytes and representation headers are not rewritten; JSON is checked but not reserialized.",
+    "accounting": "Read bytes are charged to the process response budget before JSON rejection. All shared cases assert accepted-body preservation and consumed-byte accounting.",
+    "http_semantics": "HEAD and 204/205/304 have no content to parse. 206 remains subject to range/framing checks but may carry a JSON fragment, not a complete document. Complete JSON on other statuses, including errors and redirects, is checked.",
+    "no_sniffing": "Missing Content-Type and other media remain untrusted text. JSON sequences, newline-delimited formats and application-specific schemas are not validated as a single JSON document.",
+    "go_boundary": "The MCP server invokes egress.CheckResponseBody after its bounded UTF-8 read. Direct consumers of egress.NewClient must explicitly call the content helper for this additional JSON policy."
+  },
+  "checks": {
+    "go_race": {
+      "result": "passed",
+      "command": "go test -race ./pkg/security/dnsproxy ./cmd/ax-dns-proxy ./pkg/security/egress ./pkg/security/httpguard ./pkg/security/snort ./pkg/mcp/proxy",
+      "fresh_packages": [
+        "./pkg/security/egress",
+        "./pkg/mcp/proxy"
+      ],
+      "cached_packages": [
+        "./pkg/security/dnsproxy",
+        "./pkg/security/httpguard",
+        "./pkg/security/snort"
+      ],
+      "no_test_files": [
+        "./cmd/ax-dns-proxy"
+      ]
+    },
+    "python_security_suite": {
+      "result": "passed",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests",
+      "test_methods": 106
+    },
+    "go_vet": {
+      "result": "passed",
+      "packages": [
+        "./pkg/security/httpguard",
+        "./pkg/security/egress",
+        "./pkg/mcp/proxy"
+      ]
+    },
+    "go_build": {
+      "result": "passed",
+      "package": "./cmd/ax-mcp-proxy",
+      "artifact": "/private/tmp/ax-mcp-proxy-response-json-verified",
+      "sha256": "5c1c9e8f3da419b3f4e27ac4308df0d46685136144a52096b9d2f7702a6545b4"
+    },
+    "format_and_diff": {
+      "gofmt": "passed",
+      "git_diff_check": "passed"
+    }
+  },
+  "source_sha256": {
+    "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "cd3ca02523cba5251d079bcdae9c0ad481598ffa1a861b9390e6a13247488bcc",
+    "tests/test_http_protocol.py": "7276115f61f462196d07b480e4d00a29e871e1e4086f70808c837165a849bb14",
+    "pkg/security/httpguard/conditional.go": "5829166dd441b13b2351a56340c59cf8095fa514f8167be8de1957c941e0c1dd",
+    "pkg/security/httpguard/conditional_test.go": "34c178e40104fb3c35bac89081dccbe118068216529994aaddf73dc910447e1d",
+    "pkg/security/httpguard/content_range.go": "f1ad7c4946afc226f1ed0487a55f842dcb35cd2042979b2f4cdb3344aabb5616",
+    "pkg/security/httpguard/guard_test.go": "15c3112f5338d51e005bce376071ee1d390f5452e1a00e76933a49ed1e5f3dc8",
+    "pkg/security/httpguard/json.go": "70d992b91e4abbbfc7a3f591ea8e71c63c88e4b5708c86dd51a088b59229d1d0",
+    "pkg/security/httpguard/range.go": "dcfb75bb92624ea9a8726ed347537214f6d44f03d8262e101bd78da49ea6866d",
+    "pkg/security/httpguard/request.go": "341df651d58c81ede93cbad2027cb4c95a4c42148185847615ab2f3ca727a837",
+    "pkg/security/egress/chunk.go": "f04fe64114a104cdc2d7c184150ae2f03a5f0c63c903bda492289cebf0992f15",
+    "pkg/security/egress/chunk_test.go": "322169a402bb36f1c66d0d4be542560f742ac55a1196bd99fea55ab6b0854dbc",
+    "pkg/security/egress/client.go": "8be57ecc9879e98c576797d565bfdc0bcf442b19a0516446cd6840bfd72a4a0c",
+    "pkg/security/egress/client_test.go": "a221c2c4ee87368662e81b2402d4741cfd1e6120610a4534fd6146954c708e70",
+    "pkg/security/egress/conditional_test.go": "144b111768189a779a41091cd5088a8bbeb4e71cec0d14f09a9f169e9adab3c7",
+    "pkg/security/egress/content_range.go": "fa4f1c8069dbfa9446edb34898041b9d2c1884872b6f92092a7c3fa1545bee94",
+    "pkg/security/egress/content_range_test.go": "0404effbed17f69b15e7569ccc88db8b2bd1eacd9052ad1cd7e06d65915399d3",
+    "pkg/security/egress/metadata.go": "adb89d29e455c72594ca8f63ee5378e2c70d28e93241058653b033eb50d84017",
+    "pkg/security/egress/metadata_test.go": "4859a6b3bef7ef53e52ed56cf165ad64d3fe0cdfde7432f03c7199b7fa6610ed",
+    "pkg/security/egress/policy.go": "4019e3b343dbaaf5dcc4c177ff51638aa91e1335c54a82aa1b74735820bf7f58",
+    "pkg/security/egress/policy_test.go": "5dc165a0fd789e1afc278ed3bd6dae5eafe0c8f8f0eee1c38f110bda25ef2447",
+    "pkg/security/egress/range_test.go": "b02684faf4de94d3e43a4079ccb38b8edc7675789d2210f426c8b6c0a19a719e",
+    "pkg/security/egress/response.go": "62a7d45bd2c95f694105a93c34498b79b2dd3558fab92fbaf822d87dfdcca6a4",
+    "pkg/security/egress/response_conditions.go": "26790f8cd1f230ab1644688e64d730317af524f22d39547de060b8260ca90f68",
+    "pkg/security/egress/response_content.go": "7fc2f3bc4569d9834ab96158abe05417c37d255dc16c4eefd177c5b4a5786806",
+    "pkg/security/egress/response_correlation_test.go": "c3e61977f95988df00fd54f530eba2eaa0318c5777e15f8c1bcd5bb003244420",
+    "pkg/security/egress/response_test.go": "bfd263d81b5f4a3f57d5bb44c8eabc5a85cd15b74c48eb72966b8d691452ca91",
+    "pkg/security/egress/wire.go": "bc727d653230230869b8ec2b1967dbff91aad9f8f97a81e0c37b86ce4195a801",
+    "pkg/security/egress/wire_test.go": "fa62123eb01feef632446981d5acd663d7767be1fd0ccbe2f0836763711cac0d",
+    "pkg/mcp/proxy/conditional_test.go": "89b5ba5e25ace389c973c70e823e3a5efb15f1ddc433a7d33f0b7dcf9ca4405f",
+    "pkg/mcp/proxy/content_range_test.go": "50d368f816ed76ba8bc60d3ce89678875d68e0ef0650f108664f67dd42da1a4d",
+    "pkg/mcp/proxy/protocol.go": "09e39b66f31f289d6b08e46c61a84a3a609fe5976da916dc9c0d329c849928c8",
+    "pkg/mcp/proxy/protocol_test.go": "6f3639a095b2bd743e11a0b63cf590925d1ac0937895ed61ff13891a9b4ef179",
+    "pkg/mcp/proxy/range_test.go": "a8317dfb30d9dda210de9f97eb8cf17eeb2d325931c250e41658d1969e1a0af9",
+    "pkg/mcp/proxy/response_json_test.go": "e98876e4b68f2d7584cf02930cca5a3d18b316783aff9a4cd314eca269c637c9",
+    "pkg/mcp/proxy/server.go": "296f873338358cf2f09e48df41df5cb69a654eb887c90191f88288f8339539fb",
+    "pkg/mcp/proxy/server_test.go": "058079b9fabb3789ecc2d5ac43fc6ebb18a538ee81713c561690172641d31111"
+  },
+  "local_log_sha256": {
+    "/private/tmp/ax-response-json-go-before.jsonl": "b3c716bd8fe99db749f3a0b773a091e718e7ebc88cb07ade6e41b1b29886e9c6",
+    "/private/tmp/ax-response-json-python-before.txt": "db72ffc537f97007c597333809e9afcad87f27f76fc4bb8eafcec8c4cd77d578",
+    "/private/tmp/ax-response-json-go-after.jsonl": "caec82b796f2877e36adb7f797d78dd79d930a61d9f7f3cfe24ec6eb2614491e",
+    "/private/tmp/ax-response-json-go-full.txt": "abd1bf6ed257811a168fe034b7c7fa7088c1cfe87d6c0dd4f6876ebbd0af0c27",
+    "/private/tmp/ax-response-json-python-full.txt": "df46d2ed929af8f32a37b8e8f2d4a0051c0218a763013819973c4ff9d267eac2"
+  },
+  "standards": [
+    "https://www.rfc-editor.org/rfc/rfc8259.html",
+    "https://www.rfc-editor.org/rfc/rfc7493.html",
+    "https://www.rfc-editor.org/rfc/rfc6839.html#section-3.1",
+    "https://www.rfc-editor.org/rfc/rfc9110.html#section-6.4.1"
+  ],
+  "limits": [
+    "This is a JSON interoperability and resource policy, not application schema validation or semantic prompt-injection detection. Valid JSON can contain hostile or dishonest data.",
+    "Duplicate names/noncharacters are rejected under the I-JSON contract. Mandatory safe-integer and resource limits are local restrictions beyond ordinary RFC 8259 grammar.",
+    "The implementation does not reconstruct partial representations or validate other declared formats. No content-type sniffing or schema is inferred.",
+    "No new Snort rule or SID was added; historical native/fuzz suites were not rerun.",
+    "Full RFC/W3C compliance, universal unknown-attack prevention and deployed route enforcement remain unproved."
+  ]
+}

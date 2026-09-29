@@ -26,6 +26,10 @@ const (
 	MaxQueryBytes = 512
 	MaxAnswers    = 32
 	MaxWorkers    = 128
+	// Reserve capacity for each transport within the aggregate handler limit.
+	// Idle TCP connections and blocked UDP replies cannot occupy the other pool.
+	MaxTCPConnections = 64
+	MaxUDPWorkers     = MaxWorkers - MaxTCPConnections
 )
 
 // Resolver is a trusted dependency. It receives only canonical configured names,
@@ -163,13 +167,21 @@ func (p *Proxy) Refresh(ctx context.Context) {
 			for name := range jobs {
 				started := time.Now()
 				lookupCtx, cancel := context.WithTimeout(ctx, p.timeout)
+				lookupDeadline, _ := lookupCtx.Deadline()
 				p.upstream.Add(1)
 				resolved, err := p.resolver.Resolve(lookupCtx, name)
+				completed := time.Now()
+				lookupErr := lookupCtx.Err()
 				ips := resolved.Addresses
 				cancel()
-				remaining := resolved.TTL - time.Since(started)
-				e := entry{code: dnsmessage.RCodeServerFailure, expires: time.Now().Add(2 * p.interval)}
-				if err == nil && remaining > 0 && len(ips) > 0 && len(ips) <= MaxAnswers {
+				// Anchor both limits to lookup start. Re-adding a remaining TTL
+				// to a later clock reading would extend it by processing time.
+				expires := started.Add(min(resolved.TTL, 2*p.interval))
+				e := entry{code: dnsmessage.RCodeServerFailure, expires: completed.Add(2 * p.interval)}
+				// A resolver may return data while cancellation races with I/O
+				// completion. Check the deadline explicitly as its timer may
+				// not yet have run, and inspect Err before our own cancel call.
+				if err == nil && lookupErr == nil && completed.Before(lookupDeadline) && completed.Before(expires) && len(ips) > 0 && len(ips) <= MaxAnswers {
 					valid := true
 					for _, ip := range ips {
 						valid = valid && p.answerAllowed(ip)
@@ -179,7 +191,7 @@ func (p *Proxy) Refresh(ctx context.Context) {
 						slices.SortFunc(e.addresses, func(a, b netip.Addr) int { return a.Compare(b) })
 						e.addresses = slices.Compact(e.addresses)
 						e.code = dnsmessage.RCodeSuccess
-						e.expires = time.Now().Add(min(remaining, 2*p.interval))
+						e.expires = expires
 					}
 				}
 				if e.code != dnsmessage.RCodeSuccess {

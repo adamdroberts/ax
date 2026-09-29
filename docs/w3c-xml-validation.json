@@ -1,0 +1,100 @@
+{
+  "as_of": "2026-09-27",
+  "scope": "Offline audit of the bounded UTF-8, DTD-free XML 1.0 Fifth Edition / Namespaces 1.0 admission profile against the official W3C XML Test Suite 20130923; original document bytes checked in both production recognizers without transport integration or deployment.",
+  "production_changes": [],
+  "command": "PYTHONDONTWRITEBYTECODE=1 GOTOOLCHAIN=local GOPATH=/private/tmp/ax-go-path GOCACHE=/private/tmp/ax-go-cache python3 pkg/security/egress/testdata/audit_w3c_xml.py --archive /private/tmp/ax-w3c-xmlts20130923.zip --go /private/tmp/ax-go-toolchain/go/bin/go --output-dir /private/tmp/ax-w3c-xml-verified",
+  "exit_code": 0,
+  "archive_url": "https://www.w3.org/XML/Test/xmlts20130923.zip",
+  "archive_sha256": "f9510b3532926e1b4c2e54855b021e4b8a66ec98a5337dcf4ff07e8a41968deb",
+  "catalog_entries": 2585,
+  "selected_cases": 2001,
+  "unique_payloads": 1983,
+  "catalog_types": {
+    "valid": 728,
+    "invalid": 229,
+    "not-wf": 1017,
+    "error": 27
+  },
+  "policy_denials": {
+    "DTD declaration": 875,
+    "non-UTF-8 representation": 9,
+    "catalog requires namespace processing disabled": 2
+  },
+  "excluded_cases": 584,
+  "edition_exclusions": {
+    "earlier XML edition only": 310,
+    "XML or Namespaces 1.1": 274
+  },
+  "python": {
+    "executions": 2001,
+    "accepted": 72,
+    "denied": 1929,
+    "unexpected_verdicts": [],
+    "verdict_sha256": "1f256ddc1e9c1918e1de4d065c958a12abef0c5cfba8ed2f811a123cb1d5a00f"
+  },
+  "go": {
+    "accepted": 72,
+    "denied": 1929,
+    "executions": 2001,
+    "parity_mismatches": null,
+    "unexpected_verdicts": null,
+    "verdict_sha256": "1f256ddc1e9c1918e1de4d065c958a12abef0c5cfba8ed2f811a123cb1d5a00f"
+  },
+  "source_sha256": {
+    "pkg/security/egress/testdata/audit_w3c_xml.py": "f4725f753aa03f7ec9161fb51b933bb48dafe6d7e6cf8bd9f1adea48d94f2379",
+    "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "b54dd2b52c03451d88adbf324d88ba6d013df49671ae9a639285d0764f4d0e9c",
+    "pkg/security/egress/xml_content.go": "53f1be0c9d007f23163be18598439f087e84d87a97c003000651da9c582a5d56",
+    "pkg/security/egress/response.go": "29b3f3b06cb8afa52e633d160e654b4ec76db716b8eff5b45086b31a067b3298",
+    "docs/protocol-security.md": "854df972a02e261653bf35b31de9beed4f4e79f6f4db02aaa20b7eb504abb20d"
+  },
+  "output_sha256": {
+    "inputs.jsonl": "4b61f07edfca7f6402df63bd7a880a547f541b544f4631ed9d48bbfa0d1772c9",
+    "cases.json": "d96f19b8477ecf55ba854c1e97e6b661edf8c9b2f7e4ef5afcbdaa13023ca388",
+    "excluded.json": "5d16cb41782defb5a00248b514f5a85b8b162c6ddee597ab7411717130d47f96",
+    "go.json": "ef933f18c7b1bddbd857c427d60f7b1f906d5b36c1051ab19ced335243cbfd3d",
+    "go.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "interpretation": {
+    "catalog_well_formed_cases": 957,
+    "catalog_well_formed_admitted": 71,
+    "catalog_well_formed_denied_by_profile": 886,
+    "catalog_not_well_formed_denied": 1017,
+    "catalog_optional_error_cases": 27,
+    "catalog_optional_error_cases_admitted": 1,
+    "catalog_optional_error_cases_denied": 26,
+    "required_profile_verdicts_checked_per_runtime": 1974,
+    "optional_outcome_parity_checks": 27,
+    "counted_once_across_runtimes": 2001,
+    "new_top_level_test_definitions": 0,
+    "new_snort_rules": 0
+  },
+  "catalog_handling": [
+    "The complete ZIP is pinned by SHA-256 before any catalog parsing; archive counts and uncompressed bytes are bounded. No archive members are extracted or executed.",
+    "The 21 catalog fragments referenced by the root catalog are read as data without external resolution; fragment-relative member paths and the applicable XML version/edition labels determine selection.",
+    "The root wrapper names a nonexistent eduni/namespaces/misc directory for the external eduni/misc fragment. The source fragment location is used for its relative test URIs.",
+    "DTD-invalid catalog cases are treated as well-formed for nonvalidating admission. DTD declarations, non-UTF-8 representations and cases requiring namespace processing disabled remain intentional profile denials.",
+    "DOCTYPE-like text inside comments, CDATA or processing instructions is not classified as a DTD declaration.",
+    "Catalog error cases allow either admission outcome; they check implementation parity without inventing a standards verdict.",
+    "The isolated Go driver copies the exact production recognizer with its package declaration changed and verifies the shared production byte ceiling."
+  ],
+  "limitations": [
+    "This is not a complete XML processor conformance result. UTF-16, DTD processing, entity resolution and canonical output are intentionally outside the profile.",
+    "Passing the applicable collection does not establish universal protocol compliance or protection from every unknown attack.",
+    "Catalog executions are not globally unique payloads or attacks: 2001 selected entries contain 1983 distinct payloads.",
+    "These are recognizer checks; ordinary, range, multipart and MCP integration results remain in docs/xml-response-validation.json and were not rerun for this audit-only addition.",
+    "No production routing, sandbox enforcement or live deployment was exercised."
+  ],
+  "primary_sources": [
+    "https://www.w3.org/XML/Test/",
+    "https://www.w3.org/XML/Test/faq.html",
+    "https://www.w3.org/XML/Test/xmlts20130923.zip"
+  ],
+  "log_sha256": {
+    "/private/tmp/ax-w3c-xml-verified/summary.json": "3bd0531d7552d3087d54b820926d9e6d0659a1d7e123a2dc57a4506e858cc4c7",
+    "/private/tmp/ax-w3c-xml-verified/inputs.jsonl": "4b61f07edfca7f6402df63bd7a880a547f541b544f4631ed9d48bbfa0d1772c9",
+    "/private/tmp/ax-w3c-xml-verified/cases.json": "d96f19b8477ecf55ba854c1e97e6b661edf8c9b2f7e4ef5afcbdaa13023ca388",
+    "/private/tmp/ax-w3c-xml-verified/excluded.json": "5d16cb41782defb5a00248b514f5a85b8b162c6ddee597ab7411717130d47f96",
+    "/private/tmp/ax-w3c-xml-verified/go.json": "ef933f18c7b1bddbd857c427d60f7b1f906d5b36c1051ab19ced335243cbfd3d",
+    "/private/tmp/ax-w3c-xml-verified/go.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

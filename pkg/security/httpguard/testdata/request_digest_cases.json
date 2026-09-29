@@ -1,0 +1,851 @@
+{
+  "cases": [
+    {
+      "name": "absent",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "sha-256",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "sha-256-mismatch",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:2SmKENGwc1g33EvYXaxkGw887yekfl1TpU8vP1svz/o=:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "sha-512",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-512=:m3HSJL1i83hdltRq0+o9czGb+8KJDKra4t/3JRlnPKcjI8PZm6XBHXx6zG4UuMXaDEZjR1wuXDre9G9zvN7AQw==:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "sha-512-mismatch",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-512=:4lrDhF+MvhKAGi36WonUxV3EeQDztu3Jqe5ZDzwrkxL2ZdADnJOCi3tY8zlQvIF6CVWpxQAKjT4oBWnwh0XKaA==:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "both-strong",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:, sha-512=:m3HSJL1i83hdltRq0+o9czGb+8KJDKra4t/3JRlnPKcjI8PZm6XBHXx6zG4UuMXaDEZjR1wuXDre9G9zvN7AQw==:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "second-strong-mismatch",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:, sha-512=:4lrDhF+MvhKAGi36WonUxV3EeQDztu3Jqe5ZDzwrkxL2ZdADnJOCi3tY8zlQvIF6CVWpxQAKjT4oBWnwh0XKaA==:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "first-strong-mismatch",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:2SmKENGwc1g33EvYXaxkGw887yekfl1TpU8vP1svz/o=:, sha-512=:m3HSJL1i83hdltRq0+o9czGb+8KJDKra4t/3JRlnPKcjI8PZm6XBHXx6zG4UuMXaDEZjR1wuXDre9G9zvN7AQw==:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "unknown-with-strong",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "future=:AA==:, sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "deprecated-with-strong",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "md5=:AA==:, sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "empty",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": ""
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "unknown-only",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "future=:AA==:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "deprecated-only",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "md5=:AA==:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "uppercase-algorithm",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "SHA-256=:LPJNUL+WOW4M6DSQXBNINHSWHLWFP0JECWQZYPOLMCQ=:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "duplicate",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:, sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "duplicate-conflicting",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:, sha-256=:2SmKENGwc1g33EvYXaxkGw887yekfl1TpU8vP1svz/o=:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "empty-byte-sequence",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=::"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "wrong-output-size",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:AA==:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "missing-colon",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ="
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "trailing-comma",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:,"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "leading-comma",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": ",sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "empty-member",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:,,other=::"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "bare-string",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=\"abc\""
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "inner-list",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=(:AA==:)"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "spacing-before-equals",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256 =:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "spacing-after-equals",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256= :LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "parameter-date",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:;created=@1"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "parameter-invalid-bool",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:;flag=?2"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "missing-base64-padding",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "opaque-parameters",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:;flag;weight=1.5;label=\"hello\";token=foo/bar"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "field-case",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "cOnTeNt-DiGeSt": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "duplicate-field-case",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:",
+          "content-digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "empty-GET",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "GET",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=:"
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "empty-mismatch-GET",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "GET",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:"
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "empty-HEAD",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "HEAD",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=:"
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "empty-mismatch-HEAD",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "HEAD",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:"
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "empty-POST",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=:"
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "empty-mismatch-POST",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:"
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "empty-PUT",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "PUT",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=:"
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "empty-mismatch-PUT",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "PUT",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:"
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "empty-PATCH",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "PATCH",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=:"
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "empty-mismatch-PATCH",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "PATCH",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:"
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "empty-DELETE",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "DELETE",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=:"
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "empty-mismatch-DELETE",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "DELETE",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:"
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "empty-OPTIONS",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "OPTIONS",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=:"
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "empty-mismatch-OPTIONS",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "OPTIONS",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:"
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "content-POST",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "content-PUT",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "PUT",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "content-PATCH",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "PATCH",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "content-DELETE",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "DELETE",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "content-OPTIONS",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "OPTIONS",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=:"
+        },
+        "body": "hello"
+      }
+    },
+    {
+      "name": "utf8",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:tYz9Az0lP8h0/Ta6g3UpDlubRzwNrzxrOFY0fdiPMCY=:"
+        },
+        "body": "caf\u00e9 \ud83d\ude42"
+      }
+    },
+    {
+      "name": "nfd",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:ge8GC82YrceCTrXBrag8MkkbFgGOEeefAKudCeBLAVo=:"
+        },
+        "body": "cafe\u0301"
+      }
+    },
+    {
+      "name": "bom",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:dInrvMKgAFbdqqrBkLzkc+XANpbqG9jtg89ZoXQoOGI=:"
+        },
+        "body": "\ufeffhello"
+      }
+    },
+    {
+      "name": "crlf",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:zS7KNTV0HyeorkDDGwxB1AV6enuRKzO5rthkhdHIRnY=:"
+        },
+        "body": "hello\r\n"
+      }
+    },
+    {
+      "name": "lf",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:WJG1tSLV3whtD/CxEPvZ0hu0/HFjrzTQgoai6Eb2vgM=:"
+        },
+        "body": "hello\n"
+      }
+    },
+    {
+      "name": "nul",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:867+YpZakZA2EPDiPMimnVuHzqbSjnVImw0soC7XmTw=:"
+        },
+        "body": "hello\u0000"
+      }
+    },
+    {
+      "name": "unicode-normalization-mismatch",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:hQ99xDkQ/4kPiHnA7Sb+aXyToGetk6fVD0ZqcCipv04=:"
+        },
+        "body": "cafe\u0301"
+      }
+    },
+    {
+      "name": "newline-normalization-mismatch",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:WJG1tSLV3whtD/CxEPvZ0hu0/HFjrzTQgoai6Eb2vgM=:"
+        },
+        "body": "hello\r\n"
+      }
+    },
+    {
+      "name": "json-exact-octets",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "application/json",
+          "Content-Digest": "sha-256=:q5uE9GAeGFOJbRUSNIudhL8KSp50Jutw+8mA8CtDWBg=:"
+        },
+        "body": "{\"b\":2, \"a\":1}\n"
+      }
+    },
+    {
+      "name": "json-reserialization-mismatch",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "application/json",
+          "Content-Digest": "sha-256=:QyWM/3g/5wNtikMDP4MK38YOwDc4JHNUisdCuIgpJ3c=:"
+        },
+        "body": "{\"b\":2, \"a\":1}\n"
+      }
+    },
+    {
+      "name": "form-wire-octets",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Digest": "sha-256=:j8fJsJ9b+j4kozbRZ9qo1ldNiDxdILNA7KqZeRW6D50=:"
+        },
+        "body": "q=hello+world"
+      }
+    },
+    {
+      "name": "form-decoded-mismatch",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Digest": "sha-256=:eISXGkBAOn3+e43T23MmFAXsjhR5zQKdwURqa5DPgZA=:"
+        },
+        "body": "q=hello+world"
+      }
+    },
+    {
+      "name": "partial-put-content",
+      "accepted": true,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "PUT",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:ungWv48Bz+pBQUDeXa4iI7ADYaOWF3qctBD/YfIAFa0=:",
+          "Content-Range": "bytes 3-5/9"
+        },
+        "body": "abc"
+      }
+    },
+    {
+      "name": "partial-put-representation-mismatch",
+      "accepted": false,
+      "arguments": {
+        "url": "https://api.example.com/digest",
+        "method": "PUT",
+        "headers": {
+          "Content-Type": "text/plain",
+          "Content-Digest": "sha-256=:ReQEi7jlpPsDv2gW29oQVsgJU/3UZzJIiyjb3UIKqW4=:",
+          "Content-Range": "bytes 3-5/9"
+        },
+        "body": "abc"
+      }
+    }
+  ]
+}

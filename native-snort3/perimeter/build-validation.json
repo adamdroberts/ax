@@ -1,0 +1,42 @@
+{
+  "scope": "Build only; validate the generated profiles and replay captures separately.",
+  "command": [
+    "c++",
+    "-std=c++17",
+    "-O2",
+    "-fPIC",
+    "-fvisibility=hidden",
+    "-DHAVE_VISIBILITY=1",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-shared",
+    "-Wl,-undefined,dynamic_lookup",
+    "-isystem",
+    "/private/tmp/ax-snort-native/runtime/Cellar/snort/3.12.2.0/include/snort",
+    "-isystem",
+    "/private/tmp/ax-snort-native/runtime/Cellar/daq/3.0.27/include",
+    "/Users/adam/Dev/agent-security/ax/native-snort3/perimeter/ax_ip6_route_present.cc",
+    "-o",
+    "/private/tmp/ax-dns-perimeter-home-plugin/ax_ip6_route_present.so"
+  ],
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin27.0.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+  "source_sha256": {
+    "ax_ip6_route_present.cc": "64fcdc0787d71d1e8e1b063c28d20dda94719f592146f18635daade3204bfca4",
+    "build.py": "6ae98eb7ae89cdf3d8ce5acd067fece4540ce7d9dde149b28d2e483be43de24f",
+    "home_address.h": "8540117639d519f6c5b51ccc8f893a506deb61bdb9ec181c968dcd7d35e0aa62",
+    "ax_nd_options.so": "3dde09c3191beefd8ca35121762daa282631705cd7938d306f53732c1b83f6fb"
+  },
+  "sdk_sha256": {
+    "framework/ips_option.h": "f79154232673b3365f071491d88ca9d1e55e106a523fe577cb21370c68f8dacc",
+    "framework/module.h": "cd69c20752f3743346fbc42ef378bc004513f0d24012a5feb84a8163d82ba517",
+    "protocols/layer.h": "8dc7faafd2cfffe504e3b0bd362e645c10bc52c8b032ea8f6491fecff1eade54",
+    "protocols/packet.h": "4ecfb1fc1b59a3a187da832aea599e2033974e24b368fa4619d439582a81fb6a",
+    "protocols/protocol_ids.h": "937ebd964888ed51f687854c5eee3101f9e5eadb12fa7de9ca4c6440699cf7cc"
+  },
+  "new_option_sanitizers": [],
+  "plugin_sha256": {
+    "ax_ip6_route_present.so": "c75b646683b987a535660823844736f21e0a5e6e1485146cf0fc3d5dba81ab58",
+    "ax_nd_options.so": "3dde09c3191beefd8ca35121762daa282631705cd7938d306f53732c1b83f6fb"
+  }
+}

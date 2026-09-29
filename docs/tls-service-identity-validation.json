@@ -1,0 +1,357 @@
+{
+  "as_of": "2026-09-27",
+  "scope": "TLS server identity verification in the production Go HTTPS client and Python MCP HTTPS opener. Real TLS over local memory/Unix socket pairs with isolated fixture trust and simulated DNS; no external servers or deployed routing.",
+  "changes": [
+    "Disable Python SSLContext.hostname_checks_common_name in the production opener. System trust, certificate verification, original hostname, TLS 1.2 minimum and HTTP/1.1 ALPN remain enabled.",
+    "Refuse production Python opener creation when native Common Name exclusion is absent/false or OpenSSL predates 1.1.1l. This conservative runtime policy avoids historical flag behavior; it does not rely on older Python workarounds.",
+    "No Go production change: its existing TLS verifier already rejected all denied identities.",
+    "Add deterministic public certificate fixtures and shared handshake tests, including explicit certificate-verification error checks and no HTTP request delivery on denial. No Snort SID added."
+  ],
+  "corpus": {
+    "manifest": "pkg/security/egress/testdata/tls-identity/cases.json",
+    "generator": "pkg/security/egress/testdata/tls-identity/generate.go",
+    "certificate_variants": 33,
+    "tls_versions": [
+      "TLSv1.2",
+      "TLSv1.3"
+    ],
+    "shared_handshake_cases_counted_once": 66,
+    "accepted_controls": 18,
+    "denied_cases": 48,
+    "python_runtime_capability_cases": 3,
+    "coverage": [
+      "Exact and case-insensitive DNS SANs",
+      "Multiple DNS SANs and A-labels",
+      "CN-only names and CN fallback with unrelated SAN types",
+      "Whole-label, partial, multi-label, multiple and apex wildcard boundaries",
+      "IPv4/IPv6 address SAN matching versus DNS-form SANs",
+      "Untrusted root, expired/future certificate and client-only extended key usage"
+    ],
+    "reproduction": {
+      "files_compared": 36,
+      "mismatches": 0,
+      "deterministic_keys_are_public_test_material": true
+    }
+  },
+  "baseline": {
+    "go": {
+      "cases": 66,
+      "passed": 66,
+      "failed": 0,
+      "production_change_needed": false
+    },
+    "python": {
+      "methods": 2,
+      "cases": 69,
+      "passed": 56,
+      "failed": 13,
+      "unexpected_http_acceptances": 10,
+      "missing_runtime_rejections": 3,
+      "failed_case_parameters": [
+        {
+          "name": "cn-only-exact",
+          "version": "TLSv1.2"
+        },
+        {
+          "name": "cn-only-exact",
+          "version": "TLSv1.3"
+        },
+        {
+          "name": "cn-only-wildcard",
+          "version": "TLSv1.2"
+        },
+        {
+          "name": "cn-only-wildcard",
+          "version": "TLSv1.3"
+        },
+        {
+          "name": "cn-matches-uri-only",
+          "version": "TLSv1.2"
+        },
+        {
+          "name": "cn-matches-uri-only",
+          "version": "TLSv1.3"
+        },
+        {
+          "name": "cn-matches-email-only",
+          "version": "TLSv1.2"
+        },
+        {
+          "name": "cn-matches-email-only",
+          "version": "TLSv1.3"
+        },
+        {
+          "name": "cn-matches-ip-only",
+          "version": "TLSv1.2"
+        },
+        {
+          "name": "cn-matches-ip-only",
+          "version": "TLSv1.3"
+        },
+        {
+          "capability": "false"
+        },
+        {
+          "capability": "missing"
+        },
+        {
+          "capability": "old-openssl"
+        }
+      ]
+    },
+    "source_sha256": {
+      "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "954be3633147ce684cff83fa42556fc306cf5ff204c4a70c87ebffa241233085",
+      "pkg/security/egress/client.go": "b3996a6f7e07a1c34e82c07b0f32a48269dd1763d545e6a8835422ac10c9e1b2",
+      "pkg/security/egress/tls_identity_test.go": "d05fe5820cd2551954e690986bbd3ef355327ba0eccc249566061c0d7791b8d1",
+      "tests/test_tls_identity.py": "098a22cd16129faa3cfd7e12cfadbd8ce6ec3d79dcaeb48ceea426433dfdf8c8",
+      "pkg/security/egress/testdata/tls-identity/README.md": "33f1f398b59f6ab77bf7fa4c5fea59f6c79f98ea1a5f4b15efeb235225d02036",
+      "pkg/security/egress/testdata/tls-identity/ca.pem": "9dc33da5821f5ee7b8fff15e96b9c57bcdcb7d714c1da4286b3461d0ef998841",
+      "pkg/security/egress/testdata/tls-identity/cases.json": "6f0b349ba77726c089b80408216e84c38e3b2ea89eb9cae3462fba4a36658f7e",
+      "pkg/security/egress/testdata/tls-identity/client-eku-only.pem": "ede836ca1d033ee0194ec222f0a7a8ed2000358db360b28d3dc0b65431b31224",
+      "pkg/security/egress/testdata/tls-identity/cn-matches-email-only.pem": "f11db8bde3ec371890e60ff8d310f2e4d86b1f3df9dbaad2e83e5a24a6029533",
+      "pkg/security/egress/testdata/tls-identity/cn-matches-ip-only.pem": "5db67d502037938f43dfef8597097db2585edcb67058496605b2159f6e6bf5ab",
+      "pkg/security/egress/testdata/tls-identity/cn-matches-uri-only.pem": "3ac76705168768d352a9fee9283b45b0f46dce1fab74d34ce518c692b029a060",
+      "pkg/security/egress/testdata/tls-identity/cn-matches-wrong-dns.pem": "30d8f69675829d446e0003ce9a8586875cf307185b670d2943605601cb63320c",
+      "pkg/security/egress/testdata/tls-identity/cn-only-exact.pem": "ec477c474919c544084574b6f52dea1faed43244da08ea7dd0eaf137d350b544",
+      "pkg/security/egress/testdata/tls-identity/cn-only-wildcard.pem": "9f89227b3e2be2eea8141ae58904de3fb06222c693027ab824c9390392c8c19f",
+      "pkg/security/egress/testdata/tls-identity/cn-only-wrong.pem": "55552039e992094519c50625958bca80296d642df4de1fecfaba83d43ef99fcd",
+      "pkg/security/egress/testdata/tls-identity/expired.pem": "ab4f1c96a019f4c6fa425f50c39184a8df58274d191bbf2cf45de644efcc729a",
+      "pkg/security/egress/testdata/tls-identity/generate.go": "66cf527492da6a898ab8c9fd5deb507802a6bb3f2f425004ed80f6ca916b07ab",
+      "pkg/security/egress/testdata/tls-identity/ip4-cn-only.pem": "3e1c5aa7bf252f6bbd79d25ba60039eccfe6fbda51aaa282cc4fc804cdba2401",
+      "pkg/security/egress/testdata/tls-identity/ip4-dns-only.pem": "d0227a9316c8327195ca8a0bdcba27c83e2795ef99cbf742beb6b9ea2e38adfc",
+      "pkg/security/egress/testdata/tls-identity/ip4-match.pem": "e211a80847c9c4f2f194579ddc32c63aedd3b0009ecef83e5a7c1e16083be5ae",
+      "pkg/security/egress/testdata/tls-identity/ip4-wrong.pem": "d0daa7e75cb1859f726c8236a185a7256a17304b4629e4dae1f694a166206e4a",
+      "pkg/security/egress/testdata/tls-identity/ip6-dns-only.pem": "9424c3a9014a08fdc29690176a4bdfeaba5d037185dc1bf1812403f087e986c9",
+      "pkg/security/egress/testdata/tls-identity/ip6-match.pem": "8893fe76c327bad1ea981379028b9c1c2d73f77003dd083fc467e473e2b0a40a",
+      "pkg/security/egress/testdata/tls-identity/ip6-wrong.pem": "a87601dcc3388e816817d1a2fe475849fd763489f77323fd4d3e8e80c41e7b20",
+      "pkg/security/egress/testdata/tls-identity/mixed-san.pem": "fb0e16632e53a67c0ec4d398bf5d184ba847461b3464d940c26a3fb662a09b72",
+      "pkg/security/egress/testdata/tls-identity/no-identity.pem": "dda5c6955f6f84cad3e849bb5d392ad86338771e78d0ac4e57b4a70fdddcf4cd",
+      "pkg/security/egress/testdata/tls-identity/not-yet-valid.pem": "9a5e3a93df729d8c95f10340f6b755efe124c257495e78976389b4e5a64d27cd",
+      "pkg/security/egress/testdata/tls-identity/san-alabel.pem": "119e72b2c189b0df46de26f2b8c782a842c775aa2f1329d1f8f255e55246675e",
+      "pkg/security/egress/testdata/tls-identity/san-case.pem": "fd2efcbbec092905bc393c1ebb10bdf993205c23a21636e8da410b2454e111b9",
+      "pkg/security/egress/testdata/tls-identity/san-exact.pem": "44e99ed19a874b19c6012afdd1f27575372e3de897902e85d8e2019909b4b3e5",
+      "pkg/security/egress/testdata/tls-identity/san-many.pem": "f7d4b02e7c01413c46719722baed05d250122a5691a2a99266c8e3364a8045b0",
+      "pkg/security/egress/testdata/tls-identity/san-partial-middle.pem": "785b2c393440967096ad3ad75d0ba1141b6c92ec71957220236201909d7eb14b",
+      "pkg/security/egress/testdata/tls-identity/san-partial-prefix.pem": "0897c5d013d276e2e38e5acde64d1104ae8de26b9a8d94e3d5b89b0c4ae92f6b",
+      "pkg/security/egress/testdata/tls-identity/san-partial-suffix.pem": "68468078df8866439031ac747943b35d713ab2a58617fbc5003492074f6b65d1",
+      "pkg/security/egress/testdata/tls-identity/san-two-wildcards.pem": "1a64f1f3a06d159e45a4aef4e8e3cb103dd3f29c6a629c59bcb69d8055fb0788",
+      "pkg/security/egress/testdata/tls-identity/san-wildcard-apex.pem": "bb9f0e35a24c1cbfe80474cda2a5b1925598e038a29dade1cbefd31877feea43",
+      "pkg/security/egress/testdata/tls-identity/san-wildcard-deep.pem": "41c2cef34a43db914a1abce8ea44b3d4d9d4685ad1b64c90effcaf283bde9edc",
+      "pkg/security/egress/testdata/tls-identity/san-wildcard.pem": "48a5d0bce2af80017e6f506a8fb9527bdc1d12f3b3f017e96f84223db927e8c4",
+      "pkg/security/egress/testdata/tls-identity/san-without-cn.pem": "050cc2692e54c06751b0f4b59feabf3f0fa171e88f1e24b0d1dccf5b2ba83a80",
+      "pkg/security/egress/testdata/tls-identity/san-wrong.pem": "4261df01af2ea2408f84ccf6cb2f6f078ed2dfd22666ba4b109a66915ad549c5",
+      "pkg/security/egress/testdata/tls-identity/server-key.pem": "91b9c49dc6562226ca28b49144526d2bfe1691c0aa4be163ec3d9f0e202b21e2",
+      "pkg/security/egress/testdata/tls-identity/untrusted-root.pem": "2f8cd0059063a14b1597d436a1d21934fffeb06886126756ddd26128e98648a3"
+    }
+  },
+  "verification": {
+    "python_focused": {
+      "exit_code": 0,
+      "methods": 2,
+      "cases": 69,
+      "passed": 69
+    },
+    "go_identity_baseline": {
+      "exit_code": 0,
+      "cases": 66,
+      "passed": 66,
+      "elapsed_seconds": 6.401
+    },
+    "python_security_suite": {
+      "exit_code": 0,
+      "test_methods": 134,
+      "elapsed_seconds": 4.654
+    },
+    "go_security_race": {
+      "exit_code": 0,
+      "fresh_packages": {
+        "pkg/security/egress": 23.481
+      },
+      "cached_packages": [
+        "pkg/security/dnsproxy",
+        "pkg/security/httpguard",
+        "pkg/security/snort",
+        "pkg/mcp/proxy"
+      ],
+      "packages_without_tests": [
+        "cmd/ax-dns-proxy"
+      ]
+    },
+    "accepted_exchange_checks": [
+      "Correct original SNI for names, absent SNI for IP literals",
+      "Vetted numeric socket destination",
+      "HTTP Host and dummy Authorization preserved",
+      "HTTP/1.1 ALPN and response body preserved"
+    ],
+    "denied_exchange_checks": [
+      "Certificate verification error rather than an unrelated transport failure",
+      "No HTTP request delivered to the fixture server",
+      "Python returns an error with zero response body bytes"
+    ],
+    "runtimes": {
+      "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+      "openssl": "OpenSSL 3.6.3 9 Jun 2026",
+      "go": "go1.27.1 darwin/arm64",
+      "platform": "macOS-27.0-arm64-arm-64bit-Mach-O"
+    }
+  },
+  "primary_sources": [
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc9525.html#section-1.3",
+      "use": "DNS SAN identities and removal of Common Name fallback."
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc9525.html#section-6.3",
+      "use": "ASCII/A-label name comparison and whole-label leftmost wildcard restrictions."
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc9525.html#section-6.4",
+      "use": "IP reference identities match IP SAN values."
+    },
+    {
+      "url": "https://docs.python.org/3/library/ssl.html#ssl.SSLContext.hostname_checks_common_name",
+      "use": "Default fallback and old OpenSSL flag limitations, including Python workarounds."
+    },
+    {
+      "url": "https://docs.python.org/3/library/ssl.html#ssl.HAS_NEVER_CHECK_COMMON_NAME",
+      "use": "Native Common Name exclusion capability flag."
+    }
+  ],
+  "limitations": [
+    "The explicit custom embedding opener and arbitrary caller-supplied TLS contexts are trusted integration hooks outside the production opener contract.",
+    "The version gate is intentionally conservative: older native libraries are refused even where a particular Python release might work around their behavior. Old runtimes are simulated for startup checks, not executed.",
+    "Fixtures test selected identity, trust, time and server-purpose outcomes. They are not complete PKIX, revocation, cipher, certificate-issuance, protocol or runtime vulnerability coverage.",
+    "Generated keys are published test material. The fixture CA is loaded only into isolated test clients; no machine trust store is changed.",
+    "TLS exchanges are local with fake DNS and numeric dial recording; there is no external-endpoint, sandbox perimeter or production deployment validation.",
+    "Shared handshake cases are counted once across implementations. Baseline comparisons, repeated runs, certificate files and assertions are not additional cases.",
+    "No universal RFC/W3C conformance or prevention of all unknown attacks is established."
+  ],
+  "source_sha256": {
+    "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "0ffba60b964d126789ef416a9ab86da8a33a86ba23b6500345eb62ec3a9dd002",
+    "cmd/ax-mcp-proxy/main.go": "bc9258e886bb23ccea04ade07610cbf2cf8d51e6504ab5b1da53a95c36e7ccc8",
+    "docs/protocol-security.md": "2d6a4e88c481c60f008525cec709adf4d068fbdb30c9573fe62b0ec82b90b372",
+    "go.mod": "0a18e611f01f74fa16151ffd8530c3a98763db0ee4bbc4e7e61e5d54ad651f7b",
+    "go.sum": "34e86b388cfa07abe61c863cd088738147856963c2aeed94cf3436b47bdf34be",
+    "pkg/mcp/proxy/server.go": "296f873338358cf2f09e48df41df5cb69a654eb887c90191f88288f8339539fb",
+    "pkg/security/egress/address_admission_test.go": "4e8f33483d19308cd537cb2f803bc9aaadea40081f0fc66ae74da83cf105c48a",
+    "pkg/security/egress/chunk.go": "f04fe64114a104cdc2d7c184150ae2f03a5f0c63c903bda492289cebf0992f15",
+    "pkg/security/egress/chunk_test.go": "322169a402bb36f1c66d0d4be542560f742ac55a1196bd99fea55ab6b0854dbc",
+    "pkg/security/egress/client.go": "b3996a6f7e07a1c34e82c07b0f32a48269dd1763d545e6a8835422ac10c9e1b2",
+    "pkg/security/egress/client_test.go": "a221c2c4ee87368662e81b2402d4741cfd1e6120610a4534fd6146954c708e70",
+    "pkg/security/egress/complete_range_json_test.go": "bec29f0b8f569983184b364ad3a4419082f08608fab90ff8122b843d28d03492",
+    "pkg/security/egress/conditional_test.go": "144b111768189a779a41091cd5088a8bbeb4e71cec0d14f09a9f169e9adab3c7",
+    "pkg/security/egress/content_range.go": "689fc45737f295880ca359cc1622acfd36fce777fa21faceabfe0f632901e6fa",
+    "pkg/security/egress/content_range_test.go": "0404effbed17f69b15e7569ccc88db8b2bd1eacd9052ad1cd7e06d65915399d3",
+    "pkg/security/egress/disposition.go": "89fc23ad2f13eabb58d25be7006bcbcedf049a256394695870ae2970d4da9742",
+    "pkg/security/egress/disposition_test.go": "fe6161e6d7d3ca102bdb1faf96e91467bf7927d958bdc8fccb6036b834e7a08c",
+    "pkg/security/egress/metadata.go": "b983b492c81aefa25a93a901134cc29f229eddc944a6abbb44dc0f362a68f2b6",
+    "pkg/security/egress/metadata_test.go": "4859a6b3bef7ef53e52ed56cf165ad64d3fe0cdfde7432f03c7199b7fa6610ed",
+    "pkg/security/egress/multipart_consistency_test.go": "9678b3e8333abd01ab9d1e45867894bdec532f66dba39cb7e4afea9d6ca76035",
+    "pkg/security/egress/policy.go": "4019e3b343dbaaf5dcc4c177ff51638aa91e1335c54a82aa1b74735820bf7f58",
+    "pkg/security/egress/policy_test.go": "5dc165a0fd789e1afc278ed3bd6dae5eafe0c8f8f0eee1c38f110bda25ef2447",
+    "pkg/security/egress/range_test.go": "b02684faf4de94d3e43a4079ccb38b8edc7675789d2210f426c8b6c0a19a719e",
+    "pkg/security/egress/response.go": "29b3f3b06cb8afa52e633d160e654b4ec76db716b8eff5b45086b31a067b3298",
+    "pkg/security/egress/response_conditions.go": "26790f8cd1f230ab1644688e64d730317af524f22d39547de060b8260ca90f68",
+    "pkg/security/egress/response_content.go": "8ea0c2f777eaec5f77a15b03040de5975114f6a20293633fbd40850c0efa9061",
+    "pkg/security/egress/response_correlation_test.go": "c3e61977f95988df00fd54f530eba2eaa0318c5777e15f8c1bcd5bb003244420",
+    "pkg/security/egress/response_range_correlation_test.go": "1d53c13a6424d8562f4985c68a99f04721cb65647dc1bdf5cf3d83b371c08864",
+    "pkg/security/egress/response_test.go": "bfd263d81b5f4a3f57d5bb44c8eabc5a85cd15b74c48eb72966b8d691452ca91",
+    "pkg/security/egress/testdata/content_disposition_cases.json": "e316b67a62fcfe79e5ab4f8421c4d25326f48a9c01b77a59be51adf50cadc70b",
+    "pkg/security/egress/testdata/generate_disposition_cases.py": "8f94fc17e795a6a9d8e167e6052f555ec5afc6d075cc735116d009a1560fe27e",
+    "pkg/security/egress/testdata/response_metadata_cases.json": "47ed9f72836f2b794c2cd5c7e8ddb882aae65631b1d3093f2b0b97b3c36da9e7",
+    "pkg/security/egress/testdata/tls-identity/README.md": "33f1f398b59f6ab77bf7fa4c5fea59f6c79f98ea1a5f4b15efeb235225d02036",
+    "pkg/security/egress/testdata/tls-identity/ca.pem": "9dc33da5821f5ee7b8fff15e96b9c57bcdcb7d714c1da4286b3461d0ef998841",
+    "pkg/security/egress/testdata/tls-identity/cases.json": "6f0b349ba77726c089b80408216e84c38e3b2ea89eb9cae3462fba4a36658f7e",
+    "pkg/security/egress/testdata/tls-identity/client-eku-only.pem": "ede836ca1d033ee0194ec222f0a7a8ed2000358db360b28d3dc0b65431b31224",
+    "pkg/security/egress/testdata/tls-identity/cn-matches-email-only.pem": "f11db8bde3ec371890e60ff8d310f2e4d86b1f3df9dbaad2e83e5a24a6029533",
+    "pkg/security/egress/testdata/tls-identity/cn-matches-ip-only.pem": "5db67d502037938f43dfef8597097db2585edcb67058496605b2159f6e6bf5ab",
+    "pkg/security/egress/testdata/tls-identity/cn-matches-uri-only.pem": "3ac76705168768d352a9fee9283b45b0f46dce1fab74d34ce518c692b029a060",
+    "pkg/security/egress/testdata/tls-identity/cn-matches-wrong-dns.pem": "30d8f69675829d446e0003ce9a8586875cf307185b670d2943605601cb63320c",
+    "pkg/security/egress/testdata/tls-identity/cn-only-exact.pem": "ec477c474919c544084574b6f52dea1faed43244da08ea7dd0eaf137d350b544",
+    "pkg/security/egress/testdata/tls-identity/cn-only-wildcard.pem": "9f89227b3e2be2eea8141ae58904de3fb06222c693027ab824c9390392c8c19f",
+    "pkg/security/egress/testdata/tls-identity/cn-only-wrong.pem": "55552039e992094519c50625958bca80296d642df4de1fecfaba83d43ef99fcd",
+    "pkg/security/egress/testdata/tls-identity/expired.pem": "ab4f1c96a019f4c6fa425f50c39184a8df58274d191bbf2cf45de644efcc729a",
+    "pkg/security/egress/testdata/tls-identity/generate.go": "66cf527492da6a898ab8c9fd5deb507802a6bb3f2f425004ed80f6ca916b07ab",
+    "pkg/security/egress/testdata/tls-identity/ip4-cn-only.pem": "3e1c5aa7bf252f6bbd79d25ba60039eccfe6fbda51aaa282cc4fc804cdba2401",
+    "pkg/security/egress/testdata/tls-identity/ip4-dns-only.pem": "d0227a9316c8327195ca8a0bdcba27c83e2795ef99cbf742beb6b9ea2e38adfc",
+    "pkg/security/egress/testdata/tls-identity/ip4-match.pem": "e211a80847c9c4f2f194579ddc32c63aedd3b0009ecef83e5a7c1e16083be5ae",
+    "pkg/security/egress/testdata/tls-identity/ip4-wrong.pem": "d0daa7e75cb1859f726c8236a185a7256a17304b4629e4dae1f694a166206e4a",
+    "pkg/security/egress/testdata/tls-identity/ip6-dns-only.pem": "9424c3a9014a08fdc29690176a4bdfeaba5d037185dc1bf1812403f087e986c9",
+    "pkg/security/egress/testdata/tls-identity/ip6-match.pem": "8893fe76c327bad1ea981379028b9c1c2d73f77003dd083fc467e473e2b0a40a",
+    "pkg/security/egress/testdata/tls-identity/ip6-wrong.pem": "a87601dcc3388e816817d1a2fe475849fd763489f77323fd4d3e8e80c41e7b20",
+    "pkg/security/egress/testdata/tls-identity/mixed-san.pem": "fb0e16632e53a67c0ec4d398bf5d184ba847461b3464d940c26a3fb662a09b72",
+    "pkg/security/egress/testdata/tls-identity/no-identity.pem": "dda5c6955f6f84cad3e849bb5d392ad86338771e78d0ac4e57b4a70fdddcf4cd",
+    "pkg/security/egress/testdata/tls-identity/not-yet-valid.pem": "9a5e3a93df729d8c95f10340f6b755efe124c257495e78976389b4e5a64d27cd",
+    "pkg/security/egress/testdata/tls-identity/san-alabel.pem": "119e72b2c189b0df46de26f2b8c782a842c775aa2f1329d1f8f255e55246675e",
+    "pkg/security/egress/testdata/tls-identity/san-case.pem": "fd2efcbbec092905bc393c1ebb10bdf993205c23a21636e8da410b2454e111b9",
+    "pkg/security/egress/testdata/tls-identity/san-exact.pem": "44e99ed19a874b19c6012afdd1f27575372e3de897902e85d8e2019909b4b3e5",
+    "pkg/security/egress/testdata/tls-identity/san-many.pem": "f7d4b02e7c01413c46719722baed05d250122a5691a2a99266c8e3364a8045b0",
+    "pkg/security/egress/testdata/tls-identity/san-partial-middle.pem": "785b2c393440967096ad3ad75d0ba1141b6c92ec71957220236201909d7eb14b",
+    "pkg/security/egress/testdata/tls-identity/san-partial-prefix.pem": "0897c5d013d276e2e38e5acde64d1104ae8de26b9a8d94e3d5b89b0c4ae92f6b",
+    "pkg/security/egress/testdata/tls-identity/san-partial-suffix.pem": "68468078df8866439031ac747943b35d713ab2a58617fbc5003492074f6b65d1",
+    "pkg/security/egress/testdata/tls-identity/san-two-wildcards.pem": "1a64f1f3a06d159e45a4aef4e8e3cb103dd3f29c6a629c59bcb69d8055fb0788",
+    "pkg/security/egress/testdata/tls-identity/san-wildcard-apex.pem": "bb9f0e35a24c1cbfe80474cda2a5b1925598e038a29dade1cbefd31877feea43",
+    "pkg/security/egress/testdata/tls-identity/san-wildcard-deep.pem": "41c2cef34a43db914a1abce8ea44b3d4d9d4685ad1b64c90effcaf283bde9edc",
+    "pkg/security/egress/testdata/tls-identity/san-wildcard.pem": "48a5d0bce2af80017e6f506a8fb9527bdc1d12f3b3f017e96f84223db927e8c4",
+    "pkg/security/egress/testdata/tls-identity/san-without-cn.pem": "050cc2692e54c06751b0f4b59feabf3f0fa171e88f1e24b0d1dccf5b2ba83a80",
+    "pkg/security/egress/testdata/tls-identity/san-wrong.pem": "4261df01af2ea2408f84ccf6cb2f6f078ed2dfd22666ba4b109a66915ad549c5",
+    "pkg/security/egress/testdata/tls-identity/server-key.pem": "91b9c49dc6562226ca28b49144526d2bfe1691c0aa4be163ec3d9f0e202b21e2",
+    "pkg/security/egress/testdata/tls-identity/untrusted-root.pem": "2f8cd0059063a14b1597d436a1d21934fffeb06886126756ddd26128e98648a3",
+    "pkg/security/egress/tls_identity_test.go": "d05fe5820cd2551954e690986bbd3ef355327ba0eccc249566061c0d7791b8d1",
+    "pkg/security/egress/wire.go": "c8b684e4ec032fbe10e0e8fb67c259aa2d952ab634f545a56b0918fdf1ba9b99",
+    "pkg/security/egress/wire_test.go": "fa62123eb01feef632446981d5acd663d7767be1fd0ccbe2f0836763711cac0d",
+    "pkg/security/httpguard/conditional.go": "5829166dd441b13b2351a56340c59cf8095fa514f8167be8de1957c941e0c1dd",
+    "pkg/security/httpguard/conditional_test.go": "34c178e40104fb3c35bac89081dccbe118068216529994aaddf73dc910447e1d",
+    "pkg/security/httpguard/content_range.go": "f1ad7c4946afc226f1ed0487a55f842dcb35cd2042979b2f4cdb3344aabb5616",
+    "pkg/security/httpguard/guard_test.go": "15c3112f5338d51e005bce376071ee1d390f5452e1a00e76933a49ed1e5f3dc8",
+    "pkg/security/httpguard/json.go": "70d992b91e4abbbfc7a3f591ea8e71c63c88e4b5708c86dd51a088b59229d1d0",
+    "pkg/security/httpguard/range.go": "28f6c4a4bc5811311ef7dcfc818365f2b18f584cae59bdb074d300782ea47023",
+    "pkg/security/httpguard/request.go": "341df651d58c81ede93cbad2027cb4c95a4c42148185847615ab2f3ca727a837",
+    "tests/test_agent_guard_import.py": "cff06b4319ab982a87f5896fec991135465426f7c5168cc6ffa06e1e889e6bdf",
+    "tests/test_ax_mcp_proxy.py": "4d75f6b7259be2f97611104174aca1b08c1510adcf283723f1b8381eb3c96938",
+    "tests/test_deadline_budget.py": "e2eafc9e7fdcbf0fa05480944f38e9ea380f6b16fc09e9b50fd979ecc58984d1",
+    "tests/test_dns_worker_lifecycle.py": "79ce1f76e6bb09ebaec11829428335dde56feb088b96ca4e5c6707fba370da9e",
+    "tests/test_http_protocol.py": "d231da87a15a30133afb3d67a2f47dcf64320744c564a103b269c6d954e09cb7",
+    "tests/test_response_disposition.py": "d9f4026eabf3edbee972a7395af96204e3d4b48e18dc5ab45017d40221c1862c",
+    "tests/test_snort_rules.py": "d65104037664c173248fc48512aec0f3b23fc730dd2592c250089b2c916611a6",
+    "tests/test_tls_identity.py": "098a22cd16129faa3cfd7e12cfadbd8ce6ec3d79dcaeb48ceea426433dfdf8c8"
+  },
+  "logs": {
+    "go_focused_baseline": {
+      "path": "/private/tmp/ax-tls-identity-go-before.jsonl",
+      "sha256": "6b0cde2cad38b7ad25b094c1829f82bc7d3ba031d01259360e7be6216118b9b8"
+    },
+    "python_focused_before": {
+      "path": "/private/tmp/ax-tls-identity-python-before.json",
+      "sha256": "a1b51a3993a7af3d85ca7269ac9d34fc86978fc877647262af386d8bf491e80d"
+    },
+    "python_focused_after": {
+      "path": "/private/tmp/ax-tls-identity-python-after.json",
+      "sha256": "25dd5d5456469d9e3d434d7bcca7dfcea89a66376b350452c1b54123ca9bf065"
+    },
+    "go_security_race": {
+      "path": "/private/tmp/ax-tls-identity-go-full.txt",
+      "sha256": "c52436acb635796b57d2c1c5841cba0b2c75360cb052ab6e997f22c8c23dc119"
+    },
+    "python_security_suite": {
+      "path": "/private/tmp/ax-tls-identity-python-full.txt",
+      "sha256": "3082932b422d9fb0454dfa03d4ed0d955397b81afca99b1a56a79a010973acbe"
+    },
+    "python_focused_runner": {
+      "path": "/private/tmp/ax-tls-identity-runner.py",
+      "sha256": "abc8717b05012fa6e1fb1b445d0de971143d4bf30881a80bc991474fb95ee932"
+    },
+    "baseline_source_hashes": {
+      "path": "/private/tmp/ax-tls-identity-baseline-source.json",
+      "sha256": "d2dd5c1067e464e90e8cdf2bbface9a850c673d1e07e984fc25fa83e5e0eb2f4"
+    },
+    "baseline_python_source": {
+      "path": "/private/tmp/ax-tls-identity-python-before.py",
+      "sha256": "954be3633147ce684cff83fa42556fc306cf5ff204c4a70c87ebffa241233085"
+    },
+    "fixture_reproduction": {
+      "path": "/private/tmp/ax-tls-identity-reproduction.json",
+      "sha256": "9ab5e958b97a19bd05b1ade9380fe5bd0a42b88c71b0e93fea54a3d400bd26db"
+    }
+  }
+}

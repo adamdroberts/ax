@@ -1,0 +1,482 @@
+{
+  "as_of": "2026-09-27",
+  "scope": "Local Content-Range admission, response wire/content validation and no-dispatch checks in both MCP implementations. Go uses the production guarded transport over in-memory sockets; no public origin or deployment.",
+  "shared_fixtures": [
+    {
+      "path": "pkg/security/httpguard/testdata/content_range_requests.json",
+      "sha256": "e2c8fc1062286e684efa224b0e49869bb855c6e4649af33a329bf9453a559d86",
+      "cases": 38,
+      "accepted_controls": 6,
+      "rejected_cases": 32,
+      "runtimes": [
+        "Go",
+        "Python"
+      ],
+      "result": "passed"
+    },
+    {
+      "path": "pkg/security/egress/testdata/content_range_responses.json",
+      "sha256": "e3e783f7de640652b29fad7961beea30b5ef6acc431a31b81cfd327491011564",
+      "cases": 91,
+      "accepted_controls": 32,
+      "rejected_cases": 59,
+      "runtimes": [
+        "Go",
+        "Python"
+      ],
+      "result": "passed"
+    }
+  ],
+  "shared_cases_counted_once": 129,
+  "baseline": {
+    "original_shared_cases": 111,
+    "original_upload_cases": 38,
+    "original_response_cases": 73,
+    "unexpected_acceptances_per_runtime": {
+      "Go": 79,
+      "Python": 79
+    },
+    "unexpected_upload_dispatches_per_runtime": 31,
+    "unexpected_response_acceptances_per_runtime": 48,
+    "reproduced_go_cases": [
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/empty"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/wrong-unit"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/missing-space"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/extra-space"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/missing-length"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/missing-last"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/missing-first"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/reversed"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/equal-total"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/smaller-total"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/zero-total"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/unknown-unsatisfied"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/unsatisfied"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/negative-offset"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/single-length-short"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/plus-offset"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/hex-offset"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/single-length-long"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/float-offset"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/multi-range"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/single-length-reversed"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/overflow-total"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/overflow-span"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/huge-offset"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/single-length-bad-total"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/short-body"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/long-body"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/unicode-character-count"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/single-length-overflow-span"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/empty-body"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/method-get"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/method-head"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/single-length-unsatisfied-206"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/single-length-invalid-unit"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/method-post"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/method-patch"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/method-delete"
+      },
+      {
+        "package": "github.com/google/ax/pkg/mcp/proxy",
+        "test": "TestContentRangeUploadsBeforeDispatch/method-options"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/single-chunked-short"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/single-chunked-long"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/single-chunked-reversed"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/single-chunked-bad-total"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/single-chunked-overflow-span"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/single-chunked-unsatisfied-206"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/single-chunked-invalid-unit"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/single-close-short"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/single-close-long"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/single-close-reversed"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/single-close-bad-total"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/single-close-overflow-span"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/single-close-unsatisfied-206"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/single-close-invalid-unit"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/missing-content-range"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/empty-content-range"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/unsolicited-206"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/head-206"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/content-range-200"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/content-range-interim"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/416-fulfilled"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/416-unknown-length"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/multipart-missing-range"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/multipart-short-part"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/multipart-long-part"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/multipart-duplicate-range"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/multipart-conflicting-total"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/multipart-unsatisfied-part"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/multipart-base64-part"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/multipart-folded-part"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/multipart-too-many-parts"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/multipart-missing-boundary"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/multipart-empty-boundary"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/multipart-long-boundary"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/multipart-invalid-boundary-char"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/multipart-top-range"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/multipart-single-request"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/multipart-missing-close"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/multipart-empty"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/multipart-bare-lf"
+      },
+      {
+        "package": "github.com/google/ax/pkg/security/egress",
+        "test": "TestContentRangeWireResponses/multipart-boundary-collision"
+      }
+    ],
+    "source_sha256": {
+      "pkg/security/httpguard/request.go": "8cd7b22bcb7395ad7cc9ec1dca02c9af02a620a1ce1c63e8294dc1834913d94d",
+      "pkg/security/httpguard/range.go": "dcfb75bb92624ea9a8726ed347537214f6d44f03d8262e101bd78da49ea6866d",
+      "pkg/security/egress/client.go": "98f71d44c05e2f6963d5e25c17ac657348f9c6c5f226df50aeda1408e2a1d7df",
+      "pkg/security/egress/wire.go": "b0859d878e346218a7f2298b570e8090bad98f49daded8a6bab2de6c46f0b0df",
+      "pkg/security/egress/metadata.go": "3483f0a7509aa9a2a8c451e34b2b6388ffd6f5ef882c5ebdd2215c0942571b59",
+      "pkg/security/egress/response.go": "e556751ebbb8142364b2f892cac9d0131d94d2d1f13108925a1485e03904dde0",
+      "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "5f73caf1034df32654f89514fb1c567b09aa0195349affba0c94ef85eec5c1e3"
+    },
+    "note": "The 18 additional boundary/compatibility fixtures were added after baseline capture and are not claimed as baseline reproductions."
+  },
+  "local_policy": {
+    "range_unit": "bytes, case insensitive",
+    "numeric_ceiling": "9223372036854775807",
+    "upload": "One fulfilled Content-Range on PUT, matching the actual UTF-8 body length at MCP admission; direct transport also checks its declared content length.",
+    "single_partial_response": "206 requires a GET Range request in the production broker, one fulfilled Content-Range and an exact received byte count.",
+    "other_status": "Content-Range permitted only as an unsatisfied byte range on 416; absence on 416 remains allowed.",
+    "multipart": "206 requires multipart/byteranges, a MIME boundary, at least two requested ranges, no outer Content-Range, and one fulfilled range per part.",
+    "maximum_parts": 16,
+    "maximum_boundary_characters": 70,
+    "multipart_headers": {
+      "cumulative_fields": 128,
+      "cumulative_bytes": 65536,
+      "per_line_bytes": 8192
+    },
+    "multipart_content": "Exact part byte lengths, consistent known totals covering every returned interval, mandatory closing delimiter and no premature boundary prefixes.",
+    "multipart_encodings": "Absent/binary Content-Transfer-Encoding and absent/identity Content-Encoding only; folded part headers and part-level HTTP framing are denied.",
+    "preserved_controls": "Known/unknown totals, byte-counted Unicode, leading zeros, reordered/coalesced parts, quoted/padded boundaries, empty media parameter slots, preamble/epilogue and optional final CRLF."
+  },
+  "checks": {
+    "go_race": {
+      "result": "passed",
+      "command": "go test -race ./pkg/security/dnsproxy ./cmd/ax-dns-proxy ./pkg/security/egress ./pkg/security/httpguard ./pkg/security/snort ./pkg/mcp/proxy",
+      "fresh_packages": [
+        "./pkg/security/dnsproxy",
+        "./pkg/security/egress",
+        "./pkg/security/httpguard",
+        "./pkg/mcp/proxy"
+      ],
+      "cached_packages": [
+        "./pkg/security/snort"
+      ],
+      "no_test_files": [
+        "./cmd/ax-dns-proxy"
+      ]
+    },
+    "python_security_suite": {
+      "result": "passed",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests",
+      "test_methods": 101
+    },
+    "direct_go_transport": {
+      "rejected_before_dns_and_dial": 8,
+      "preserved_upload_controls": 2,
+      "result": "passed"
+    },
+    "multipart_header_budgets": {
+      "cases_per_runtime": 6,
+      "runtimes": [
+        "Go",
+        "Python"
+      ],
+      "result": "passed"
+    },
+    "go_vet": {
+      "result": "passed",
+      "packages": [
+        "./pkg/security/httpguard",
+        "./pkg/security/egress",
+        "./pkg/mcp/proxy"
+      ]
+    },
+    "go_build": {
+      "result": "passed",
+      "package": "./cmd/ax-mcp-proxy",
+      "artifact": "/private/tmp/ax-mcp-proxy-content-range-verified",
+      "sha256": "2ada980016773c1961e8572242719a0e4dc75e6498c90e9c31e2bd8f12a85905"
+    }
+  },
+  "source_sha256": {
+    "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "d2709845d6a4bd1cdf588928d8b4e3ccd9b0010d3ec09eb98a3c63524b02dbf2",
+    "tests/test_http_protocol.py": "0d68776a9272096eff9de732f7ca3bc1ef7aab77da483289f77b3806846e3898",
+    "pkg/security/httpguard/content_range.go": "f1ad7c4946afc226f1ed0487a55f842dcb35cd2042979b2f4cdb3344aabb5616",
+    "pkg/security/httpguard/guard_test.go": "15c3112f5338d51e005bce376071ee1d390f5452e1a00e76933a49ed1e5f3dc8",
+    "pkg/security/httpguard/json.go": "70d992b91e4abbbfc7a3f591ea8e71c63c88e4b5708c86dd51a088b59229d1d0",
+    "pkg/security/httpguard/range.go": "dcfb75bb92624ea9a8726ed347537214f6d44f03d8262e101bd78da49ea6866d",
+    "pkg/security/httpguard/request.go": "237a027bd898b70406b3d9077f14ff6db8a444f3cd76e83bd6c9db69a28b40a6",
+    "pkg/security/egress/chunk.go": "f04fe64114a104cdc2d7c184150ae2f03a5f0c63c903bda492289cebf0992f15",
+    "pkg/security/egress/chunk_test.go": "91706257ad258289a5727a4820b22ad617e422f2791efcc8ae20de7bc0da053f",
+    "pkg/security/egress/client.go": "adcf5b381eb0b72b6b6e87fbb25c9659c2fa403b1b3165fc131c7dc78b267cf6",
+    "pkg/security/egress/client_test.go": "a221c2c4ee87368662e81b2402d4741cfd1e6120610a4534fd6146954c708e70",
+    "pkg/security/egress/content_range.go": "fa4f1c8069dbfa9446edb34898041b9d2c1884872b6f92092a7c3fa1545bee94",
+    "pkg/security/egress/content_range_test.go": "0404effbed17f69b15e7569ccc88db8b2bd1eacd9052ad1cd7e06d65915399d3",
+    "pkg/security/egress/metadata.go": "229612eb93d7feffb37dd688666874e6500d2abd72596067859ccc32f09fc59d",
+    "pkg/security/egress/metadata_test.go": "4859a6b3bef7ef53e52ed56cf165ad64d3fe0cdfde7432f03c7199b7fa6610ed",
+    "pkg/security/egress/policy.go": "4019e3b343dbaaf5dcc4c177ff51638aa91e1335c54a82aa1b74735820bf7f58",
+    "pkg/security/egress/policy_test.go": "5dc165a0fd789e1afc278ed3bd6dae5eafe0c8f8f0eee1c38f110bda25ef2447",
+    "pkg/security/egress/range_test.go": "b02684faf4de94d3e43a4079ccb38b8edc7675789d2210f426c8b6c0a19a719e",
+    "pkg/security/egress/response.go": "f41baa2d0c451d30f644520d4b704e6bea5019777248593d5c7ec651bc54baea",
+    "pkg/security/egress/response_test.go": "bfd263d81b5f4a3f57d5bb44c8eabc5a85cd15b74c48eb72966b8d691452ca91",
+    "pkg/security/egress/wire.go": "bc727d653230230869b8ec2b1967dbff91aad9f8f97a81e0c37b86ce4195a801",
+    "pkg/security/egress/wire_test.go": "fa62123eb01feef632446981d5acd663d7767be1fd0ccbe2f0836763711cac0d",
+    "pkg/mcp/proxy/content_range_test.go": "50d368f816ed76ba8bc60d3ce89678875d68e0ef0650f108664f67dd42da1a4d",
+    "pkg/mcp/proxy/protocol.go": "09e39b66f31f289d6b08e46c61a84a3a609fe5976da916dc9c0d329c849928c8",
+    "pkg/mcp/proxy/protocol_test.go": "6f3639a095b2bd743e11a0b63cf590925d1ac0937895ed61ff13891a9b4ef179",
+    "pkg/mcp/proxy/range_test.go": "a8317dfb30d9dda210de9f97eb8cf17eeb2d325931c250e41658d1969e1a0af9",
+    "pkg/mcp/proxy/server.go": "bb0f7ab4de40877773bc81805434c4365e49f14d1f062756f12749a2a3f5129a",
+    "pkg/mcp/proxy/server_test.go": "058079b9fabb3789ecc2d5ac43fc6ebb18a538ee81713c561690172641d31111"
+  },
+  "standards": [
+    "https://www.rfc-editor.org/rfc/rfc9110.html#section-14.4",
+    "https://www.rfc-editor.org/rfc/rfc9110.html#section-14.5",
+    "https://www.rfc-editor.org/rfc/rfc9110.html#section-14.6",
+    "https://www.rfc-editor.org/rfc/rfc9110.html#section-15.3.7",
+    "https://www.rfc-editor.org/rfc/rfc2046.html#section-5.1.1"
+  ],
+  "limits": [
+    "Bytes-only and numeric ceilings, PUT-only request use, status restrictions and strict MIME encoding/header budgets are local broker policy; some valid protocol extensions are intentionally denied.",
+    "Partial PUT still requires an origin-specific application agreement. Resource length, current validators, authorization and content safety are not inferred.",
+    "MCP consumes and validates the entire response before returning it. Go multipart validation retains a bounded content copy and completes at EOF; direct streaming callers must read to EOF and honor errors.",
+    "Multipart content is preserved without combining, transfer decoding or caching its parts. Ordinary response bodies keep their streaming behavior.",
+    "No new Snort rule or SID. No live routing/deployment verification or proof of universal RFC/W3C conformance, unknown-vulnerability prevention or complete attack coverage."
+  ]
+}

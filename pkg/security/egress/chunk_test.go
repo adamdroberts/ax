@@ -132,6 +132,9 @@ func TestBodylessAndFixedLengthResponseHandling(t *testing.T) {
 		t.Run(fmt.Sprintf("%s/%s/%s", tc.method, tc.status, tc.headers), func(t *testing.T) {
 			client := newClient(mustPolicy(t, "http://api.example.com"), fakeDNS("8.8.8.8"), pipeResponse("HTTP/1.1 "+tc.status+"\r\n"+tc.headers+"\r\n"+tc.body, nil))
 			req, _ := http.NewRequest(tc.method, "http://api.example.com", nil)
+			if strings.HasPrefix(tc.status, "304 ") {
+				req.Header.Set("If-None-Match", "*")
+			}
 			resp, err := client.Do(req)
 			var got []byte
 			if err == nil {

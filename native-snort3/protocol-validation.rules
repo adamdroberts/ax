@@ -65,3 +65,11 @@ drop icmp any any -> any any (msg:"AX IPv6 Echo invalid code"; ip_proto:58; ityp
 # Internal post-routing SegmentsLeft=0 is not an original-wire control here.
 # Reserved fields stay ignored; endpoint home-address ownership remains external.
 drop ip any any -> any any (msg:"AX malformed original-wire IPv6 Type 2 routing header"; ax_ip6_type2_routing; sid:9201016; rev:1;)
+
+# RFC 9293/2018: original TCP option framing, zero padding, SACK block geometry,
+# and SYN-only MSS/SACK-Permitted. Unknown well-framed options remain opaque.
+drop tcp any any -> any any (msg:"AX malformed TCP options or sender context"; ax_tcp_options; sid:9201017; rev:1;)
+
+# RFC 2018: SACK requires the peer's admitted SYN offer and an established flow.
+# Handshake state commits only on a final forwarding verdict, including rebuilds.
+drop tcp any any -> any any (msg:"AX TCP SACK without admitted peer negotiation"; ax_tcp_sack_state; sid:9201018; rev:1;)

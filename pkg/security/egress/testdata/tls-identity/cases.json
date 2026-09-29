@@ -1,0 +1,398 @@
+{
+  "version": 1,
+  "tls_versions": [
+    "TLSv1.2",
+    "TLSv1.3"
+  ],
+  "cases": [
+    {
+      "name": "san-exact",
+      "host": "api.example.com",
+      "common_name": "other.example.com",
+      "dns_names": [
+        "api.example.com"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": true,
+      "certificate": "san-exact.pem"
+    },
+    {
+      "name": "san-without-cn",
+      "host": "api.example.com",
+      "common_name": "",
+      "dns_names": [
+        "api.example.com"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": true,
+      "certificate": "san-without-cn.pem"
+    },
+    {
+      "name": "san-case",
+      "host": "api.example.com",
+      "common_name": "",
+      "dns_names": [
+        "API.EXAMPLE.COM"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": true,
+      "certificate": "san-case.pem"
+    },
+    {
+      "name": "san-many",
+      "host": "api.example.com",
+      "common_name": "",
+      "dns_names": [
+        "wrong.example.com",
+        "api.example.com"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": true,
+      "certificate": "san-many.pem"
+    },
+    {
+      "name": "san-wildcard",
+      "host": "api.example.com",
+      "common_name": "",
+      "dns_names": [
+        "*.example.com"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": true,
+      "certificate": "san-wildcard.pem"
+    },
+    {
+      "name": "san-alabel",
+      "host": "xn--bcher-kva.example.com",
+      "common_name": "",
+      "dns_names": [
+        "xn--bcher-kva.example.com"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": true,
+      "certificate": "san-alabel.pem"
+    },
+    {
+      "name": "cn-only-exact",
+      "host": "api.example.com",
+      "common_name": "api.example.com",
+      "trusted": true,
+      "validity": "current",
+      "accepted": false,
+      "certificate": "cn-only-exact.pem"
+    },
+    {
+      "name": "cn-only-wildcard",
+      "host": "api.example.com",
+      "common_name": "*.example.com",
+      "trusted": true,
+      "validity": "current",
+      "accepted": false,
+      "certificate": "cn-only-wildcard.pem"
+    },
+    {
+      "name": "cn-only-wrong",
+      "host": "api.example.com",
+      "common_name": "wrong.example.com",
+      "trusted": true,
+      "validity": "current",
+      "accepted": false,
+      "certificate": "cn-only-wrong.pem"
+    },
+    {
+      "name": "cn-matches-wrong-dns",
+      "host": "api.example.com",
+      "common_name": "api.example.com",
+      "dns_names": [
+        "wrong.example.com"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": false,
+      "certificate": "cn-matches-wrong-dns.pem"
+    },
+    {
+      "name": "cn-matches-uri-only",
+      "host": "api.example.com",
+      "common_name": "api.example.com",
+      "uris": [
+        "https://api.example.com"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": false,
+      "certificate": "cn-matches-uri-only.pem"
+    },
+    {
+      "name": "cn-matches-email-only",
+      "host": "api.example.com",
+      "common_name": "api.example.com",
+      "email_addresses": [
+        "service@api.example.com"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": false,
+      "certificate": "cn-matches-email-only.pem"
+    },
+    {
+      "name": "cn-matches-ip-only",
+      "host": "api.example.com",
+      "common_name": "api.example.com",
+      "ip_addresses": [
+        "8.8.8.8"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": false,
+      "certificate": "cn-matches-ip-only.pem"
+    },
+    {
+      "name": "no-identity",
+      "host": "api.example.com",
+      "common_name": "",
+      "trusted": true,
+      "validity": "current",
+      "accepted": false,
+      "certificate": "no-identity.pem"
+    },
+    {
+      "name": "san-wrong",
+      "host": "api.example.com",
+      "common_name": "other.example.com",
+      "dns_names": [
+        "wrong.example.com"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": false,
+      "certificate": "san-wrong.pem"
+    },
+    {
+      "name": "san-partial-prefix",
+      "host": "api.example.com",
+      "common_name": "",
+      "dns_names": [
+        "api*.example.com"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": false,
+      "certificate": "san-partial-prefix.pem"
+    },
+    {
+      "name": "san-partial-suffix",
+      "host": "api.example.com",
+      "common_name": "",
+      "dns_names": [
+        "*api.example.com"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": false,
+      "certificate": "san-partial-suffix.pem"
+    },
+    {
+      "name": "san-partial-middle",
+      "host": "api.example.com",
+      "common_name": "",
+      "dns_names": [
+        "a*i.example.com"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": false,
+      "certificate": "san-partial-middle.pem"
+    },
+    {
+      "name": "san-two-wildcards",
+      "host": "api.mail.example.com",
+      "common_name": "",
+      "dns_names": [
+        "*.*.example.com"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": false,
+      "certificate": "san-two-wildcards.pem"
+    },
+    {
+      "name": "san-wildcard-deep",
+      "host": "deep.api.example.com",
+      "common_name": "",
+      "dns_names": [
+        "*.example.com"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": false,
+      "certificate": "san-wildcard-deep.pem"
+    },
+    {
+      "name": "san-wildcard-apex",
+      "host": "example.com",
+      "common_name": "",
+      "dns_names": [
+        "*.example.com"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": false,
+      "certificate": "san-wildcard-apex.pem"
+    },
+    {
+      "name": "ip4-match",
+      "host": "8.8.8.8",
+      "common_name": "",
+      "ip_addresses": [
+        "8.8.8.8"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": true,
+      "certificate": "ip4-match.pem"
+    },
+    {
+      "name": "ip4-dns-only",
+      "host": "8.8.8.8",
+      "common_name": "",
+      "dns_names": [
+        "8.8.8.8"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": false,
+      "certificate": "ip4-dns-only.pem"
+    },
+    {
+      "name": "ip4-cn-only",
+      "host": "8.8.8.8",
+      "common_name": "8.8.8.8",
+      "trusted": true,
+      "validity": "current",
+      "accepted": false,
+      "certificate": "ip4-cn-only.pem"
+    },
+    {
+      "name": "ip4-wrong",
+      "host": "8.8.8.8",
+      "common_name": "",
+      "ip_addresses": [
+        "8.8.4.4"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": false,
+      "certificate": "ip4-wrong.pem"
+    },
+    {
+      "name": "ip6-match",
+      "host": "2001:4860:4860::8888",
+      "common_name": "",
+      "ip_addresses": [
+        "2001:4860:4860::8888"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": true,
+      "certificate": "ip6-match.pem"
+    },
+    {
+      "name": "ip6-dns-only",
+      "host": "2001:4860:4860::8888",
+      "common_name": "",
+      "dns_names": [
+        "2001:4860:4860::8888"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": false,
+      "certificate": "ip6-dns-only.pem"
+    },
+    {
+      "name": "ip6-wrong",
+      "host": "2001:4860:4860::8888",
+      "common_name": "",
+      "ip_addresses": [
+        "2001:4860:4860::8844"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": false,
+      "certificate": "ip6-wrong.pem"
+    },
+    {
+      "name": "mixed-san",
+      "host": "api.example.com",
+      "common_name": "",
+      "dns_names": [
+        "api.example.com"
+      ],
+      "ip_addresses": [
+        "8.8.4.4"
+      ],
+      "uris": [
+        "https://other.example.com"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "accepted": true,
+      "certificate": "mixed-san.pem"
+    },
+    {
+      "name": "untrusted-root",
+      "host": "api.example.com",
+      "common_name": "",
+      "dns_names": [
+        "api.example.com"
+      ],
+      "trusted": false,
+      "validity": "current",
+      "accepted": false,
+      "certificate": "untrusted-root.pem"
+    },
+    {
+      "name": "expired",
+      "host": "api.example.com",
+      "common_name": "",
+      "dns_names": [
+        "api.example.com"
+      ],
+      "trusted": true,
+      "validity": "expired",
+      "accepted": false,
+      "certificate": "expired.pem"
+    },
+    {
+      "name": "not-yet-valid",
+      "host": "api.example.com",
+      "common_name": "",
+      "dns_names": [
+        "api.example.com"
+      ],
+      "trusted": true,
+      "validity": "future",
+      "accepted": false,
+      "certificate": "not-yet-valid.pem"
+    },
+    {
+      "name": "client-eku-only",
+      "host": "api.example.com",
+      "common_name": "",
+      "dns_names": [
+        "api.example.com"
+      ],
+      "trusted": true,
+      "validity": "current",
+      "client_only": true,
+      "accepted": false,
+      "certificate": "client-eku-only.pem"
+    }
+  ]
+}

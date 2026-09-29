@@ -1,0 +1,885 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "name": "closed-whole",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=10-19"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 10-19/32\r\nContent-Length: 10\r\n\r\nklmnopqrst",
+      "body": "klmnopqrst"
+    },
+    {
+      "name": "closed-middle",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=10-19"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 12-15/32\r\nContent-Length: 4\r\n\r\nmnop",
+      "body": "mnop"
+    },
+    {
+      "name": "closed-first-byte",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=10-19"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 10-10/32\r\nContent-Length: 1\r\n\r\nk",
+      "body": "k"
+    },
+    {
+      "name": "closed-last-byte",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=10-19"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 19-19/32\r\nContent-Length: 1\r\n\r\nt",
+      "body": "t"
+    },
+    {
+      "name": "closed-before",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=10-19"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 8-9/32\r\nContent-Length: 2\r\n\r\nij",
+      "body": "ij"
+    },
+    {
+      "name": "closed-after",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=10-19"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 20-21/32\r\nContent-Length: 2\r\n\r\nuv",
+      "body": "uv"
+    },
+    {
+      "name": "closed-leading-extra",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=10-19"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 9-10/32\r\nContent-Length: 2\r\n\r\njk",
+      "body": "jk"
+    },
+    {
+      "name": "closed-trailing-extra",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=10-19"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 19-20/32\r\nContent-Length: 2\r\n\r\ntu",
+      "body": "tu"
+    },
+    {
+      "name": "closed-enclosing",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=10-19"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 9-20/32\r\nContent-Length: 12\r\n\r\njklmnopqrstu",
+      "body": "jklmnopqrstu"
+    },
+    {
+      "name": "closed-entire-resource",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=10-19"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-31/32\r\nContent-Length: 32\r\n\r\nabcdefghijklmnopqrstuvwxyzabcdef",
+      "body": "abcdefghijklmnopqrstuvwxyzabcdef"
+    },
+    {
+      "name": "open-32-start",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=10-"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 10-11/32\r\nContent-Length: 2\r\n\r\nkl",
+      "body": "kl"
+    },
+    {
+      "name": "open-32-later",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=10-"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 15-16/32\r\nContent-Length: 2\r\n\r\npq",
+      "body": "pq"
+    },
+    {
+      "name": "open-32-before",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=10-"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 8-9/32\r\nContent-Length: 2\r\n\r\nij",
+      "body": "ij"
+    },
+    {
+      "name": "open-32-cross-start",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=10-"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 9-10/32\r\nContent-Length: 2\r\n\r\njk",
+      "body": "jk"
+    },
+    {
+      "name": "open-*-start",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=10-"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 10-11/*\r\nContent-Length: 2\r\n\r\nkl",
+      "body": "kl"
+    },
+    {
+      "name": "open-*-later",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=10-"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 15-16/*\r\nContent-Length: 2\r\n\r\npq",
+      "body": "pq"
+    },
+    {
+      "name": "open-*-before",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=10-"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 8-9/*\r\nContent-Length: 2\r\n\r\nij",
+      "body": "ij"
+    },
+    {
+      "name": "open-*-cross-start",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=10-"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 9-10/*\r\nContent-Length: 2\r\n\r\njk",
+      "body": "jk"
+    },
+    {
+      "name": "closed-clipped",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=10-99"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 10-31/32\r\nContent-Length: 22\r\n\r\nklmnopqrstuvwxyzabcdef",
+      "body": "klmnopqrstuvwxyzabcdef"
+    },
+    {
+      "name": "closed-clipped-subset",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=10-99"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 30-31/32\r\nContent-Length: 2\r\n\r\nef",
+      "body": "ef"
+    },
+    {
+      "name": "closed-unsatisfied",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=40-99"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 10-11/32\r\nContent-Length: 2\r\n\r\nkl",
+      "body": "kl"
+    },
+    {
+      "name": "open-unsatisfied",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=40-"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 10-11/32\r\nContent-Length: 2\r\n\r\nkl",
+      "body": "kl"
+    },
+    {
+      "name": "closed-unknown-subset",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=10-19"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 12-15/*\r\nContent-Length: 4\r\n\r\nmnop",
+      "body": "mnop"
+    },
+    {
+      "name": "closed-unknown-unrelated",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=10-19"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 20-21/*\r\nContent-Length: 2\r\n\r\nuv",
+      "body": "uv"
+    },
+    {
+      "name": "suffix-exact",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 27-31/32\r\nContent-Length: 5\r\n\r\nbcdef",
+      "body": "bcdef"
+    },
+    {
+      "name": "suffix-middle",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 28-29/32\r\nContent-Length: 2\r\n\r\ncd",
+      "body": "cd"
+    },
+    {
+      "name": "suffix-last",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 31-31/32\r\nContent-Length: 1\r\n\r\nf",
+      "body": "f"
+    },
+    {
+      "name": "suffix-before",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 25-26/32\r\nContent-Length: 2\r\n\r\nza",
+      "body": "za"
+    },
+    {
+      "name": "suffix-cross-start",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 26-27/32\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "suffix-longer-than-resource",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=-100"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-31/32\r\nContent-Length: 32\r\n\r\nabcdefghijklmnopqrstuvwxyzabcdef",
+      "body": "abcdefghijklmnopqrstuvwxyzabcdef"
+    },
+    {
+      "name": "suffix-longer-subset",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=-100"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 10-11/32\r\nContent-Length: 2\r\n\r\nkl",
+      "body": "kl"
+    },
+    {
+      "name": "suffix-unknown-exact",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 10-14/*\r\nContent-Length: 5\r\n\r\nklmno",
+      "body": "klmno"
+    },
+    {
+      "name": "suffix-unknown-subset",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 10-11/*\r\nContent-Length: 2\r\n\r\nkl",
+      "body": "kl"
+    },
+    {
+      "name": "suffix-unknown-too-long",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 10-15/*\r\nContent-Length: 6\r\n\r\nklmnop",
+      "body": "klmnop"
+    },
+    {
+      "name": "suffix-unknown-small-resource",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/*\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "suffix-zero-known",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=-0"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/32\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "suffix-zero-unknown",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=-0"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/*\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "leading-zero-case",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "BYTES=00010-00019"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 10-11/32\r\nContent-Length: 2\r\n\r\nkl",
+      "body": "kl"
+    },
+    {
+      "name": "bounded-empty-slots",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=,10-19,,"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 10-11/32\r\nContent-Length: 2\r\n\r\nkl",
+      "body": "kl"
+    },
+    {
+      "name": "coalesced",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-12/20\r\nContent-Length: 13\r\n\r\nabcdefghijklm",
+      "body": "abcdefghijklm"
+    },
+    {
+      "name": "coalesced-subset",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 1-11/20\r\nContent-Length: 11\r\n\r\nbcdefghijkl",
+      "body": "bcdefghijkl"
+    },
+    {
+      "name": "coalesced-first-only",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-2/20\r\nContent-Length: 3\r\n\r\nabc",
+      "body": "abc"
+    },
+    {
+      "name": "coalesced-last-only",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 10-12/20\r\nContent-Length: 3\r\n\r\nklm",
+      "body": "klm"
+    },
+    {
+      "name": "coalesced-start-in-gap",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 3-12/20\r\nContent-Length: 10\r\n\r\ndefghijklm",
+      "body": "defghijklm"
+    },
+    {
+      "name": "coalesced-end-in-gap",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-9/20\r\nContent-Length: 10\r\n\r\nabcdefghij",
+      "body": "abcdefghij"
+    },
+    {
+      "name": "coalesced-gap-only",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 3-9/20\r\nContent-Length: 7\r\n\r\ndefghij",
+      "body": "defghij"
+    },
+    {
+      "name": "coalesced-past-last",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-13/20\r\nContent-Length: 14\r\n\r\nabcdefghijklmn",
+      "body": "abcdefghijklmn"
+    },
+    {
+      "name": "coalesced-clipped",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-10/11\r\nContent-Length: 11\r\n\r\nabcdefghijk",
+      "body": "abcdefghijk"
+    },
+    {
+      "name": "one-satisfiable",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/2\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "open-after-closed",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=0-2,10-"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 12-13/*\r\nContent-Length: 2\r\n\r\nmn",
+      "body": "mn"
+    },
+    {
+      "name": "coalesced-open",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=0-2,10-"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 1-12/*\r\nContent-Length: 12\r\n\r\nbcdefghijklm",
+      "body": "bcdefghijklm"
+    },
+    {
+      "name": "gap-before-open",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=0-2,10-"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 5-6/*\r\nContent-Length: 2\r\n\r\nfg",
+      "body": "fg"
+    },
+    {
+      "name": "maximum-closed",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=9223372036854775806-9223372036854775807"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 9223372036854775806-9223372036854775807/*\r\nContent-Length: 2\r\n\r\ngh",
+      "body": "gh"
+    },
+    {
+      "name": "maximum-clipped",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=9223372036854775806-9223372036854775807"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 9223372036854775806-9223372036854775806/9223372036854775807\r\nContent-Length: 1\r\n\r\ng",
+      "body": "g"
+    },
+    {
+      "name": "maximum-unrelated",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=9223372036854775806-9223372036854775807"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/*\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "maximum-open",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=9223372036854775807-"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 9223372036854775807-9223372036854775807/*\r\nContent-Length: 1\r\n\r\nh",
+      "body": "h"
+    },
+    {
+      "name": "maximum-suffix-unknown",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=-2"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 9223372036854775806-9223372036854775807/*\r\nContent-Length: 2\r\n\r\ngh",
+      "body": "gh"
+    },
+    {
+      "name": "maximum-suffix-too-small",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 9223372036854775806-9223372036854775807/*\r\nContent-Length: 2\r\n\r\ngh",
+      "body": "gh"
+    },
+    {
+      "name": "maximum-suffix-known",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=-2"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 9223372036854775805-9223372036854775806/9223372036854775807\r\nContent-Length: 2\r\n\r\nfg",
+      "body": "fg"
+    },
+    {
+      "name": "maximum-suffix-before",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=-2"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 9223372036854775804-9223372036854775805/9223372036854775807\r\nContent-Length: 2\r\n\r\nef",
+      "body": "ef"
+    },
+    {
+      "name": "multipart-length-requested",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=bounds\r\nContent-Length: 106\r\n\r\n--bounds\r\nContent-Range: bytes 0-2/32\r\n\r\nabc\r\n--bounds\r\nContent-Range: bytes 10-12/32\r\n\r\nklm\r\n--bounds--\r\n",
+      "body": "--bounds\r\nContent-Range: bytes 0-2/32\r\n\r\nabc\r\n--bounds\r\nContent-Range: bytes 10-12/32\r\n\r\nklm\r\n--bounds--\r\n"
+    },
+    {
+      "name": "multipart-length-unrelated",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=bounds\r\nContent-Length: 105\r\n\r\n--bounds\r\nContent-Range: bytes 0-2/32\r\n\r\nabc\r\n--bounds\r\nContent-Range: bytes 20-21/32\r\n\r\nuv\r\n--bounds--\r\n",
+      "body": "--bounds\r\nContent-Range: bytes 0-2/32\r\n\r\nabc\r\n--bounds\r\nContent-Range: bytes 20-21/32\r\n\r\nuv\r\n--bounds--\r\n"
+    },
+    {
+      "name": "multipart-length-coalesced",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=bounds\r\nContent-Length: 69\r\n\r\n--bounds\r\nContent-Range: bytes 0-12/32\r\n\r\nabcdefghijklm\r\n--bounds--\r\n",
+      "body": "--bounds\r\nContent-Range: bytes 0-12/32\r\n\r\nabcdefghijklm\r\n--bounds--\r\n"
+    },
+    {
+      "name": "multipart-length-gap",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=bounds\r\nContent-Length: 57\r\n\r\n--bounds\r\nContent-Range: bytes 4-5/32\r\n\r\nef\r\n--bounds--\r\n",
+      "body": "--bounds\r\nContent-Range: bytes 4-5/32\r\n\r\nef\r\n--bounds--\r\n"
+    },
+    {
+      "name": "single-length-subset",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=10-19"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 12-13/32\r\nContent-Length: 2\r\n\r\nmn",
+      "body": "mn"
+    },
+    {
+      "name": "single-length-unrelated",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=10-19"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 20-21/32\r\nContent-Length: 2\r\n\r\nuv",
+      "body": "uv"
+    },
+    {
+      "name": "multipart-chunked-requested",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=bounds\r\nTransfer-Encoding: chunked\r\n\r\n6a\r\n--bounds\r\nContent-Range: bytes 0-2/32\r\n\r\nabc\r\n--bounds\r\nContent-Range: bytes 10-12/32\r\n\r\nklm\r\n--bounds--\r\n\r\n0\r\n\r\n",
+      "body": "--bounds\r\nContent-Range: bytes 0-2/32\r\n\r\nabc\r\n--bounds\r\nContent-Range: bytes 10-12/32\r\n\r\nklm\r\n--bounds--\r\n"
+    },
+    {
+      "name": "multipart-chunked-unrelated",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=bounds\r\nTransfer-Encoding: chunked\r\n\r\n69\r\n--bounds\r\nContent-Range: bytes 0-2/32\r\n\r\nabc\r\n--bounds\r\nContent-Range: bytes 20-21/32\r\n\r\nuv\r\n--bounds--\r\n\r\n0\r\n\r\n",
+      "body": "--bounds\r\nContent-Range: bytes 0-2/32\r\n\r\nabc\r\n--bounds\r\nContent-Range: bytes 20-21/32\r\n\r\nuv\r\n--bounds--\r\n"
+    },
+    {
+      "name": "multipart-chunked-coalesced",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=bounds\r\nTransfer-Encoding: chunked\r\n\r\n45\r\n--bounds\r\nContent-Range: bytes 0-12/32\r\n\r\nabcdefghijklm\r\n--bounds--\r\n\r\n0\r\n\r\n",
+      "body": "--bounds\r\nContent-Range: bytes 0-12/32\r\n\r\nabcdefghijklm\r\n--bounds--\r\n"
+    },
+    {
+      "name": "multipart-chunked-gap",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=bounds\r\nTransfer-Encoding: chunked\r\n\r\n39\r\n--bounds\r\nContent-Range: bytes 4-5/32\r\n\r\nef\r\n--bounds--\r\n\r\n0\r\n\r\n",
+      "body": "--bounds\r\nContent-Range: bytes 4-5/32\r\n\r\nef\r\n--bounds--\r\n"
+    },
+    {
+      "name": "single-chunked-subset",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=10-19"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 12-13/32\r\nTransfer-Encoding: chunked\r\n\r\n2\r\nmn\r\n0\r\n\r\n",
+      "body": "mn"
+    },
+    {
+      "name": "single-chunked-unrelated",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=10-19"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 20-21/32\r\nTransfer-Encoding: chunked\r\n\r\n2\r\nuv\r\n0\r\n\r\n",
+      "body": "uv"
+    },
+    {
+      "name": "multipart-close-requested",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=bounds\r\n\r\n--bounds\r\nContent-Range: bytes 0-2/32\r\n\r\nabc\r\n--bounds\r\nContent-Range: bytes 10-12/32\r\n\r\nklm\r\n--bounds--\r\n",
+      "body": "--bounds\r\nContent-Range: bytes 0-2/32\r\n\r\nabc\r\n--bounds\r\nContent-Range: bytes 10-12/32\r\n\r\nklm\r\n--bounds--\r\n"
+    },
+    {
+      "name": "multipart-close-unrelated",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=bounds\r\n\r\n--bounds\r\nContent-Range: bytes 0-2/32\r\n\r\nabc\r\n--bounds\r\nContent-Range: bytes 20-21/32\r\n\r\nuv\r\n--bounds--\r\n",
+      "body": "--bounds\r\nContent-Range: bytes 0-2/32\r\n\r\nabc\r\n--bounds\r\nContent-Range: bytes 20-21/32\r\n\r\nuv\r\n--bounds--\r\n"
+    },
+    {
+      "name": "multipart-close-coalesced",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=bounds\r\n\r\n--bounds\r\nContent-Range: bytes 0-12/32\r\n\r\nabcdefghijklm\r\n--bounds--\r\n",
+      "body": "--bounds\r\nContent-Range: bytes 0-12/32\r\n\r\nabcdefghijklm\r\n--bounds--\r\n"
+    },
+    {
+      "name": "multipart-close-gap",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=bounds\r\n\r\n--bounds\r\nContent-Range: bytes 4-5/32\r\n\r\nef\r\n--bounds--\r\n",
+      "body": "--bounds\r\nContent-Range: bytes 4-5/32\r\n\r\nef\r\n--bounds--\r\n"
+    },
+    {
+      "name": "single-close-subset",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=10-19"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 12-13/32\r\n\r\nmn",
+      "body": "mn"
+    },
+    {
+      "name": "single-close-unrelated",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=10-19"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 20-21/32\r\n\r\nuv",
+      "body": "uv"
+    },
+    {
+      "name": "multipart-reordered",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=bounds\r\nContent-Length: 106\r\n\r\n--bounds\r\nContent-Range: bytes 10-12/32\r\n\r\nklm\r\n--bounds\r\nContent-Range: bytes 0-2/32\r\n\r\nabc\r\n--bounds--\r\n",
+      "body": "--bounds\r\nContent-Range: bytes 10-12/32\r\n\r\nklm\r\n--bounds\r\nContent-Range: bytes 0-2/32\r\n\r\nabc\r\n--bounds--\r\n"
+    },
+    {
+      "name": "multipart-subset",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=bounds\r\nContent-Length: 56\r\n\r\n--bounds\r\nContent-Range: bytes 1-1/32\r\n\r\nb\r\n--bounds--\r\n",
+      "body": "--bounds\r\nContent-Range: bytes 1-1/32\r\n\r\nb\r\n--bounds--\r\n"
+    },
+    {
+      "name": "multipart-unknown-later-known",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=bounds\r\nContent-Length: 105\r\n\r\n--bounds\r\nContent-Range: bytes 0-2/*\r\n\r\nabc\r\n--bounds\r\nContent-Range: bytes 10-12/32\r\n\r\nklm\r\n--bounds--\r\n",
+      "body": "--bounds\r\nContent-Range: bytes 0-2/*\r\n\r\nabc\r\n--bounds\r\nContent-Range: bytes 10-12/32\r\n\r\nklm\r\n--bounds--\r\n"
+    },
+    {
+      "name": "multipart-unrelated-unknown-first",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=bounds\r\nContent-Length: 106\r\n\r\n--bounds\r\nContent-Range: bytes 20-21/*\r\n\r\nuv\r\n--bounds\r\nContent-Range: bytes 10-12/32\r\n\r\nklm\r\n--bounds--\r\n",
+      "body": "--bounds\r\nContent-Range: bytes 20-21/*\r\n\r\nuv\r\n--bounds\r\nContent-Range: bytes 10-12/32\r\n\r\nklm\r\n--bounds--\r\n"
+    },
+    {
+      "name": "multipart-unrelated-unknown-last",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=0-2,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=bounds\r\nContent-Length: 106\r\n\r\n--bounds\r\nContent-Range: bytes 10-12/32\r\n\r\nklm\r\n--bounds\r\nContent-Range: bytes 20-21/*\r\n\r\nuv\r\n--bounds--\r\n",
+      "body": "--bounds\r\nContent-Range: bytes 10-12/32\r\n\r\nklm\r\n--bounds\r\nContent-Range: bytes 20-21/*\r\n\r\nuv\r\n--bounds--\r\n"
+    },
+    {
+      "name": "multipart-overlapping-consistent-subsets",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=0-4,10-12"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=bounds\r\nContent-Length: 105\r\n\r\n--bounds\r\nContent-Range: bytes 0-3/32\r\n\r\nabcd\r\n--bounds\r\nContent-Range: bytes 2-4/32\r\n\r\ncde\r\n--bounds--\r\n",
+      "body": "--bounds\r\nContent-Range: bytes 0-3/32\r\n\r\nabcd\r\n--bounds\r\nContent-Range: bytes 2-4/32\r\n\r\ncde\r\n--bounds--\r\n"
+    },
+    {
+      "name": "multipart-16-requested",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=0-1,2-3,4-5,6-7,8-9,10-11,12-13,14-15,16-17,18-19,20-21,22-23,24-25,26-27,28-29,30-31"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=bounds\r\nContent-Length: 754\r\n\r\n--bounds\r\nContent-Range: bytes 0-1/32\r\n\r\nab\r\n--bounds\r\nContent-Range: bytes 2-3/32\r\n\r\ncd\r\n--bounds\r\nContent-Range: bytes 4-5/32\r\n\r\nef\r\n--bounds\r\nContent-Range: bytes 6-7/32\r\n\r\ngh\r\n--bounds\r\nContent-Range: bytes 8-9/32\r\n\r\nij\r\n--bounds\r\nContent-Range: bytes 10-11/32\r\n\r\nkl\r\n--bounds\r\nContent-Range: bytes 12-13/32\r\n\r\nmn\r\n--bounds\r\nContent-Range: bytes 14-15/32\r\n\r\nop\r\n--bounds\r\nContent-Range: bytes 16-17/32\r\n\r\nqr\r\n--bounds\r\nContent-Range: bytes 18-19/32\r\n\r\nst\r\n--bounds\r\nContent-Range: bytes 20-21/32\r\n\r\nuv\r\n--bounds\r\nContent-Range: bytes 22-23/32\r\n\r\nwx\r\n--bounds\r\nContent-Range: bytes 24-25/32\r\n\r\nyz\r\n--bounds\r\nContent-Range: bytes 26-27/32\r\n\r\nab\r\n--bounds\r\nContent-Range: bytes 28-29/32\r\n\r\ncd\r\n--bounds\r\nContent-Range: bytes 30-31/32\r\n\r\nef\r\n--bounds--\r\n",
+      "body": "--bounds\r\nContent-Range: bytes 0-1/32\r\n\r\nab\r\n--bounds\r\nContent-Range: bytes 2-3/32\r\n\r\ncd\r\n--bounds\r\nContent-Range: bytes 4-5/32\r\n\r\nef\r\n--bounds\r\nContent-Range: bytes 6-7/32\r\n\r\ngh\r\n--bounds\r\nContent-Range: bytes 8-9/32\r\n\r\nij\r\n--bounds\r\nContent-Range: bytes 10-11/32\r\n\r\nkl\r\n--bounds\r\nContent-Range: bytes 12-13/32\r\n\r\nmn\r\n--bounds\r\nContent-Range: bytes 14-15/32\r\n\r\nop\r\n--bounds\r\nContent-Range: bytes 16-17/32\r\n\r\nqr\r\n--bounds\r\nContent-Range: bytes 18-19/32\r\n\r\nst\r\n--bounds\r\nContent-Range: bytes 20-21/32\r\n\r\nuv\r\n--bounds\r\nContent-Range: bytes 22-23/32\r\n\r\nwx\r\n--bounds\r\nContent-Range: bytes 24-25/32\r\n\r\nyz\r\n--bounds\r\nContent-Range: bytes 26-27/32\r\n\r\nab\r\n--bounds\r\nContent-Range: bytes 28-29/32\r\n\r\ncd\r\n--bounds\r\nContent-Range: bytes 30-31/32\r\n\r\nef\r\n--bounds--\r\n"
+    },
+    {
+      "name": "multipart-16-unrelated",
+      "method": "GET",
+      "accepted": false,
+      "request_headers": {
+        "Range": "bytes=0-1,30-31"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=bounds\r\nContent-Length: 754\r\n\r\n--bounds\r\nContent-Range: bytes 0-1/32\r\n\r\nab\r\n--bounds\r\nContent-Range: bytes 2-3/32\r\n\r\ncd\r\n--bounds\r\nContent-Range: bytes 4-5/32\r\n\r\nef\r\n--bounds\r\nContent-Range: bytes 6-7/32\r\n\r\ngh\r\n--bounds\r\nContent-Range: bytes 8-9/32\r\n\r\nij\r\n--bounds\r\nContent-Range: bytes 10-11/32\r\n\r\nkl\r\n--bounds\r\nContent-Range: bytes 12-13/32\r\n\r\nmn\r\n--bounds\r\nContent-Range: bytes 14-15/32\r\n\r\nop\r\n--bounds\r\nContent-Range: bytes 16-17/32\r\n\r\nqr\r\n--bounds\r\nContent-Range: bytes 18-19/32\r\n\r\nst\r\n--bounds\r\nContent-Range: bytes 20-21/32\r\n\r\nuv\r\n--bounds\r\nContent-Range: bytes 22-23/32\r\n\r\nwx\r\n--bounds\r\nContent-Range: bytes 24-25/32\r\n\r\nyz\r\n--bounds\r\nContent-Range: bytes 26-27/32\r\n\r\nab\r\n--bounds\r\nContent-Range: bytes 28-29/32\r\n\r\ncd\r\n--bounds\r\nContent-Range: bytes 30-31/32\r\n\r\nef\r\n--bounds--\r\n",
+      "body": "--bounds\r\nContent-Range: bytes 0-1/32\r\n\r\nab\r\n--bounds\r\nContent-Range: bytes 2-3/32\r\n\r\ncd\r\n--bounds\r\nContent-Range: bytes 4-5/32\r\n\r\nef\r\n--bounds\r\nContent-Range: bytes 6-7/32\r\n\r\ngh\r\n--bounds\r\nContent-Range: bytes 8-9/32\r\n\r\nij\r\n--bounds\r\nContent-Range: bytes 10-11/32\r\n\r\nkl\r\n--bounds\r\nContent-Range: bytes 12-13/32\r\n\r\nmn\r\n--bounds\r\nContent-Range: bytes 14-15/32\r\n\r\nop\r\n--bounds\r\nContent-Range: bytes 16-17/32\r\n\r\nqr\r\n--bounds\r\nContent-Range: bytes 18-19/32\r\n\r\nst\r\n--bounds\r\nContent-Range: bytes 20-21/32\r\n\r\nuv\r\n--bounds\r\nContent-Range: bytes 22-23/32\r\n\r\nwx\r\n--bounds\r\nContent-Range: bytes 24-25/32\r\n\r\nyz\r\n--bounds\r\nContent-Range: bytes 26-27/32\r\n\r\nab\r\n--bounds\r\nContent-Range: bytes 28-29/32\r\n\r\ncd\r\n--bounds\r\nContent-Range: bytes 30-31/32\r\n\r\nef\r\n--bounds--\r\n"
+    },
+    {
+      "name": "full-response-may-ignore-range",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=10-19"
+      },
+      "wire": "HTTP/1.1 200 Test\r\nContent-Length: 5\r\n\r\nwhole",
+      "body": "whole"
+    },
+    {
+      "name": "unsatisfied-response-remains-possible",
+      "method": "GET",
+      "accepted": true,
+      "request_headers": {
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 416 Test\r\nContent-Range: bytes */32\r\nContent-Length: 5\r\n\r\nerror",
+      "body": "error"
+    }
+  ]
+}

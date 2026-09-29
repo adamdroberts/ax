@@ -1,4 +1,5 @@
 """Strict dispatch, RPC, DNS pinning and HTTP wire-boundary regressions."""
+import base64
 import email.message
 import io
 import json
@@ -89,6 +90,289 @@ class TestHTTPProtocol(unittest.TestCase):
                 except (ValueError, TypeError, OverflowError):
                     accepted = False
                 self.assertEqual(accepted, case["accepted"])
+
+    def test_range_policy_before_dispatch(self):
+        corpus = json.loads((ROOT / "pkg/security/httpguard/testdata/range_cases.json").read_text())
+        for case in corpus["cases"]:
+            with self.subTest(name=case["name"]):
+                opener = FakeOpener()
+                server, captured = self.server(allowed=["https://api.example.com"], opener=opener)
+                server._execute_http_request(1, case["arguments"])
+                self.assertEqual(not self.result(captured)["isError"], case["accepted"])
+                self.assertEqual(len(opener.calls), int(case["accepted"]))
+                server._execute_check_payload(2, case["arguments"])
+                diagnostic = json.loads(self.result(captured)["content"][0]["text"])
+                self.assertEqual(not diagnostic["blocked"], case["accepted"])
+
+    def test_content_range_uploads_before_dispatch(self):
+        corpus = json.loads((ROOT / "pkg/security/httpguard/testdata/content_range_requests.json").read_text())
+        for case in corpus["cases"]:
+            with self.subTest(name=case["name"]):
+                opener = FakeOpener()
+                server, captured = self.server(allowed=["https://api.example.com"], opener=opener)
+                server._execute_http_request(1, case["arguments"])
+                self.assertEqual(not self.result(captured)["isError"], case["accepted"])
+                self.assertEqual(len(opener.calls), int(case["accepted"]))
+                server._execute_check_payload(2, case["arguments"])
+                diagnostic = json.loads(self.result(captured)["content"][0]["text"])
+                self.assertEqual(not diagnostic["blocked"], case["accepted"])
+
+    def test_content_range_wire_responses(self):
+        corpus = json.loads((ROOT / "pkg/security/egress/testdata/content_range_responses.json").read_text())
+        for case in corpus["cases"]:
+            with self.subTest(name=case["name"]):
+                class Opener:
+                    def open(self, request, timeout):
+                        response = proxy.StrictHTTPResponse(WireSocket(case["wire"].encode()), method=request.get_method())
+                        response.begin()
+                        response.code = response.status
+                        return response
+                server, captured = self.server(allowed=["https://api.example.com"], opener=Opener())
+                server._execute_http_request(1, {"url": "https://api.example.com/v1", "method": case["method"], "headers": case["request_headers"]})
+                try:
+                    result = json.loads(self.result(captured)["content"][0]["text"])
+                    accepted = "body" in result
+                except json.JSONDecodeError:
+                    accepted = False
+                self.assertEqual(accepted, case["accepted"])
+                if accepted:
+                    self.assertEqual(result["body"], case["body"])
+
+    def test_response_conditional_correlation(self):
+        corpus = json.loads((ROOT / "pkg/security/egress/testdata/response_correlation_cases.json").read_text())
+        for case in corpus["cases"]:
+            with self.subTest(name=case["name"]):
+                class Opener:
+                    def open(self, request, timeout):
+                        response = proxy.StrictHTTPResponse(WireSocket(case["wire"].encode()), method=request.get_method())
+                        response.begin()
+                        response.code = response.status
+                        return response
+                server, captured = self.server(allowed=["https://api.example.com"], opener=Opener())
+                server._execute_http_request(1, {"url": "https://api.example.com/v1", "method": case["method"], "headers": case["request_headers"]})
+                try:
+                    result = json.loads(self.result(captured)["content"][0]["text"])
+                    accepted = "body" in result
+                except json.JSONDecodeError:
+                    accepted = False
+                self.assertEqual(accepted, case["accepted"])
+                if accepted:
+                    self.assertEqual(result["body"], case["body"])
+
+    def test_response_range_correlation(self):
+        corpus = json.loads((ROOT / "pkg/security/egress/testdata/response_range_correlation_cases.json").read_text())
+        for case in corpus["cases"]:
+            with self.subTest(name=case["name"]):
+                class Opener:
+                    def open(self, request, timeout):
+                        response = proxy.StrictHTTPResponse(WireSocket(case["wire"].encode()), method=request.get_method())
+                        response.begin()
+                        response.code = response.status
+                        return response
+                server, captured = self.server(allowed=["https://api.example.com"], opener=Opener())
+                server._execute_http_request(1, {"url": "https://api.example.com/v1", "method": case["method"], "headers": case["request_headers"]})
+                try:
+                    result = json.loads(self.result(captured)["content"][0]["text"])
+                    accepted = "body" in result
+                except json.JSONDecodeError:
+                    accepted = False
+                self.assertEqual(accepted, case["accepted"])
+                if accepted:
+                    self.assertEqual(result["body"], case["body"])
+
+    def test_multipart_content_consistency(self):
+        corpus = json.loads((ROOT / "pkg/security/egress/testdata/multipart_consistency_cases.json").read_text())
+        for case in corpus["cases"]:
+            with self.subTest(name=case["name"]):
+                calls = []
+                wire = base64.b64decode(case["wire_base64"])
+                body = base64.b64decode(case["body_base64"])
+
+                class Opener:
+                    def open(self, request, timeout):
+                        calls.append(request)
+                        response = proxy.StrictHTTPResponse(WireSocket(wire), method=request.get_method())
+                        response.begin()
+                        response.code = response.status
+                        return response
+
+                server, captured = self.server(allowed=["https://api.example.com"], opener=Opener())
+                server._execute_http_request(1, {"url": "https://api.example.com/v1", "method": case["method"], "headers": case["request_headers"]})
+                self.assertEqual(len(calls), 1)
+                tool_result = self.result(captured)
+                text = tool_result["content"][0]["text"]
+                try:
+                    result = json.loads(text)
+                    accepted = "body" in result
+                except json.JSONDecodeError:
+                    accepted = False
+                self.assertEqual(accepted, case["accepted"])
+                if accepted:
+                    self.assertEqual(result["body"].encode(), body)
+                else:
+                    self.assertTrue(tool_result["isError"])
+                    self.assertIn("Conflicting multipart byte ranges", text)
+                self.assertGreaterEqual(server.response_bytes, len(body))
+
+    def test_multipart_content_consistency_large_overlaps(self):
+        size = (proxy.MAX_RESPONSE_BYTES - 4096) // 16
+        part = f"--large\r\nContent-Range: bytes 0-{size - 1}/*\r\n\r\n".encode() + b"a" * size + b"\r\n"
+        body = part * 16 + b"--large--\r\n"
+        self.assertLessEqual(len(body), proxy.MAX_RESPONSE_BYTES)
+        proxy.validate_multipart_ranges(body, b"large")
+        position = 16 * len(part) - 3
+        conflicting = body[:position] + b"!" + body[position + 1:]
+        with self.assertRaisesRegex(ValueError, "Conflicting multipart byte ranges"):
+            proxy.validate_multipart_ranges(conflicting, b"large")
+
+    def test_complete_range_json(self):
+        corpus = json.loads((ROOT / "pkg/security/egress/testdata/complete_range_json_cases.json").read_text())
+        for case in corpus["cases"]:
+            with self.subTest(name=case["name"]):
+                wire = base64.b64decode(case["wire_base64"])
+                body = base64.b64decode(case["body_base64"])
+                calls = []
+
+                class Opener:
+                    def open(self, request, timeout):
+                        calls.append(request)
+                        response = proxy.StrictHTTPResponse(WireSocket(wire), method=request.get_method())
+                        response.begin()
+                        response.code = response.status
+                        return response
+
+                server, captured = self.server(allowed=["https://api.example.com"], opener=Opener())
+                server._execute_http_request(1, {"url": "https://api.example.com/v1", "method": case["method"], "headers": case["request_headers"]})
+                self.assertEqual(len(calls), 1)
+                tool_result = self.result(captured)
+                try:
+                    result = json.loads(tool_result["content"][0]["text"])
+                    accepted = "body" in result
+                except json.JSONDecodeError:
+                    accepted = False
+                self.assertEqual(accepted, case["accepted"])
+                if accepted:
+                    self.assertEqual(result["body"].encode("utf-8"), body)
+                else:
+                    self.assertTrue(tool_result["isError"])
+                    self.assertIn("JSON interoperability policy", tool_result["content"][0]["text"])
+                self.assertGreaterEqual(server.response_bytes, len(body))
+
+    def test_complete_range_json_large_document(self):
+        document = b'"' + b"a" * (proxy.MAX_RESPONSE_BYTES - 1026) + b'"'
+        cut = len(document) // 2
+        body = b"".join(
+            f"--large\r\nContent-Type: application/json\r\nContent-Range: bytes {first}-{last-1}/{len(document)}\r\n\r\n".encode()
+            + document[first:last] + b"\r\n"
+            for first, last in ((0, cut), (cut, len(document)))
+        ) + b"--large--\r\n"
+        self.assertLessEqual(len(body), proxy.MAX_RESPONSE_BYTES)
+        proxy.validate_multipart_ranges(body, b"large")
+        position = len(body) - len(b"\r\n--large--\r\n") - 1
+        malformed = body[:position] + b"!" + body[position + 1:]
+        with self.assertRaisesRegex(ValueError, "JSON interoperability policy"):
+            proxy.validate_multipart_ranges(malformed, b"large")
+
+    def test_json_responses_before_tool_delivery(self):
+        corpus = json.loads((ROOT / "pkg/mcp/proxy/testdata/response_json_cases.json").read_text())
+        for case in corpus["cases"]:
+            with self.subTest(name=case["name"]):
+                wire = base64.b64decode(case["wire_base64"])
+                body = base64.b64decode(case["body_base64"])
+                calls = []
+
+                class Opener:
+                    def open(self, request, timeout):
+                        calls.append(request)
+                        response = proxy.StrictHTTPResponse(WireSocket(wire), method=request.get_method())
+                        response.begin()
+                        response.code = response.status
+                        return response
+
+                server, captured = self.server(allowed=["https://api.example.com"], opener=Opener())
+                server._execute_http_request(1, {"url": "https://api.example.com/v1", "method": case["method"], "headers": case["request_headers"]})
+                self.assertEqual(len(calls), 1)
+                try:
+                    result = json.loads(self.result(captured)["content"][0]["text"])
+                    accepted = "body" in result
+                except json.JSONDecodeError:
+                    accepted = False
+                self.assertEqual(accepted, case["accepted"])
+                if accepted:
+                    self.assertEqual(result["body"].encode("utf-8"), body)
+                else:
+                    self.assertTrue(self.result(captured)["isError"])
+                self.assertGreaterEqual(server.response_bytes, len(body))
+
+    def test_conditional_requests_before_dispatch(self):
+        corpus = json.loads((ROOT / "pkg/security/httpguard/testdata/conditional_cases.json").read_text())
+        for case in corpus["request_cases"]:
+            with self.subTest(name=case["name"]):
+                # A wildcard read must receive a conditional response; this
+                # test checks admission independently of response rejection.
+                headers = {name.lower(): value for name, value in case["arguments"].get("headers", {}).items()}
+                conditional_read = case["arguments"].get("method", "GET") in ("GET", "HEAD") and headers.get("if-none-match") == "*"
+                status = 304 if conditional_read else 200
+                opener = FakeOpener(FakeResponse(status=status))
+                server, captured = self.server(allowed=["https://api.example.com"], opener=opener)
+                server._execute_http_request(1, case["arguments"])
+                self.assertEqual(not self.result(captured)["isError"], case["accepted"])
+                self.assertEqual(len(opener.calls), int(case["accepted"]))
+                server._execute_check_payload(2, case["arguments"])
+                diagnostic = json.loads(self.result(captured)["content"][0]["text"])
+                self.assertEqual(not diagnostic["blocked"], case["accepted"])
+
+    def test_conditional_response_metadata(self):
+        corpus = json.loads((ROOT / "pkg/security/httpguard/testdata/conditional_cases.json").read_text())
+        for case in corpus["response_cases"]:
+            with self.subTest(name=case["name"]):
+                class Opener:
+                    def open(self, request, timeout):
+                        response = proxy.StrictHTTPResponse(WireSocket(case["wire"].encode()), method=request.get_method())
+                        response.begin()
+                        response.code = response.status
+                        return response
+                server, captured = self.server(allowed=["https://api.example.com"], opener=Opener())
+                server._execute_http_request(1, {"url": "https://api.example.com/v1", "method": "GET", "headers": {}})
+                try:
+                    result = json.loads(self.result(captured)["content"][0]["text"])
+                    accepted = "body" in result
+                except json.JSONDecodeError:
+                    accepted = False
+                self.assertEqual(accepted, case["accepted"])
+                if accepted:
+                    self.assertEqual(result["body"], "ok")
+
+    def test_http_date_century_boundaries(self):
+        corpus = json.loads((ROOT / "pkg/security/httpguard/testdata/http_date_boundaries.json").read_text())
+        for case in corpus["cases"]:
+            with self.subTest(name=case["name"]):
+                now = proxy.datetime.datetime.fromisoformat(case["now"].replace("Z", "+00:00"))
+                try:
+                    proxy.validate_http_date(case["value"], allow_obsolete=True, now=now)
+                    accepted = True
+                except proxy.ProtocolPolicyError:
+                    accepted = False
+                self.assertEqual(accepted, case["accepted"])
+
+    def test_multipart_range_header_budgets(self):
+        def part(extra):
+            return b"--b\r\nContent-Range: bytes 0-1/8\r\n" + extra + b"\r\nab\r\n"
+        cases = [
+            ("field-limit", part(b"X: " + b"a" * (8192 - 5) + b"\r\n"), True),
+            ("field-over", part(b"X: " + b"a" * (8192 - 4) + b"\r\n"), False),
+            ("count-limit", part(b"X: v\r\n" * 127), True),
+            ("count-over", part(b"X: v\r\n" * 128), False),
+            ("aggregate-count", part(b"X: v\r\n" * 63) + part(b"Y: v\r\n" * 64), False),
+            ("aggregate-bytes", part((b"X: " + b"a" * 8100 + b"\r\n") * 4) + part((b"Y: " + b"b" * 8100 + b"\r\n") * 5), False),
+        ]
+        for name, body, accepted in cases:
+            with self.subTest(name=name):
+                if accepted:
+                    proxy.validate_multipart_ranges(body + b"--b--", b"b")
+                else:
+                    with self.assertRaises(proxy.ProtocolPolicyError):
+                        proxy.validate_multipart_ranges(body + b"--b--", b"b")
 
     def test_dns_over_http_never_reaches_approved_origin_transport(self):
         cases = json.loads((ROOT / "pkg/security/snort/testdata/rule_cases.json").read_text())["cases"]
@@ -308,6 +592,31 @@ class TestHTTPProtocol(unittest.TestCase):
         self.assertEqual(server.response_bytes, 5)
         self.assertEqual(response.reads, [5])
 
+    def test_public_address_admission_cases(self):
+        corpus = json.loads((ROOT / "pkg/security/egress/testdata/address_admission_cases.json").read_text())
+        for case in corpus["address_cases"]:
+            with self.subTest(name=case["name"], address=case["address"]):
+                self.assertEqual(proxy.is_public_address(case["address"]), case["public"])
+
+    def test_dns_answer_admission_cases(self):
+        corpus = json.loads((ROOT / "pkg/security/egress/testdata/address_admission_cases.json").read_text())
+        for case in corpus["dns_cases"]:
+            with self.subTest(name=case["name"]):
+                answers = [(socket.AF_INET6, socket.SOCK_STREAM, socket.IPPROTO_TCP, "", (ip, 443, 0, 0))
+                           if ":" in ip else (socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP, "", (ip, 443))
+                           for ip in case["addresses"]]
+                connection = MagicMock()
+                with patch.object(proxy, "_resolve_once", return_value=answers) as resolve, patch.object(proxy.socket, "socket", return_value=connection) as create:
+                    if case["admitted"]:
+                        self.assertIs(proxy._public_connect("api.example.com", 443, 30), connection)
+                        create.assert_called_once_with(*answers[0][:3])
+                        connection.connect.assert_called_once_with(answers[0][4])
+                    else:
+                        with self.assertRaises(proxy.ProtocolPolicyError):
+                            proxy._public_connect("api.example.com", 443, 30)
+                        create.assert_not_called()
+                    resolve.assert_called_once_with("api.example.com", 443, 30)
+
     def test_resolved_private_mixed_and_special_addresses_never_connect(self):
         denied = ["127.0.0.1", "169.254.169.254", "168.63.129.16", "192.0.0.9", "192.31.196.1",
                   "192.52.193.1", "192.175.48.1", "100.64.0.1", "224.0.0.1", "240.0.0.1", "::1",
@@ -485,8 +794,9 @@ class TestHTTPProtocol(unittest.TestCase):
                    'text/plain; title="ok"junk', 'text/plain; title=x; title=x', 'text/plain' + ';' * 129]
         for media in valid:
             server, _ = self.server(opener=FakeOpener())
-            result = server._response_data(FakeResponse(headers=[("Content-Type", media), ("Content-Length", "2")]))
-            self.assertEqual(result["body"], "ok")
+            # Keep the body valid for JSON media so this remains a metadata test.
+            result = server._response_data(FakeResponse(body=b"{}", headers=[("Content-Type", media), ("Content-Length", "2")]))
+            self.assertEqual(result["body"], "{}")
         for media in invalid:
             server, _ = self.server(opener=FakeOpener())
             response = FakeResponse(headers=[("Content-Type", media), ("Content-Length", "2")])
@@ -541,7 +851,8 @@ class TestHTTPProtocol(unittest.TestCase):
                     server, _ = self.server(opener=FakeOpener())
                     wire = f"HTTP/1.1 {status} Status\r\n".encode() + field + b"\r\n\r\n"
                     response = self.wire_response(wire, method)
-                    result = server._response_data(response, method)
+                    headers = {"if-none-match": "*"} if status == 304 else {}
+                    result = server._response_data(response, method, headers)
                     self.assertEqual(result["body"], "")
                     self.assertEqual(server.response_bytes, 0)
                     response.close()

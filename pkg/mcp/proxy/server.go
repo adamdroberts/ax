@@ -539,6 +539,9 @@ func (s *Server) executeHTTPRequest(ctx context.Context, args map[string]any) (*
 	if !utf8.Valid(respBytes) {
 		return toolError("Response body is not UTF-8 text")
 	}
+	if err := egress.CheckResponseBody(resp, httpReq.Method, respBytes); err != nil {
+		return toolError("Response body failed content validation")
+	}
 
 	outHeaders := make(map[string]any)
 	for k, v := range resp.Header {

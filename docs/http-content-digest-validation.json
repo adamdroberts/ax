@@ -1,0 +1,237 @@
+{
+  "as_of": "2026-09-27",
+  "scope": "Response Content-Digest header admission and exact-content SHA-256/SHA-512 verification before MCP delivery, with the Go streaming transport also verifying at EOF. Local tests use simulated peers and loopback sockets; no deployment.",
+  "changes": [
+    "Parse RFC 9530 response Content-Digest using its RFC 8941 dictionary, byte-sequence and opaque bare-parameter types before normalization; preserve repeated field values.",
+    "Require at least one supported strong algorithm when the field is present; validate known output lengths, reject duplicate algorithm keys and require every supported declared digest to match.",
+    "Hash unchanged content after transfer decoding, including partial content and the full multipart envelope; bodyless and interim responses use empty content. MIME part metadata remains separate.",
+    "Validate in both full-body/MCP paths. The Go transport additionally maintains bounded incremental hashes and a sticky integrity failure at EOF. Rejected consumed content remains charged.",
+    "Protect Content-Digest against Connection nomination and retain all repeated values in Python tool output, including case variants.",
+    "Support 1024 dictionary members and 256 parameters per member within existing header byte/field ceilings. Unknown algorithms and parameters are not used as integrity evidence.",
+    "No new Snort SID is added."
+  ],
+  "corpus": {
+    "path": "pkg/security/egress/testdata/content_digest_cases.json",
+    "sha256": "45863cf7a30c9bbccf7203cd359ae51db75961d10f283f6a9d4462bb4ec9022c",
+    "cases": 130,
+    "accepted": 53,
+    "denied": 77,
+    "go_wire_cases": 130,
+    "python_mcp_cases": 130,
+    "go_mcp_custom_transport_cases": 126,
+    "generator_reproduced_identically": true
+  },
+  "additional_selected_controls": {
+    "counted_once": 7,
+    "cases": [
+      "Maximum 10 MiB content streamed in one-byte reads",
+      "Maximum 10 MiB content streamed in 8193-byte reads",
+      "Maximum 10 MiB content streamed in 65536-byte reads",
+      "Altered final byte in maximum content",
+      "Oversized complete body denied",
+      "Empty internal Content-Digest value list denied",
+      "Repeated case-variant field values preserved in tool output"
+    ],
+    "python_overlapping_checks": "Maximum content, altered last byte and empty internal field list also checked in Python; not added again."
+  },
+  "baseline": {
+    "original_corpus_cases": 127,
+    "original_corpus_sha256": "559bb5c5a1904dee7b917c2ab73345c1ad8997ee5d9e6d697f7ec6ae540db90f",
+    "go_wire": {
+      "accepted_controls": 50,
+      "unexpected_acceptances": 77
+    },
+    "python_mcp": {
+      "accepted_controls": 50,
+      "unexpected_acceptances": 77
+    },
+    "go_mcp_custom_transport": {
+      "cases": 123,
+      "accepted_controls": 49,
+      "unexpected_acceptances": 74
+    },
+    "identical_cases_in_final_corpus": 123,
+    "identical_rejection_cases_previously_admitted_per_raw_runtime": 75,
+    "revised_or_added_final_cases_without_baseline": [
+      "parameter-limit",
+      "member-limit",
+      "parameter-over-limit",
+      "member-over-limit",
+      "per-member-parameter-limits",
+      "member-64-character-key",
+      "parameter-64-character-key"
+    ],
+    "note": "Four prototype capacity fixtures were revised to RFC 8941 minimum dictionary/parameter capacities; three further standard-capacity controls were added. Baseline claims for identical final inputs apply to the remaining 123 cases only. No production source was edited until baseline process handles were terminal.",
+    "source_sha256": {
+      "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "b54dd2b52c03451d88adbf324d88ba6d013df49671ae9a639285d0764f4d0e9c",
+      "pkg/mcp/proxy/digest_response_test.go": "2cdc328f185c7b8cf0b2e1bcc99fcb273e12ab8145ff068f6dcd8438accfdf31",
+      "pkg/mcp/proxy/server.go": "296f873338358cf2f09e48df41df5cb69a654eb887c90191f88288f8339539fb",
+      "pkg/security/egress/address_admission_test.go": "4e8f33483d19308cd537cb2f803bc9aaadea40081f0fc66ae74da83cf105c48a",
+      "pkg/security/egress/chunk.go": "f04fe64114a104cdc2d7c184150ae2f03a5f0c63c903bda492289cebf0992f15",
+      "pkg/security/egress/chunk_test.go": "322169a402bb36f1c66d0d4be542560f742ac55a1196bd99fea55ab6b0854dbc",
+      "pkg/security/egress/client.go": "b3996a6f7e07a1c34e82c07b0f32a48269dd1763d545e6a8835422ac10c9e1b2",
+      "pkg/security/egress/client_test.go": "a221c2c4ee87368662e81b2402d4741cfd1e6120610a4534fd6146954c708e70",
+      "pkg/security/egress/complete_range_json_test.go": "bec29f0b8f569983184b364ad3a4419082f08608fab90ff8122b843d28d03492",
+      "pkg/security/egress/conditional_test.go": "144b111768189a779a41091cd5088a8bbeb4e71cec0d14f09a9f169e9adab3c7",
+      "pkg/security/egress/content_range.go": "fbe9617c3109fd3b13922de2d2ca0580518638a36590e212ab4c4b8d05ea0e89",
+      "pkg/security/egress/content_range_test.go": "0404effbed17f69b15e7569ccc88db8b2bd1eacd9052ad1cd7e06d65915399d3",
+      "pkg/security/egress/digest_test.go": "7d40374be8da132b4b2764cbb73e9d9a296779e0018e4507deffaf64bc6128e5",
+      "pkg/security/egress/disposition.go": "89fc23ad2f13eabb58d25be7006bcbcedf049a256394695870ae2970d4da9742",
+      "pkg/security/egress/disposition_test.go": "fe6161e6d7d3ca102bdb1faf96e91467bf7927d958bdc8fccb6036b834e7a08c",
+      "pkg/security/egress/metadata.go": "b983b492c81aefa25a93a901134cc29f229eddc944a6abbb44dc0f362a68f2b6",
+      "pkg/security/egress/metadata_test.go": "4859a6b3bef7ef53e52ed56cf165ad64d3fe0cdfde7432f03c7199b7fa6610ed",
+      "pkg/security/egress/multipart_consistency_test.go": "9678b3e8333abd01ab9d1e45867894bdec532f66dba39cb7e4afea9d6ca76035",
+      "pkg/security/egress/policy.go": "4019e3b343dbaaf5dcc4c177ff51638aa91e1335c54a82aa1b74735820bf7f58",
+      "pkg/security/egress/policy_test.go": "5dc165a0fd789e1afc278ed3bd6dae5eafe0c8f8f0eee1c38f110bda25ef2447",
+      "pkg/security/egress/range_test.go": "b02684faf4de94d3e43a4079ccb38b8edc7675789d2210f426c8b6c0a19a719e",
+      "pkg/security/egress/response.go": "29b3f3b06cb8afa52e633d160e654b4ec76db716b8eff5b45086b31a067b3298",
+      "pkg/security/egress/response_conditions.go": "26790f8cd1f230ab1644688e64d730317af524f22d39547de060b8260ca90f68",
+      "pkg/security/egress/response_content.go": "12e1631fe9a7ec8db5ebf8f5ac6ef7fc72114fc31ae16766b7e56bea24578841",
+      "pkg/security/egress/response_correlation_test.go": "c3e61977f95988df00fd54f530eba2eaa0318c5777e15f8c1bcd5bb003244420",
+      "pkg/security/egress/response_range_correlation_test.go": "1d53c13a6424d8562f4985c68a99f04721cb65647dc1bdf5cf3d83b371c08864",
+      "pkg/security/egress/response_test.go": "bfd263d81b5f4a3f57d5bb44c8eabc5a85cd15b74c48eb72966b8d691452ca91",
+      "pkg/security/egress/testdata/content_digest_cases.json": "559bb5c5a1904dee7b917c2ab73345c1ad8997ee5d9e6d697f7ec6ae540db90f",
+      "pkg/security/egress/testdata/generate_digest_cases.py": "1f2bda98cf6610ebb7e5b2b555c2606834be613ac905378c56dc0b3c46065f58",
+      "pkg/security/egress/tls_identity_test.go": "d05fe5820cd2551954e690986bbd3ef355327ba0eccc249566061c0d7791b8d1",
+      "pkg/security/egress/wire.go": "c8b684e4ec032fbe10e0e8fb67c259aa2d952ab634f545a56b0918fdf1ba9b99",
+      "pkg/security/egress/wire_test.go": "fa62123eb01feef632446981d5acd663d7767be1fd0ccbe2f0836763711cac0d",
+      "pkg/security/egress/xml_content.go": "53f1be0c9d007f23163be18598439f087e84d87a97c003000651da9c582a5d56",
+      "pkg/security/egress/xml_content_test.go": "37993f8b56065d8eb8ea865e30668dd3efbcb6e980a41aad9c86d11c1094aa1c",
+      "tests/test_content_digest.py": "cc596f0913c8db045e173ba1f8256d970907d521352c4f035ecb2dd5f68cc7cc"
+    }
+  },
+  "checks": {
+    "focused_go": {
+      "exit_code": 0,
+      "wire_cases": 130,
+      "mcp_cases": 126,
+      "streaming_capacity_controls": 5,
+      "empty_internal_list_control": 1,
+      "digest_case_checks": 262
+    },
+    "focused_python": {
+      "exit_code": 0,
+      "test_methods": 3,
+      "shared_cases": 130,
+      "additional_checks": 4
+    },
+    "full_go_race": {
+      "exit_code": 0,
+      "packages": {
+        "pkg/security/dnsproxy": "cached",
+        "cmd/ax-dns-proxy": "no test files",
+        "pkg/security/egress": "fresh pass, 27.159 seconds",
+        "pkg/security/httpguard": "cached",
+        "pkg/security/snort": "cached",
+        "pkg/mcp/proxy": "fresh pass, 3.441 seconds"
+      }
+    },
+    "full_python": {
+      "exit_code": 0,
+      "security_test_methods": 140,
+      "elapsed_seconds": 8.748
+    },
+    "go_vet": {
+      "exit_code": 0,
+      "packages": [
+        "pkg/security/egress",
+        "pkg/mcp/proxy"
+      ]
+    },
+    "go_build": {
+      "exit_code": 0,
+      "binary": "/private/tmp/ax-mcp-proxy-content-digest",
+      "binary_sha256": "ac2733bb805e89166a7007ea26ce167cba13bb5193f59305ccd5a0d8b7b5ea34"
+    },
+    "intermediate_full_suite_diagnostic": "One shared protected-Connection-name contract assertion failed in each runtime because the fixture inventory lacked content-digest. The list was updated; all 114 existing metadata cases are unchanged, and final full suites pass."
+  },
+  "policy_limits": {
+    "supported_algorithms": [
+      "sha-256",
+      "sha-512"
+    ],
+    "dictionary_members": 1024,
+    "parameters_per_member": 256,
+    "header_fields": 128,
+    "field_bytes": 8192,
+    "header_block_bytes": 65536,
+    "content_bytes": 10485760,
+    "unknown_algorithm_semantics": "Opaque byte sequences; cannot satisfy the strong-algorithm requirement.",
+    "unsupported_only_empty_duplicate_or_mismatch_behavior": "Reject the response under local admission policy, rather than exercise RFC 9530 permission to ignore digests.",
+    "base64": "Allow synthesized padding and nonzero unused pad bits per RFC 8941; reject alphabet errors, impossible lengths, and embedded/excess padding."
+  },
+  "limitations": [
+    "An unsigned digest does not authenticate its sender or establish safe content, authorization, or protection from every unknown attack; a malicious sender can recompute or omit an optional digest.",
+    "This change does not validate outbound request digest fields, Repr-Digest, digest preference fields, legacy Digest, or HTTP Message Signatures.",
+    "This is the RFC 9530 response-field profile, not a generic Structured Fields implementation. Existing ASCII, per-field and total-header byte limits still apply; Date/display-string parameter types are outside the referenced RFC 8941.",
+    "Trailers and content codings remain excluded by the existing transport profile. MIME part fields are not treated as HTTP message Content-Digest.",
+    "Go streaming embedders must discard previously read bytes if EOF validation fails. MCP validates the complete bounded content before exposing it; its backstop may hash content again after the default Go transport.",
+    "Full W3C/RFC coverage, external sandbox route enforcement, atomic admission revocation and universal zero-day prevention remain unproved."
+  ],
+  "primary_sources": [
+    "https://www.rfc-editor.org/rfc/rfc9530.html",
+    "https://www.rfc-editor.org/rfc/rfc8941.html",
+    "https://www.rfc-editor.org/rfc/rfc9651.html#section-2.4",
+    "https://www.iana.org/assignments/http-digest-hash-alg"
+  ],
+  "source_sha256": {
+    "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "356b8fb0aaffe76ad57346d0bb92d0c261d99e37b6dc6dcfc45ccdbb3f2ff221",
+    "docs/protocol-security.md": "7cc68dbb5a6ba977c89ab8b10639eb8df07135763d14363f8b2cea0d7dd69ba4",
+    "go.mod": "0a18e611f01f74fa16151ffd8530c3a98763db0ee4bbc4e7e61e5d54ad651f7b",
+    "go.sum": "34e86b388cfa07abe61c863cd088738147856963c2aeed94cf3436b47bdf34be",
+    "pkg/mcp/proxy/digest_response_test.go": "2cdc328f185c7b8cf0b2e1bcc99fcb273e12ab8145ff068f6dcd8438accfdf31",
+    "pkg/mcp/proxy/server.go": "296f873338358cf2f09e48df41df5cb69a654eb887c90191f88288f8339539fb",
+    "pkg/security/egress/address_admission_test.go": "4e8f33483d19308cd537cb2f803bc9aaadea40081f0fc66ae74da83cf105c48a",
+    "pkg/security/egress/chunk.go": "f04fe64114a104cdc2d7c184150ae2f03a5f0c63c903bda492289cebf0992f15",
+    "pkg/security/egress/chunk_test.go": "322169a402bb36f1c66d0d4be542560f742ac55a1196bd99fea55ab6b0854dbc",
+    "pkg/security/egress/client.go": "c378b69991edf909dcbca820b1c2d8f46b9ab3998384cf4081a41b2ae68559b8",
+    "pkg/security/egress/client_test.go": "a221c2c4ee87368662e81b2402d4741cfd1e6120610a4534fd6146954c708e70",
+    "pkg/security/egress/complete_range_json_test.go": "bec29f0b8f569983184b364ad3a4419082f08608fab90ff8122b843d28d03492",
+    "pkg/security/egress/conditional_test.go": "144b111768189a779a41091cd5088a8bbeb4e71cec0d14f09a9f169e9adab3c7",
+    "pkg/security/egress/content_range.go": "fbe9617c3109fd3b13922de2d2ca0580518638a36590e212ab4c4b8d05ea0e89",
+    "pkg/security/egress/content_range_test.go": "0404effbed17f69b15e7569ccc88db8b2bd1eacd9052ad1cd7e06d65915399d3",
+    "pkg/security/egress/digest.go": "0bb6f7f479e4facb30d789fdf1451e89fe6646763792f2386ec58b5bb8615ef8",
+    "pkg/security/egress/digest_test.go": "cf554ea700a2539daa6c7882964153b235bbdf037b81307580ae604aa7579766",
+    "pkg/security/egress/disposition.go": "89fc23ad2f13eabb58d25be7006bcbcedf049a256394695870ae2970d4da9742",
+    "pkg/security/egress/disposition_test.go": "fe6161e6d7d3ca102bdb1faf96e91467bf7927d958bdc8fccb6036b834e7a08c",
+    "pkg/security/egress/metadata.go": "b450b2999dfc0beeba2c165705ea81ed6082339fd2f7a7f98d3a34214c494a13",
+    "pkg/security/egress/metadata_test.go": "4859a6b3bef7ef53e52ed56cf165ad64d3fe0cdfde7432f03c7199b7fa6610ed",
+    "pkg/security/egress/multipart_consistency_test.go": "9678b3e8333abd01ab9d1e45867894bdec532f66dba39cb7e4afea9d6ca76035",
+    "pkg/security/egress/policy.go": "4019e3b343dbaaf5dcc4c177ff51638aa91e1335c54a82aa1b74735820bf7f58",
+    "pkg/security/egress/policy_test.go": "5dc165a0fd789e1afc278ed3bd6dae5eafe0c8f8f0eee1c38f110bda25ef2447",
+    "pkg/security/egress/range_test.go": "b02684faf4de94d3e43a4079ccb38b8edc7675789d2210f426c8b6c0a19a719e",
+    "pkg/security/egress/response.go": "d15017e5fe732e79218a8a519da8761d0ba2a2b347e6279789bd21b7eacb39d7",
+    "pkg/security/egress/response_conditions.go": "26790f8cd1f230ab1644688e64d730317af524f22d39547de060b8260ca90f68",
+    "pkg/security/egress/response_content.go": "c2db7ca511146ddfa8116fa8e3edd7345836f166a92a09cc6da3c6e44e5f18ae",
+    "pkg/security/egress/response_correlation_test.go": "c3e61977f95988df00fd54f530eba2eaa0318c5777e15f8c1bcd5bb003244420",
+    "pkg/security/egress/response_range_correlation_test.go": "1d53c13a6424d8562f4985c68a99f04721cb65647dc1bdf5cf3d83b371c08864",
+    "pkg/security/egress/response_test.go": "bfd263d81b5f4a3f57d5bb44c8eabc5a85cd15b74c48eb72966b8d691452ca91",
+    "pkg/security/egress/testdata/content_digest_cases.json": "45863cf7a30c9bbccf7203cd359ae51db75961d10f283f6a9d4462bb4ec9022c",
+    "pkg/security/egress/testdata/generate_digest_cases.py": "f257d4f463bc7138f60fcf00033a9a3f75be6e8de057c1032e5ae833738434ee",
+    "pkg/security/egress/testdata/response_metadata_cases.json": "ca5768d4345edff251e2cfba3cd57d4ae7165557a86742a65cdaabfc193d33c9",
+    "pkg/security/egress/tls_identity_test.go": "d05fe5820cd2551954e690986bbd3ef355327ba0eccc249566061c0d7791b8d1",
+    "pkg/security/egress/wire.go": "53741da31605228105d0c6cd379d19d0079baaf3817f2cb34186109ad3615d4d",
+    "pkg/security/egress/wire_test.go": "fa62123eb01feef632446981d5acd663d7767be1fd0ccbe2f0836763711cac0d",
+    "pkg/security/egress/xml_content.go": "53f1be0c9d007f23163be18598439f087e84d87a97c003000651da9c582a5d56",
+    "pkg/security/egress/xml_content_test.go": "37993f8b56065d8eb8ea865e30668dd3efbcb6e980a41aad9c86d11c1094aa1c",
+    "tests/test_content_digest.py": "07bfc07ab9c591bf6ef6dae49e45d638b263fa6cfee1db17bb1ff597e7ce4e99",
+    "tests/test_http_protocol.py": "d231da87a15a30133afb3d67a2f47dcf64320744c564a103b269c6d954e09cb7",
+    "pkg/mcp/proxy/protocol_test.go": "6f3639a095b2bd743e11a0b63cf590925d1ac0937895ed61ff13891a9b4ef179",
+    "pkg/mcp/proxy/server_test.go": "058079b9fabb3789ecc2d5ac43fc6ebb18a538ee81713c561690172641d31111"
+  },
+  "log_sha256": {
+    "/private/tmp/ax-content-digest-baseline-cases.json": "559bb5c5a1904dee7b917c2ab73345c1ad8997ee5d9e6d697f7ec6ae540db90f",
+    "/private/tmp/ax-content-digest-baseline-source.json": "6e7c71c204ccf4f7fd576a9e4286e02b4ec4087ce142f4fd9298645c0ee4ee3b",
+    "/private/tmp/ax-content-digest-cases-reproduced.json": "45863cf7a30c9bbccf7203cd359ae51db75961d10f283f6a9d4462bb4ec9022c",
+    "/private/tmp/ax-content-digest-go-after.jsonl": "aabb4685b4d9272c33a86f9486e481b6d46f88af8e729da92d9c06d6b96a0ad6",
+    "/private/tmp/ax-content-digest-go-before.jsonl": "522c0a6be550d9655f4d562873b88e3d6f8643354502968f6622c2014952eb71",
+    "/private/tmp/ax-content-digest-go-build.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/private/tmp/ax-content-digest-go-full.txt": "fc88481911a3bdeca1a2d99778e8c6245bbbf092026ab0f1df05d5af3ea85d33",
+    "/private/tmp/ax-content-digest-go-metadata-contract-diagnostic.txt": "58719d47805024b01914d01cf7b6c3dfdb719124b0c979570f27625a75d3f505",
+    "/private/tmp/ax-content-digest-go-vet.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/private/tmp/ax-content-digest-python-after.txt": "67cf22d597855650ab27ed969e3f4815ffe0536dcf7e5d68bdfaf72f53839559",
+    "/private/tmp/ax-content-digest-python-before.txt": "9bc95952498924dec787a0cb3dd7823d86dfcd40ca8f318756601808182707db",
+    "/private/tmp/ax-content-digest-python-full.txt": "99978420260d8b682f47ef010409faa93f24f346b603ae4008995b761cabba3f",
+    "/private/tmp/ax-content-digest-python-metadata-contract-diagnostic.txt": "7736e5c98b17d85fb7d0b71293dd45e6169b0e00561c52c9ef989f1922119f55"
+  }
+}

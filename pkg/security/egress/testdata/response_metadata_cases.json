@@ -8,6 +8,7 @@
     "authorization",
     "cache-control",
     "connection",
+    "content-digest",
     "content-disposition",
     "content-encoding",
     "content-language",
@@ -37,6 +38,7 @@
     "proxy-authorization",
     "range",
     "referer",
+    "repr-digest",
     "retry-after",
     "server",
     "set-cookie",
@@ -45,6 +47,8 @@
     "transfer-encoding",
     "upgrade",
     "vary",
+    "want-content-digest",
+    "want-repr-digest",
     "warning",
     "www-authenticate",
     "x-agent-id",
@@ -64,6 +68,7 @@
     "x-forwarded"
   ],
   "singletons": [
+    "content-disposition",
     "content-encoding",
     "content-length",
     "content-location",

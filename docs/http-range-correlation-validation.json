@@ -1,0 +1,216 @@
+{
+  "as_of": "2026-09-27",
+  "scope": "Local HTTP 206 request/response byte-range bounds validation. Go uses the production guarded HTTP client over net.Pipe; Python uses its production wire response reader through a test opener and actual MCP delivery path. No public origin or deployment.",
+  "shared_fixture": {
+    "path": "pkg/security/egress/testdata/response_range_correlation_cases.json",
+    "sha256": "4ec098f63c74876abc74403812bcd33b00a1c1bdd789577488f09453b546c475",
+    "cases": 88,
+    "accepted_controls": 50,
+    "rejected_cases": 38,
+    "runtimes": [
+      "Go",
+      "Python"
+    ],
+    "result": "passed",
+    "counting": "Each shared case is counted once across runtimes, baselines and reruns."
+  },
+  "baseline": {
+    "unexpected_acceptances_per_runtime": 38,
+    "reproduced_cases": [
+      "closed-before",
+      "closed-after",
+      "closed-leading-extra",
+      "closed-trailing-extra",
+      "closed-enclosing",
+      "closed-entire-resource",
+      "open-32-before",
+      "open-32-cross-start",
+      "open-*-before",
+      "open-*-cross-start",
+      "closed-unsatisfied",
+      "open-unsatisfied",
+      "closed-unknown-unrelated",
+      "suffix-before",
+      "suffix-cross-start",
+      "suffix-unknown-too-long",
+      "suffix-zero-known",
+      "suffix-zero-unknown",
+      "coalesced-start-in-gap",
+      "coalesced-end-in-gap",
+      "coalesced-gap-only",
+      "coalesced-past-last",
+      "gap-before-open",
+      "maximum-unrelated",
+      "maximum-suffix-too-small",
+      "maximum-suffix-before",
+      "multipart-length-unrelated",
+      "multipart-length-gap",
+      "single-length-unrelated",
+      "multipart-chunked-unrelated",
+      "multipart-chunked-gap",
+      "single-chunked-unrelated",
+      "multipart-close-unrelated",
+      "multipart-close-gap",
+      "single-close-unrelated",
+      "multipart-unrelated-unknown-first",
+      "multipart-unrelated-unknown-last",
+      "multipart-16-unrelated"
+    ],
+    "source_sha256": {
+      "pkg/security/httpguard/range.go": "dcfb75bb92624ea9a8726ed347537214f6d44f03d8262e101bd78da49ea6866d",
+      "pkg/security/egress/content_range.go": "fa4f1c8069dbfa9446edb34898041b9d2c1884872b6f92092a7c3fa1545bee94",
+      "pkg/security/egress/response.go": "62a7d45bd2c95f694105a93c34498b79b2dd3558fab92fbaf822d87dfdcca6a4",
+      "pkg/security/egress/wire.go": "bc727d653230230869b8ec2b1967dbff91aad9f8f97a81e0c37b86ce4195a801",
+      "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "cd3ca02523cba5251d079bcdae9c0ad481598ffa1a861b9390e6a13247488bcc",
+      "pkg/security/egress/testdata/content_range_responses.json": "e3e783f7de640652b29fad7961beea30b5ef6acc431a31b81cfd327491011564",
+      "pkg/security/egress/testdata/response_range_correlation_cases.json": "4ec098f63c74876abc74403812bcd33b00a1c1bdd789577488f09453b546c475",
+      "pkg/security/egress/response_range_correlation_test.go": "1d53c13a6424d8562f4985c68a99f04721cb65647dc1bdf5cf3d83b371c08864",
+      "tests/test_http_protocol.py": "49f8a830cf02d4959e10b508f4923529145c61b8bb7bff6b1710c978047bc1b5"
+    }
+  },
+  "policy": {
+    "bounds": "For fulfilled 206 intervals, each endpoint must lie in a parsed requested interval after resolving a known total. Smaller subsets, reordered parts and coalescing across requested intervals are permitted.",
+    "suffix": "Known totals resolve suffixes to their last N bytes, clipping longer suffixes to the entire representation. Unknown totals permit only a maximum returned-size check. A zero-length suffix cannot produce a 206.",
+    "multipart": "Collect at most 16 parsed intervals. Any known total constrains all parts, including those with an unknown total; apply request-bound checks before MCP returns the complete body.",
+    "arithmetic": "Request positions and lengths retain the local signed 63-bit ceiling. Arithmetic uses unsigned Go values or Python integers and does not compute a signed last+1.",
+    "context": "A missing request context during the first wire parse is distinct from a known request without Range. Production response validation supplies the original request context.",
+    "compatibility": "200 may ignore Range and 416 remains accepted when otherwise valid. Accepted body bytes are preserved. No partial representation reconstruction is performed.",
+    "coalescing_limit": "No fixed gap threshold is inferred because the server hypothetical multipart overhead is unavailable. Endpoint containment is a local bounds contract, not proof of every server range-selection requirement."
+  },
+  "existing_fixture_corrections": {
+    "path": "pkg/security/egress/testdata/content_range_responses.json",
+    "before_sha256": "e3e783f7de640652b29fad7961beea30b5ef6acc431a31b81cfd327491011564",
+    "after_sha256": "09dacea1db4133ab5bc2ccf0517472ad7b4378a99b78feb4ab4ac4ceabb81a95",
+    "changes": [
+      {
+        "name": "single-length-unicode",
+        "before": "bytes=0-1,4-5",
+        "after": "bytes=0-2,4-5"
+      },
+      {
+        "name": "single-chunked-unicode",
+        "before": "bytes=0-1,4-5",
+        "after": "bytes=0-2,4-5"
+      },
+      {
+        "name": "single-close-unicode",
+        "before": "bytes=0-1,4-5",
+        "after": "bytes=0-2,4-5"
+      },
+      {
+        "name": "multipart-16-parts",
+        "before": "bytes=0-1,4-5",
+        "after": "bytes=0-1,2-3,4-5,6-7,8-9,10-11,12-13,14-15,16-17,18-19,20-21,22-23,24-25,26-27,28-29,30-31"
+      }
+    ],
+    "reason": "Three Unicode controls require 0-2 rather than 0-1; the 16-part control must request its 16 returned intervals. Only the four request header values changed. Bodies, acceptance expectations and case count are unchanged. The original Content-Range validation record remains historical."
+  },
+  "checks": {
+    "go_race": {
+      "result": "passed",
+      "command": "go test -race ./pkg/security/dnsproxy ./cmd/ax-dns-proxy ./pkg/security/egress ./pkg/security/httpguard ./pkg/security/snort ./pkg/mcp/proxy",
+      "fresh_packages": [
+        "./pkg/security/egress",
+        "./pkg/security/httpguard",
+        "./pkg/mcp/proxy"
+      ],
+      "cached_packages": [
+        "./pkg/security/dnsproxy",
+        "./pkg/security/snort"
+      ],
+      "no_test_files": [
+        "./cmd/ax-dns-proxy"
+      ]
+    },
+    "python_security_suite": {
+      "result": "passed",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests",
+      "test_methods": 107
+    },
+    "go_vet": {
+      "result": "passed",
+      "packages": [
+        "./pkg/security/dnsproxy",
+        "./cmd/ax-dns-proxy",
+        "./pkg/security/egress",
+        "./pkg/security/httpguard",
+        "./pkg/security/snort",
+        "./pkg/mcp/proxy"
+      ]
+    },
+    "go_build": {
+      "result": "passed",
+      "package": "./cmd/ax-mcp-proxy",
+      "artifact": "/private/tmp/ax-mcp-proxy-range-correlation-verified",
+      "sha256": "e9a99b15d3843c68bd5eeaa1671f3a1bdde2fc91bf4a475528d3d5a58f651c88"
+    },
+    "format_and_diff": {
+      "gofmt": "passed",
+      "git_diff_check": "passed"
+    }
+  },
+  "source_sha256": {
+    "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "4e2a975a27dec28c0827078b9cdcc4764c71f1f16a5594f374ceaef6fdd0ea6a",
+    "docs/protocol-security.md": "a92d6a15ecd8aefaec34f6170df6fc78e8cc75c8de981e4aa310e86f8918b3c6",
+    "pkg/mcp/proxy/conditional_test.go": "89b5ba5e25ace389c973c70e823e3a5efb15f1ddc433a7d33f0b7dcf9ca4405f",
+    "pkg/mcp/proxy/content_range_test.go": "50d368f816ed76ba8bc60d3ce89678875d68e0ef0650f108664f67dd42da1a4d",
+    "pkg/mcp/proxy/protocol.go": "09e39b66f31f289d6b08e46c61a84a3a609fe5976da916dc9c0d329c849928c8",
+    "pkg/mcp/proxy/protocol_test.go": "6f3639a095b2bd743e11a0b63cf590925d1ac0937895ed61ff13891a9b4ef179",
+    "pkg/mcp/proxy/range_test.go": "a8317dfb30d9dda210de9f97eb8cf17eeb2d325931c250e41658d1969e1a0af9",
+    "pkg/mcp/proxy/response_json_test.go": "e98876e4b68f2d7584cf02930cca5a3d18b316783aff9a4cd314eca269c637c9",
+    "pkg/mcp/proxy/server.go": "296f873338358cf2f09e48df41df5cb69a654eb887c90191f88288f8339539fb",
+    "pkg/mcp/proxy/server_test.go": "058079b9fabb3789ecc2d5ac43fc6ebb18a538ee81713c561690172641d31111",
+    "pkg/security/egress/chunk.go": "f04fe64114a104cdc2d7c184150ae2f03a5f0c63c903bda492289cebf0992f15",
+    "pkg/security/egress/chunk_test.go": "322169a402bb36f1c66d0d4be542560f742ac55a1196bd99fea55ab6b0854dbc",
+    "pkg/security/egress/client.go": "8be57ecc9879e98c576797d565bfdc0bcf442b19a0516446cd6840bfd72a4a0c",
+    "pkg/security/egress/client_test.go": "a221c2c4ee87368662e81b2402d4741cfd1e6120610a4534fd6146954c708e70",
+    "pkg/security/egress/conditional_test.go": "144b111768189a779a41091cd5088a8bbeb4e71cec0d14f09a9f169e9adab3c7",
+    "pkg/security/egress/content_range.go": "e095f09e3a8d1adace403b5e4d73587d62cded4a9bd78d81b681dc74f9fd2840",
+    "pkg/security/egress/content_range_test.go": "0404effbed17f69b15e7569ccc88db8b2bd1eacd9052ad1cd7e06d65915399d3",
+    "pkg/security/egress/metadata.go": "adb89d29e455c72594ca8f63ee5378e2c70d28e93241058653b033eb50d84017",
+    "pkg/security/egress/metadata_test.go": "4859a6b3bef7ef53e52ed56cf165ad64d3fe0cdfde7432f03c7199b7fa6610ed",
+    "pkg/security/egress/policy.go": "4019e3b343dbaaf5dcc4c177ff51638aa91e1335c54a82aa1b74735820bf7f58",
+    "pkg/security/egress/policy_test.go": "5dc165a0fd789e1afc278ed3bd6dae5eafe0c8f8f0eee1c38f110bda25ef2447",
+    "pkg/security/egress/range_test.go": "b02684faf4de94d3e43a4079ccb38b8edc7675789d2210f426c8b6c0a19a719e",
+    "pkg/security/egress/response.go": "29b3f3b06cb8afa52e633d160e654b4ec76db716b8eff5b45086b31a067b3298",
+    "pkg/security/egress/response_conditions.go": "26790f8cd1f230ab1644688e64d730317af524f22d39547de060b8260ca90f68",
+    "pkg/security/egress/response_content.go": "7fc2f3bc4569d9834ab96158abe05417c37d255dc16c4eefd177c5b4a5786806",
+    "pkg/security/egress/response_correlation_test.go": "c3e61977f95988df00fd54f530eba2eaa0318c5777e15f8c1bcd5bb003244420",
+    "pkg/security/egress/response_range_correlation_test.go": "1d53c13a6424d8562f4985c68a99f04721cb65647dc1bdf5cf3d83b371c08864",
+    "pkg/security/egress/response_test.go": "bfd263d81b5f4a3f57d5bb44c8eabc5a85cd15b74c48eb72966b8d691452ca91",
+    "pkg/security/egress/testdata/content_range_responses.json": "09dacea1db4133ab5bc2ccf0517472ad7b4378a99b78feb4ab4ac4ceabb81a95",
+    "pkg/security/egress/testdata/response_range_correlation_cases.json": "4ec098f63c74876abc74403812bcd33b00a1c1bdd789577488f09453b546c475",
+    "pkg/security/egress/wire.go": "c8b684e4ec032fbe10e0e8fb67c259aa2d952ab634f545a56b0918fdf1ba9b99",
+    "pkg/security/egress/wire_test.go": "fa62123eb01feef632446981d5acd663d7767be1fd0ccbe2f0836763711cac0d",
+    "pkg/security/httpguard/conditional.go": "5829166dd441b13b2351a56340c59cf8095fa514f8167be8de1957c941e0c1dd",
+    "pkg/security/httpguard/conditional_test.go": "34c178e40104fb3c35bac89081dccbe118068216529994aaddf73dc910447e1d",
+    "pkg/security/httpguard/content_range.go": "f1ad7c4946afc226f1ed0487a55f842dcb35cd2042979b2f4cdb3344aabb5616",
+    "pkg/security/httpguard/guard_test.go": "15c3112f5338d51e005bce376071ee1d390f5452e1a00e76933a49ed1e5f3dc8",
+    "pkg/security/httpguard/json.go": "70d992b91e4abbbfc7a3f591ea8e71c63c88e4b5708c86dd51a088b59229d1d0",
+    "pkg/security/httpguard/range.go": "28f6c4a4bc5811311ef7dcfc818365f2b18f584cae59bdb074d300782ea47023",
+    "pkg/security/httpguard/request.go": "341df651d58c81ede93cbad2027cb4c95a4c42148185847615ab2f3ca727a837",
+    "tests/test_http_protocol.py": "49f8a830cf02d4959e10b508f4923529145c61b8bb7bff6b1710c978047bc1b5"
+  },
+  "local_log_sha256": {
+    "/private/tmp/ax-range-correlation-go-before.jsonl": "883bbf84713cd5b417474eabc6074fd437f543ba6928d784e9a2aa402f8c96f9",
+    "/private/tmp/ax-range-correlation-python-before.txt": "a24f1cd626d69f42e5030f7b26778934ad02fbc59d4a874196134e9c81434f5c",
+    "/private/tmp/ax-range-correlation-go-after.jsonl": "f517c304b1b660de87afca21fe6b10381227be721494b2d309025805427c3d5d",
+    "/private/tmp/ax-range-correlation-python-after.txt": "8c48a33d2c359464395f74f0b2034ed8bf3608b2775d4035d227ae6fba0e0ce0",
+    "/private/tmp/ax-range-correlation-go-full.txt": "42003c2aec503cd5d60f14778986fa57f1f24c7ad4dfb6c1bf0c1418e56c130c",
+    "/private/tmp/ax-range-correlation-python-full.txt": "e9decb5b30570b6c9cb14828eafa32740987924e9008616362c4191cad7912ab"
+  },
+  "standards": [
+    "https://www.rfc-editor.org/rfc/rfc9110.html#section-14.1.2",
+    "https://www.rfc-editor.org/rfc/rfc9110.html#section-14.2",
+    "https://www.rfc-editor.org/rfc/rfc9110.html#section-15.3.7",
+    "https://www.rfc-editor.org/rfc/rfc9110.html#section-15.3.7.2"
+  ],
+  "limits": [
+    "Metadata checks do not prove that returned bytes belong to the named resource or are safe application content.",
+    "A suffix absolute origin cannot be verified when the total is unknown. Coalescing gap overhead is not measured.",
+    "Multipart checks run at EOF. MCP buffers the bounded body before delivery; direct streaming Go callers must observe the final read error.",
+    "This does not add an overlapping-part content-consistency check or combine separate responses.",
+    "No Snort SID was added. Historical native and randomized suites were not rerun for this change.",
+    "Full RFC/W3C compliance, universal unknown-attack prevention and deployed route enforcement remain unproved."
+  ]
+}

@@ -17,6 +17,11 @@ import (
 // Tests never query a public DNS service.
 func upstreamServer(t *testing.T, truncate bool, mutate func(*dnsmessage.Message)) (string, func() []dnsmessage.Message) {
 	t.Helper()
+	return upstreamWireServer(t, truncate, mutate, nil)
+}
+
+func upstreamWireServer(t *testing.T, truncate bool, mutate func(*dnsmessage.Message), mutateWire func([]byte) []byte) (string, func() []dnsmessage.Message) {
+	t.Helper()
 	l, err := net.Listen("tcp", "127.0.0.1:0")
 	if err != nil {
 		t.Fatal(err)
@@ -57,6 +62,9 @@ func upstreamServer(t *testing.T, truncate bool, mutate func(*dnsmessage.Message
 		wire, err := m.Pack()
 		if err != nil {
 			t.Error(err)
+		}
+		if mutateWire != nil {
+			wire = mutateWire(wire)
 		}
 		return wire
 	}
@@ -239,6 +247,18 @@ func TestExactUpstreamEnvelope(t *testing.T) {
 
 func FuzzUpstreamEnvelope(f *testing.F) {
 	f.Add(query(f, "api.example.test.", 1))
+	owner := []byte{0xc0, 12}
+	for _, rr := range [][]byte{
+		rawRecord(owner, dnsmessage.TypeA, []byte{8, 8, 8, 8}),
+		rawRecord(owner, dnsmessage.TypeAAAA, netip.MustParseAddr("2606:4700:4700::1111").AsSlice()),
+		rawRecord(owner, dnsmessage.TypeCNAME, []byte{4, 'e', 'd', 'g', 'e', 0xc0, 16}),
+		rawRecord(owner, dnsmessage.TypeSOA, append([]byte{0xc0, 12, 0xc0, 12}, make([]byte, 20)...)),
+		rawRecord(owner, dnsmessage.TypeHTTPS, []byte{0, 1, 0, 0, 3, 0, 2, 1, 187}),
+		rawRecord(owner, dnsmessage.TypeTXT, []byte{3, 'a', 'b', 'c', 0}),
+		rawRecord(owner, dnsmessage.Type(65280), []byte{0xff, 0xc0, 12}),
+	} {
+		f.Add(rawResponse(f, rr))
+	}
 	f.Fuzz(func(t *testing.T, data []byte) {
 		if exactEnvelope(data) {
 			var m dnsmessage.Message

@@ -1,0 +1,284 @@
+{
+  "as_of": "2026-09-27",
+  "scope": "Complete JSON representations returned under HTTP 206, in one response. Shared corpus covers production Go HTTP transport/body checks, Go MCP delivery for single ranges, and Python MCP delivery for all cases. Network peers/resolvers are simulated; no live endpoint or deployment claim.",
+  "changes": [
+    "Single JSON ranges that begin at zero and cover the known complete length receive the ordinary JSON interoperability checks before MCP delivery.",
+    "For multipart ranges, any part declaring application/json or a +json subtype selects the JSON contract. If consistent parts cover every byte of a known total, assemble that one representation for validation while preserving the original MIME response.",
+    "Prove continuous coverage within the 10 MiB response budget before allocation; large offsets/totals never determine unbounded buffer sizes.",
+    "Incomplete, unknown-total, untyped and non-JSON content retain existing behavior. Separate responses are never combined."
+  ],
+  "fixture": {
+    "path": "pkg/security/egress/testdata/complete_range_json_cases.json",
+    "sha256": "15be452803f366b267007c0a373a76d1af3aeac255018b528c460a9b8f5f7867",
+    "generator": "pkg/security/egress/testdata/generate_complete_range_json.py",
+    "reproducibility": "passed against independent temporary output",
+    "cases": 156,
+    "accepted_controls": 75,
+    "denied": 81,
+    "single_range_cases": 54,
+    "multipart_cases": 102,
+    "framing": [
+      "Content-Length",
+      "chunked",
+      "connection close"
+    ],
+    "oracle": "Explicit valid/invalid document expectations, with an independent byte-position map for multipart coverage. No production parser is imported by the generator."
+  },
+  "baseline": {
+    "go_unexpected_acceptances": 81,
+    "python_unexpected_acceptances": 81,
+    "additional_go_mcp_single_range_unexpected_acceptances": 24,
+    "failed_shared_cases": [
+      "single-duplicate-fixed",
+      "single-duplicate-chunked",
+      "single-duplicate-close",
+      "adjacent-duplicate-fixed",
+      "adjacent-duplicate-chunked",
+      "adjacent-duplicate-close",
+      "reversed-overlap-duplicate-fixed",
+      "reversed-overlap-duplicate-chunked",
+      "reversed-overlap-duplicate-close",
+      "single-escaped-duplicate-fixed",
+      "single-escaped-duplicate-chunked",
+      "single-escaped-duplicate-close",
+      "adjacent-escaped-duplicate-fixed",
+      "adjacent-escaped-duplicate-chunked",
+      "adjacent-escaped-duplicate-close",
+      "reversed-overlap-escaped-duplicate-fixed",
+      "reversed-overlap-escaped-duplicate-chunked",
+      "reversed-overlap-escaped-duplicate-close",
+      "single-unsafe-integer-fixed",
+      "single-unsafe-integer-chunked",
+      "single-unsafe-integer-close",
+      "adjacent-unsafe-integer-fixed",
+      "adjacent-unsafe-integer-chunked",
+      "adjacent-unsafe-integer-close",
+      "reversed-overlap-unsafe-integer-fixed",
+      "reversed-overlap-unsafe-integer-chunked",
+      "reversed-overlap-unsafe-integer-close",
+      "single-trailing-document-fixed",
+      "single-trailing-document-chunked",
+      "single-trailing-document-close",
+      "adjacent-trailing-document-fixed",
+      "adjacent-trailing-document-chunked",
+      "adjacent-trailing-document-close",
+      "reversed-overlap-trailing-document-fixed",
+      "reversed-overlap-trailing-document-chunked",
+      "reversed-overlap-trailing-document-close",
+      "single-lone-surrogate-fixed",
+      "single-lone-surrogate-chunked",
+      "single-lone-surrogate-close",
+      "adjacent-lone-surrogate-fixed",
+      "adjacent-lone-surrogate-chunked",
+      "adjacent-lone-surrogate-close",
+      "reversed-overlap-lone-surrogate-fixed",
+      "reversed-overlap-lone-surrogate-chunked",
+      "reversed-overlap-lone-surrogate-close",
+      "single-unfinished-fixed",
+      "single-unfinished-chunked",
+      "single-unfinished-close",
+      "adjacent-unfinished-fixed",
+      "adjacent-unfinished-chunked",
+      "adjacent-unfinished-close",
+      "reversed-overlap-unfinished-fixed",
+      "reversed-overlap-unfinished-chunked",
+      "reversed-overlap-unfinished-close",
+      "single-json-suffix-fixed",
+      "single-json-suffix-chunked",
+      "single-json-suffix-close",
+      "single-other-json-suffix-fixed",
+      "single-other-json-suffix-chunked",
+      "single-other-json-suffix-close",
+      "known-total-last-fixed",
+      "known-total-last-chunked",
+      "known-total-last-close",
+      "known-total-first-fixed",
+      "known-total-first-chunked",
+      "known-total-first-close",
+      "whole-part-fixed",
+      "whole-part-chunked",
+      "whole-part-close",
+      "whole-duplicate-fixed",
+      "whole-duplicate-chunked",
+      "whole-duplicate-close",
+      "whole-untyped-json-fragment-fixed",
+      "whole-untyped-json-fragment-chunked",
+      "whole-untyped-json-fragment-close",
+      "mixed-media-json-fragment-fixed",
+      "mixed-media-json-fragment-chunked",
+      "mixed-media-json-fragment-close",
+      "sixteen-parts-fixed",
+      "sixteen-parts-chunked",
+      "sixteen-parts-close"
+    ],
+    "source_sha256": {
+      "pkg/security/egress/response_content.go": "7fc2f3bc4569d9834ab96158abe05417c37d255dc16c4eefd177c5b4a5786806",
+      "pkg/security/egress/content_range.go": "3b89a27e364490df13c59a8cdb3a80d55054b1be82ed7fa64570a74a69032b04",
+      "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "6f032250af4da942d456dc2a9cb6b611a1874ffcc77ebe03c3eda79fa65e0920",
+      "pkg/security/egress/complete_range_json_test.go": "ea33b5da44675b46f99bdf9294a74c182ba87388afe5fd6a0608bfea63170880",
+      "pkg/mcp/proxy/response_json_test.go": "761659115b4f47295dcb21ffe4d9a46452b68eb37d59ae9e96f73cdd8c73c127",
+      "tests/test_http_protocol.py": "cde1cd22d8e130ae55828e8ba004bc2b9fef0f11821e1973bda4a006b2b820d3",
+      "pkg/security/egress/testdata/complete_range_json_cases.json": "15be452803f366b267007c0a373a76d1af3aeac255018b528c460a9b8f5f7867"
+    },
+    "test_evolution": "The 156-case corpus and expectations are unchanged from baseline. Extra rejection-reason/sticky-error assertions and the two large-body checks were added after the initial reproduction."
+  },
+  "verification": {
+    "go_shared_cases": {
+      "passed": 156,
+      "cases_counted_once": 156
+    },
+    "go_mcp_single_range_subset": {
+      "passed": 54,
+      "additional_count": 0
+    },
+    "python_shared_cases": {
+      "passed": 156,
+      "additional_count": 0
+    },
+    "large_document_checks": {
+      "checks": 2,
+      "runtimes": [
+        "Go",
+        "Python"
+      ],
+      "document_bytes": 10484736,
+      "mime_body_bytes": 10484926,
+      "accepted_control": "Complete JSON string in two adjacent parts",
+      "denied": "Replace the final document quote with an exclamation mark, preserving MIME framing",
+      "additional_inventory_count": 0
+    },
+    "go_security_race": {
+      "exit_code": 0,
+      "output": [
+        "ok  \tgithub.com/google/ax/pkg/security/dnsproxy\t(cached)",
+        "?   \tgithub.com/google/ax/cmd/ax-dns-proxy\t[no test files]",
+        "ok  \tgithub.com/google/ax/pkg/security/egress\t17.266s",
+        "ok  \tgithub.com/google/ax/pkg/security/httpguard\t(cached)",
+        "ok  \tgithub.com/google/ax/pkg/security/snort\t(cached)",
+        "ok  \tgithub.com/google/ax/pkg/mcp/proxy\t3.125s"
+      ],
+      "fresh_packages": [
+        "pkg/security/egress",
+        "pkg/mcp/proxy"
+      ],
+      "cached_packages": [
+        "pkg/security/dnsproxy",
+        "pkg/security/httpguard",
+        "pkg/security/snort"
+      ],
+      "packages_without_tests": [
+        "cmd/ax-dns-proxy"
+      ]
+    },
+    "python_security_suite": {
+      "exit_code": 0,
+      "test_methods": 113,
+      "runtime": "3.14.7"
+    },
+    "go_vet": {
+      "exit_code": 0,
+      "packages": [
+        "pkg/security/dnsproxy",
+        "cmd/ax-dns-proxy",
+        "pkg/security/egress",
+        "pkg/security/httpguard",
+        "pkg/security/snort",
+        "pkg/mcp/proxy"
+      ]
+    },
+    "go_build": {
+      "exit_code": 0,
+      "path": "/private/tmp/ax-mcp-proxy-complete-range-json-verified",
+      "sha256": "92d0bd44a0fddf95ba3c521b48ee342091e91bb12561f86fa579e745fc0e9c82"
+    },
+    "preservation": "Accepted response bytes remain unchanged; rejected bodies are consumed/accounted, and Go multipart body rejection remains sticky."
+  },
+  "standards_context": [
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-15.3.7",
+      "use": "Single/multipart Content-Range semantics identify byte ranges of a selected representation. The new full-coverage JSON validation is a conservative broker integrity policy."
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc8259.html",
+      "use": "The existing strict JSON/I-JSON policy is now applied when a 206 contains a complete declared JSON representation; HTTP status alone no longer bypasses it."
+    }
+  ],
+  "limits": {
+    "body_bytes": 10485760,
+    "multipart_parts": 16,
+    "json_containers": 64,
+    "json_tokens": 100000,
+    "temporary_document_bytes": "At most the bounded known complete length, and only after full interval coverage is proven."
+  },
+  "limitations": [
+    "Unknown-total or incomplete fragments cannot establish whole-document JSON validity. No reconstruction across separate responses is performed.",
+    "Undeclared JSON and media types without the JSON contract are not sniffed; valid JSON is not proof of application authorization or safe execution.",
+    "Multipart complete JSON is checked by the Go transport range-body guard. Direct Go clients must still call CheckResponseBody for ordinary and single-range JSON after a bounded complete read.",
+    "This does not certify full RFC/W3C coverage, prove protection against every zero-day or establish deployed network enforcement. No Snort SID was added."
+  ],
+  "source_sha256": {
+    "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "e397b71a31ca4ecce22c5787e7e3a1f095846a413454b1bf70ced625e84bd366",
+    "docs/protocol-security.md": "918dd3c6ce79f4b9b170d4dcb61a35b76d3b710322b39cebdb6b5e6cff0844a2",
+    "go.mod": "0a18e611f01f74fa16151ffd8530c3a98763db0ee4bbc4e7e61e5d54ad651f7b",
+    "go.sum": "34e86b388cfa07abe61c863cd088738147856963c2aeed94cf3436b47bdf34be",
+    "pkg/mcp/proxy/protocol.go": "09e39b66f31f289d6b08e46c61a84a3a609fe5976da916dc9c0d329c849928c8",
+    "pkg/mcp/proxy/response_json_test.go": "761659115b4f47295dcb21ffe4d9a46452b68eb37d59ae9e96f73cdd8c73c127",
+    "pkg/mcp/proxy/server.go": "296f873338358cf2f09e48df41df5cb69a654eb887c90191f88288f8339539fb",
+    "pkg/security/egress/chunk.go": "f04fe64114a104cdc2d7c184150ae2f03a5f0c63c903bda492289cebf0992f15",
+    "pkg/security/egress/client.go": "b3996a6f7e07a1c34e82c07b0f32a48269dd1763d545e6a8835422ac10c9e1b2",
+    "pkg/security/egress/complete_range_json_test.go": "bec29f0b8f569983184b364ad3a4419082f08608fab90ff8122b843d28d03492",
+    "pkg/security/egress/content_range.go": "085cc1eba0d256e278b5eced2d42e01de495157b2c392f9cd62ec66a36ca2f9e",
+    "pkg/security/egress/metadata.go": "adb89d29e455c72594ca8f63ee5378e2c70d28e93241058653b033eb50d84017",
+    "pkg/security/egress/policy.go": "4019e3b343dbaaf5dcc4c177ff51638aa91e1335c54a82aa1b74735820bf7f58",
+    "pkg/security/egress/response.go": "29b3f3b06cb8afa52e633d160e654b4ec76db716b8eff5b45086b31a067b3298",
+    "pkg/security/egress/response_conditions.go": "26790f8cd1f230ab1644688e64d730317af524f22d39547de060b8260ca90f68",
+    "pkg/security/egress/response_content.go": "8ea0c2f777eaec5f77a15b03040de5975114f6a20293633fbd40850c0efa9061",
+    "pkg/security/egress/testdata/complete_range_json_cases.json": "15be452803f366b267007c0a373a76d1af3aeac255018b528c460a9b8f5f7867",
+    "pkg/security/egress/testdata/generate_complete_range_json.py": "b9a747533555b754fab67227ba9c4715e8659f2a7abc51cb91c4dc3d6839144c",
+    "pkg/security/egress/wire.go": "c8b684e4ec032fbe10e0e8fb67c259aa2d952ab634f545a56b0918fdf1ba9b99",
+    "pkg/security/httpguard/conditional.go": "5829166dd441b13b2351a56340c59cf8095fa514f8167be8de1957c941e0c1dd",
+    "pkg/security/httpguard/content_range.go": "f1ad7c4946afc226f1ed0487a55f842dcb35cd2042979b2f4cdb3344aabb5616",
+    "pkg/security/httpguard/json.go": "70d992b91e4abbbfc7a3f591ea8e71c63c88e4b5708c86dd51a088b59229d1d0",
+    "pkg/security/httpguard/range.go": "28f6c4a4bc5811311ef7dcfc818365f2b18f584cae59bdb074d300782ea47023",
+    "pkg/security/httpguard/request.go": "341df651d58c81ede93cbad2027cb4c95a4c42148185847615ab2f3ca727a837",
+    "pkg/security/snort/engine.go": "7edf722ea236e79a4baa4555ff75adba1dfbe1ac9314f51779d34b3b3f6ac716",
+    "pkg/security/snort/parser.go": "92caca13a7db573716d1009795f32727b3df0fe6583a6b49e8c67eda1cbab523",
+    "pkg/security/snort/rule.go": "584c3e6fcf21144708e3e47cf1ffbcbacf419cdcef61fb4f1017df7e7cd289c2",
+    "pkg/security/snort/rules_default.go": "baa6b2bac888a371214638821699ff4e6b85c1d4e679ad7c46060836d63b3175",
+    "tests/test_http_protocol.py": "d231da87a15a30133afb3d67a2f47dcf64320744c564a103b269c6d954e09cb7"
+  },
+  "logs": {
+    "go_before": {
+      "path": "/private/tmp/ax-complete-range-json-go-before.jsonl",
+      "sha256": "19720420e7bb951da6f7acec69f8d6c85977a258825af29fa537923451c968cd"
+    },
+    "python_before": {
+      "path": "/private/tmp/ax-complete-range-json-python-before.txt",
+      "sha256": "27ec54be1dd397bf7396dce925c2dbfd5076f557c7b7c235573d08a7bcf8cfe1"
+    },
+    "go_after": {
+      "path": "/private/tmp/ax-complete-range-json-go-after.jsonl",
+      "sha256": "f1eb1f73b7fb3efb75485fa9ae62edf40cbe80b684a8c8700a2644aaafb04c2c"
+    },
+    "python_after": {
+      "path": "/private/tmp/ax-complete-range-json-python-after.txt",
+      "sha256": "df2220c27f56cdd4bd2f5207752d99265ee63a3890e1454b7f761d43a94eb8a2"
+    },
+    "go_full": {
+      "path": "/private/tmp/ax-complete-range-json-go-full.txt",
+      "sha256": "0aac87807074afbf7bca53d21d2922441a3346eadd2e44bd08293da2b3fa0c5e"
+    },
+    "python_full": {
+      "path": "/private/tmp/ax-complete-range-json-python-full.txt",
+      "sha256": "57b5da892d928f31362f3089bb0787d653124684d59c14a220207df42e82d2d4"
+    },
+    "go_vet": {
+      "path": "/private/tmp/ax-complete-range-json-go-vet.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "go_build": {
+      "path": "/private/tmp/ax-complete-range-json-go-build.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

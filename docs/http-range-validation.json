@@ -1,0 +1,187 @@
+{
+  "as_of": "2026-09-27",
+  "scope": "Local request admission and no-dispatch verification for HTTP Range in Go and Python. Includes a real guarded Go transport over in-memory sockets; no public origin, live firewall change or deployment.",
+  "shared_fixture": {
+    "path": "pkg/security/httpguard/testdata/range_cases.json",
+    "sha256": "8d694523831acb198d6a18b97c1ecaf4c6b5c3de9981cb96b6724c8b33d2cdbb",
+    "cases": 57,
+    "accepted_controls": 15,
+    "rejected_cases": 42,
+    "runtimes": [
+      "Go",
+      "Python"
+    ],
+    "paths": [
+      "http_request dispatch",
+      "check_payload diagnostic"
+    ],
+    "result": "passed"
+  },
+  "baseline": {
+    "reproduced_before_fix": {
+      "Go": 37,
+      "Python": 37
+    },
+    "unexpectedly_dispatched_cases": [
+      "empty",
+      "missing-equals",
+      "missing-range",
+      "empty-members-only",
+      "missing-dash",
+      "extra-dash",
+      "extra-equals",
+      "negative-start",
+      "plus-sign",
+      "hexadecimal",
+      "exponent",
+      "decimal-point",
+      "quoted-range",
+      "reversed-endpoints",
+      "whitespace-unit",
+      "whitespace-first",
+      "whitespace-last",
+      "unknown-unit",
+      "duplicate",
+      "overlap",
+      "reversed-members",
+      "after-open-range",
+      "mixed-suffix-last",
+      "mixed-suffix-first",
+      "duplicate-suffix",
+      "above-int64",
+      "overflow-suffix",
+      "huge-number",
+      "excess-members",
+      "excess-empty-members",
+      "amplification-repeat",
+      "non-get-head",
+      "non-get-post",
+      "non-get-put",
+      "non-get-patch",
+      "non-get-delete",
+      "non-get-options"
+    ],
+    "source_sha256": {
+      "pkg/security/httpguard/request.go": "e2f00e280a1f5234c233c77341b8ab8260c23214ce2bf3c3043bc89c6b170a90",
+      "pkg/security/egress/client.go": "1e74049488add322d8045dcac5e1066f1eac47ecee88e666ca818f652f5f3965",
+      "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "e45ccc181c7e1f3594546d393c34a0cf1a4baae27e0888cc99339d655d0bb8c6"
+    }
+  },
+  "local_policy": {
+    "method": "GET",
+    "range_unit": "bytes, case insensitive",
+    "fields": 1,
+    "maximum_list_slots_including_empty_members": 16,
+    "maximum_numeric_value": "9223372036854775807",
+    "order": "strictly ascending and non-overlapping inclusive intervals",
+    "open_range": "last non-empty member only",
+    "suffix_range": "standalone, including syntactically valid but unsatisfiable zero suffix",
+    "leading_zeros": "decimal, original field preserved",
+    "resource_satisfiability": "unknown; not inferred"
+  },
+  "checks": {
+    "go_race": {
+      "result": "passed",
+      "command": "go test -race ./pkg/security/dnsproxy ./cmd/ax-dns-proxy ./pkg/security/egress ./pkg/security/httpguard ./pkg/security/snort ./pkg/mcp/proxy",
+      "fresh_packages": [
+        "./pkg/security/egress",
+        "./pkg/security/httpguard",
+        "./pkg/mcp/proxy"
+      ],
+      "cached_packages": [
+        "./pkg/security/dnsproxy",
+        "./pkg/security/snort"
+      ],
+      "no_test_files": [
+        "./cmd/ax-dns-proxy"
+      ],
+      "note": "The subsequent test-only assertion tightening was rerun with the full 57-case focused dispatch test."
+    },
+    "python_security_suite": {
+      "result": "passed",
+      "test_methods": 98,
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests"
+    },
+    "direct_go_transport": {
+      "result": "passed",
+      "before_dns_and_dial_denials": 12,
+      "wire_preservation_controls": 6,
+      "tests": [
+        "TestRangeTransportRejectsBeforeDNS",
+        "TestRangeTransportPreservesValidField"
+      ]
+    },
+    "python_long_decimal_padding_control": {
+      "result": "passed",
+      "leading_zero_count": 5000,
+      "number_value": 1,
+      "field_preserved": true
+    },
+    "shared_signature_fixtures": {
+      "result": "passed",
+      "cases": 2618,
+      "runtimes": [
+        "Go cached unchanged suite",
+        "Python executed suite"
+      ]
+    },
+    "go_vet": {
+      "result": "passed",
+      "packages": [
+        "./pkg/security/httpguard",
+        "./pkg/security/egress",
+        "./pkg/mcp/proxy"
+      ]
+    },
+    "go_build": {
+      "result": "passed",
+      "package": "./cmd/ax-mcp-proxy"
+    }
+  },
+  "binary": {
+    "path": "/private/tmp/ax-mcp-proxy-range-verified",
+    "sha256": "4094c15259e603366c98374e7ff7e4043e251977f0f1affa75ed106ff9857a5a"
+  },
+  "source_sha256_at_recording": {
+    "go.mod": "0a18e611f01f74fa16151ffd8530c3a98763db0ee4bbc4e7e61e5d54ad651f7b",
+    "go.sum": "34e86b388cfa07abe61c863cd088738147856963c2aeed94cf3436b47bdf34be",
+    "cmd/ax-mcp-proxy/ax_mcp_proxy.py": "5f73caf1034df32654f89514fb1c567b09aa0195349affba0c94ef85eec5c1e3",
+    "tests/test_http_protocol.py": "16420b768128e214b1e60ae4f0b311faa935f1db42947bfe55c3ceefab81f25b",
+    "pkg/security/httpguard/testdata/range_cases.json": "8d694523831acb198d6a18b97c1ecaf4c6b5c3de9981cb96b6724c8b33d2cdbb",
+    "pkg/security/httpguard/guard_test.go": "15c3112f5338d51e005bce376071ee1d390f5452e1a00e76933a49ed1e5f3dc8",
+    "pkg/security/httpguard/json.go": "70d992b91e4abbbfc7a3f591ea8e71c63c88e4b5708c86dd51a088b59229d1d0",
+    "pkg/security/httpguard/range.go": "dcfb75bb92624ea9a8726ed347537214f6d44f03d8262e101bd78da49ea6866d",
+    "pkg/security/httpguard/request.go": "8cd7b22bcb7395ad7cc9ec1dca02c9af02a620a1ce1c63e8294dc1834913d94d",
+    "pkg/security/egress/chunk.go": "f04fe64114a104cdc2d7c184150ae2f03a5f0c63c903bda492289cebf0992f15",
+    "pkg/security/egress/chunk_test.go": "91706257ad258289a5727a4820b22ad617e422f2791efcc8ae20de7bc0da053f",
+    "pkg/security/egress/client.go": "98f71d44c05e2f6963d5e25c17ac657348f9c6c5f226df50aeda1408e2a1d7df",
+    "pkg/security/egress/client_test.go": "a221c2c4ee87368662e81b2402d4741cfd1e6120610a4534fd6146954c708e70",
+    "pkg/security/egress/metadata.go": "3483f0a7509aa9a2a8c451e34b2b6388ffd6f5ef882c5ebdd2215c0942571b59",
+    "pkg/security/egress/metadata_test.go": "4859a6b3bef7ef53e52ed56cf165ad64d3fe0cdfde7432f03c7199b7fa6610ed",
+    "pkg/security/egress/policy.go": "4019e3b343dbaaf5dcc4c177ff51638aa91e1335c54a82aa1b74735820bf7f58",
+    "pkg/security/egress/policy_test.go": "5dc165a0fd789e1afc278ed3bd6dae5eafe0c8f8f0eee1c38f110bda25ef2447",
+    "pkg/security/egress/range_test.go": "b02684faf4de94d3e43a4079ccb38b8edc7675789d2210f426c8b6c0a19a719e",
+    "pkg/security/egress/response.go": "e556751ebbb8142364b2f892cac9d0131d94d2d1f13108925a1485e03904dde0",
+    "pkg/security/egress/response_test.go": "bfd263d81b5f4a3f57d5bb44c8eabc5a85cd15b74c48eb72966b8d691452ca91",
+    "pkg/security/egress/wire.go": "b0859d878e346218a7f2298b570e8090bad98f49daded8a6bab2de6c46f0b0df",
+    "pkg/security/egress/wire_test.go": "fa62123eb01feef632446981d5acd663d7767be1fd0ccbe2f0836763711cac0d",
+    "pkg/mcp/proxy/protocol.go": "09e39b66f31f289d6b08e46c61a84a3a609fe5976da916dc9c0d329c849928c8",
+    "pkg/mcp/proxy/protocol_test.go": "6f3639a095b2bd743e11a0b63cf590925d1ac0937895ed61ff13891a9b4ef179",
+    "pkg/mcp/proxy/range_test.go": "a8317dfb30d9dda210de9f97eb8cf17eeb2d325931c250e41658d1969e1a0af9",
+    "pkg/mcp/proxy/server.go": "bb0f7ab4de40877773bc81805434c4365e49f14d1f062756f12749a2a3f5129a",
+    "pkg/mcp/proxy/server_test.go": "058079b9fabb3789ecc2d5ac43fc6ebb18a538ee81713c561690172641d31111"
+  },
+  "standards": [
+    "https://www.rfc-editor.org/rfc/rfc9110.html#section-14.1.1",
+    "https://www.rfc-editor.org/rfc/rfc9110.html#section-14.1.2",
+    "https://www.rfc-editor.org/rfc/rfc9110.html#section-14.2",
+    "https://www.rfc-editor.org/rfc/rfc9110.html#section-17.15"
+  ],
+  "limits": [
+    "Count, order, no-overlap, standalone-suffix, GET-only, bytes-only and signed-63-bit restrictions are local broker policy. Some otherwise valid RFC requests are intentionally denied.",
+    "Origin resource length, satisfiability and application authorization are not inferred. Servers may ignore Range and send a full response, which is still subject to existing body limits.",
+    "Does not prove that all origin resource-exhaustion attacks, unknown vulnerabilities or unauthorized agent actions are prevented.",
+    "No new Snort signature or SID was added. These are mandatory protocol-admission checks, independent of the signature profile.",
+    "Only local source and tests were changed. Live route enforcement and deployment remain unverified."
+  ]
+}

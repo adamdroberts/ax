@@ -4,6 +4,9 @@ The [DNS proxy](dns-proxy.md) provides a forced DNS route for a sandbox. It reso
 only configured names on a fixed schedule and never forwards agent DNS payloads.
 Its example policy is for ordinary Kubernetes pods; applying the equivalent route
 to Substrate actors still requires port-aware sandbox policy.
+An alternative [native Snort perimeter](../native-snort3/perimeter/README.md)
+constrains both DNS and HTTP broker destinations and ports on an inline boundary.
+Its generator and file-only packet checks do not install that boundary.
 
 ## Outbound policy admission
 

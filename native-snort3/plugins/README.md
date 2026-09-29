@@ -1,7 +1,7 @@
-# Native IP and neighbor-discovery rule options
+# Native IP, TCP and neighbor-discovery rule options
 
-This plugin is required by the AX native profile and adds ten stateless rule
-options to **Snort 3.12.2.0**.
+This plugin is required by the AX native profile and adds eleven stateless rule
+options and one SACK connection-state option to **Snort 3.12.2.0**.
 The implementation uses the supported `IpsApi`/`IpsOption` interface and the
 installed development headers. The reviewed upstream source is commit
 `14aeb09f5a0856812dbe08ead3c21f99e8860aa0`.
@@ -67,13 +67,46 @@ installed development headers. The reviewed upstream source is commit
   other routing types retain their receive semantics. Zero segments represents
   a locally processed Type 2 header, so this guard must inspect original packets.
   Home-address ownership and actual routability require endpoint state.
+- `ax_tcp_options` walks the original Data Offset-bounded TCP option bytes,
+  including padding hidden by the decoder's End of Option List handling. It
+  requires zero padding, bounded option lengths, fixed MSS/Window Scale/
+  SACK-Permitted/Timestamp lengths, one to four complete SACK blocks, and SYN
+  context for MSS and SACK-Permitted. Unknown framed options stay opaque;
+  unaligned options and window-scale values above 14 retain receiver semantics.
+  It does not establish negotiated SACK permission, sequence-window truth,
+  authentication, or the semantics of every extension option.
+- `ax_tcp_sack_state` requires observed SYN offers in both directions, the
+  peer's SACK-Permitted offer, an established native TCP flow, ACK set and SYN
+  clear before admitting SACK. Each flow owns its bounded negotiation state.
+  An offer is staged on the original packet context and commits after the
+  final forwarding decision. Rejected offers cannot grant or revoke permission.
+  Conflicting admitted SYN retransmissions only narrow permission; this is a
+  conservative ambiguity policy. Native connection reset/removal releases the
+  state. This guard does not validate SACK sequence ranges or TCP authentication.
+
+The [SACK negotiation record](../tcp-sack-validation.json) covers 344 packet
+conversations and 100,000 randomized connection histories. It includes one-way
+permission, IPv4/IPv6, Hop-by-Hop headers, both fragment arrival orders, Fast Open
+handshakes, rejected offers, separate flows and connection reuse after reset.
+The fixture-only rejection rule in the audit is not a production signature.
+
+The subsequent [TCP timestamp and SYN-data repair](../patches/tcp-timestamps.md)
+changes the engine separately from this plugin. Its [validation record](../tcp-timestamp-validation.json)
+repeats all 344 SACK conversations with the rebuilt engine and instrumented
+plugin. The engine's final-admission event ordering is unchanged; its TCP session
+change prevents opening SYN data from being mistaken for a missed handshake.
+Loading the plugin alone does not apply those engine repairs.
 
 These checks implement selected requirements in
 [RFC 4861 sections 4.6, 6.1.1, 7.1.1, 7.1.2, 8.1 and 9](https://www.rfc-editor.org/rfc/rfc4861.html).
 Home Address format and ordering follow
 [RFC 6275 section 6.3](https://www.rfc-editor.org/rfc/rfc6275.html#section-6.3).
-The [Home Address build and replay records](../patches/home-address.md) cover
-the latest extension of this plugin; the original reports below predate it.
+The [TCP option validation record](../tcp-options-validation.json) records
+844 packet cases (252 preserved controls and 592 denials), including IPv4/IPv6,
+both directions, extension headers and fragmentation, plus 100,000 randomized
+parser inputs. The packet batch is also repeated with an instrumented engine
+and plugin. The [Home Address build and replay records](../patches/home-address.md)
+and the original reports below are earlier snapshots.
 Unknown option contents and reserved fields are ignored. This plugin does not
 authorize routers, verify sender ownership, maintain a neighbor cache, validate
 every option's type-specific contents, or replace checksum, hop-limit, code,
@@ -90,6 +123,8 @@ The option guards apply sender formats from [RFC 791](https://www.rfc-editor.org
 some of those options are optional for endpoints to process. ESP framing follows
 [RFC 4303](https://www.rfc-editor.org/rfc/rfc4303.html).
 Type 2 checks follow [RFC 6275 sections 6.4.1 and 11.3.3](https://www.rfc-editor.org/rfc/rfc6275.html#section-11.3.3).
+TCP sender-format checks follow [RFC 9293 sections 3.1 and 3.2](https://www.rfc-editor.org/rfc/rfc9293.html#section-3.1)
+and [RFC 2018 sections 2 and 3](https://datatracker.ietf.org/doc/html/rfc2018#section-2).
 They do not correct native Mobile IPv6 transport-checksum calculation; see the
 separate [known-defect audit](../mobility-checksum-validation.json).
 
@@ -97,6 +132,20 @@ The pinned decoder places ND payload data after the four common ICMP header
 octets. The plugin uses that decoded span, excluding Ethernet padding; selected
 ND packets with an inconsistent span match invalid. Other Snort versions need a
 fresh API/layout audit and replay, even when their plugin API version matches.
+Direct reads of original IP and ICMP fields use captured, bounded byte spans:
+an Ethernet payload need not align the SDK's typed header structures. The pinned
+Next Header predicate runs on a local aligned value. The TCP validation record
+retains the initial sanitizer findings and the corrected replay separately.
+
+SACK finality depends on the pinned engine lifecycle. Ordinary packets use
+`FINALIZE_PACKET`. Completed fragment flows are removed before that flow-gated
+event; their original context is cleared after DAQ finalization. The guard
+accepts that path only with a cleared capture header, no remaining flow, an
+allowing active action, and no trust, ignore, resize, hold, retry or drop state.
+Missing evidence grants no permission. The validation record hashes the engine
+sources establishing this order. Additional verdict-changing plugins and other
+engine releases require a new audit. Live plugin replacement is not declared
+supported by the stateful option; restart with the reviewed library.
 
 ## Build without installing
 

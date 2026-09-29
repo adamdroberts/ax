@@ -1,0 +1,181 @@
+{
+  "as_of": "2026-09-27",
+  "scope": "DNS cache lifetime and result admission when lookup completion races with cancellation or a deadline. Controlled resolver and testing/synctest virtual time; no live remote DNS exploit or deployment test.",
+  "changes": [
+    "Anchor both upstream TTL and the local twice-refresh-interval cap to lookup start; never add a previously calculated remaining lifetime to a later clock sample.",
+    "Before accepting returned addresses, inspect lookup context error and require completion strictly before its absolute deadline, including an earlier parent deadline.",
+    "Canceled, expired, late or failed results replace the previous cache entry with failure; a later independent timely refresh can recover."
+  ],
+  "baseline": {
+    "passing_cases": [
+      "TestRefreshLifetimeBounds/upstream-ttl",
+      "TestRefreshLifetimeBounds/equal-ttl-and-cap",
+      "TestRefreshLifetimeBounds/one-ns-remaining",
+      "TestRefreshLifetimeBounds/expired-at-return",
+      "TestRefreshLifetimeBounds/expired-before-return",
+      "TestRefreshLifetimeBounds/zero-ttl",
+      "TestRefreshDiscardsCanceledResults/immediate-success",
+      "TestRefreshDiscardsCanceledResults/before-timeout",
+      "TestRefreshDiscardsCanceledResults/resolver-error"
+    ],
+    "failing_cases": [
+      "TestRefreshLifetimeBounds/refresh-cap-min",
+      "TestRefreshLifetimeBounds/refresh-cap-default",
+      "TestRefreshLifetimeBounds/refresh-cap-max",
+      "TestRefreshDiscardsCanceledResults/at-timeout",
+      "TestRefreshDiscardsCanceledResults/after-timeout",
+      "TestRefreshDiscardsCanceledResults/after-context-signal",
+      "TestRefreshDiscardsCanceledResults/parent-cancel",
+      "TestRefreshDiscardsCanceledResults/parent-deadline"
+    ],
+    "failures_by_kind": {
+      "local_expiry_cap_extended_by_lookup_time": 3,
+      "late_or_canceled_addresses_accepted": 5
+    },
+    "source_sha256": {
+      "pkg/security/dnsproxy/policy.go": "e691c62e2c7e20cfbdb1a02e1bbdea6b51aaf34fd5cb1496d66a7950f020901a",
+      "pkg/security/dnsproxy/wire.go": "c3617d200077bf61bc5394a8fe85c510e80137bdcd392fe4911f706a28a5f865",
+      "pkg/security/dnsproxy/upstream.go": "93ea4f89c8ccce0242c61f68f6d291e96ec5c008cd7b7f1e698cd17aa7eb2ce6",
+      "pkg/security/dnsproxy/cache_lifetime_test.go": "2848e2e77e8b2900c1f359b1b1dba86d02c24b54d7c08ad72670d9414c169600"
+    }
+  },
+  "regressions": {
+    "path": "pkg/security/dnsproxy/cache_lifetime_test.go",
+    "cases": 17,
+    "lifetime_boundary_cases": 9,
+    "cancellation_deadline_cases": 8,
+    "passing_cases": [
+      "TestRefreshLifetimeBounds/upstream-ttl",
+      "TestRefreshLifetimeBounds/refresh-cap-min",
+      "TestRefreshLifetimeBounds/refresh-cap-default",
+      "TestRefreshLifetimeBounds/refresh-cap-max",
+      "TestRefreshLifetimeBounds/equal-ttl-and-cap",
+      "TestRefreshLifetimeBounds/one-ns-remaining",
+      "TestRefreshLifetimeBounds/expired-at-return",
+      "TestRefreshLifetimeBounds/expired-before-return",
+      "TestRefreshLifetimeBounds/zero-ttl",
+      "TestRefreshDiscardsCanceledResults/immediate-success",
+      "TestRefreshDiscardsCanceledResults/before-timeout",
+      "TestRefreshDiscardsCanceledResults/at-timeout",
+      "TestRefreshDiscardsCanceledResults/after-timeout",
+      "TestRefreshDiscardsCanceledResults/after-context-signal",
+      "TestRefreshDiscardsCanceledResults/parent-cancel",
+      "TestRefreshDiscardsCanceledResults/parent-deadline",
+      "TestRefreshDiscardsCanceledResults/resolver-error"
+    ],
+    "checks": [
+      "Local lifetime caps at minimum, default and maximum configured refresh intervals exclude two seconds of simulated lookup time.",
+      "A shorter upstream TTL and an equal TTL/cap remain bounded; zero TTL or expiry at/before return is rejected.",
+      "One nanosecond of remaining lifetime is usable with emitted TTL zero; expiry at the exact bound and afterwards returns SERVFAIL.",
+      "Success immediately before the deadline remains accepted; completion at/after it, observed context expiry, explicit parent cancellation and an earlier parent deadline are rejected.",
+      "Partial addresses accompanying a resolver error are not accepted.",
+      "A/AAAA replies in both TCP/UDP Answer modes remain cache-only; rejection removes old addresses, accounting stays correct, and a subsequent valid refresh recovers."
+    ],
+    "counting": "Count 17 table cases once. Four family/transport calls, repeated boundary assertions, before/after runs and the race rerun are not added as separate cases."
+  },
+  "verification": {
+    "focused_after": {
+      "exit_code": 0,
+      "passing_cases": 17
+    },
+    "selected_security_race": {
+      "exit_code": 0,
+      "output": [
+        "ok  \tgithub.com/google/ax/pkg/security/dnsproxy\t1.362s",
+        "?   \tgithub.com/google/ax/cmd/ax-dns-proxy\t[no test files]",
+        "ok  \tgithub.com/google/ax/pkg/security/egress\t(cached)",
+        "ok  \tgithub.com/google/ax/pkg/security/httpguard\t(cached)",
+        "ok  \tgithub.com/google/ax/pkg/security/snort\t(cached)",
+        "ok  \tgithub.com/google/ax/pkg/mcp/proxy\t(cached)"
+      ],
+      "fresh_packages": [
+        "pkg/security/dnsproxy"
+      ],
+      "cached_packages": [
+        "pkg/security/egress",
+        "pkg/security/httpguard",
+        "pkg/security/snort",
+        "pkg/mcp/proxy"
+      ],
+      "packages_without_tests": [
+        "cmd/ax-dns-proxy"
+      ]
+    },
+    "vet": {
+      "exit_code": 0,
+      "packages": [
+        "pkg/security/dnsproxy",
+        "cmd/ax-dns-proxy"
+      ]
+    },
+    "build": {
+      "exit_code": 0,
+      "path": "/private/tmp/ax-dns-proxy-cache-lifetime-verified",
+      "sha256": "cc4706374cddb485cf2fb33a89c4f7d424e46dc8fae093eb2f6ee455c9b033cf"
+    },
+    "python": "No Python code changed or Python tests rerun in this validation."
+  },
+  "standards_context": [
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc2181.html#section-8",
+      "use": "TTL is an upper bound and implementations may cap it further. The twice-refresh cap, lookup-start anchor and cancellation result policy are local conservative restrictions."
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc1035.html#section-3.2.1",
+      "use": "Resource-record TTL defines cache lifetime; zero TTL does not permit caching for later transactions."
+    }
+  ],
+  "limitations": [
+    "The new resolver-return tests establish cache admission behavior, not a remotely exploitable pinned-resolver cancellation race.",
+    "The trusted Resolver implementation must eventually return and honor context cancellation; this change does not forcibly stop arbitrary resolver code that never returns.",
+    "Rejection is based on each lookup completion. This does not claim batch-wide cancellation fencing or a deployment boundary.",
+    "No new Snort SID or universal RFC, W3C, zero-day or hostile-agent prevention claim follows from these checks."
+  ],
+  "source_sha256": {
+    "cmd/ax-dns-proxy/main.go": "916e7ce708d1c27a849ac8c7af08617c3c3e899c230d70de0196eadcfe8ffb1d",
+    "docs/dns-proxy.md": "97e8b1b751963e04ae51ac525b93312374919df94d2e43c115404debc1cbae16",
+    "go.mod": "0a18e611f01f74fa16151ffd8530c3a98763db0ee4bbc4e7e61e5d54ad651f7b",
+    "go.sum": "34e86b388cfa07abe61c863cd088738147856963c2aeed94cf3436b47bdf34be",
+    "pkg/security/dnsproxy/cache_lifetime_test.go": "2848e2e77e8b2900c1f359b1b1dba86d02c24b54d7c08ad72670d9414c169600",
+    "pkg/security/dnsproxy/policy.go": "09c368a3ed9a60b5b834d56390bf8f5f1ad42ba3e678c7da6a3d3a678d8bad2f",
+    "pkg/security/dnsproxy/proxy_test.go": "cf60d23e72b62e116cc212dc49da11f92bad80665969589e4fb1d8de5c877e4d",
+    "pkg/security/dnsproxy/server.go": "407f866b26bcc18eac05d65d5cdbfcf974ba51663b195dfafa07a3f0298258db",
+    "pkg/security/dnsproxy/server_capacity_test.go": "986f626f857b10ebbbb2a8e0b4d210894defcf989621f32228523fd4c81894eb",
+    "pkg/security/dnsproxy/upstream.go": "93ea4f89c8ccce0242c61f68f6d291e96ec5c008cd7b7f1e698cd17aa7eb2ce6",
+    "pkg/security/dnsproxy/upstream_test.go": "4303f5f658381bb806ce917d81e8cb97e0de02135050dcc4121e348e4015d2fd",
+    "pkg/security/dnsproxy/upstream_validation_test.go": "758ba7d58b3bd73fc8beb9e2733b1987e3ed8023812b8dbea82612a05c7066ca",
+    "pkg/security/dnsproxy/upstream_wire.go": "17ca019340e3703351c02f4e1030b2d3f86e2764132b5b5a4fe3c83984b57b76",
+    "pkg/security/dnsproxy/wire.go": "c3617d200077bf61bc5394a8fe85c510e80137bdcd392fe4911f706a28a5f865",
+    "pkg/security/egress/chunk.go": "f04fe64114a104cdc2d7c184150ae2f03a5f0c63c903bda492289cebf0992f15",
+    "pkg/security/egress/client.go": "b3996a6f7e07a1c34e82c07b0f32a48269dd1763d545e6a8835422ac10c9e1b2",
+    "pkg/security/egress/content_range.go": "3b89a27e364490df13c59a8cdb3a80d55054b1be82ed7fa64570a74a69032b04",
+    "pkg/security/egress/metadata.go": "adb89d29e455c72594ca8f63ee5378e2c70d28e93241058653b033eb50d84017",
+    "pkg/security/egress/policy.go": "4019e3b343dbaaf5dcc4c177ff51638aa91e1335c54a82aa1b74735820bf7f58",
+    "pkg/security/egress/response.go": "29b3f3b06cb8afa52e633d160e654b4ec76db716b8eff5b45086b31a067b3298",
+    "pkg/security/egress/response_conditions.go": "26790f8cd1f230ab1644688e64d730317af524f22d39547de060b8260ca90f68",
+    "pkg/security/egress/response_content.go": "7fc2f3bc4569d9834ab96158abe05417c37d255dc16c4eefd177c5b4a5786806",
+    "pkg/security/egress/wire.go": "c8b684e4ec032fbe10e0e8fb67c259aa2d952ab634f545a56b0918fdf1ba9b99"
+  },
+  "logs": {
+    "focused_before": {
+      "path": "/private/tmp/ax-dns-cache-lifetime-go-before.jsonl",
+      "sha256": "0eb30e6e6717bf5bd05ce8901d584853dff7225beeb41991b13a6cdc238e3797"
+    },
+    "focused_after": {
+      "path": "/private/tmp/ax-dns-cache-lifetime-go-after.jsonl",
+      "sha256": "9b7da61b5eef2817be4cf2e97af19d8a5ab0025344f8892b96b8674ebb0604b1"
+    },
+    "selected_security_race": {
+      "path": "/private/tmp/ax-dns-cache-lifetime-go-full.txt",
+      "sha256": "064f869ad32542384aee7828a7c858f310b60f9cae5d1e890767b48c1bd85d66"
+    },
+    "vet": {
+      "path": "/private/tmp/ax-dns-cache-lifetime-go-vet.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "build": {
+      "path": "/private/tmp/ax-dns-cache-lifetime-go-build.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

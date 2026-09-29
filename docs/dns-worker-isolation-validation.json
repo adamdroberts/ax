@@ -1,0 +1,147 @@
+{
+  "as_of": "2026-09-27",
+  "scope": "DNS transport worker isolation in Proxy.Serve using channel-backed listener adapters and net.Pipe. IPv4/IPv6 labels describe admitted source addresses, not live network-stack tests.",
+  "finding": "A single 128-slot pool let idle TCP connections starve UDP handling, and let UDP handlers blocked writing replies starve TCP admission.",
+  "change": {
+    "aggregate_active_handler_limit": 128,
+    "reserved_udp_workers": 64,
+    "reserved_tcp_connections": 64,
+    "rate_budget": "Unchanged shared 50 queries/second, burst 100. No per-client fairness added.",
+    "tradeoff": "Either transport can use only its reserved 64 slots, even when the other transport is idle."
+  },
+  "baseline": {
+    "failing_leaf_cases": [
+      "TestDNSTransportWorkerIsolation/ipv4/idle-tcp",
+      "TestDNSTransportWorkerIsolation/ipv4/blocked-udp-writes",
+      "TestDNSTransportWorkerIsolation/ipv6/idle-tcp",
+      "TestDNSTransportWorkerIsolation/ipv6/blocked-udp-writes"
+    ],
+    "source_sha256": {
+      "pkg/security/dnsproxy/server.go": "fd77e6dcd8d09866bb5038d65af020a47f75641dd8890a9afa23648b6bf6de18",
+      "pkg/security/dnsproxy/policy.go": "3782d7f9a11f540c881704838e8c29f15a0b97fbddc40cfb59ea43e8f0defba1",
+      "pkg/security/dnsproxy/server_capacity_test.go": "986f626f857b10ebbbb2a8e0b4d210894defcf989621f32228523fd4c81894eb"
+    },
+    "result": "All four cases reproduced cross-transport worker starvation before the production change."
+  },
+  "regressions": {
+    "test": "pkg/security/dnsproxy/server_capacity_test.go",
+    "cases": 4,
+    "passing_leaf_cases": [
+      "TestDNSTransportWorkerIsolation/ipv4/idle-tcp",
+      "TestDNSTransportWorkerIsolation/ipv4/blocked-udp-writes",
+      "TestDNSTransportWorkerIsolation/ipv6/idle-tcp",
+      "TestDNSTransportWorkerIsolation/ipv6/blocked-udp-writes"
+    ],
+    "checks": [
+      "The other transport returns a successful cached DNS reply under worker pressure.",
+      "Excess TCP connections are rejected at the reservation boundary.",
+      "No client-triggered upstream resolution beyond the initial cache fill.",
+      "Cancellation terminates the saturated server within the test deadline."
+    ],
+    "rate_control": "The blocked-UDP cases explicitly replenish the independent token bucket while submitting pressure and before the TCP control request, to isolate worker admission from rate limiting.",
+    "counting": "Four family/pressure cases counted once. Individual connection attempts, datagrams, before/after executions and race reruns are not extra cases."
+  },
+  "verification": {
+    "focused_after": {
+      "exit_code": 0,
+      "passing_leaf_cases": 4
+    },
+    "selected_security_race": {
+      "exit_code": 0,
+      "output": [
+        "ok  \tgithub.com/google/ax/pkg/security/dnsproxy\t1.342s",
+        "?   \tgithub.com/google/ax/cmd/ax-dns-proxy\t[no test files]",
+        "ok  \tgithub.com/google/ax/pkg/security/egress\t(cached)",
+        "ok  \tgithub.com/google/ax/pkg/security/httpguard\t(cached)",
+        "ok  \tgithub.com/google/ax/pkg/security/snort\t(cached)",
+        "ok  \tgithub.com/google/ax/pkg/mcp/proxy\t(cached)"
+      ],
+      "fresh_packages": [
+        "pkg/security/dnsproxy"
+      ],
+      "cached_packages": [
+        "pkg/security/egress",
+        "pkg/security/httpguard",
+        "pkg/security/snort",
+        "pkg/mcp/proxy"
+      ],
+      "packages_without_tests": [
+        "cmd/ax-dns-proxy"
+      ]
+    },
+    "vet": {
+      "exit_code": 0,
+      "packages": [
+        "pkg/security/dnsproxy",
+        "cmd/ax-dns-proxy"
+      ]
+    },
+    "build": {
+      "exit_code": 0,
+      "path": "/private/tmp/ax-dns-proxy-worker-isolation-verified",
+      "sha256": "8038a0e5b009f9d09c4ed9e8a738cc6afd0d947feefd3386dee0413a0dc8ddec"
+    },
+    "python": "No Python code changed or Python tests rerun in this validation."
+  },
+  "standards_context": [
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc7766.html#section-6.1.2",
+      "use": "Describes idle-connection resource exhaustion."
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc7766.html#section-6.2.2",
+      "use": "Discusses server connection limits. The fixed 64/64 allocation is local policy, not an RFC-mandated value."
+    }
+  ],
+  "limitations": [
+    "Does not provide per-client fairness or protect against exhausting the shared query budget, CPU, kernel resources or the worker pool within one transport.",
+    "The UDP write-blocking condition is deliberately simulated; it is not a live interface flood or deployment test.",
+    "No new Snort signature or universal RFC, W3C, zero-day or hostile-agent prevention claim follows from this change."
+  ],
+  "source_sha256": {
+    "cmd/ax-dns-proxy/main.go": "916e7ce708d1c27a849ac8c7af08617c3c3e899c230d70de0196eadcfe8ffb1d",
+    "docs/dns-proxy.md": "34a0ef9909ddffb61afea8a35b823727f92bb419fd67fb76d1b629ec10dfd30b",
+    "go.mod": "0a18e611f01f74fa16151ffd8530c3a98763db0ee4bbc4e7e61e5d54ad651f7b",
+    "go.sum": "34e86b388cfa07abe61c863cd088738147856963c2aeed94cf3436b47bdf34be",
+    "pkg/security/dnsproxy/policy.go": "e691c62e2c7e20cfbdb1a02e1bbdea6b51aaf34fd5cb1496d66a7950f020901a",
+    "pkg/security/dnsproxy/proxy_test.go": "cf60d23e72b62e116cc212dc49da11f92bad80665969589e4fb1d8de5c877e4d",
+    "pkg/security/dnsproxy/server.go": "407f866b26bcc18eac05d65d5cdbfcf974ba51663b195dfafa07a3f0298258db",
+    "pkg/security/dnsproxy/server_capacity_test.go": "986f626f857b10ebbbb2a8e0b4d210894defcf989621f32228523fd4c81894eb",
+    "pkg/security/dnsproxy/upstream.go": "93ea4f89c8ccce0242c61f68f6d291e96ec5c008cd7b7f1e698cd17aa7eb2ce6",
+    "pkg/security/dnsproxy/upstream_test.go": "4303f5f658381bb806ce917d81e8cb97e0de02135050dcc4121e348e4015d2fd",
+    "pkg/security/dnsproxy/upstream_validation_test.go": "758ba7d58b3bd73fc8beb9e2733b1987e3ed8023812b8dbea82612a05c7066ca",
+    "pkg/security/dnsproxy/upstream_wire.go": "17ca019340e3703351c02f4e1030b2d3f86e2764132b5b5a4fe3c83984b57b76",
+    "pkg/security/dnsproxy/wire.go": "c3617d200077bf61bc5394a8fe85c510e80137bdcd392fe4911f706a28a5f865",
+    "pkg/security/egress/chunk.go": "f04fe64114a104cdc2d7c184150ae2f03a5f0c63c903bda492289cebf0992f15",
+    "pkg/security/egress/client.go": "b3996a6f7e07a1c34e82c07b0f32a48269dd1763d545e6a8835422ac10c9e1b2",
+    "pkg/security/egress/content_range.go": "3b89a27e364490df13c59a8cdb3a80d55054b1be82ed7fa64570a74a69032b04",
+    "pkg/security/egress/metadata.go": "adb89d29e455c72594ca8f63ee5378e2c70d28e93241058653b033eb50d84017",
+    "pkg/security/egress/policy.go": "4019e3b343dbaaf5dcc4c177ff51638aa91e1335c54a82aa1b74735820bf7f58",
+    "pkg/security/egress/response.go": "29b3f3b06cb8afa52e633d160e654b4ec76db716b8eff5b45086b31a067b3298",
+    "pkg/security/egress/response_conditions.go": "26790f8cd1f230ab1644688e64d730317af524f22d39547de060b8260ca90f68",
+    "pkg/security/egress/response_content.go": "7fc2f3bc4569d9834ab96158abe05417c37d255dc16c4eefd177c5b4a5786806",
+    "pkg/security/egress/wire.go": "c8b684e4ec032fbe10e0e8fb67c259aa2d952ab634f545a56b0918fdf1ba9b99"
+  },
+  "logs": {
+    "focused_before": {
+      "path": "/private/tmp/ax-dns-worker-isolation-go-before.jsonl",
+      "sha256": "64ebf56b5c49e0314d60c844345d9c8373161846d9a97b0ca4ba60df6912ae66"
+    },
+    "focused_after": {
+      "path": "/private/tmp/ax-dns-worker-isolation-go-after.jsonl",
+      "sha256": "87a282d4ae13101830867b2bc2580bdc8e811eb25d8bc95289e9f9f31ae3d21d"
+    },
+    "selected_security_race": {
+      "path": "/private/tmp/ax-dns-worker-isolation-go-full.txt",
+      "sha256": "ecb510944778b91a9a98adc4920d2bf41abbbbd8047b29e852453f8be81dafb8"
+    },
+    "vet": {
+      "path": "/private/tmp/ax-dns-worker-isolation-go-vet.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "build": {
+      "path": "/private/tmp/ax-dns-worker-isolation-go-build.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

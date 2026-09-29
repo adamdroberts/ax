@@ -173,6 +173,12 @@ func (c *responseConn) readHeaderBlock() ([]byte, bool, error) {
 	if framing["content-length"] && framing["transfer-encoding"] || (!final || status == 204) && (framing["content-length"] || framing["transfer-encoding"]) {
 		return nil, false, fmt.Errorf("conflicting or forbidden response framing")
 	}
+	if _, err := metadata.partial(status, c.method, contentLength, nil); err != nil {
+		return nil, false, err
+	}
+	if err := metadata.finish(status, c.method); err != nil {
+		return nil, false, err
+	}
 	if final {
 		if status == 205 {
 			// 205 permits ordinary framing but must not contain content (RFC 9110).

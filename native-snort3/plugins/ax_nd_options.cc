@@ -10,6 +10,8 @@
 #include "ip6_options.h"
 #include "esp_validation.h"
 #include "routing_validation.h"
+#include "tcp_options.h"
+#include "tcp_sack_option.h"
 
 namespace
 {
@@ -33,6 +35,8 @@ constexpr const char* esp_name = "ax_esp_header";
 constexpr const char* esp_help = "detect impossible visible ESP framing without decrypting payloads";
 constexpr const char* routing_name = "ax_ip6_type2_routing";
 constexpr const char* routing_help = "validate original-wire IPv6 Type 2 routing headers";
+constexpr const char* tcp_options_name = "ax_tcp_options";
+constexpr const char* tcp_options_help = "validate original TCP option geometry, padding and mandatory SYN context";
 
 bool ip_layer(ProtocolId protocol)
 {
@@ -60,6 +64,26 @@ public:
     Usage get_usage() const override { return DETECT; }
 };
 
+class TCPOptionsOption final : public snort::IpsOption
+{
+public:
+    TCPOptionsOption() : IpsOption(tcp_options_name) { }
+    EvalStatus eval(Cursor&, snort::Packet* packet) override
+    {
+        if (!packet || !packet->ptrs.tcph)
+            return NO_MATCH;
+        const auto* header = reinterpret_cast<const std::uint8_t*>(packet->ptrs.tcph);
+        if (!captured_span(packet, header, 20))
+            return MATCH;
+        const std::size_t size = (header[12] >> 4) * 4;
+        if (size < 20 || !captured_span(packet, header, size))
+            return MATCH;
+        // The decoder's option span ends at EOL or its first invalid option.
+        // Use the original Data Offset, including every padding byte.
+        return ax_tcp::invalid_options(header + 20, size - 20, header[13] & 2) ? MATCH : NO_MATCH;
+    }
+};
+
 class IP4OptionsOption final : public snort::IpsOption
 {
 public:
@@ -73,7 +97,7 @@ public:
         const auto* header = reinterpret_cast<const std::uint8_t*>(ipv4);
         if (!captured_span(packet, header, 20))
             return MATCH;
-        const std::size_t size = ipv4->hlen();
+        const std::size_t size = (header[0] & 0x0f) * 4;
         if (size < 20 || size > 60 || !captured_span(packet, header, size))
             return MATCH;
         // The codec's valid option span stops at EOL or the first malformed
@@ -98,8 +122,8 @@ public:
         const std::size_t size = packet->ptrs.ip_api.pay_len();
         if (!captured_span(packet, header + 40, size))
             return MATCH;
-        return ax_ip::invalid_ip6_option_chain(static_cast<std::uint8_t>(ipv6->next()),
-            header + 40, size, ipv6->len()) ? MATCH : NO_MATCH;
+        return ax_ip::invalid_ip6_option_chain(header[6], header + 40, size,
+            (static_cast<std::uint16_t>(header[4]) << 8) | header[5]) ? MATCH : NO_MATCH;
     }
 };
 
@@ -126,7 +150,7 @@ public:
             if (!captured_span(packet, header, 40))
                 return MATCH;
             header_size = 40;
-            protocol = static_cast<std::uint8_t>(ipv6->next());
+            protocol = header[6];
         }
         else
         {
@@ -134,11 +158,11 @@ public:
             header = reinterpret_cast<const std::uint8_t*>(ipv4);
             if (!captured_span(packet, header, 20))
                 return MATCH;
-            header_size = ipv4->hlen();
+            header_size = (header[0] & 0x0f) * 4;
             if (header_size < 20 || header_size > 60 || !captured_span(packet, header, header_size))
                 return MATCH;
-            protocol = static_cast<std::uint8_t>(ipv4->proto());
-            fragment = ipv4->off_w_flags();
+            protocol = header[9];
+            fragment = (static_cast<std::uint16_t>(header[6]) << 8) | header[7];
         }
         const auto size = static_cast<std::size_t>(ip.pay_len());
         if (!captured_span(packet, header + header_size, size))
@@ -164,8 +188,7 @@ public:
         const auto size = static_cast<std::size_t>(packet->ptrs.ip_api.pay_len());
         if (!captured_span(packet, header + 40, size))
             return MATCH;
-        return ax_ip::invalid_type2_chain(static_cast<std::uint8_t>(ipv6->next()),
-            header + 40, size) ? MATCH : NO_MATCH;
+        return ax_ip::invalid_type2_chain(header[6], header + 40, size) ? MATCH : NO_MATCH;
     }
 };
 
@@ -182,10 +205,14 @@ public:
     {
         if (!packet || !packet->ptrs.ip_api.is_ip6())
             return NO_MATCH;
-        const auto* ipv6 = packet->ptrs.ip_api.get_ip6h();
-        if (!captured_span(packet, reinterpret_cast<const std::uint8_t*>(ipv6), 40))
+        const auto* ipv6 = reinterpret_cast<const std::uint8_t*>(packet->ptrs.ip_api.get_ip6h());
+        if (!captured_span(packet, ipv6, 40))
             return MATCH;
-        return !ipv6->is_valid_next_header() && ipv6->next() != IpProtocol::AUTH ? MATCH : NO_MATCH;
+        // Ethernet payloads need not align the SDK's typed IP header. Keep
+        // its reviewed predicate, which uses only the Next Header field.
+        snort::ip::IP6Hdr aligned{};
+        aligned.ip6_next = static_cast<IpProtocol>(ipv6[6]);
+        return !aligned.is_valid_next_header() && aligned.next() != IpProtocol::AUTH ? MATCH : NO_MATCH;
     }
 };
 
@@ -199,23 +226,26 @@ public:
     {
         if (!packet || !packet->ptrs.ip_api.is_ip6() || !packet->ptrs.icmph)
             return NO_MATCH;
-        const auto type = packet->ptrs.icmph->type;
+        const auto* message = reinterpret_cast<const std::uint8_t*>(packet->ptrs.icmph);
+        if (!captured_span(packet, message, 4))
+            return MATCH;
+        const auto type = message[0];
         if (!ax_nd::fixed_size(type))
             return NO_MATCH;
-        const auto* message = reinterpret_cast<const std::uint8_t*>(packet->ptrs.icmph);
         // In the pinned 3.12.2.0 ICMPv6 codec, ND consumes the four common
         // header octets. dsize is the decoded IP-bounded remainder. Refuse an
         // unexpected selected-ND layout rather than bypassing this check.
         if (!packet->data || packet->data != message + 4)
             return MATCH;
         const std::size_t size = static_cast<std::size_t>(packet->dsize) + 4;
+        if (!captured_span(packet, message, size))
+            return MATCH;
         if (!semantic)
             return ax_nd::malformed_options(type, message, size) ? MATCH : NO_MATCH;
-        const auto* ipv6 = packet->ptrs.ip_api.get_ip6h();
-        if (!ipv6)
+        const auto* ipv6 = reinterpret_cast<const std::uint8_t*>(packet->ptrs.ip_api.get_ip6h());
+        if (!captured_span(packet, ipv6, 40))
             return MATCH;
-        return ax_nd::invalid_semantics(type, message, size,
-            ipv6->get_src()->u6_addr8, ipv6->get_dst()->u6_addr8) ? MATCH : NO_MATCH;
+        return ax_nd::invalid_semantics(type, message, size, ipv6 + 8, ipv6 + 24) ? MATCH : NO_MATCH;
     }
 
 private:
@@ -344,6 +374,7 @@ snort::Module* ip4_options_module() { return new NDModule(ip4_options_name, ip4_
 snort::Module* ip6_options_module() { return new NDModule(ip6_options_name, ip6_options_help); }
 snort::Module* esp_module() { return new NDModule(esp_name, esp_help); }
 snort::Module* routing_module() { return new NDModule(routing_name, routing_help); }
+snort::Module* tcp_options_module() { return new NDModule(tcp_options_name, tcp_options_help); }
 void module_delete(snort::Module* module) { delete module; }
 snort::IpsOption* options_create(snort::Module*, IpsInfo&) { return new NDOption(false); }
 snort::IpsOption* semantics_create(snort::Module*, IpsInfo&) { return new NDOption(true); }
@@ -355,6 +386,7 @@ snort::IpsOption* ip4_options_create(snort::Module*, IpsInfo&) { return new IP4O
 snort::IpsOption* ip6_options_create(snort::Module*, IpsInfo&) { return new IP6OptionsOption; }
 snort::IpsOption* esp_create(snort::Module*, IpsInfo&) { return new ESPOption; }
 snort::IpsOption* routing_create(snort::Module*, IpsInfo&) { return new Type2RoutingOption; }
+snort::IpsOption* tcp_options_create(snort::Module*, IpsInfo&) { return new TCPOptionsOption; }
 void option_delete(snort::IpsOption* option) { delete option; }
 
 const snort::IpsApi options_api = {
@@ -417,11 +449,18 @@ const snort::IpsApi routing_api = {
     snort::OPT_TYPE_DETECTION, 1, PROTO_BIT__IP,
     nullptr, nullptr, nullptr, nullptr, routing_create, option_delete, nullptr
 };
+const snort::IpsApi tcp_options_api = {
+    {PT_IPS_OPTION, sizeof(snort::IpsApi), IPSAPI_VERSION, 1, PLUGIN_SO_RELOAD,
+        API_OPTIONS, tcp_options_name, tcp_options_help, tcp_options_module, module_delete},
+    snort::OPT_TYPE_DETECTION, 1, PROTO_BIT__TCP,
+    nullptr, nullptr, nullptr, nullptr, tcp_options_create, option_delete, nullptr
+};
 }
 
 extern "C"
 {
 SO_PUBLIC const snort::BaseApi* snort_plugins[] = {&options_api.base, &semantics_api.base,
     &hop_order_api.base, &ah_api.base, &fragment_api.base, &next_header_api.base,
-    &ip4_options_api.base, &ip6_options_api.base, &esp_api.base, &routing_api.base, nullptr};
+    &ip4_options_api.base, &ip6_options_api.base, &esp_api.base, &routing_api.base,
+    &tcp_options_api.base, &ax_tcp_sack_state_api.base, nullptr};
 }

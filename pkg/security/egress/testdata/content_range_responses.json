@@ -1,0 +1,909 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "name": "single-length-known",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "single-length-unknown",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 4-5/*\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "single-length-unicode",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-2,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-2/8\r\nContent-Length: 3\r\n\r\n\u20ac",
+      "body": "\u20ac"
+    },
+    {
+      "name": "single-length-short",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-2/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "single-length-long",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-0/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "single-length-reversed",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 2-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "single-length-bad-total",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/1\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "single-length-overflow-span",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-9223372036854775807/*\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "single-length-unsatisfied-206",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes */8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "single-length-invalid-unit",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: items 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "single-chunked-known",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/8\r\nTransfer-Encoding: chunked\r\n\r\n2\r\nab\r\n0\r\n\r\n",
+      "body": "ab"
+    },
+    {
+      "name": "single-chunked-unknown",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 4-5/*\r\nTransfer-Encoding: chunked\r\n\r\n2\r\nab\r\n0\r\n\r\n",
+      "body": "ab"
+    },
+    {
+      "name": "single-chunked-unicode",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-2,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-2/8\r\nTransfer-Encoding: chunked\r\n\r\n3\r\n\u20ac\r\n0\r\n\r\n",
+      "body": "\u20ac"
+    },
+    {
+      "name": "single-chunked-short",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-2/8\r\nTransfer-Encoding: chunked\r\n\r\n2\r\nab\r\n0\r\n\r\n",
+      "body": "ab"
+    },
+    {
+      "name": "single-chunked-long",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-0/8\r\nTransfer-Encoding: chunked\r\n\r\n2\r\nab\r\n0\r\n\r\n",
+      "body": "ab"
+    },
+    {
+      "name": "single-chunked-reversed",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 2-1/8\r\nTransfer-Encoding: chunked\r\n\r\n2\r\nab\r\n0\r\n\r\n",
+      "body": "ab"
+    },
+    {
+      "name": "single-chunked-bad-total",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/1\r\nTransfer-Encoding: chunked\r\n\r\n2\r\nab\r\n0\r\n\r\n",
+      "body": "ab"
+    },
+    {
+      "name": "single-chunked-overflow-span",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-9223372036854775807/*\r\nTransfer-Encoding: chunked\r\n\r\n2\r\nab\r\n0\r\n\r\n",
+      "body": "ab"
+    },
+    {
+      "name": "single-chunked-unsatisfied-206",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes */8\r\nTransfer-Encoding: chunked\r\n\r\n2\r\nab\r\n0\r\n\r\n",
+      "body": "ab"
+    },
+    {
+      "name": "single-chunked-invalid-unit",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: items 0-1/8\r\nTransfer-Encoding: chunked\r\n\r\n2\r\nab\r\n0\r\n\r\n",
+      "body": "ab"
+    },
+    {
+      "name": "single-close-known",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/8\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "single-close-unknown",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 4-5/*\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "single-close-unicode",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-2,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-2/8\r\n\r\n\u20ac",
+      "body": "\u20ac"
+    },
+    {
+      "name": "single-close-short",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-2/8\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "single-close-long",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-0/8\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "single-close-reversed",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 2-1/8\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "single-close-bad-total",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/1\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "single-close-overflow-span",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-9223372036854775807/*\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "single-close-unsatisfied-206",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes */8\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "single-close-invalid-unit",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: items 0-1/8\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "single-leading-zero",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: BYTES 000-001/008\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "missing-content-range",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "empty-content-range",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: \r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "duplicate-content-range",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/8\r\ncontent-range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "unsolicited-206",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {},
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nab",
+      "body": "ab"
+    },
+    {
+      "name": "head-206",
+      "accepted": false,
+      "method": "HEAD",
+      "request_headers": {},
+      "wire": "HTTP/1.1 206 Test\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 0\r\n\r\n",
+      "body": ""
+    },
+    {
+      "name": "ordinary-200",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {},
+      "wire": "HTTP/1.1 200 Test\r\nContent-Length: 2\r\n\r\nok",
+      "body": "ok"
+    },
+    {
+      "name": "content-range-200",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 200 Test\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 2\r\n\r\nok",
+      "body": "ok"
+    },
+    {
+      "name": "content-range-interim",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 103 Early Hints\r\nContent-Range: bytes 0-1/8\r\n\r\nHTTP/1.1 200 Test\r\nContent-Length: 2\r\n\r\nok",
+      "body": "ok"
+    },
+    {
+      "name": "416-known",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 416 Test\r\nContent-Range: bytes */8\r\nContent-Length: 5\r\n\r\nerror",
+      "body": "error"
+    },
+    {
+      "name": "416-zero",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 416 Test\r\nContent-Range: bytes */0\r\nContent-Length: 5\r\n\r\nerror",
+      "body": "error"
+    },
+    {
+      "name": "416-omitted",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 416 Test\r\nContent-Length: 5\r\n\r\nerror",
+      "body": "error"
+    },
+    {
+      "name": "416-fulfilled",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 416 Test\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 5\r\n\r\nerror",
+      "body": "error"
+    },
+    {
+      "name": "416-unknown-length",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 416 Test\r\nContent-Range: bytes */*\r\nContent-Length: 5\r\n\r\nerror",
+      "body": "error"
+    },
+    {
+      "name": "multipart-length",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Length: 147\r\n\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 4-5/8\r\n\r\nef\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 4-5/8\r\n\r\nef\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-chunked",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nTransfer-Encoding: chunked\r\n\r\n93\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 4-5/8\r\n\r\nef\r\n--test-boundary--\r\n\r\n0\r\n\r\n",
+      "body": "--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 4-5/8\r\n\r\nef\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-close",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\n\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 4-5/8\r\n\r\nef\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 4-5/8\r\n\r\nef\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-reordered",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Length: 147\r\n\r\n--test-boundary\r\nContent-Range: bytes 4-5/8\r\n\r\nef\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 4-5/8\r\n\r\nef\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-coalesced",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Length: 74\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-5/8\r\n\r\nabcdef\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-5/8\r\n\r\nabcdef\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-unknown-total",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Length: 121\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-1/*\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 4-5/8\r\n\r\nef\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-1/*\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 4-5/8\r\n\r\nef\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-identity-transfer",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Length: 105\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-1/8\r\nContent-Transfer-Encoding: binary\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-1/8\r\nContent-Transfer-Encoding: binary\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-preamble-epilogue",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Length: 109\r\n\r\nnotice\r\n\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\nend",
+      "body": "notice\r\n\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\nend"
+    },
+    {
+      "name": "multipart-no-final-crlf",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Length: 94\r\n\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--",
+      "body": "--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--"
+    },
+    {
+      "name": "multipart-quoted-boundary",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=\"test-boundary\"\r\nContent-Length: 96\r\n\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-missing-range",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Length: 42\r\n\r\n--test-boundary\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-short-part",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Length: 70\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-2/8\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-2/8\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-long-part",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Length: 70\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-0/8\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-0/8\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-duplicate-range",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Length: 98\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-1/8\r\ncontent-range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-1/8\r\ncontent-range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-conflicting-total",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Length: 147\r\n\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 4-5/9\r\n\r\nef\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 4-5/9\r\n\r\nef\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-unsatisfied-part",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Length: 68\r\n\r\n--test-boundary\r\nContent-Range: bytes */8\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes */8\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-base64-part",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Length: 105\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-1/8\r\nContent-Transfer-Encoding: base64\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-1/8\r\nContent-Transfer-Encoding: base64\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-folded-part",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Length: 88\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-1/8\r\n X-Extra: folded\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-1/8\r\n X-Extra: folded\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-too-many-parts",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Length: 1328\r\n\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-missing-boundary",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges\r\nContent-Length: 96\r\n\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-empty-boundary",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=\"\"\r\nContent-Length: 96\r\n\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-long-boundary",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\r\nContent-Length: 212\r\n\r\n--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--\r\n",
+      "body": "--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--\r\n"
+    },
+    {
+      "name": "multipart-invalid-boundary-char",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=\"bad@boundary\"\r\nContent-Length: 94\r\n\r\n--bad@boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--bad@boundary--\r\n",
+      "body": "--bad@boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--bad@boundary--\r\n"
+    },
+    {
+      "name": "multipart-top-range",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Range: bytes 0-1/8\r\nContent-Length: 96\r\n\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-single-request",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Length: 96\r\n\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-missing-close",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Length: 77\r\n\r\n--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n",
+      "body": "--test-boundary\r\nContent-Type: text/plain\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n"
+    },
+    {
+      "name": "multipart-empty",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Length: 19\r\n\r\n--test-boundary--\r\n",
+      "body": "--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-bare-lf",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Length: 90\r\n\r\n--test-boundary\nContent-Type: text/plain\nContent-Range: bytes 0-1/8\n\nab\n--test-boundary--\n",
+      "body": "--test-boundary\nContent-Type: text/plain\nContent-Range: bytes 0-1/8\n\nab\n--test-boundary--\n"
+    },
+    {
+      "name": "multipart-boundary-collision",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=test-boundary\r\nContent-Length: 93\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-20/100\r\n\r\nab\r\n--test-boundary\r\nx\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-20/100\r\n\r\nab\r\n--test-boundary\r\nx\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "boundary-maximum",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\r\nContent-Length: 184\r\n\r\n--aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa--\r\n",
+      "body": "--aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa--\r\n"
+    },
+    {
+      "name": "boundary-punctuation",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=\"a'()+_,-./:=?b\"\r\nContent-Length: 72\r\n\r\n--a'()+_,-./:=?b\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--a'()+_,-./:=?b--\r\n",
+      "body": "--a'()+_,-./:=?b\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--a'()+_,-./:=?b--\r\n"
+    },
+    {
+      "name": "boundary-interior-space",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=\"two words\"\r\nContent-Length: 62\r\n\r\n--two words\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--two words--\r\n",
+      "body": "--two words\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--two words--\r\n"
+    },
+    {
+      "name": "multipart-transport-padding",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=\"test-boundary\"\r\nContent-Length: 74\r\n\r\n--test-boundary \t\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary-- \t\r\n",
+      "body": "--test-boundary \t\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary-- \t\r\n"
+    },
+    {
+      "name": "multipart-empty-media-parameter-slots",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges;; boundary=test-boundary;\r\nContent-Length: 70\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-identity-part-encoding",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=\"test-boundary\"\r\nContent-Length: 98\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-1/8\r\nContent-Encoding: identity\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-1/8\r\nContent-Encoding: identity\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-part-7bit-policy",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=\"test-boundary\"\r\nContent-Length: 103\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-1/8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-1/8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-part-gzip-policy",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=\"test-boundary\"\r\nContent-Length: 94\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-1/8\r\nContent-Encoding: gzip\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-1/8\r\nContent-Encoding: gzip\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-part-transfer-encoding",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=\"test-boundary\"\r\nContent-Length: 98\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-1/8\r\nTransfer-Encoding: chunked\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-1/8\r\nTransfer-Encoding: chunked\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-duplicate-binary-encoding",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=\"test-boundary\"\r\nContent-Length: 140\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-1/8\r\nContent-Transfer-Encoding: binary\r\ncontent-transfer-encoding: binary\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-1/8\r\nContent-Transfer-Encoding: binary\r\ncontent-transfer-encoding: binary\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-unknown-total-exceeds-later-total",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=\"test-boundary\"\r\nContent-Length: 123\r\n\r\n--test-boundary\r\nContent-Range: bytes 10-11/*\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 4-5/8\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 10-11/*\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 4-5/8\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-unknown-total-exceeds-earlier-total",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=\"test-boundary\"\r\nContent-Length: 123\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 10-11/*\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 10-11/*\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-boundary-header-collision",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=\"test-boundary\"\r\nContent-Length: 100\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-1/8\r\n--test-boundary-extra: value\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-1/8\r\n--test-boundary-extra: value\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-boundary-body-start",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=\"test-boundary\"\r\nContent-Length: 93\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-21/100\r\n\r\n--test-boundary-secret\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-21/100\r\n\r\n--test-boundary-secret\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-boundary-body-prefix",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,4-5"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=\"test-boundary\"\r\nContent-Length: 96\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-24/100\r\n\r\na\r\n--test-boundary-secret\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-24/100\r\n\r\na\r\n--test-boundary-secret\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-16-parts",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=0-1,2-3,4-5,6-7,8-9,10-11,12-13,14-15,16-17,18-19,20-21,22-23,24-25,26-27,28-29,30-31"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=\"test-boundary\"\r\nContent-Length: 873\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-1/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 2-3/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 4-5/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 6-7/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 8-9/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 10-11/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 12-13/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 14-15/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 16-17/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 18-19/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 20-21/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 22-23/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 24-25/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 26-27/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 28-29/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 30-31/32\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-1/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 2-3/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 4-5/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 6-7/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 8-9/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 10-11/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 12-13/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 14-15/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 16-17/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 18-19/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 20-21/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 22-23/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 24-25/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 26-27/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 28-29/32\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 30-31/32\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-one-nonempty-range",
+      "accepted": false,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=,0-1,"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=\"test-boundary\"\r\nContent-Length: 70\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary--\r\n"
+    },
+    {
+      "name": "multipart-two-nonempty-ranges",
+      "accepted": true,
+      "method": "GET",
+      "request_headers": {
+        "Range": "bytes=,0-1,,4-5,"
+      },
+      "wire": "HTTP/1.1 206 Test\r\nContent-Type: multipart/byteranges; boundary=\"test-boundary\"\r\nContent-Length: 121\r\n\r\n--test-boundary\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 4-5/8\r\n\r\nab\r\n--test-boundary--\r\n",
+      "body": "--test-boundary\r\nContent-Range: bytes 0-1/8\r\n\r\nab\r\n--test-boundary\r\nContent-Range: bytes 4-5/8\r\n\r\nab\r\n--test-boundary--\r\n"
+    }
+  ]
+}

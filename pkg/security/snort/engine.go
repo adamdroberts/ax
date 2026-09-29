@@ -25,10 +25,12 @@ import (
 	"sort"
 	"strings"
 	"sync"
+
+	"github.com/google/ax/pkg/security/httpguard"
 )
 
 const (
-	MaxBodyBytes   = 1 << 20
+	MaxBodyBytes   = httpguard.MaxRequestBodyBytes
 	MaxURLBytes    = 16 << 10
 	MaxHeaderBytes = 64 << 10
 	MaxHeaders     = 128
